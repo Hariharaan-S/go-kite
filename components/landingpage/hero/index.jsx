@@ -1,11 +1,338 @@
 "use client";
-
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { addCurrentTab } from "../../../features/hero/findPlaceSlice";
 
-// Icon button using images
+// Embedded (scoped) CSS for BookFlightCard and HeroSection
+const styles = `
+/* HERO Section BG overrides */
+.masthead__bg img {
+  width: 100vw;
+  height: 390px;
+  object-fit: cover;
+  border-radius: 24px 24px 0 0;
+}
+@media (max-width: 900px) {
+  .masthead__bg img {height: 220px;}
+}
+.book-flight-wrapper {
+  background: #fff;
+  padding: 12px 16px 16px 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px 0 rgba(40,47,60,0.10);
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  top: -60px;
+  z-index: 20;
+}
+.flight-search-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+.flight-field {
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  padding: 0 12px;
+  border-right: 1px solid #e0e0e0;
+}
+.flight-field:last-child {
+  border-right: none;
+}
+.flight-icon {
+  position: absolute;
+  left: -4px;
+  top: 4px;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  opacity: 0.75;
+}
+.flight-label {
+  font-size: 12px;
+  color: #586380;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.flight-input {
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #252b36;
+  outline: none;
+  width: 100%;
+  padding: 0;
+}
+.flight-btn {
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.flight-btn svg {
+  margin-left: 4px;
+}
+
+/* Trip Options Styles */
+.trip-options-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+.trip-options-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.trip-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.trip-option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #ff6b35;
+}
+.trip-option label {
+  font-size: 14px;
+  color: #252b36;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 0;
+}
+.trip-option.active label {
+  color: #ff6b35;
+}
+.google-powered {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #666;
+}
+.google-logo {
+  width: 60px;
+  height: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .book-flight-wrapper {
+    padding: 12px 8px 16px 8px;
+    max-width: 100vw;
+  }
+  .flight-search-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .flight-field {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 8px 12px;
+  }
+  .flight-field:last-child {
+    border-bottom: none;
+  }
+  .flight-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .trip-options-container {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .trip-options-left {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}`;
+
+// Replace icon paths as appropriate for your asset structure
+const fieldIcons = {
+  from: "/img/landingpage/icons/flight.png",
+  to: "/img/landingpage/icons/flight.png",
+  date: "/img/landingpage/icons/calendar.png",
+  passenger: "/img/landingpage/icons/person.png",
+  direct: "/img/landingpage/icons/tick.png",
+};
+
+// Flight search/book card with trip options
+const BookFlightCard = () => {
+  const [tripType, setTripType] = useState("roundTrip");
+
+  return (
+    <>
+      <style>{styles}</style>
+      <div
+        className="book-flight-wrapper"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
+        <div className="flight-search-container">
+          {/* FROM */}
+          <div className="flight-field">
+            <img src={fieldIcons.from} className="flight-icon" alt="From" />
+            <span className="flight-label">From</span>
+            <input
+              className="flight-input"
+              type="text"
+              placeholder="DEL – New Delhi"
+              defaultValue="DEL – New Delhi"
+              autoFocus
+            />
+          </div>
+          {/* TO */}
+          <div className="flight-field">
+            <img src={fieldIcons.to} className="flight-icon" alt="To" />
+            <span className="flight-label">To</span>
+            <input
+              className="flight-input"
+              type="text"
+              placeholder="SIN – Singapore"
+              defaultValue="SIN – Singapore"
+            />
+          </div>
+          {/* DEPART */}
+          <div className="flight-field">
+            {/* <img src={fieldIcons.date} className="flight-icon" alt="Depart" /> */}
+            <span className="flight-label">Depart</span>
+            <input
+              className="flight-input"
+              type="date"
+              defaultValue="2025-01-11"
+            />
+          </div>
+          {/* RETURN */}
+          <div className="flight-field">
+            {/* <img src={fieldIcons.date} className="flight-icon" alt="Return" /> */}
+            <span className="flight-label">Return</span>
+            <input
+              className="flight-input"
+              type="date"
+              defaultValue="2025-02-12"
+            />
+          </div>
+          {/* PASSENGERS */}
+          <div className="flight-field">
+            <img
+              src={fieldIcons.passenger}
+              className="flight-icon"
+              alt="Passenger"
+            />
+            <span className="flight-label">Passengers</span>
+            <input
+              className="flight-input"
+              type="text"
+              defaultValue="2 Adult : 1 Child"
+            />
+          </div>
+          {/* BUTTON */}
+          <button className="flight-btn">
+            <span>Search Flight</span>
+            <svg width="21" height="21" fill="none" viewBox="0 0 21 21">
+              <path
+                d="M11.69 5.01v7.46l2.84-2.85a.75.75 0 111.06 1.07l-4.13 4.13a.75.75 0 01-1.06 0L6.27 10.7a.75.75 0 111.06-1.06l2.84 2.85V5.01a.75.75 0 011.52 0z"
+                fill="#fff"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Trip Options Row */}
+        <div className="trip-options-container">
+          <div className="trip-options-left">
+            {/* One Way */}
+            <div className={`trip-option ${tripType === 'oneWay' ? 'active' : ''}`}>
+              <input
+                type="radio"
+                id="oneWay"
+                name="tripType"
+                checked={tripType === 'oneWay'}
+                onChange={() => setTripType('oneWay')}
+              />
+              <label htmlFor="oneWay">One Way</label>
+            </div>
+
+            {/* Multi City */}
+            <div className={`trip-option ${tripType === 'multiCity' ? 'active' : ''}`}>
+              <input
+                type="radio"
+                id="multiCity"
+                name="tripType"
+                checked={tripType === 'multiCity'}
+                onChange={() => setTripType('multiCity')}
+              />
+              <label htmlFor="multiCity">Multi City</label>
+            </div>
+
+            {/* Round Trip */}
+            <div className={`trip-option ${tripType === 'roundTrip' ? 'active' : ''}`}>
+              <input
+                type="radio"
+                id="roundTrip"
+                name="tripType"
+                checked={tripType === 'roundTrip'}
+                onChange={() => setTripType('roundTrip')}
+              />
+              <label htmlFor="roundTrip">Round Trip</label>
+            </div>
+
+            {/* Direct Flight */}
+            <div className={`trip-option ${tripType === 'directFlight' ? 'active' : ''}`}>
+              <input
+                type="radio"
+                id="directFlight"
+                name="tripType"
+                checked={tripType === 'directFlight'}
+                onChange={() => setTripType('directFlight')}
+              />
+              <label htmlFor="directFlight">Direct Flight</label>
+            </div>
+          </div>
+
+          {/* Google Powered */}
+          <div className="google-powered">
+            <span>Powered by</span>
+            <svg className="google-logo" viewBox="0 0 272 92" fill="none">
+              <path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#EA4335"/>
+              <path d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#FBBC05"/>
+              <path d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z" fill="#34A853"/>
+              <path d="M225 3v65h-9.5V3h9.5z" fill="#EA4335"/>
+              <path d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z" fill="#FBBC05"/>
+              <path d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z" fill="#4285F4"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+// Icon button (unchanged)
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="text-center cursor-pointer">
     <div
@@ -32,10 +359,9 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
   </div>
 );
 
-// Icon Row Component
+// Icon row (unchanged)
 const IconRow = () => {
   const [activeIcon, setActiveIcon] = useState("Flight");
-
   const iconData = [
     {
       id: "Flight",
@@ -56,7 +382,6 @@ const IconRow = () => {
     { id: "Visa", label: "Visa", imgSrc: "/img/landingpage/icons/visa.png" },
     { id: "More", label: "More", imgSrc: "/img/landingpage/icons/more.png" },
   ];
-
   return (
     <div
       className="d-flex justify-center align-items-center mt-40 mb-20"
@@ -86,225 +411,16 @@ const IconRow = () => {
   );
 };
 
-// Counter component for GuestSearch
-const Counter = ({ name, defaultValue, onCounterChange }) => {
-  const [count, setCount] = useState(defaultValue);
-  const incrementCount = () => {
-    const newCount = count + 1;
-    setCount(newCount);
-    onCounterChange(name, newCount);
-  };
-  const decrementCount = () => {
-    if (count > 0) {
-      const newCount = count - 1;
-      setCount(newCount);
-      onCounterChange(name, newCount);
-    }
-  };
-
-  return (
-    <>
-      <div className="row y-gap-10 justify-between items-center">
-        <div className="col-auto">
-          <div className="text-15 lh-12 fw-500">{name}</div>
-          {name === "Children" && (
-            <div className="text-14 lh-12 text-light-1 mt-5">Ages 0 - 17</div>
-          )}
-        </div>
-        <div className="col-auto">
-          <div className="d-flex items-center js-counter">
-            <button
-              className="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
-              onClick={decrementCount}
-            >
-              <i className="icon-minus text-12" />
-            </button>
-            <div className="flex-center size-20 ml-15 mr-15">
-              <div className="text-15 js-count">{count}</div>
-            </div>
-            <button
-              className="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
-              onClick={incrementCount}
-            >
-              <i className="icon-plus text-12" />
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="border-top-light mt-24 mb-24" />
-    </>
-  );
-};
-
-// Location Search Component
-const LocationSearch = () => {
-  const [searchValue, setSearchValue] = useState("");
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const locationSearchContent = [
-    { id: 1, name: "London", address: "Greater London, United Kingdom" },
-    { id: 2, name: "New York", address: "New York State, United States" },
-    { id: 3, name: "Paris", address: "France" },
-    { id: 4, name: "Madrid", address: "Spain" },
-    { id: 5, name: "Santorini", address: "Greece" },
-  ];
-
-  const handleOptionClick = (item) => {
-    setSearchValue(item.name);
-    setSelectedItem(item);
-  };
-
-  return (
-    <div className="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
-      <div
-        data-bs-toggle="dropdown"
-        data-bs-auto-close="true"
-        data-bs-offset="0,22"
-      >
-        <h4 className="text-15 fw-500 ls-2 lh-16">Location</h4>
-        <div className="text-15 text-light-1 ls-2 lh-16">
-          <input
-            autoComplete="off"
-            type="search"
-            placeholder="Where are you going?"
-            className="js-search js-dd-focus"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-        </div>
-      </div>
-      <div className="shadow-2 dropdown-menu min-width-400">
-        <div className="bg-white px-20 py-20 sm:px-0 sm:py-15 rounded-4">
-          <ul className="y-gap-5 js-results">
-            {locationSearchContent.map((item) => (
-              <li
-                className={`-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option mb-1 ${
-                  selectedItem && selectedItem.id === item.id ? "active" : ""
-                }`}
-                key={item.id}
-                role="button"
-                onClick={() => handleOptionClick(item)}
-              >
-                <div className="d-flex">
-                  <div className="icon-location-2 text-light-1 text-20 pt-4" />
-                  <div className="ml-10">
-                    <div className="text-15 lh-12 fw-500 js-search-option-target">
-                      {item.name}
-                    </div>
-                    <div className="text-14 lh-12 text-light-1 mt-5">
-                      {item.address}
-                    </div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Guest Search Component
-const GuestSearch = () => {
-  const counters = [
-    { name: "Adults", defaultValue: 2 },
-    { name: "Children", defaultValue: 1 },
-    { name: "Rooms", defaultValue: 1 },
-  ];
-
-  const [guestCounts, setGuestCounts] = useState({
-    Adults: 2,
-    Children: 1,
-    Rooms: 1,
-  });
-
-  const handleCounterChange = (name, value) => {
-    setGuestCounts((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  return (
-    <div className="searchMenu-guests px-30 lg:py-20 lg:px-0 js-form-dd js-form-counters position-relative">
-      <div
-        data-bs-toggle="dropdown"
-        data-bs-auto-close="outside"
-        aria-expanded="false"
-        data-bs-offset="0,22"
-      >
-        <h4 className="text-15 fw-500 ls-2 lh-16">Guest</h4>
-        <div className="text-15 text-light-1 ls-2 lh-16">
-          <span className="js-count-adult">{guestCounts.Adults}</span> adults -{" "}
-          <span className="js-count-child">{guestCounts.Children}</span>{" "}
-          children - <span className="js-count-room">{guestCounts.Rooms}</span>{" "}
-          room
-        </div>
-      </div>
-
-      <div className="shadow-2 dropdown-menu min-width-400">
-        <div className="bg-white px-30 py-30 rounded-4 counter-box">
-          {counters.map((counter) => (
-            <Counter
-              key={counter.name}
-              name={counter.name}
-              defaultValue={counter.defaultValue}
-              onCounterChange={handleCounterChange}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Main Hero Component
+// Final combined hero section
 const HeroSection = () => {
+  // Redux and router hooks are present if needed for navigation/interactivity
   const { tabs, currentTab } = useSelector((state) => state.hero) || {};
   const dispatch = useDispatch();
   const Router = useRouter();
 
-  const counters = [
-    { name: "Adults", defaultValue: 2 },
-    { name: "Children", defaultValue: 1 },
-    { name: "Rooms", defaultValue: 1 },
-  ];
-
-  // State for location search
-  const [flyingFromSearchValue, setFlyingFromSearchValue] = useState("");
-  const [flyingFromSelectedItem, setFlyingFromSelectedItem] = useState(null);
-  const [flyingToSearchValue, setFlyingToSearchValue] = useState("");
-  const [flyingToSelectedItem, setFlyingToSelectedItem] = useState(null);
-
-  // State for filter selects
-  const [returnValue, setReturnValue] = useState("Return");
-  const [economyValue, setEconomyValue] = useState("Economy");
-  const [bagsValue, setBagsValue] = useState("0 Bags");
-
-  // State for guest search
-  const [guestCounts, setGuestCounts] = useState({
-    Adults: 2,
-    Children: 1,
-    Rooms: 1,
-  });
-
-  const locationSearchContent = [
-    { id: 1, name: "London", address: "Greater London, United Kingdom" },
-    { id: 2, name: "New York", address: "New York State, United States" },
-    { id: 3, name: "Paris", address: "France" },
-    { id: 4, name: "Madrid", address: "Spain" },
-    { id: 5, name: "Santorini", address: "Greece" },
-  ];
-
-  const handleLocationOptionClick = (setter, itemSetter) => (item) => {
-    setter(item.name);
-    itemSetter(item);
-  };
-
-  const handleCounterChange = (name, value) => {
-    setGuestCounts((prevState) => ({ ...prevState, [name]: value }));
-  };
-
   return (
     <section className="masthead -type-1 z-5">
+      <style>{styles}</style>
       <div className="masthead__bg">
         <img alt="image" src="/img/landingpage/hero.png" className="js-lazy" />
       </div>
@@ -327,203 +443,12 @@ const HeroSection = () => {
               </p>
             </div>
 
-            {/* Icon row section */}
+            {/* Icon Row */}
             <IconRow />
 
-            <div
-              className="tabs -underline mt-60 js-tabs"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              <div className="mainSearch -col-4 -w-1070 bg-white shadow-1 rounded-4 pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 mt-15">
-                <div className="button-grid items-center">
-                  {/* Flying From Location */}
-                  <div className="searchMenu-loc px-24 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
-                    <div
-                      data-bs-toggle="dropdown"
-                      data-bs-auto-close="true"
-                      data-bs-offset="0,22"
-                    >
-                      <h4 className="text-15 fw-500 ls-2 lh-16">Flying From</h4>
-                      <div className="text-15 text-light-1 ls-2 lh-16">
-                        <input
-                          autoComplete="off"
-                          type="search"
-                          placeholder="Where are you going?"
-                          className="js-search js-dd-focus"
-                          value={flyingFromSearchValue}
-                          onChange={(e) =>
-                            setFlyingFromSearchValue(e.target.value)
-                          }
-                        />
-                      </div>
-                    </div>
-
-                    <div className="shadow-2 dropdown-menu min-width-400">
-                      <div className="bg-white px-20 py-20 sm:px-0 sm:py-15 rounded-4">
-                        <ul className="y-gap-5 js-results">
-                          {locationSearchContent.map((item) => (
-                            <li
-                              className={`-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option mb-1 ${
-                                flyingFromSelectedItem &&
-                                flyingFromSelectedItem.id === item.id
-                                  ? "active"
-                                  : ""
-                              }`}
-                              key={item.id}
-                              role="button"
-                              onClick={() =>
-                                handleLocationOptionClick(
-                                  setFlyingFromSearchValue,
-                                  setFlyingFromSelectedItem
-                                )(item)
-                              }
-                            >
-                              <div className="d-flex">
-                                <div className="icon-location-2 text-light-1 text-20 pt-4" />
-                                <div className="ml-10">
-                                  <div className="text-15 lh-12 fw-500 js-search-option-target">
-                                    {item.name}
-                                  </div>
-                                  <div className="text-14 lh-12 text-light-1 mt-5">
-                                    {item.address}
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Flying To Location */}
-                  <div className="searchMenu-loc px-24 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
-                    <div
-                      data-bs-toggle="dropdown"
-                      data-bs-auto-close="true"
-                      data-bs-offset="0,22"
-                    >
-                      <h4 className="text-15 fw-500 ls-2 lh-16">Flying To</h4>
-                      <div className="text-15 text-light-1 ls-2 lh-16">
-                        <input
-                          autoComplete="off"
-                          type="search"
-                          placeholder="Where are you going?"
-                          className="js-search js-dd-focus"
-                          value={flyingToSearchValue}
-                          onChange={(e) =>
-                            setFlyingToSearchValue(e.target.value)
-                          }
-                        />
-                      </div>
-                    </div>
-
-                    <div className="shadow-2 dropdown-menu min-width-400">
-                      <div className="bg-white px-20 py-20 sm:px-0 sm:py-15 rounded-4">
-                        <ul className="y-gap-5 js-results">
-                          {locationSearchContent.map((item) => (
-                            <li
-                              className={`-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option mb-1 ${
-                                flyingToSelectedItem &&
-                                flyingToSelectedItem.id === item.id
-                                  ? "active"
-                                  : ""
-                              }`}
-                              key={item.id}
-                              role="button"
-                              onClick={() =>
-                                handleLocationOptionClick(
-                                  setFlyingToSearchValue,
-                                  setFlyingToSelectedItem
-                                )(item)
-                              }
-                            >
-                              <div className="d-flex">
-                                <div className="icon-location-2 text-light-1 text-20 pt-4" />
-                                <div className="ml-10">
-                                  <div className="text-15 lh-12 fw-500 js-search-option-target">
-                                    {item.name}
-                                  </div>
-                                  <div className="text-14 lh-12 text-light-1 mt-5">
-                                    {item.address}
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Depart Date */}
-                  <div className="searchMenu-date px-30 lg:py-20 lg:px-0 js-form-dd js-calendar">
-                    <div>
-                      <h4 className="text-15 fw-500 ls-2 lh-16">Depart</h4>
-                      <input type="date" className="form-control" />
-                    </div>
-                  </div>
-
-                  {/* Return Date */}
-                  <div className="searchMenu-date px-30 lg:py-20 lg:px-0 js-form-dd js-calendar">
-                    <div>
-                      <h4 className="text-15 fw-500 ls-2 lh-16">Return</h4>
-                      <input type="date" className="form-control" />
-                    </div>
-                  </div>
-
-                  {/* Guest Search */}
-                  <div className="searchMenu-guests px-24 lg:py-20 lg:px-0 js-form-dd js-form-counters">
-                    <div
-                      data-bs-toggle="dropdown"
-                      data-bs-auto-close="outside"
-                      aria-expanded="false"
-                      data-bs-offset="0,22"
-                    >
-                      <h4 className="text-15 fw-500 ls-2 lh-16">Travellers</h4>
-                      <div className="text-15 text-light-1 ls-2 lh-16">
-                        <span className="js-count-adult">
-                          {guestCounts.Adults}
-                        </span>{" "}
-                        adults -{" "}
-                        <span className="js-count-child">
-                          {guestCounts.Children}
-                        </span>{" "}
-                        children -{" "}
-                        <span className="js-count-room">
-                          {guestCounts.Rooms}
-                        </span>{" "}
-                        room
-                      </div>
-                    </div>
-
-                    <div className="shadow-2 dropdown-menu min-width-400">
-                      <div className="bg-white px-30 py-30 rounded-4 counter-box">
-                        {counters.map((counter) => (
-                          <Counter
-                            key={counter.name}
-                            name={counter.name}
-                            defaultValue={counter.defaultValue}
-                            onCounterChange={handleCounterChange}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Search Button */}
-                  <div className="button-item">
-                    <button
-                      className="mainSearch__submit button -blue-1 py-15 px-35 h-60 col-12 rounded-4 bg-dark-1 text-white"
-                      onClick={() => Router.push("/flight-list-v1")}
-                    >
-                      <i className="icon-search text-20 mr-10" />
-                      Search
-                    </button>
-                  </div>
-                </div>
-              </div>
+            {/* Book Flight Card */}
+            <div style={{ paddingTop: "70px" }}>
+              <BookFlightCard />
             </div>
           </div>
         </div>
