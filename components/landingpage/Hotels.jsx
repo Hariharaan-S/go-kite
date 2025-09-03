@@ -127,7 +127,7 @@ const PopularActivities = () => {
   return (
     <div
       style={{
-        padding: "40px 20px",
+        padding: "40px 120px", // Increased horizontal padding
         backgroundColor: "#f8f9fa",
         minHeight: "100vh",
       }}
@@ -220,9 +220,9 @@ const PopularActivities = () => {
           <div
             key={item.id}
             style={{
-              width: "calc(25% - 15px)", // Adjust width for 4 cards with gap
-              minWidth: "250px", // Minimum width to prevent overcrowding
-              maxWidth: "280px", // Maximum width to maintain consistency
+              width: "calc(25% - 15px)", // Ensure 4 cards per row
+              minWidth: "250px", // Reduced from 250px
+              maxWidth: "280px", // Kept original max-width
               height: "450px",
               display: "flex",
               flexDirection: "column",

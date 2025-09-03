@@ -57,7 +57,7 @@ export default function HolidayDestinations() {
     {
       id: 3,
       image:
-        "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
       title: "Faroe Island",
       rating: 4.5,
       duration: "3Days 4 Nights",
@@ -147,7 +147,7 @@ export default function HolidayDestinations() {
   return (
     <div
       style={{
-        padding: "40px 20px",
+        padding: "40px 120px", // Increased horizontal padding
         backgroundColor: "#f8fafc",
         minHeight: "100vh",
       }}
@@ -240,9 +240,9 @@ export default function HolidayDestinations() {
           <div
             key={destination.id}
             style={{
-              width: "calc(33.33% - 16px)",
-              minWidth: "320px",
-              maxWidth: "400px",
+              width: "calc(25% - 16px)", // Changed from calc(33.33% - 16px)
+              minWidth: "250px", // Reduced from 320px
+              maxWidth: "300px", // Added max-width for consistency
               backgroundColor: "white",
               borderRadius: "16px",
               boxShadow:
