@@ -1,20 +1,3 @@
-// import Wrapper from "@/components/layout/Wrapper";
-// import MainHome from "../app/(homes)/landing_page/page";
-
-// export const metadata = {
-//   title: "GoKite - Travel & Tour",
-//   description: "GoKite - Travel & Tour",
-// };
-
-// export default function Home() {
-//   return (
-//     <>
-//       <Wrapper>
-//         <MainHome />
-//       </Wrapper>
-//     </>
-//   );
-// }
 import DefaultFooter from "@/components/footer/default";
 import Header1 from "@/components/header/Navbar";
 import Hero1 from "@/components/landingpage/hero";

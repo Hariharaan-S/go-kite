@@ -6,7 +6,7 @@ import TravelVisaCards from "@/components/landingpagevisahome/search-country";
 import StepVisa from "@/components/landingpagevisahome/steps-visa";
 
 export const metadata = {
-  title: "Home-1 || GoKite - Travel & Tour",
+  title: "GoKite - Travel & Tour",
   description: "GoKite - Travel & Tour",
 };
 

@@ -5,7 +5,7 @@ import HolidayDestinations from "@/components/landingpagevisa/holiday-destintion
 import VisaDestinationCards from "@/components/landingpagevisa/visa-destination";
 
 export const metadata = {
-  title: "Home-1 || GoKite - Travel & Tour ",
+  title: "GoKite - Travel & Tour ",
   description: "GoKite - Travel & Tour ",
 };
 
