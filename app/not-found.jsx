@@ -1,5 +1,5 @@
 import CallToActions from "@/components/common/CallToActions";
-import DefaultHeader from "@/components/header/default-header";
+import Header1 from "@/components/header/Navbar";
 import DefaultFooter from "@/components/footer/default";
 import NotFound from "@/components/common/NotFound";
 
@@ -16,13 +16,13 @@ const index = () => {
       <div className="header-margin"></div>
       {/* header top margin */}
 
-      <DefaultHeader />
+      <Header1 />
       {/* End Header 1 */}
 
       <NotFound />
       {/* End 404 section */}
 
-      <CallToActions />
+      {/* <CallToActions /> */}
       {/* End Call To Actions Section */}
 
       <DefaultFooter />
