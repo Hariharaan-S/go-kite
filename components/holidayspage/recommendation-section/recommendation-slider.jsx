@@ -189,6 +189,49 @@ export default function RecommendationDestinations({ customStyle }) {
             position: absolute;
             margin-top: 18rem;
         }
+
+        @media screen and (max-width: 1500px) {
+            .recommendation-slider-section {
+                top: 5rem;
+            }
+            .dest {
+                    margin-left: 0 !important;
+                }
+        }
+
+        @media screen and (max-width: 400px) {
+
+            .recom-slid-section-1 {
+                padding: 2.3rem;
+            }
+        
+            .heading {
+                position: absolute !important;
+                color: #000 !important;
+                margin-top: 2.5rem;
+                margin-left: -57rem !important;
+            }
+            
+            .button-group {
+                position: absolute;
+                left: 17rem;
+                top: 2.3rem;
+            }
+
+            .view-all-btn {
+                display: none !important;
+            }
+
+            .prev-btn, .next-btn {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            .dest {
+                margin-left: 2rem !important;
+            }
+            
+        }
     `
 
     return (
@@ -196,7 +239,7 @@ export default function RecommendationDestinations({ customStyle }) {
             <style>{styles}</style>
             {/* Section header with navigation */}
             <div className="recommendation-slider-section">
-                <div
+                <div className="recom-slid-section-1"
                     style={{
                         display: "flex",
                         justifyContent: "center",
@@ -208,15 +251,15 @@ export default function RecommendationDestinations({ customStyle }) {
                         marginBottom: "2rem"
                     }}
                 >
-                    <h2 style={{ color: '#FFFFFF', position: 'relative', marginLeft: '1.2rem' }}>Beaches</h2>
-                    <div
+                    <h2 className="heading" style={{ color: '#FFFFFF', position: 'relative', marginLeft: '1.2rem' }}>Beaches</h2>
+                    <div className="button-group"
                         style={{
                             display: "flex",
                             alignItems: "center",
                             gap: "5px",
                         }}
                     >
-                        <button
+                        <button className="view-all-btn"
                             style={{
                                 width: "100%",
                                 height: "60%",
@@ -234,7 +277,7 @@ export default function RecommendationDestinations({ customStyle }) {
                         >
                             View All
                         </button>
-                        <button
+                        <button className="prev-btn"
                             onClick={prevSlide}
                             style={{
                                 width: "70px",
@@ -252,6 +295,7 @@ export default function RecommendationDestinations({ customStyle }) {
                             <ChevronLeft size={18} />
                         </button>
                         <button
+                            className="next-btn"
                             onClick={nextSlide}
                             style={{
                                 width: "70px",
@@ -272,7 +316,7 @@ export default function RecommendationDestinations({ customStyle }) {
                 </div>
 
                 {/* Destinations Container */}
-                <div
+                <div className="dest"
                     style={{
                         display: "flex",
                         gap: "24px",

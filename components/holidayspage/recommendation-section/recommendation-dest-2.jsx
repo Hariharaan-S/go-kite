@@ -189,6 +189,48 @@ export default function RecommendationDestinations2({ customStyle }) {
             position: absolute;
             margin-top: 18rem;
         }
+        
+        @media screen and (max-width: 1440px) {
+            .rec-slide-subsec-2 {
+                margin-left: -12rem !important;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .recommendation-slider-section-2 {
+                margin-top: 35rem;
+            }
+
+            .heading1 {
+                position: absolute !important;
+                color: #000 !important;
+                margin-top: 2.5rem;
+                margin-left: 10rem !important;
+            }
+
+
+            .button-group1 {
+                position: absolute;
+                left: 30rem;
+                top: 2.5rem;
+            }
+
+            .view-all-btn1 {
+                display: none !important;
+            }
+
+            .prev-btn1, .next-btn1 {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            .dest1 {
+                width: 100% !important;
+                margin-left: 23rem !important; 
+                margin-top: 7rem ;
+                overflow-x: visible;
+            }
+        }
     `
 
     return (
@@ -196,7 +238,7 @@ export default function RecommendationDestinations2({ customStyle }) {
             <style>{styles}</style>
             {/* Section header with navigation */}
             <div className="recommendation-slider-section-2">
-                <div
+                <div className="rec-slide-subsec-2"
                     style={{
                         display: "flex",
                         justifyContent: "center",
@@ -208,15 +250,15 @@ export default function RecommendationDestinations2({ customStyle }) {
                         marginBottom: "2rem"
                     }}
                 >
-                    <h2 style={{ color: '#000', position: 'relative', marginLeft: '8rem' }}>Honeymoon Freebies Special</h2>
-                    <div
+                    <h2 className="heading1" style={{ color: '#000', position: 'relative' }}>Honeymoon Freebies Special</h2>
+                    <div className="button-group1"
                         style={{
                             display: "flex",
                             alignItems: "center",
                             gap: "5px",
                         }}
                     >
-                        <button
+                        <button className="view-all-btn1"
                             style={{
                                 width: "100%",
                                 height: "60%",
@@ -234,7 +276,7 @@ export default function RecommendationDestinations2({ customStyle }) {
                         >
                             View All
                         </button>
-                        <button
+                        <button className="prev-btn1"
                             onClick={prevSlide}
                             style={{
                                 width: "70px",
@@ -251,7 +293,7 @@ export default function RecommendationDestinations2({ customStyle }) {
                         >
                             <ChevronLeft size={18} />
                         </button>
-                        <button
+                        <button className="next-btn1"
                             onClick={nextSlide}
                             style={{
                                 width: "70px",
@@ -272,7 +314,7 @@ export default function RecommendationDestinations2({ customStyle }) {
                 </div>
 
                 {/* Destinations Container */}
-                <div
+                <div className="dest1"
                     style={{
                         display: "flex",
                         gap: "24px",

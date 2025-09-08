@@ -31,6 +31,18 @@ const holidayHeroStyles = `
         position: realtive;
         margin-top: 1rem;
         font-size: 1.7rem !important;
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 400px) {
+        .hero h1, .hero .hero-subtopic {
+            display: none;
+        }
+
+        .book-agent {
+            margin-top: 2rem;
+            font-size: 1.2rem !important;
+        }
     }
 `
 
@@ -41,7 +53,7 @@ const HolidaysHero = () => {
             <HolidayHeroBG />
             <div className="hero">
                 <h1>A Lifetime Memory of Holidays</h1>
-                <p>Plan your holiday with our Tailored Packages for your Solo Trip, Honeymoon, Family Trip, Corporate Workstation</p>
+                <p className="hero-subtopic">Plan your holiday with our Tailored Packages for your Solo Trip, Honeymoon, Family Trip, Corporate Workstation</p>
 
                 <HotelSearch />
 

@@ -58,3 +58,37 @@
     color: #FFFFFF !important;
     line-height: 1.5;
 }
+
+@media screen and (max-width: 1500px) {
+    .section-header {
+        top: 7rem;
+        width: 90%;
+    }
+
+    .section-header-part-2 {
+        padding-top: 2rem;
+    }
+
+    .section-header-part-1 {
+        flex: 1.8;
+    }
+
+    .section-header-part-2 {
+        flex: 3;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .section-header {
+        top: 2rem;
+    }
+
+    .section-header-part-1-2 h2 {
+        font-size: 2rem !important;
+    }
+
+    .section-header-part-2 {
+        display: none;
+    }
+}

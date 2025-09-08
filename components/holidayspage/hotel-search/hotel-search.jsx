@@ -1,5 +1,4 @@
 
-
 const styles = `
 
     .book-holiday {
@@ -37,7 +36,7 @@ const styles = `
         height: 14vh;
     }
 
-    ..search-hotel .hotel-search-box::placeholder {
+    .search-hotel .hotel-search-box::placeholder {
         margin-left: 5rem;
     }
 
@@ -77,6 +76,37 @@ const styles = `
         opacity: .2;
         top: 5.5rem;
         left: 5rem;
+    }
+
+    @media screen and (max-width: 400px) {
+        .book-holiday {
+            height: 40%;
+            margin-top: -2rem;
+        }
+        .book-holiday .search-hotel {
+            display:flex ;
+            flex-direction: column ;
+            row-gap: 1rem;
+        }
+
+        .search-hotel .hotel-search-box::placeholder {
+            margin-left: 0rem !important;
+        }
+
+        .search-info {
+            top: 5.3rem;
+            left: 3rem;
+        }
+
+        .search-hotel .hotel-search-box-submit {
+            margin: 0 auto;
+            padding: 5px;
+            width: 30%;    
+        }
+
+        .google-review-icon, .rating {
+            display: none;
+        }
     }
 `
 

@@ -58,3 +58,39 @@
     /* 100 / 8 columns */
     transition: transform 0.3s ease;
 }
+
+@media screen and (max-width: 1500px) {
+    .glassmorph-menu {
+        top: 18rem;
+    }
+}
+
+@media screen and (max-width: 400px) {
+
+    .glassmorph-menu {
+        top: 13rem;
+
+    }
+
+    .glassmorph-menu .menu-item {
+        padding: 10px;
+        row-gap: 0;
+    }
+
+    .glassmorph-menu .menu-item p {
+        font-size: .8rem;
+    }
+
+    .glassmorph-menu .menu-items {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        overflow-x: scroll;
+        margin-left: -1rem;
+        margin-right: 2rem;
+    }
+
+    .underline {
+        display: none;
+    }
+
+}
