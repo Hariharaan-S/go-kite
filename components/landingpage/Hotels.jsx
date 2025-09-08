@@ -1,19 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Heart, Star } from "lucide-react";
-
-const VISIBLE_CARDS = 4;
 
 const PopularActivities = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(4);
+  const [windowWidth, setWindowWidth] = useState(1024);
+
+  // Update visible cards and window width based on screen size
+  useEffect(() => {
+    const updateResponsiveSettings = () => {
+      const width = window.innerWidth;
+      setWindowWidth(width);
+
+      if (width < 640) {
+        setVisibleCards(1); // Mobile: 1 card
+      } else if (width < 768) {
+        setVisibleCards(2); // Small tablet: 2 cards
+      } else if (width < 1024) {
+        setVisibleCards(3); // Tablet: 3 cards
+      } else {
+        setVisibleCards(4); // Desktop: 4 cards
+      }
+    };
+
+    updateResponsiveSettings();
+    window.addEventListener("resize", updateResponsiveSettings);
+    return () => window.removeEventListener("resize", updateResponsiveSettings);
+  }, []);
 
   const activitiesData = [
     {
       id: 1,
       slideImg: [
-        "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
+        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop&crop=center",
       ],
-      img: "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
+      img: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop&crop=center",
       title: "The unique character as a symbol of taste of Turkey",
       location: "Istanbul, Turkey",
       country: "Turkey",
@@ -27,9 +49,9 @@ const PopularActivities = () => {
     {
       id: 2,
       slideImg: [
-        "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
+        "https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400&h=300&fit=crop&crop=center",
       ],
-      img: "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
+      img: "https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400&h=300&fit=crop&crop=center",
       title: "Experience the elegance of Paris Activity and Visit's",
       location: "Paris, France",
       country: "France",
@@ -38,54 +60,54 @@ const PopularActivities = () => {
       numberOfReviews: "2345",
       price: "1,900",
       duration: "10 days tour",
-      tag: "4 DAYS / 5 NIGHT",
+      tag: "5 DAYS / 6 NIGHT",
     },
     {
       id: 3,
       slideImg: [
-        "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
+        "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=300&fit=crop&crop=center",
       ],
-      img: "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
-      title: "Great Pyramid of",
-      location: "Egypt",
+      img: "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=300&fit=crop&crop=center",
+      title: "Great Pyramid of Giza Adventure",
+      location: "Cairo, Egypt",
       country: "Egypt",
       countryFlag: "🇪🇬",
       ratings: "4.7",
       numberOfReviews: "1852",
-      price: "1,500",
-      duration: "10 days tour",
-      tag: "4 DAYS / 5 NIGHT",
+      price: "1,200",
+      duration: "6 days tour",
+      tag: "3 DAYS / 4 NIGHT",
     },
     {
       id: 4,
       slideImg: [
-        "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center",
       ],
-      img: "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
-      title: "Great Pyramid of",
-      location: "Egypt",
-      country: "Egypt",
-      countryFlag: "🇪🇬",
-      ratings: "4.7",
-      numberOfReviews: "1852",
-      price: "1,500",
-      duration: "10 days tour",
-      tag: "4 DAYS / 5 NIGHT",
+      img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center",
+      title: "Tropical Paradise Island Getaway",
+      location: "Maldives",
+      country: "Maldives",
+      countryFlag: "🇲🇻",
+      ratings: "4.9",
+      numberOfReviews: "2876",
+      price: "2,200",
+      duration: "8 days tour",
+      tag: "6 DAYS / 7 NIGHT",
     },
     {
       id: 5,
       slideImg: [
-        "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
+        "https://images.unsplash.com/photo-1480796927426-f609979314bd?w=400&h=300&fit=crop&crop=center",
       ],
-      img: "https://img.freepik.com/free-photo/beautiful-luxury-outdoor-swimming-pool-hotel-resort_74190-7433.jpg",
-      title: "Great Pyramid of",
-      location: "Egypt",
-      country: "Egypt",
-      countryFlag: "🇪🇬",
-      ratings: "4.7",
-      numberOfReviews: "1852",
-      price: "1,500",
-      duration: "10 days tour",
+      img: "https://images.unsplash.com/photo-1480796927426-f609979314bd?w=400&h=300&fit=crop&crop=center",
+      title: "Ancient Temples and Cultural Heritage",
+      location: "Kyoto, Japan",
+      country: "Japan",
+      countryFlag: "🇯🇵",
+      ratings: "4.6",
+      numberOfReviews: "1964",
+      price: "1,650",
+      duration: "9 days tour",
       tag: "4 DAYS / 5 NIGHT",
     },
   ];
@@ -94,59 +116,110 @@ const PopularActivities = () => {
 
   const nextSlide = () => {
     setCurrentSlide((prev) =>
-      prev + VISIBLE_CARDS >= totalSlides ? 0 : prev + VISIBLE_CARDS
+      prev + visibleCards >= totalSlides ? 0 : prev + visibleCards
     );
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) =>
-      prev - VISIBLE_CARDS < 0
-        ? totalSlides - (totalSlides % VISIBLE_CARDS || VISIBLE_CARDS)
-        : prev - VISIBLE_CARDS
+      prev - visibleCards < 0
+        ? totalSlides - (totalSlides % visibleCards || visibleCards)
+        : prev - visibleCards
     );
   };
 
   // Compute the visible cards window with wrapping
   const getVisibleActivities = () => {
-    if (totalSlides <= VISIBLE_CARDS) return activitiesData;
-    if (currentSlide + VISIBLE_CARDS <= totalSlides) {
-      return activitiesData.slice(currentSlide, currentSlide + VISIBLE_CARDS);
+    if (totalSlides <= visibleCards) return activitiesData;
+    if (currentSlide + visibleCards <= totalSlides) {
+      return activitiesData.slice(currentSlide, currentSlide + visibleCards);
     } else {
       return [
         ...activitiesData.slice(currentSlide),
-        ...activitiesData.slice(
-          0,
-          (currentSlide + VISIBLE_CARDS) % totalSlides
-        ),
+        ...activitiesData.slice(0, (currentSlide + visibleCards) % totalSlides),
       ];
     }
   };
 
   const visibleActivities = getVisibleActivities();
 
+  // Responsive helper functions
+  const getContainerPadding = () => {
+    if (windowWidth < 640) return "16px";
+    if (windowWidth < 768) return "24px";
+    if (windowWidth < 1024) return "32px";
+    if (windowWidth < 1280) return "48px";
+    return "96px";
+  };
+
+  const getCardWidth = () => {
+    if (visibleCards === 1) return "100%";
+    if (visibleCards === 2) return "calc(50% - 12px)";
+    if (visibleCards === 3) return "calc(33.333% - 16px)";
+    return "calc(25% - 18px)";
+  };
+
+  const getImageHeight = () => {
+    if (windowWidth < 640) return "180px";
+    if (windowWidth < 768) return "190px";
+    return "200px";
+  };
+
+  const getCardHeight = () => {
+    if (windowWidth < 640) return "auto";
+    if (windowWidth < 768) return "420px";
+    return "450px";
+  };
+
+  const getHeaderSize = () => {
+    if (windowWidth < 640) return "24px";
+    if (windowWidth < 768) return "26px";
+    return "28px";
+  };
+
+  const getTitleSize = () => {
+    if (windowWidth < 640) return "14px";
+    if (windowWidth < 768) return "15px";
+    return "16px";
+  };
+
+  const getCardPadding = () => {
+    if (windowWidth < 640) return "16px";
+    return "20px";
+  };
+
+  const getPriceSize = () => {
+    if (windowWidth < 640) return "18px";
+    return "20px";
+  };
+
   return (
     <div
       style={{
-        padding: "40px 120px", // Increased horizontal padding
+        padding: `32px ${getContainerPadding()}`,
         backgroundColor: "#f8f9fa",
         minHeight: "100vh",
+        boxSizing: "border-box",
       }}
     >
       {/* Header */}
       <div
         style={{
           display: "flex",
+          flexDirection: windowWidth < 640 ? "column" : "row",
           justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "30px",
+          alignItems: windowWidth < 640 ? "flex-start" : "center",
+          marginBottom: windowWidth < 640 ? "16px" : "30px",
+          gap: windowWidth < 640 ? "16px" : "0",
         }}
       >
         <h2
           style={{
-            fontSize: "28px",
+            fontSize: getHeaderSize(),
             fontWeight: "600",
             color: "#1a1a1a",
             margin: 0,
+            lineHeight: "1.2",
           }}
         >
           Popular Activities
@@ -156,6 +229,7 @@ const PopularActivities = () => {
             display: "flex",
             alignItems: "center",
             gap: "15px",
+            flexShrink: 0,
           }}
         >
           <span
@@ -163,6 +237,13 @@ const PopularActivities = () => {
               fontSize: "14px",
               color: "#666",
               cursor: "pointer",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#1a1a1a";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "#666";
             }}
           >
             View All
@@ -170,8 +251,8 @@ const PopularActivities = () => {
           <button
             onClick={prevSlide}
             style={{
-              width: "40px",
-              height: "40px",
+              width: windowWidth < 768 ? "36px" : "40px",
+              height: windowWidth < 768 ? "36px" : "40px",
               borderRadius: "50%",
               border: "none",
               backgroundColor: "#000",
@@ -180,15 +261,22 @@ const PopularActivities = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              transition: "background-color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#374151";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#000";
             }}
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={windowWidth < 768 ? 16 : 18} />
           </button>
           <button
             onClick={nextSlide}
             style={{
-              width: "40px",
-              height: "40px",
+              width: windowWidth < 768 ? "36px" : "40px",
+              height: windowWidth < 768 ? "36px" : "40px",
               borderRadius: "50%",
               border: "none",
               backgroundColor: "#000",
@@ -197,9 +285,16 @@ const PopularActivities = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              transition: "background-color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#374151";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#000";
             }}
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={windowWidth < 768 ? 16 : 18} />
           </button>
         </div>
       </div>
@@ -208,22 +303,22 @@ const PopularActivities = () => {
       <div
         style={{
           display: "flex",
-          gap: "20px",
-          justifyContent: "center", // Center the cards
+          flexWrap: "wrap",
+          gap: windowWidth < 640 ? "16px" : "20px",
+          justifyContent: windowWidth < 640 ? "center" : "flex-start",
           alignItems: "stretch",
-          paddingBottom: "10px",
-          maxWidth: "100%", // Ensure full width usage
-          overflowX: "hidden", // Prevent horizontal scrolling
+          paddingBottom: windowWidth < 640 ? "0" : "10px",
+          maxWidth: "100%",
         }}
       >
         {visibleActivities.map((item) => (
           <div
             key={item.id}
             style={{
-              width: "calc(25% - 15px)", // Ensure 4 cards per row
-              minWidth: "250px", // Reduced from 250px
-              maxWidth: "280px", // Kept original max-width
-              height: "450px",
+              width: getCardWidth(),
+              minWidth: windowWidth < 640 ? "280px" : "250px",
+              maxWidth: windowWidth < 640 ? "400px" : "300px",
+              height: getCardHeight(),
               display: "flex",
               flexDirection: "column",
               backgroundColor: "white",
@@ -232,7 +327,7 @@ const PopularActivities = () => {
               cursor: "pointer",
               transition: "transform 0.3s ease, box-shadow 0.3s ease",
               position: "relative",
-              justifyContent: "space-between",
+              overflow: "hidden",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-5px)";
@@ -247,7 +342,7 @@ const PopularActivities = () => {
             <div
               style={{
                 position: "relative",
-                height: "200px",
+                height: getImageHeight(),
                 width: "100%",
                 flexShrink: 0,
                 display: "flex",
@@ -270,47 +365,55 @@ const PopularActivities = () => {
               <div
                 style={{
                   position: "absolute",
-                  top: "15px",
-                  left: "15px",
+                  top: windowWidth < 640 ? "12px" : "15px",
+                  left: windowWidth < 640 ? "12px" : "15px",
                   backgroundColor: "rgba(0,0,0,0.7)",
                   color: "white",
-                  padding: "5px 10px",
+                  padding: windowWidth < 640 ? "4px 8px" : "5px 10px",
                   borderRadius: "15px",
-                  fontSize: "12px",
+                  fontSize: windowWidth < 640 ? "11px" : "12px",
                   display: "flex",
                   alignItems: "center",
                   gap: "5px",
                 }}
               >
-                <span style={{ fontSize: "14px" }}>{item.countryFlag}</span>
+                <span style={{ fontSize: windowWidth < 640 ? "12px" : "14px" }}>
+                  {item.countryFlag}
+                </span>
               </div>
 
               {/* Duration Tag */}
               <div
                 style={{
                   position: "absolute",
-                  top: "15px",
-                  right: "15px",
+                  top: windowWidth < 640 ? "12px" : "15px",
+                  right: windowWidth < 640 ? "12px" : "15px",
                   backgroundColor: "rgba(255,255,255,0.9)",
                   color: "#666",
-                  padding: "5px 10px",
+                  padding: windowWidth < 640 ? "4px 8px" : "5px 10px",
                   borderRadius: "4px",
-                  fontSize: "10px",
+                  fontSize: windowWidth < 640 ? "9px" : "10px",
                   fontWeight: "600",
                   letterSpacing: "0.5px",
+                  maxWidth: windowWidth < 640 ? "80px" : "auto",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
-                {item.tag}
+                {windowWidth < 480
+                  ? item.tag.replace(" DAYS", "D").replace(" NIGHT", "N")
+                  : item.tag}
               </div>
 
               {/* Heart Icon */}
               <button
                 style={{
                   position: "absolute",
-                  bottom: "15px",
-                  right: "15px",
-                  width: "35px",
-                  height: "35px",
+                  bottom: windowWidth < 640 ? "12px" : "15px",
+                  right: windowWidth < 640 ? "12px" : "15px",
+                  width: windowWidth < 640 ? "30px" : "35px",
+                  height: windowWidth < 640 ? "30px" : "35px",
                   borderRadius: "50%",
                   border: "none",
                   backgroundColor: "white",
@@ -320,16 +423,23 @@ const PopularActivities = () => {
                   justifyContent: "center",
                   boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                   zIndex: 10,
+                  transition: "transform 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
                 }}
               >
-                <Heart size={16} color="#666" />
+                <Heart size={windowWidth < 640 ? 14 : 16} color="#666" />
               </button>
             </div>
 
             {/* Content */}
             <div
               style={{
-                padding: "20px",
+                padding: getCardPadding(),
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -339,35 +449,30 @@ const PopularActivities = () => {
               <div>
                 <h4
                   style={{
-                    fontSize: "16px",
+                    fontSize: getTitleSize(),
                     fontWeight: "600",
                     color: "#1a1a1a",
                     margin: "0 0 8px 0",
                     lineHeight: "1.4",
-                    height: "44px",
+                    height: windowWidth < 640 ? "36px" : "44px",
                     display: "-webkit-box",
                     WebkitLineClamp: 2,
                     WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
                     textOverflow: "ellipsis",
-                    wordBreak: "break-word",
-                    lineClamp: 2,
-                    maxHeight: "44px",
-                    whiteSpace: "normal",
                   }}
                 >
                   {item.title}
                 </h4>
                 <p
                   style={{
-                    fontSize: "14px",
+                    fontSize: windowWidth < 640 ? "13px" : "14px",
                     color: "#666",
-                    margin: "0 0 15px 0",
+                    margin: "0 0 12px 0",
                     height: "20px",
                     whiteSpace: "nowrap",
+                    overflow: "hidden",
                     textOverflow: "ellipsis",
-                    wordBreak: "break-word",
-                    lineClamp: 1,
-                    maxHeight: "20px",
                   }}
                 >
                   {item.location}
@@ -378,7 +483,7 @@ const PopularActivities = () => {
                     display: "flex",
                     alignItems: "center",
                     gap: "5px",
-                    marginBottom: "15px",
+                    marginBottom: windowWidth < 640 ? "12px" : "15px",
                     height: "20px",
                   }}
                 >
@@ -386,12 +491,13 @@ const PopularActivities = () => {
                     style={{
                       display: "flex",
                       alignItems: "center",
+                      gap: "2px",
                     }}
                   >
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
-                        size={12}
+                        size={windowWidth < 640 ? 10 : 12}
                         fill={
                           star <= Math.floor(Number(item.ratings))
                             ? "#ffc107"
@@ -405,6 +511,15 @@ const PopularActivities = () => {
                       />
                     ))}
                   </div>
+                  <span
+                    style={{
+                      fontSize: windowWidth < 640 ? "12px" : "13px",
+                      color: "#666",
+                      marginLeft: "4px",
+                    }}
+                  >
+                    ({item.numberOfReviews})
+                  </span>
                 </div>
               </div>
               {/* Price and Duration */}
@@ -412,14 +527,16 @@ const PopularActivities = () => {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  alignItems: "center",
+                  alignItems: windowWidth < 480 ? "flex-start" : "center",
                   marginTop: "auto",
+                  flexDirection: windowWidth < 480 ? "column" : "row",
+                  gap: windowWidth < 480 ? "8px" : "0",
                 }}
               >
                 <div>
                   <div
                     style={{
-                      fontSize: "20px",
+                      fontSize: getPriceSize(),
                       fontWeight: "700",
                       color: "#2196f3",
                     }}
@@ -429,11 +546,14 @@ const PopularActivities = () => {
                 </div>
                 <div
                   style={{
-                    fontSize: "12px",
+                    fontSize: windowWidth < 640 ? "11px" : "12px",
                     color: "#666",
+                    textAlign: windowWidth < 480 ? "left" : "right",
                   }}
                 >
-                  {item.duration}
+                  {windowWidth < 640
+                    ? item.duration.replace(" days", "d")
+                    : item.duration}
                 </div>
               </div>
             </div>

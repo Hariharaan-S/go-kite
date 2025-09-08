@@ -169,7 +169,48 @@ const styles = `
     flex-wrap: wrap;
     gap: 16px;
   }
-}`;
+}
+
+/* Responsive adjustments for hero content */
+@media (max-width: 900px) {
+  .masthead__bg img {
+    height: 220px;
+  }
+
+  .hero-content {
+    margin-top: -50px !important;
+  }
+
+  .hero-title {
+    font-size: 28px !important;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    margin-top: 10px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .masthead__bg img {
+    height: 180px;
+  }
+
+  .hero-content {
+    margin-top: -30px !important;
+    padding: 0 16px;
+  }
+
+  .hero-title {
+    font-size: 24px !important;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+  }
+}
+`;
 
 // Replace icon paths as appropriate for your asset structure
 const fieldIcons = {
@@ -413,12 +454,13 @@ const IconRow = () => {
   ];
   return (
     <div
-      className="d-flex justify-center align-items-center mt-40 mb-20"
+      className="icon-row-container d-flex justify-center align-items-center mt-40 mb-20 sm:mt-20 sm:mb-10"
       style={{
         display: "flex",
         flexDirection: "row",
         gap: "24px",
-        flexWrap: "nowrap",
+        flexWrap: "wrap",
+        justifyContent: "center",
       }}
       data-aos="fade-up"
       data-aos-delay="150"
@@ -427,7 +469,12 @@ const IconRow = () => {
         <div
           key={icon.id}
           onClick={() => setActiveIcon(icon.id)}
-          style={{ flex: "none" }}
+          className="icon-item sm:flex-grow-0"
+          style={{
+            flex: "none",
+            margin: "0 8px",
+            marginBottom: "16px",
+          }}
         >
           <IconButton
             imgSrc={icon.imgSrc}
@@ -456,15 +503,18 @@ const HeroSection = () => {
       <div className="container">
         <div className="row justify-center">
           <div className="col-auto">
-            <div className="text-center" style={{ marginTop: "-100px" }}>
+            <div
+              className="text-center hero-content"
+              style={{ marginTop: "-100px" }}
+            >
               <h1
-                className="text-60 lg:text-40 md:text-30 text-black"
+                className="text-60 lg:text-40 md:text-30 sm:text-24 text-black hero-title"
                 data-aos="fade-up"
               >
                 Travel to your Dream Destination!
               </h1>
               <p
-                className="text-black mt-6 md:mt-10"
+                className="text-black mt-6 md:mt-10 sm:mt-4 hero-subtitle"
                 data-aos="fade-up"
                 data-aos-delay="100"
               >
@@ -477,7 +527,7 @@ const HeroSection = () => {
 
             {/* Search Container */}
             <div
-              className="search-container mb-4"
+              className="search-container mb-4 sm:px-4"
               style={{
                 maxWidth: "800px",
                 margin: "0 auto",
@@ -537,24 +587,6 @@ const HeroSection = () => {
             <div style={{ paddingTop: "70px" }}>
               <BookFlightCard />
             </div>
-
-            {/* Travel Agent Meeting Link */}
-            {/* <div
-              style={{ margintop: "-100px" }}
-              className="text-center"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              <p
-                className="text-white cursor-pointer hover:underline"
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "500",
-                }}
-              >
-                Book a meeting with our travel Agent →
-              </p>
-            </div> */}
           </div>
         </div>
       </div>

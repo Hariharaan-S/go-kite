@@ -1,11 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const VISIBLE_CARDS = 4;
 
 const VisaDestinationCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(4);
+
+  // Update visible cards based on screen size
+  useEffect(() => {
+    const updateVisibleCards = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setVisibleCards(1); // Mobile: 1 card
+      } else if (width < 768) {
+        setVisibleCards(2); // Small tablet: 2 cards
+      } else if (width < 1024) {
+        setVisibleCards(3); // Tablet: 3 cards
+      } else {
+        setVisibleCards(4); // Desktop: 4 cards
+      }
+    };
+
+    updateVisibleCards();
+    window.addEventListener("resize", updateVisibleCards);
+    return () => window.removeEventListener("resize", updateVisibleCards);
+  }, []);
 
   const destinations = [
     {
@@ -39,7 +58,7 @@ const VisaDestinationCards = () => {
         date: "25 Mar, 11:02PM",
         price: "₹3,500",
       },
-      flightInfo: "30 Flight available starting at ₹29,000",
+      // flightInfo: "30 Flight available starting at ₹29,000",
     },
     {
       id: 3,
@@ -95,56 +114,111 @@ const VisaDestinationCards = () => {
 
   const nextSlide = () => {
     setCurrentSlide((prev) =>
-      prev + VISIBLE_CARDS >= totalSlides ? 0 : prev + VISIBLE_CARDS
+      prev + visibleCards >= totalSlides ? 0 : prev + visibleCards
     );
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) =>
-      prev - VISIBLE_CARDS < 0
-        ? totalSlides - (totalSlides % VISIBLE_CARDS || VISIBLE_CARDS)
-        : prev - VISIBLE_CARDS
+      prev - visibleCards < 0
+        ? totalSlides - (totalSlides % visibleCards || visibleCards)
+        : prev - visibleCards
     );
   };
 
   // Compute the visible cards window with wrapping
   const getVisibleDestinations = () => {
-    if (totalSlides <= VISIBLE_CARDS) return destinations;
-    if (currentSlide + VISIBLE_CARDS <= totalSlides) {
-      return destinations.slice(currentSlide, currentSlide + VISIBLE_CARDS);
+    if (totalSlides <= visibleCards) return destinations;
+    if (currentSlide + visibleCards <= totalSlides) {
+      return destinations.slice(currentSlide, currentSlide + visibleCards);
     } else {
       return [
         ...destinations.slice(currentSlide),
-        ...destinations.slice(0, (currentSlide + VISIBLE_CARDS) % totalSlides),
+        ...destinations.slice(0, (currentSlide + visibleCards) % totalSlides),
       ];
     }
   };
 
   const visibleDestinations = getVisibleDestinations();
 
+  // Responsive helper functions
+  const [windowWidth, setWindowWidth] = useState(1024);
+
+  useEffect(() => {
+    const updateWindowWidth = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    updateWindowWidth();
+    window.addEventListener("resize", updateWindowWidth);
+    return () => window.removeEventListener("resize", updateWindowWidth);
+  }, []);
+
+  const getContainerPadding = () => {
+    if (windowWidth < 640) return "16px";
+    if (windowWidth < 768) return "24px";
+    if (windowWidth < 1024) return "32px";
+    if (windowWidth < 1280) return "48px";
+    return "96px";
+  };
+
+  const getCardWidth = () => {
+    if (visibleCards === 1) return "100%";
+    if (visibleCards === 2) return "calc(50% - 12px)";
+    if (visibleCards === 3) return "calc(33.333% - 16px)";
+    return "calc(25% - 18px)";
+  };
+
+  const getImageHeight = () => {
+    if (windowWidth < 640) return "200px";
+    if (windowWidth < 768) return "220px";
+    return "250px";
+  };
+
+  const getCardHeight = () => {
+    if (windowWidth < 640) return "auto";
+    return "500px";
+  };
+
+  const getTitleSize = () => {
+    if (windowWidth < 640) return "20px";
+    if (windowWidth < 768) return "22px";
+    return "24px";
+  };
+
+  const getHeaderSize = () => {
+    if (windowWidth < 640) return "28px";
+    if (windowWidth < 768) return "32px";
+    return "36px";
+  };
+
   return (
     <div
       style={{
-        padding: "40px 120px", // Increased horizontal padding
+        padding: `32px ${getContainerPadding()}`,
         backgroundColor: "#f8fafc",
         minHeight: "100vh",
+        boxSizing: "border-box",
       }}
     >
       {/* Section header with navigation */}
       <div
         style={{
           display: "flex",
+          flexDirection: windowWidth < 640 ? "column" : "row",
           justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "32px",
+          alignItems: windowWidth < 640 ? "flex-start" : "center",
+          marginBottom: windowWidth < 640 ? "16px" : "32px",
+          gap: windowWidth < 640 ? "16px" : "0",
         }}
       >
         <h1
           style={{
-            fontSize: "36px",
+            fontSize: getHeaderSize(),
             fontWeight: "700",
             color: "#1e293b",
             margin: 0,
+            lineHeight: "1.2",
           }}
         >
           Top Visa Destination
@@ -154,6 +228,7 @@ const VisaDestinationCards = () => {
             display: "flex",
             alignItems: "center",
             gap: "15px",
+            flexShrink: 0,
           }}
         >
           <span
@@ -161,6 +236,13 @@ const VisaDestinationCards = () => {
               fontSize: "14px",
               color: "#666",
               cursor: "pointer",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#1e293b";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "#666";
             }}
           >
             View All
@@ -168,8 +250,8 @@ const VisaDestinationCards = () => {
           <button
             onClick={prevSlide}
             style={{
-              width: "40px",
-              height: "40px",
+              width: windowWidth < 768 ? "36px" : "40px",
+              height: windowWidth < 768 ? "36px" : "40px",
               borderRadius: "50%",
               border: "none",
               backgroundColor: "#000",
@@ -178,15 +260,22 @@ const VisaDestinationCards = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              transition: "background-color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#374151";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#000";
             }}
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={windowWidth < 768 ? 16 : 18} />
           </button>
           <button
             onClick={nextSlide}
             style={{
-              width: "40px",
-              height: "40px",
+              width: windowWidth < 768 ? "36px" : "40px",
+              height: windowWidth < 768 ? "36px" : "40px",
               borderRadius: "50%",
               border: "none",
               backgroundColor: "#000",
@@ -195,9 +284,16 @@ const VisaDestinationCards = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              transition: "background-color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#374151";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#000";
             }}
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={windowWidth < 768 ? 16 : 18} />
           </button>
         </div>
       </div>
@@ -206,29 +302,30 @@ const VisaDestinationCards = () => {
       <div
         style={{
           display: "flex",
-          gap: "24px",
-          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: windowWidth < 640 ? "16px" : "24px",
+          justifyContent: windowWidth < 640 ? "center" : "flex-start",
           alignItems: "stretch",
-          paddingBottom: "10px",
+          paddingBottom: windowWidth < 640 ? "0" : "10px",
           maxWidth: "100%",
-          overflowX: "hidden",
         }}
       >
         {visibleDestinations.map((destination) => (
           <div
             key={destination.id}
             style={{
-              width: "calc(25% - 18px)", // Ensure 4 cards per row
-              minWidth: "250px", // Reduced from 280px
-              maxWidth: "300px", // Added max-width for consistency
+              width: getCardWidth(),
+              minWidth: windowWidth < 640 ? "280px" : "250px",
+              maxWidth: windowWidth < 640 ? "400px" : "300px",
               backgroundColor: "white",
               borderRadius: "16px",
               boxShadow:
                 "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-              transition: "transform 0.2s ease, box-shadow 0.2s ease",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
               display: "flex",
               flexDirection: "column",
-              height: "500px", // Kept original height
+              height: getCardHeight(),
+              overflow: "hidden",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-4px)";
@@ -245,7 +342,7 @@ const VisaDestinationCards = () => {
             <div
               style={{
                 position: "relative",
-                height: "250px", // Increased image height
+                height: getImageHeight(),
                 backgroundImage: `url(${destination.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -260,14 +357,21 @@ const VisaDestinationCards = () => {
                   bottom: "12px",
                   left: "12px",
                   backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  padding: "6px 12px",
+                  padding: windowWidth < 640 ? "4px 8px" : "6px 12px",
                   borderRadius: "20px",
-                  fontSize: "12px",
+                  fontSize: windowWidth < 640 ? "10px" : "12px",
                   fontWeight: "500",
                   color: "#333",
+                  maxWidth: windowWidth < 640 ? "calc(100% - 100px)" : "auto",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
-                Fast track {destination.fastTrack.date}
+                Fast track{" "}
+                {windowWidth < 640
+                  ? destination.fastTrack.date.split(",")[0]
+                  : destination.fastTrack.date}
               </div>
 
               {/* Price overlay */}
@@ -277,35 +381,64 @@ const VisaDestinationCards = () => {
                   bottom: "12px",
                   right: "12px",
                   backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  padding: "6px 12px",
+                  padding: windowWidth < 640 ? "4px 8px" : "6px 12px",
                   borderRadius: "20px",
-                  fontSize: "14px",
+                  fontSize: windowWidth < 640 ? "11px" : "14px",
                   fontWeight: "bold",
                   color: "#333",
+                  display: "flex",
+                  flexDirection: windowWidth < 640 ? "column" : "row",
+                  alignItems: windowWidth < 640 ? "flex-end" : "center",
+                  gap: windowWidth < 640 ? "2px" : "4px",
+                  lineHeight: windowWidth < 640 ? "1.2" : "normal",
                 }}
               >
-                <span
-                  style={{
-                    textDecoration: "line-through",
-                    color: "#999",
-                    marginRight: "4px",
-                  }}
-                >
-                  {destination.fastTrack.originalPrice}
-                </span>
-                <span style={{ color: "#666", marginRight: "4px" }}>
-                  + {destination.fastTrack.discountPrice}
-                </span>
-                <span style={{ color: "#333" }}>
-                  = {destination.fastTrack.totalPrice}
-                </span>
+                {windowWidth < 640 ? (
+                  <>
+                    <div>
+                      <span
+                        style={{
+                          textDecoration: "line-through",
+                          color: "#999",
+                          marginRight: "2px",
+                        }}
+                      >
+                        {destination.fastTrack.originalPrice}
+                      </span>
+                      <span style={{ color: "#666" }}>
+                        + {destination.fastTrack.discountPrice}
+                      </span>
+                    </div>
+                    <span style={{ color: "#333", fontWeight: "bold" }}>
+                      = {destination.fastTrack.totalPrice}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span
+                      style={{
+                        textDecoration: "line-through",
+                        color: "#999",
+                        marginRight: "4px",
+                      }}
+                    >
+                      {destination.fastTrack.originalPrice}
+                    </span>
+                    <span style={{ color: "#666", marginRight: "4px" }}>
+                      + {destination.fastTrack.discountPrice}
+                    </span>
+                    <span style={{ color: "#333" }}>
+                      = {destination.fastTrack.totalPrice}
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 
             {/* Card Content */}
             <div
               style={{
-                padding: "20px",
+                padding: windowWidth < 640 ? "16px" : "20px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -315,10 +448,11 @@ const VisaDestinationCards = () => {
               {/* Country Name */}
               <h3
                 style={{
-                  fontSize: "24px",
+                  fontSize: getTitleSize(),
                   fontWeight: "bold",
                   color: "#333",
-                  margin: "0 0 16px 0",
+                  margin: "0 0 8px 0",
+                  lineHeight: "1.3",
                 }}
               >
                 {destination.country}
@@ -327,44 +461,48 @@ const VisaDestinationCards = () => {
               {/* Get On Info */}
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
                   marginBottom: "16px",
                 }}
               >
-                <span
+                <div
                   style={{
-                    fontSize: "16px",
+                    fontSize: windowWidth < 640 ? "14px" : "16px",
                     color: "#666",
+                    lineHeight: "1.4",
+                    marginBottom: "4px",
                   }}
                 >
                   Get on{" "}
                   <span style={{ color: "#4FC3F7", fontWeight: "500" }}>
-                    {destination.getOn.date}
+                    {windowWidth < 640
+                      ? destination.getOn.date.split(",")[0]
+                      : destination.getOn.date}
                   </span>
-                </span>
-                <span
+                </div>
+                <div
                   style={{
-                    fontSize: "20px",
+                    fontSize: windowWidth < 640 ? "18px" : "20px",
                     fontWeight: "bold",
                     color: "#333",
                   }}
                 >
                   {destination.getOn.price}
-                </span>
+                </div>
               </div>
 
               {/* Flight Info (only for some cards) */}
               {destination.flightInfo && (
                 <div
                   style={{
-                    fontSize: "14px",
+                    fontSize: windowWidth < 640 ? "12px" : "14px",
                     color: "#999",
                     marginTop: "8px",
+                    lineHeight: "1.4",
                   }}
                 >
-                  {destination.flightInfo}
+                  {windowWidth < 640
+                    ? "30 Flights available"
+                    : destination.flightInfo}
                 </div>
               )}
             </div>
