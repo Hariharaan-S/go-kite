@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Heart, Star } from "lucide-react";
-
+import "./styles/hotels.css";
 const PopularActivities = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
@@ -51,7 +51,7 @@ const PopularActivities = () => {
       slideImg: [
         "https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400&h=300&fit=crop&crop=center",
       ],
-      img: "https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400&h=300&fit=crop&crop=center",
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGE9Wo7WGtMH4f4c3FRNyBy0S1gLOCapfnnQ&s",
       title: "Experience the elegance of Paris Activity and Visit's",
       location: "Paris, France",
       country: "France",
@@ -65,9 +65,9 @@ const PopularActivities = () => {
     {
       id: 3,
       slideImg: [
-        "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=300&fit=crop&crop=center",
+        "https://afar.brightspotcdn.com/dims4/default/e48cec9/2147483647/strip/true/crop/2294x1529+102+0/resize/900x600!/quality/90/?url=https%3A%2F%2Fk3-prod-afar-media.s3.us-west-2.amazonaws.com%2Fbrightspot%2F50%2F79%2F0aecc26b4af2919c8908975d30b8%2Fsource-dargent-at-la-digue-island-seychelles-zoltan-benyei-shutterstock.jpg",
       ],
-      img: "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=300&fit=crop&crop=center",
+      img: "https://afar.brightspotcdn.com/dims4/default/e48cec9/2147483647/strip/true/crop/2294x1529+102+0/resize/900x600!/quality/90/?url=https%3A%2F%2Fk3-prod-afar-media.s3.us-west-2.amazonaws.com%2Fbrightspot%2F50%2F79%2F0aecc26b4af2919c8908975d30b8%2Fsource-dargent-at-la-digue-island-seychelles-zoltan-benyei-shutterstock.jpg",
       title: "Great Pyramid of Giza Adventure",
       location: "Cairo, Egypt",
       country: "Egypt",
@@ -143,155 +143,68 @@ const PopularActivities = () => {
 
   const visibleActivities = getVisibleActivities();
 
-  // Responsive helper functions
-  const getContainerPadding = () => {
-    if (windowWidth < 640) return "16px";
-    if (windowWidth < 768) return "24px";
-    if (windowWidth < 1024) return "32px";
-    if (windowWidth < 1280) return "48px";
-    return "96px";
-  };
-
-  const getCardWidth = () => {
-    if (visibleCards === 1) return "100%";
-    if (visibleCards === 2) return "calc(50% - 12px)";
-    if (visibleCards === 3) return "calc(33.333% - 16px)";
-    return "calc(25% - 18px)";
-  };
-
-  const getImageHeight = () => {
-    if (windowWidth < 640) return "180px";
-    if (windowWidth < 768) return "190px";
-    return "200px";
-  };
-
-  const getCardHeight = () => {
-    if (windowWidth < 640) return "auto";
-    if (windowWidth < 768) return "420px";
-    return "450px";
-  };
-
-  const getHeaderSize = () => {
-    if (windowWidth < 640) return "24px";
-    if (windowWidth < 768) return "26px";
-    return "28px";
-  };
-
-  const getTitleSize = () => {
-    if (windowWidth < 640) return "14px";
-    if (windowWidth < 768) return "15px";
-    return "16px";
-  };
-
-  const getCardPadding = () => {
-    if (windowWidth < 640) return "16px";
-    return "20px";
-  };
-
-  const getPriceSize = () => {
-    if (windowWidth < 640) return "18px";
-    return "20px";
-  };
+  // Helpers for dynamic class assignments based on window width
+  const isMobile = windowWidth < 640;
+  const isSmallTablet = windowWidth >= 640 && windowWidth < 768;
+  const isTablet = windowWidth >= 768 && windowWidth < 1024;
 
   return (
     <div
+      className="popular-activities-container"
       style={{
-        padding: `32px ${getContainerPadding()}`,
-        backgroundColor: "#f8f9fa",
-        minHeight: "100vh",
-        boxSizing: "border-box",
+        paddingLeft: isMobile
+          ? "16px"
+          : isSmallTablet
+          ? "24px"
+          : isTablet
+          ? "32px"
+          : windowWidth < 1280
+          ? "48px"
+          : "96px",
       }}
     >
       {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: windowWidth < 640 ? "column" : "row",
-          justifyContent: "space-between",
-          alignItems: windowWidth < 640 ? "flex-start" : "center",
-          marginBottom: windowWidth < 640 ? "16px" : "30px",
-          gap: windowWidth < 640 ? "16px" : "0",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: getHeaderSize(),
-            fontWeight: "600",
-            color: "#1a1a1a",
-            margin: 0,
-            lineHeight: "1.2",
-          }}
-        >
-          Popular Activities
-        </h2>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-            flexShrink: 0,
-          }}
-        >
+      <div className={`header-container ${isMobile ? "header-mobile" : ""}`}>
+        <h2 className="header-title">Popular Activities</h2>
+
+        <div className="header-actions">
           <span
-            style={{
-              fontSize: "14px",
-              color: "#666",
-              cursor: "pointer",
-              transition: "color 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "#1a1a1a";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "#666";
-            }}
+            className="view-all-text"
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#1a1a1a")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#666")}
           >
             View All
           </span>
+
           <button
+            className="nav-button"
             onClick={prevSlide}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#374151")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#000")
+            }
             style={{
               width: windowWidth < 768 ? "36px" : "40px",
               height: windowWidth < 768 ? "36px" : "40px",
-              borderRadius: "50%",
-              border: "none",
-              backgroundColor: "#000",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "background-color 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#374151";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#000";
             }}
           >
             <ChevronLeft size={windowWidth < 768 ? 16 : 18} />
           </button>
+
           <button
+            className="nav-button"
             onClick={nextSlide}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#374151")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#000")
+            }
             style={{
               width: windowWidth < 768 ? "36px" : "40px",
               height: windowWidth < 768 ? "36px" : "40px",
-              borderRadius: "50%",
-              border: "none",
-              backgroundColor: "#000",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "background-color 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#374151";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#000";
             }}
           >
             <ChevronRight size={windowWidth < 768 ? 16 : 18} />
@@ -301,33 +214,26 @@ const PopularActivities = () => {
 
       {/* Cards Container */}
       <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: windowWidth < 640 ? "16px" : "20px",
-          justifyContent: windowWidth < 640 ? "center" : "flex-start",
-          alignItems: "stretch",
-          paddingBottom: windowWidth < 640 ? "0" : "10px",
-          maxWidth: "100%",
-        }}
+        className={`cards-container ${
+          isMobile ? "cards-mobile" : "cards-desktop"
+        }`}
       >
         {visibleActivities.map((item) => (
           <div
             key={item.id}
+            className="card"
             style={{
-              width: getCardWidth(),
-              minWidth: windowWidth < 640 ? "280px" : "250px",
-              maxWidth: windowWidth < 640 ? "400px" : "300px",
-              height: getCardHeight(),
-              display: "flex",
-              flexDirection: "column",
-              backgroundColor: "white",
-              borderRadius: "12px",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-              cursor: "pointer",
-              transition: "transform 0.3s ease, box-shadow 0.3s ease",
-              position: "relative",
-              overflow: "hidden",
+              minWidth: isMobile ? "280px" : "250px",
+              maxWidth: isMobile ? "400px" : "300px",
+              height: isMobile ? "auto" : isSmallTablet ? "420px" : "450px",
+              width:
+                visibleCards === 1
+                  ? "100%"
+                  : visibleCards === 2
+                  ? "calc(50% - 12px)"
+                  : visibleCards === 3
+                  ? "calc(33.333% - 16px)"
+                  : "calc(25% - 18px)",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-5px)";
@@ -340,65 +246,34 @@ const PopularActivities = () => {
           >
             {/* Image Container */}
             <div
+              className="image-container"
               style={{
-                position: "relative",
-                height: getImageHeight(),
-                width: "100%",
-                flexShrink: 0,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#f0f0f0",
+                height: isMobile ? "180px" : isSmallTablet ? "190px" : "200px",
               }}
             >
-              <img
-                src={item.img}
-                alt={item.title}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
+              <img src={item.img} alt={item.title} className="activity-image" />
 
               {/* Country Flag */}
               <div
+                className="country-flag"
                 style={{
-                  position: "absolute",
-                  top: windowWidth < 640 ? "12px" : "15px",
-                  left: windowWidth < 640 ? "12px" : "15px",
-                  backgroundColor: "rgba(0,0,0,0.7)",
-                  color: "white",
-                  padding: windowWidth < 640 ? "4px 8px" : "5px 10px",
-                  borderRadius: "15px",
-                  fontSize: windowWidth < 640 ? "11px" : "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "5px",
+                  top: isMobile ? "12px" : "15px",
+                  left: isMobile ? "12px" : "15px",
                 }}
               >
-                <span style={{ fontSize: windowWidth < 640 ? "12px" : "14px" }}>
+                <span style={{ fontSize: isMobile ? "12px" : "14px" }}>
                   {item.countryFlag}
                 </span>
               </div>
 
               {/* Duration Tag */}
               <div
+                className="duration-tag"
                 style={{
-                  position: "absolute",
-                  top: windowWidth < 640 ? "12px" : "15px",
-                  right: windowWidth < 640 ? "12px" : "15px",
-                  backgroundColor: "rgba(255,255,255,0.9)",
-                  color: "#666",
-                  padding: windowWidth < 640 ? "4px 8px" : "5px 10px",
-                  borderRadius: "4px",
-                  fontSize: windowWidth < 640 ? "9px" : "10px",
-                  fontWeight: "600",
-                  letterSpacing: "0.5px",
-                  maxWidth: windowWidth < 640 ? "80px" : "auto",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+                  top: isMobile ? "12px" : "15px",
+                  right: isMobile ? "12px" : "15px",
+                  maxWidth: isMobile ? "80px" : "auto",
+                  fontSize: isMobile ? "9px" : "10px",
                 }}
               >
                 {windowWidth < 480
@@ -408,22 +283,12 @@ const PopularActivities = () => {
 
               {/* Heart Icon */}
               <button
+                className="heart-button"
                 style={{
-                  position: "absolute",
-                  bottom: windowWidth < 640 ? "12px" : "15px",
-                  right: windowWidth < 640 ? "12px" : "15px",
-                  width: windowWidth < 640 ? "30px" : "35px",
-                  height: windowWidth < 640 ? "30px" : "35px",
-                  borderRadius: "50%",
-                  border: "none",
-                  backgroundColor: "white",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                  zIndex: 10,
-                  transition: "transform 0.2s ease",
+                  bottom: isMobile ? "12px" : "15px",
+                  right: isMobile ? "12px" : "15px",
+                  width: isMobile ? "30px" : "35px",
+                  height: isMobile ? "30px" : "35px",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "scale(1.1)";
@@ -432,72 +297,45 @@ const PopularActivities = () => {
                   e.currentTarget.style.transform = "scale(1)";
                 }}
               >
-                <Heart size={windowWidth < 640 ? 14 : 16} color="#666" />
+                <Heart size={isMobile ? 14 : 16} color="#666" />
               </button>
             </div>
 
             {/* Content */}
             <div
-              style={{
-                padding: getCardPadding(),
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                flex: 1,
-              }}
+              className="card-content"
+              style={{ padding: isMobile ? "16px" : "20px" }}
             >
               <div>
                 <h4
+                  className="card-title"
                   style={{
-                    fontSize: getTitleSize(),
-                    fontWeight: "600",
-                    color: "#1a1a1a",
-                    margin: "0 0 8px 0",
-                    lineHeight: "1.4",
-                    height: windowWidth < 640 ? "36px" : "44px",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
+                    fontSize: isMobile
+                      ? "14px"
+                      : isSmallTablet
+                      ? "15px"
+                      : "16px",
+                    height: isMobile ? "36px" : "44px",
                   }}
                 >
                   {item.title}
                 </h4>
                 <p
+                  className="card-location"
                   style={{
-                    fontSize: windowWidth < 640 ? "13px" : "14px",
-                    color: "#666",
-                    margin: "0 0 12px 0",
+                    fontSize: isMobile ? "13px" : "14px",
                     height: "20px",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
                   }}
                 >
                   {item.location}
                 </p>
                 {/* Rating */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                    marginBottom: windowWidth < 640 ? "12px" : "15px",
-                    height: "20px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "2px",
-                    }}
-                  >
+                <div className="rating-container">
+                  <div className="stars-container">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
-                        size={windowWidth < 640 ? 10 : 12}
+                        size={isMobile ? 10 : 12}
                         fill={
                           star <= Math.floor(Number(item.ratings))
                             ? "#ffc107"
@@ -512,42 +350,32 @@ const PopularActivities = () => {
                     ))}
                   </div>
                   <span
-                    style={{
-                      fontSize: windowWidth < 640 ? "12px" : "13px",
-                      color: "#666",
-                      marginLeft: "4px",
-                    }}
+                    className="review-count"
+                    style={{ fontSize: isMobile ? "12px" : "13px" }}
                   >
                     ({item.numberOfReviews})
                   </span>
                 </div>
               </div>
+
               {/* Price and Duration */}
               <div
+                className="price-duration"
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: windowWidth < 480 ? "flex-start" : "center",
-                  marginTop: "auto",
                   flexDirection: windowWidth < 480 ? "column" : "row",
                   gap: windowWidth < 480 ? "8px" : "0",
                 }}
               >
-                <div>
-                  <div
-                    style={{
-                      fontSize: getPriceSize(),
-                      fontWeight: "700",
-                      color: "#2196f3",
-                    }}
-                  >
-                    ${item.price}
-                  </div>
+                <div
+                  className="price"
+                  style={{ fontSize: isMobile ? "18px" : "20px" }}
+                >
+                  ${item.price}
                 </div>
                 <div
+                  className="duration"
                   style={{
-                    fontSize: windowWidth < 640 ? "11px" : "12px",
-                    color: "#666",
+                    fontSize: isMobile ? "11px" : "12px",
                     textAlign: windowWidth < 480 ? "left" : "right",
                   }}
                 >

@@ -8,26 +8,26 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import "./styles/hotel-deals.css";
 
-const HotelDealsCards = () => {
+const HotelDeals = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
   const [windowWidth, setWindowWidth] = useState(1024);
 
-  // Update visible cards and window width based on screen size
   useEffect(() => {
     const updateResponsiveSettings = () => {
       const width = window.innerWidth;
       setWindowWidth(width);
 
       if (width < 640) {
-        setVisibleCards(1); // Mobile: 1 card
+        setVisibleCards(1);
       } else if (width < 768) {
-        setVisibleCards(2); // Small tablet: 2 cards
+        setVisibleCards(2);
       } else if (width < 1024) {
-        setVisibleCards(3); // Tablet: 3 cards
+        setVisibleCards(3);
       } else {
-        setVisibleCards(4); // Desktop: 4 cards
+        setVisibleCards(4);
       }
     };
 
@@ -115,7 +115,6 @@ const HotelDealsCards = () => {
     );
   };
 
-  // Compute the visible cards window with wrapping
   const getVisibleHotels = () => {
     if (totalSlides <= visibleCards) return hotelData;
     if (currentSlide + visibleCards <= totalSlides) {
@@ -130,364 +129,57 @@ const HotelDealsCards = () => {
 
   const visibleHotels = getVisibleHotels();
 
-  // Responsive helper functions
-  const getContainerPadding = () => {
-    if (windowWidth < 640) return "16px";
-    if (windowWidth < 768) return "24px";
-    if (windowWidth < 1024) return "32px";
-    if (windowWidth < 1280) return "48px";
-    return "96px";
-  };
+  // Dynamic CSS variables for responsive container padding and card width
+  const containerPadding =
+    windowWidth < 640
+      ? "16px"
+      : windowWidth < 768
+      ? "24px"
+      : windowWidth < 1024
+      ? "32px"
+      : windowWidth < 1280
+      ? "48px"
+      : "96px";
 
-  const getCardWidth = () => {
-    if (visibleCards === 1) return "100%";
-    if (visibleCards === 2) return "calc(50% - 12px)";
-    if (visibleCards === 3) return "calc(33.333% - 16px)";
-    return "calc(25% - 18px)";
-  };
-
-  const getImageHeight = () => {
-    if (windowWidth < 640) return "180px";
-    if (windowWidth < 768) return "200px";
-    return "220px";
-  };
-
-  const getCardHeight = () => {
-    if (windowWidth < 640) return "auto";
-    return "400px";
-  };
-
-  const getHeaderSize = () => {
-    if (windowWidth < 640) return "28px";
-    if (windowWidth < 768) return "32px";
-    return "36px";
-  };
-
-  const getTitleSize = () => {
-    if (windowWidth < 640) return "18px";
-    if (windowWidth < 768) return "20px";
-    return "20px";
-  };
-
-  const getCardPadding = () => {
-    if (windowWidth < 640) return "16px";
-    return "20px";
-  };
-
-  const HotelCard = ({ hotel }) => (
-    <div
-      style={{
-        width: getCardWidth(),
-        minWidth: windowWidth < 640 ? "280px" : "300px",
-        maxWidth: windowWidth < 640 ? "400px" : "320px",
-        borderRadius: "16px",
-        backgroundColor: "#ffffff",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        overflow: "hidden",
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
-        display: "flex",
-        flexDirection: "column",
-        height: getCardHeight(),
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow =
-          "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)";
-      }}
-    >
-      {/* Image Container */}
-      <div style={{ position: "relative", height: getImageHeight() }}>
-        <img
-          src={hotel.image}
-          alt="Hotel Room"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: windowWidth < 640 ? "12px" : "16px",
-            left: windowWidth < 640 ? "12px" : "16px",
-            backgroundColor: "#ffffff",
-            color: "#333333",
-            fontSize: windowWidth < 640 ? "11px" : "12px",
-            fontWeight: "600",
-            padding: windowWidth < 640 ? "4px 8px" : "6px 12px",
-            borderRadius: "20px",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-          }}
-        >
-          Featured
-        </div>
-      </div>
-
-      {/* Content Container */}
-      <div
-        style={{
-          padding: getCardPadding(),
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          flex: 1,
-        }}
-      >
-        {/* Hotel Name */}
-        <h3
-          style={{
-            fontSize: getTitleSize(),
-            fontWeight: "700",
-            color: "#1a1a1a",
-            margin: "0 0 8px 0",
-            lineHeight: "1.3",
-          }}
-        >
-          {hotel.name}
-        </h3>
-
-        {/* Location */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: windowWidth < 640 ? "12px" : "16px",
-          }}
-        >
-          <MapPin
-            size={windowWidth < 640 ? 14 : 16}
-            style={{ color: "#10b981", marginRight: "6px" }}
-          />
-          <span
-            style={{
-              fontSize: windowWidth < 640 ? "13px" : "14px",
-              color: "#10b981",
-              fontWeight: "500",
-            }}
-          >
-            {hotel.location}
-          </span>
-        </div>
-
-        {/* Duration and Persons */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: windowWidth < 640 ? "column" : "row",
-            gap: windowWidth < 640 ? "8px" : "24px",
-            marginBottom: windowWidth < 640 ? "12px" : "16px",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <Clock
-              size={windowWidth < 640 ? 14 : 16}
-              style={{ color: "#6b7280", marginRight: "8px" }}
-            />
-            <span
-              style={{
-                fontSize: windowWidth < 640 ? "13px" : "14px",
-                color: "#6b7280",
-                fontWeight: "500",
-              }}
-            >
-              {windowWidth < 640
-                ? hotel.duration.replace(" Night", "N").replace(" Days", "D")
-                : hotel.duration}
-            </span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <Users
-              size={windowWidth < 640 ? 14 : 16}
-              style={{ color: "#6b7280", marginRight: "8px" }}
-            />
-            <span
-              style={{
-                fontSize: windowWidth < 640 ? "13px" : "14px",
-                color: "#6b7280",
-                fontWeight: "500",
-              }}
-            >
-              {hotel.persons}
-            </span>
-          </div>
-        </div>
-
-        {/* Price and Rating */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: windowWidth < 640 ? "flex-start" : "center",
-            flexDirection: windowWidth < 480 ? "column" : "row",
-            gap: windowWidth < 480 ? "8px" : "0",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
-            <span
-              style={{
-                fontSize: windowWidth < 640 ? "11px" : "12px",
-                color: "#9ca3af",
-                fontWeight: "500",
-              }}
-            >
-              From
-            </span>
-            <span
-              style={{
-                fontSize: windowWidth < 640 ? "20px" : "24px",
-                fontWeight: "700",
-                color: "#1a1a1a",
-              }}
-            >
-              {hotel.price}
-            </span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <Star
-              size={windowWidth < 640 ? 12 : 14}
-              style={{ color: "#fbbf24", fill: "#fbbf24" }}
-            />
-            <span
-              style={{
-                fontSize: windowWidth < 640 ? "13px" : "14px",
-                fontWeight: "600",
-                color: "#1a1a1a",
-              }}
-            >
-              {hotel.rating}
-            </span>
-            <span
-              style={{
-                fontSize: windowWidth < 640 ? "11px" : "12px",
-                color: "#6b7280",
-              }}
-            >
-              ({hotel.reviews}
-              {windowWidth < 480 ? "" : " Reviews"})
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const cardWidthValue =
+    visibleCards === 1
+      ? "100%"
+      : visibleCards === 2
+      ? "calc(50% - 12px)"
+      : visibleCards === 3
+      ? "calc(33.333% - 16px)"
+      : "calc(25% - 18px)";
 
   return (
     <div
-      style={{
-        padding: `32px ${getContainerPadding()}`,
-        backgroundColor: "#f8fafc",
-        minHeight: "100vh",
-        boxSizing: "border-box",
-      }}
+      className="hotel-deals-container"
+      style={{ padding: `32px ${containerPadding}` }}
     >
       {/* Header */}
       <div
-        style={{
-          display: "flex",
-          flexDirection: windowWidth < 640 ? "column" : "row",
-          justifyContent: "space-between",
-          alignItems: windowWidth < 640 ? "flex-start" : "center",
-          marginBottom: windowWidth < 640 ? "16px" : "32px",
-          gap: windowWidth < 640 ? "16px" : "0",
-        }}
+        className={`hotel-deals-header ${
+          windowWidth < 640 ? "header-column" : "header-row"
+        }`}
       >
         <h1
+          className="hotel-deals-title"
           style={{
-            fontSize: getHeaderSize(),
-            fontWeight: "700",
-            color: "#1a1a1a",
-            margin: "0",
-            lineHeight: "1.2",
-            fontFamily:
-              '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            fontSize:
+              windowWidth < 640 ? "28px" : windowWidth < 768 ? "32px" : "36px",
           }}
         >
           Hotel Deals
         </h1>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-            flexShrink: 0,
-          }}
-        >
-          <button
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              fontSize: "14px",
-              color: "#666",
-              cursor: "pointer",
-              fontWeight: "500",
-              transition: "color 0.2s ease",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "#1e293b";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "#666";
-            }}
-          >
-            View All
-          </button>
-          <div style={{ display: "flex", gap: "8px" }}>
-            <button
-              onClick={prevSlide}
-              style={{
-                width: windowWidth < 768 ? "36px" : "40px",
-                height: windowWidth < 768 ? "36px" : "40px",
-                borderRadius: "50%",
-                backgroundColor: "#000",
-                border: "none",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                transition: "background-color 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#374151";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#000";
-              }}
-            >
+        <div className="hotel-deals-controls">
+          <button className="view-all-btn">View All</button>
+          <div className="carousel-buttons">
+            <button className="arrow-btn" onClick={prevSlide} aria-label="Previous">
               <ChevronLeft
                 size={windowWidth < 768 ? 16 : 18}
                 style={{ color: "#ffffff" }}
               />
             </button>
-            <button
-              onClick={nextSlide}
-              style={{
-                width: windowWidth < 768 ? "36px" : "40px",
-                height: windowWidth < 768 ? "36px" : "40px",
-                borderRadius: "50%",
-                backgroundColor: "#000",
-                border: "none",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                transition: "background-color 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#374151";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#000";
-              }}
-            >
+            <button className="arrow-btn" onClick={nextSlide} aria-label="Next">
               <ChevronRight
                 size={windowWidth < 768 ? 16 : 18}
                 style={{ color: "#ffffff" }}
@@ -499,22 +191,124 @@ const HotelDealsCards = () => {
 
       {/* Cards Container */}
       <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: windowWidth < 640 ? "16px" : "24px",
-          justifyContent: windowWidth < 640 ? "center" : "flex-start",
-          alignItems: "stretch",
-          paddingBottom: windowWidth < 640 ? "0" : "10px",
-          maxWidth: "100%",
-        }}
+        className="hotel-cards-wrapper"
+        style={{ gap: windowWidth < 640 ? "16px" : "24px" }}
       >
         {visibleHotels.map((hotel) => (
-          <HotelCard key={hotel.id} hotel={hotel} />
+          <div
+            key={hotel.id}
+            className="hotel-card"
+            style={{
+              width: cardWidthValue,
+              minWidth: windowWidth < 640 ? "280px" : "300px",
+              maxWidth: windowWidth < 640 ? "400px" : "320px",
+              height: windowWidth < 640 ? "auto" : "440px",
+            }}
+          >
+            {/* Image */}
+            <div
+              className="hotel-image-wrapper"
+              style={{
+                height:
+                  windowWidth < 640
+                    ? "180px"
+                    : windowWidth < 768
+                    ? "200px"
+                    : "220px",
+              }}
+            >
+              <img src={hotel.image} alt="Hotel Room" className="hotel-image" />
+              <div className="hotel-featured-label">Featured</div>
+            </div>
+
+            {/* Content */}
+            <div
+              className="hotel-content"
+              style={{
+                padding: windowWidth < 640 ? "16px" : "20px",
+              }}
+            >
+              <h3
+                className="hotel-name"
+                style={{
+                  fontSize:
+                    windowWidth < 640
+                      ? "18px"
+                      : windowWidth < 768
+                      ? "20px"
+                      : "20px",
+                }}
+              >
+                {hotel.name}
+              </h3>
+
+              {/* Location */}
+              <div className="hotel-location">
+                <MapPin
+                  size={windowWidth < 640 ? 14 : 16}
+                  className="location-icon"
+                />
+                <span className="location-text">{hotel.location}</span>
+              </div>
+
+              {/* Duration and Persons */}
+              <div
+                className={`duration-persons ${
+                  windowWidth < 640 ? "column-layout" : "row-layout"
+                }`}
+                style={{
+                  gap: windowWidth < 640 ? "8px" : "24px",
+                }}
+              >
+                <div className="duration">
+                  <Clock
+                    size={windowWidth < 640 ? 14 : 16}
+                    className="duration-icon"
+                  />
+                  <span className="duration-text">
+                    {windowWidth < 640
+                      ? hotel.duration.replace(" Night", "N").replace(" Days", "D")
+                      : hotel.duration}
+                  </span>
+                </div>
+                <div className="persons">
+                  <Users
+                    size={windowWidth < 640 ? 14 : 16}
+                    className="persons-icon"
+                  />
+                  <span className="persons-text">{hotel.persons}</span>
+                </div>
+              </div>
+
+              {/* Price and Rating */}
+              <div
+                className={`price-rating ${
+                  windowWidth < 480 ? "column-layout" : "row-layout"
+                }`}
+                style={{ gap: windowWidth < 480 ? "8px" : 0 }}
+              >
+                <div className="price">
+                  <span className="price-prefix">From</span>
+                  <span className="price-value">{hotel.price}</span>
+                </div>
+                <div className="rating">
+                  <Star
+                    size={windowWidth < 640 ? 12 : 14}
+                    className="star-icon"
+                  />
+                  <span className="rating-value">{hotel.rating}</span>
+                  <span className="reviews-text">
+                    ({hotel.reviews}
+                    {windowWidth < 480 ? "" : " Reviews"})
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </div>
   );
 };
 
-export default HotelDealsCards;
+export default HotelDeals;

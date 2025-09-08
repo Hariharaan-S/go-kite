@@ -1,0 +1,291 @@
+.visa-container {
+    background-color: #f8fafc;
+    min-height: 75vh;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+  }
+  
+  .visa-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .visa-header-title {
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.2;
+  }
+  
+  .visa-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+  }
+  
+  .visa-view-all {
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .visa-view-all:hover {
+    color: #1e293b;
+  }
+  
+  .visa-nav-button {
+    border-radius: 50%;
+    border: none;
+    background-color: #000;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+  }
+  
+  .visa-nav-button:hover {
+    background-color: #374151;
+  }
+  
+  .visa-destinations-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    max-width: 100%;
+  }
+  
+  .visa-card {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 250px;
+    max-width: 300px;
+  }
+  
+  .visa-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .visa-card-image {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+  
+  .fast-track-overlay {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    max-width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .price-overlay {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: normal;
+  }
+  
+  .original-price {
+    text-decoration: line-through;
+    color: #999;
+  }
+  
+  .discount-price {
+    color: #666;
+  }
+  
+  .total-price {
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .visa-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+  }
+  
+  .visa-card-title {
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+  }
+  
+  .get-on-info {
+    margin-bottom: 16px;
+  }
+  
+  .get-on-date {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  
+  .get-on-date-highlight {
+    color: #4fc3f7;
+    font-weight: 500;
+  }
+  
+  .get-on-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .flight-info {
+    font-size: 14px;
+    color: #999;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+  
+  /* Responsive overrides for smaller screens */
+  
+  @media (max-width: 640px) {
+    .visa-container {
+      min-height: auto;
+    }
+  
+    .visa-header {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      gap: 16px;
+    }
+  
+    .visa-header-title {
+      font-size: 28px !important;
+    }
+  
+    .visa-nav-button {
+      width: 36px !important;
+      height: 36px !important;
+    }
+  
+    .visa-destinations-container {
+      justify-content: center;
+      gap: 16px;
+      padding-bottom: 0;
+    }
+  
+    .visa-card {
+      min-width: 280px !important;
+      max-width: 400px !important;
+      height: auto !important;
+    }
+  
+    .visa-card-image {
+      height: 200px !important;
+    }
+  
+    .fast-track-overlay {
+      padding: 4px 8px;
+      font-size: 10px;
+      max-width: calc(100% - 100px);
+    }
+  
+    .price-overlay {
+      padding: 4px 8px;
+      font-size: 11px;
+      flex-direction: column !important;
+      align-items: flex-end !important;
+      gap: 2px !important;
+      line-height: 1.2 !important;
+    }
+  
+    .visa-card-title {
+      font-size: 20px !important;
+    }
+  
+    .get-on-date {
+      font-size: 14px !important;
+    }
+  
+    .get-on-price {
+      font-size: 18px !important;
+    }
+  
+    .flight-info {
+      font-size: 12px !important;
+    }
+  }
+  
+  @media (max-width: 768px) and (min-width: 641px) {
+    .visa-header-title {
+      font-size: 32px !important;
+    }
+  
+    .visa-nav-button {
+      width: 36px !important;
+      height: 36px !important;
+    }
+  
+    .visa-card-image {
+      height: 220px !important;
+    }
+  
+    .fast-track-overlay {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+  
+    .price-overlay {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+  
+    .visa-card-title {
+      font-size: 22px !important;
+    }
+  
+    .get-on-date {
+      font-size: 16px !important;
+    }
+  
+    .get-on-price {
+      font-size: 20px !important;
+    }
+  
+    .flight-info {
+      font-size: 14px !important;
+    }
+  }
+  
