@@ -189,6 +189,48 @@ export default function RecommendationDestinations3({ customStyle }) {
             position: absolute;
             margin-top: 18rem;
         }
+        
+        @media screen and (max-width: 1440px) {
+            .rec-slide-subsec-2 {
+                margin-left: -12rem !important;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .recommendation-slider-section-3 {
+                margin-top: 0;
+            }
+
+            .heading1 {
+                position: absolute !important;
+                color: #000 !important;
+                margin-top: 2.5rem;
+                margin-left: 10rem !important;
+            }
+
+
+            .button-group1 {
+                position: absolute;
+                left: 30rem;
+                top: 2.5rem;
+            }
+
+            .view-all-btn1 {
+                display: none !important;
+            }
+
+            .prev-btn1, .next-btn1 {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            .dest2 {
+                margin-left: 35.3rem !important;
+                margin-top: 2rem;
+                margin-bottom: 3rem;
+                overflow-x: visible !important;
+            }
+        }
     `
 
     return (
@@ -196,64 +238,8 @@ export default function RecommendationDestinations3({ customStyle }) {
             <style>{styles}</style>
             {/* Section header with navigation */}
             <div className="recommendation-slider-section-3">
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        position: 'relative',
-                        marginLeft: '2rem',
-                        marginTop: '3rem',
-                        marginBottom: "2rem"
-                    }}
-                >
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "5px",
-                            marginLeft: '66rem'
-                        }}
-                    >
-                        <button
-                            onClick={prevSlide}
-                            style={{
-                                width: "40px",
-                                height: "40px",
-                                borderRadius: "50%",
-                                border: "none",
-                                backgroundColor: "#000",
-                                color: "white",
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <ChevronLeft size={18} />
-                        </button>
-                        <button
-                            onClick={nextSlide}
-                            style={{
-                                width: "40px",
-                                height: "40px",
-                                borderRadius: "50%",
-                                border: "none",
-                                backgroundColor: "#000",
-                                color: "white",
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <ChevronRight size={18} />
-                        </button>
-                    </div>
-                </div>
-
                 {/* Destinations Container */}
-                <div
+                <div className="dest2"
                     style={{
                         display: "flex",
                         gap: "24px",
@@ -262,7 +248,8 @@ export default function RecommendationDestinations3({ customStyle }) {
                         paddingBottom: "10px",
                         maxWidth: "100%",
                         overflowX: "hidden",
-                        marginLeft: "-1rem"
+                        marginLeft: "-1rem",
+                        marginBottom: '3rem'
                     }}
                 >
                     {visibleDestinations.map((destination) => (
