@@ -1,0 +1,60 @@
+.glassmorph-menu {
+    position: absolute;
+    height: 12vh;
+    width: 90%;
+    top: 13rem;
+    left: 3rem;
+    border-radius: 20px;
+}
+
+.glassmorph-menu .menu-items {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    border-radius: 24px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    position: relative;
+    /* needed for underline positioning */
+}
+
+.glassmorph-menu .menu-item {
+    text-align: center;
+    border-radius: 12px;
+    padding: 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 1rem;
+    cursor: pointer;
+    position: relative;
+}
+
+.glassmorph-menu img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+.menu-item p {
+    color: var(--color-light-1);
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.menu-item.active p {
+    color: #ffffff;
+}
+
+.underline {
+    position: absolute;
+    bottom: 0;
+    left: 1.7rem;
+    height: 3px;
+    background-color: #ffffff;
+    width: 8%;
+    /* 100 / 8 columns */
+    transition: transform 0.3s ease;
+}
