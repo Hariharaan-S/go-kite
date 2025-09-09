@@ -1,18 +1,8 @@
 import "photoswipe/dist/photoswipe.css";
 import toursData from "@/data/tours";
 import Header1 from "@/components/header/IconNav";
-import TopBreadCrumb from "@/components/trip-package-details/TopBreadCrumb";
-import ReviewProgress2 from "@/components/trip-package-details/guest-reviews/ReviewProgress2";
-import DetailsReview2 from "@/components/trip-package-details/guest-reviews/DetailsReview2";
-import ReplyForm from "@/components/trip-package-details/ReplyForm";
-import ReplyFormReview2 from "@/components/trip-package-details/ReplyFormReview2";
-import CallToActions from "@/components/common/CallToActions";
-import DefaultFooter from "@/components/footer/default";
-import Tours from "@/components/tours/Tours";
 import Faq from "@/components/faq/Faq";
-import Link from "next/link";
 import Itinerary from "@/components/trip-package-details/itinerary";
-import ImportantInfo from "@/components/trip-package-details/ImportantInfo";
 import TourGallery from "@/components/trip-package-details/TourGallery";
 import IncludedAccordion from "@/components/trip-package-details/accordion";
 import './trip-page.css'
