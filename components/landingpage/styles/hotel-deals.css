@@ -192,6 +192,11 @@
 .duration-persons.row-layout {
   flex-direction: row;
   margin-bottom: 16px;
+  background-color: #e8eaed;
+  padding: 8px 12px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .duration-persons.column-layout {
@@ -208,6 +213,23 @@
   .duration-persons {
     gap: 8px;
   }
+}
+
+.duration-persons .duration,
+.duration-persons .persons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.duration-persons .duration-icon,
+.duration-persons .persons-icon {
+  margin-right: 4px;
+}
+
+.duration-persons .duration-text,
+.duration-persons .persons-text {
+  white-space: nowrap;
 }
 
 .duration,

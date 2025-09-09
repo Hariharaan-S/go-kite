@@ -21,7 +21,7 @@ const styles = `
   padding: 12px 16px 16px 16px;
   border-radius: 16px;
   box-shadow: 0 8px 40px 0 rgba(40,47,60,0.10);
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   position: relative;
   top: -60px;
@@ -142,6 +142,7 @@ const styles = `
   .book-flight-wrapper {
     padding: 12px 8px 16px 8px;
     max-width: 100vw;
+    max-width: 100%;
   }
   .flight-search-container {
     flex-direction: column;
@@ -191,6 +192,7 @@ const BookFlightCard = () => {
         className="book-flight-wrapper"
         data-aos="fade-up"
         data-aos-delay="200"
+        style={{ maxWidth: "1400px", width: "100%" }}
       >
         <div className="flight-search-container">
           {/* DESTINATION */}
@@ -391,7 +393,7 @@ const IconRow = () => {
 };
 
 // Final combined hero section
-const  HeroSection = () => {
+const HeroSection = () => {
   // Redux and router hooks are present if needed for navigation/interactivity
   const { tabs, currentTab } = useSelector((state) => state.hero) || {};
   const dispatch = useDispatch();

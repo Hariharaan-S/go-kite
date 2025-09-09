@@ -21,10 +21,15 @@ const BookFlightCard = () => {
       data-aos="fade-up"
       data-aos-delay="200"
     >
+      <h2 className="book-flight-title">Book Flight</h2>
       <div className="flight-search-container">
         {/* FROM */}
         <div className="flight-field">
-          <img src={fieldIcons.from} className="flight-icon" alt="From" />
+          <img
+            src="/img/general/from-flight.png"
+            className="flight-icon"
+            alt="From"
+          />
           <span className="flight-label">From</span>
           <input
             className="flight-input"
@@ -36,7 +41,11 @@ const BookFlightCard = () => {
         </div>
         {/* TO */}
         <div className="flight-field">
-          <img src={fieldIcons.to} className="flight-icon" alt="To" />
+          <img
+            src="/img/general/to-flight.png"
+            className="flight-icon"
+            alt="To"
+          />
           <span className="flight-label">To</span>
           <input
             className="flight-input"
@@ -68,7 +77,7 @@ const BookFlightCard = () => {
         {/* PASSENGERS */}
         <div className="flight-field">
           <img
-            src={fieldIcons.passenger}
+            src="/img/general/passenger.png"
             className="flight-icon"
             alt="Passenger"
           />
@@ -108,7 +117,9 @@ const BookFlightCard = () => {
           </div>
           {/* Multi City */}
           <div
-            className={`trip-option ${tripType === "multiCity" ? "active" : ""}`}
+            className={`trip-option ${
+              tripType === "multiCity" ? "active" : ""
+            }`}
           >
             <input
               type="radio"
@@ -121,7 +132,9 @@ const BookFlightCard = () => {
           </div>
           {/* Round Trip */}
           <div
-            className={`trip-option ${tripType === "roundTrip" ? "active" : ""}`}
+            className={`trip-option ${
+              tripType === "roundTrip" ? "active" : ""
+            }`}
           >
             <input
               type="radio"

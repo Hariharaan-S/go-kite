@@ -202,7 +202,7 @@ const HotelDeals = () => {
               width: cardWidthValue,
               minWidth: windowWidth < 640 ? "280px" : "300px",
               maxWidth: windowWidth < 640 ? "400px" : "320px",
-              height: windowWidth < 640 ? "auto" : "440px",
+              height: windowWidth < 640 ? "auto" : "460px",
             }}
           >
             {/* Image */}
@@ -260,7 +260,7 @@ const HotelDeals = () => {
                   gap: windowWidth < 640 ? "8px" : "24px",
                 }}
               >
-                <div className="duration">
+                <div className="duration pt-3">
                   <Clock
                     size={windowWidth < 640 ? 14 : 16}
                     className="duration-icon"
