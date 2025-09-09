@@ -1,11 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const VISIBLE_CARDS = 4;
+import "../landingpage/styles/visa-destination.css"
 
 const VisaDestinationCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(4);
+  const [windowWidth, setWindowWidth] = useState(1024);
+
+  // Update visible cards based on screen size
+  useEffect(() => {
+    const updateVisibleCards = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setVisibleCards(1); // Mobile: 1 card
+      } else if (width < 768) {
+        setVisibleCards(2); // Small tablet: 2 cards
+      } else if (width < 1024) {
+        setVisibleCards(3); // Tablet: 3 cards
+      } else {
+        setVisibleCards(4); // Desktop: 4 cards
+      }
+    };
+
+    updateVisibleCards();
+    window.addEventListener("resize", updateVisibleCards);
+    return () => window.removeEventListener("resize", updateVisibleCards);
+  }, []);
 
   const destinations = [
     {
@@ -39,7 +60,6 @@ const VisaDestinationCards = () => {
         date: "25 Mar, 11:02PM",
         price: "₹3,500",
       },
-      flightInfo: "30 Flight available starting at ₹29,000",
     },
     {
       id: 3,
@@ -95,276 +115,230 @@ const VisaDestinationCards = () => {
 
   const nextSlide = () => {
     setCurrentSlide((prev) =>
-      prev + VISIBLE_CARDS >= totalSlides ? 0 : prev + VISIBLE_CARDS
+      prev + visibleCards >= totalSlides ? 0 : prev + visibleCards
     );
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) =>
-      prev - VISIBLE_CARDS < 0
-        ? totalSlides - (totalSlides % VISIBLE_CARDS || VISIBLE_CARDS)
-        : prev - VISIBLE_CARDS
+      prev - visibleCards < 0
+        ? totalSlides - (totalSlides % visibleCards || visibleCards)
+        : prev - visibleCards
     );
   };
 
   // Compute the visible cards window with wrapping
   const getVisibleDestinations = () => {
-    if (totalSlides <= VISIBLE_CARDS) return destinations;
-    if (currentSlide + VISIBLE_CARDS <= totalSlides) {
-      return destinations.slice(currentSlide, currentSlide + VISIBLE_CARDS);
+    if (totalSlides <= visibleCards) return destinations;
+    if (currentSlide + visibleCards <= totalSlides) {
+      return destinations.slice(currentSlide, currentSlide + visibleCards);
     } else {
       return [
         ...destinations.slice(currentSlide),
-        ...destinations.slice(0, (currentSlide + VISIBLE_CARDS) % totalSlides),
+        ...destinations.slice(0, (currentSlide + visibleCards) % totalSlides),
       ];
     }
   };
 
   const visibleDestinations = getVisibleDestinations();
 
+  // Responsive window width update
+  useEffect(() => {
+    const updateWindowWidth = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    updateWindowWidth();
+    window.addEventListener("resize", updateWindowWidth);
+    return () => window.removeEventListener("resize", updateWindowWidth);
+  }, []);
+
+  // Helper functions for responsive styles
+  const getContainerPadding = () => {
+    if (windowWidth < 640) return "16px";
+    if (windowWidth < 768) return "24px";
+    if (windowWidth < 1024) return "32px";
+    if (windowWidth < 1280) return "48px";
+    return "96px";
+  };
+
+  const getCardWidth = () => {
+    if (visibleCards === 1) return "100%";
+    if (visibleCards === 2) return "calc(50% - 12px)";
+    if (visibleCards === 3) return "calc(33.333% - 16px)";
+    return "calc(25% - 18px)";
+  };
+
+  const getImageHeight = () => {
+    if (windowWidth < 640) return "200px";
+    if (windowWidth < 768) return "220px";
+    return "250px";
+  };
+
+  const getCardHeight = () => {
+    if (windowWidth < 640) return "auto";
+    return "500px";
+  };
+
+  const getTitleSize = () => {
+    if (windowWidth < 640) return "20px";
+    if (windowWidth < 768) return "22px";
+    return "24px";
+  };
+
+  const getHeaderSize = () => {
+    if (windowWidth < 640) return "28px";
+    if (windowWidth < 768) return "32px";
+    return "36px";
+  };
+
   return (
     <div
+      className="visa-container"
       style={{
-        padding: "40px 120px", // Increased horizontal padding
-        backgroundColor: "#f8fafc",
-        minHeight: "100vh",
+        padding: `32px ${getContainerPadding()}`,
       }}
     >
       {/* Section header with navigation */}
       <div
+        className="visa-header"
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "32px",
+          flexDirection: windowWidth < 640 ? "column" : "row",
+          marginBottom: windowWidth < 640 ? "16px" : "32px",
+          gap: windowWidth < 640 ? "16px" : "0",
+          alignItems: windowWidth < 640 ? "flex-start" : "center",
         }}
       >
         <h1
+          className="visa-header-title"
           style={{
-            fontSize: "36px",
-            fontWeight: "700",
-            color: "#1e293b",
-            margin: 0,
+            fontSize: getHeaderSize(),
           }}
         >
           Top Visa Destination
         </h1>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "14px",
-              color: "#666",
-              cursor: "pointer",
-            }}
-          >
-            View All
-          </span>
+        <div className="visa-nav">
+          <span className="visa-view-all">View All</span>
           <button
-            onClick={prevSlide}
+            className="visa-nav-button"
             style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              border: "none",
-              backgroundColor: "#000",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              width: windowWidth < 768 ? "36px" : "40px",
+              height: windowWidth < 768 ? "36px" : "40px",
             }}
+            onClick={prevSlide}
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={windowWidth < 768 ? 16 : 18} />
           </button>
           <button
-            onClick={nextSlide}
+            className="visa-nav-button"
             style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              border: "none",
-              backgroundColor: "#000",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              width: windowWidth < 768 ? "36px" : "40px",
+              height: windowWidth < 768 ? "36px" : "40px",
             }}
+            onClick={nextSlide}
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={windowWidth < 768 ? 16 : 18} />
           </button>
         </div>
       </div>
 
       {/* Destinations Container */}
       <div
+        className="visa-destinations-container"
         style={{
-          display: "flex",
-          gap: "24px",
-          justifyContent: "center",
-          alignItems: "stretch",
-          paddingBottom: "10px",
-          maxWidth: "100%",
-          overflowX: "hidden",
+          gap: windowWidth < 640 ? "16px" : "24px",
+          justifyContent: windowWidth < 640 ? "center" : "flex-start",
+          paddingBottom: windowWidth < 640 ? "0" : "10px",
         }}
       >
         {visibleDestinations.map((destination) => (
           <div
             key={destination.id}
+            className="visa-card"
             style={{
-              width: "calc(25% - 18px)", // Ensure 4 cards per row
-              minWidth: "250px", // Reduced from 280px
-              maxWidth: "300px", // Added max-width for consistency
-              backgroundColor: "white",
-              borderRadius: "16px",
-              boxShadow:
-                "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-              transition: "transform 0.2s ease, box-shadow 0.2s ease",
-              display: "flex",
-              flexDirection: "column",
-              height: "500px", // Kept original height
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-4px)";
-              e.currentTarget.style.boxShadow =
-                "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow =
-                "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
+              width: getCardWidth(),
+              minWidth: windowWidth < 640 ? "280px" : "250px",
+              maxWidth: windowWidth < 640 ? "400px" : "300px",
+              height: getCardHeight(),
             }}
           >
             {/* Image Container */}
             <div
+              className="visa-card-image"
               style={{
-                position: "relative",
-                height: "250px", // Increased image height
+                height: getImageHeight(),
                 backgroundImage: `url(${destination.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                borderTopLeftRadius: "16px",
-                borderTopRightRadius: "16px",
               }}
             >
               {/* Fast track overlay */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  left: "12px",
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  padding: "6px 12px",
-                  borderRadius: "20px",
-                  fontSize: "12px",
-                  fontWeight: "500",
-                  color: "#333",
-                }}
-              >
-                Fast track {destination.fastTrack.date}
+              <div className="fast-track-overlay">
+                Fast track{" "}
+                {windowWidth < 640
+                  ? destination.fastTrack.date.split(",")[0]
+                  : destination.fastTrack.date}
               </div>
 
               {/* Price overlay */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  right: "12px",
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  padding: "6px 12px",
-                  borderRadius: "20px",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  color: "#333",
-                }}
-              >
-                <span
-                  style={{
-                    textDecoration: "line-through",
-                    color: "#999",
-                    marginRight: "4px",
-                  }}
-                >
-                  {destination.fastTrack.originalPrice}
-                </span>
-                <span style={{ color: "#666", marginRight: "4px" }}>
-                  + {destination.fastTrack.discountPrice}
-                </span>
-                <span style={{ color: "#333" }}>
-                  = {destination.fastTrack.totalPrice}
-                </span>
+              <div className="price-overlay" style={{ flexDirection: windowWidth < 640 ? "column" : "row" }}>
+                {windowWidth < 640 ? (
+                  <>
+                    <div>
+                      <span className="original-price">
+                        {destination.fastTrack.originalPrice}
+                      </span>
+                      <span className="discount-price">
+                        + {destination.fastTrack.discountPrice}
+                      </span>
+                    </div>
+                    <span className="total-price">
+                      = {destination.fastTrack.totalPrice}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="original-price">
+                      {destination.fastTrack.originalPrice}
+                    </span>
+                    <span className="discount-price">
+                      + {destination.fastTrack.discountPrice}
+                    </span>
+                    <span className="total-price">
+                      = {destination.fastTrack.totalPrice}
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 
             {/* Card Content */}
-            <div
-              style={{
-                padding: "20px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                flex: 1,
-              }}
-            >
+            <div className="visa-card-content">
               {/* Country Name */}
               <h3
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "bold",
-                  color: "#333",
-                  margin: "0 0 16px 0",
-                }}
+                className="visa-card-title"
+                style={{ fontSize: getTitleSize() }}
               >
                 {destination.country}
               </h3>
 
               {/* Get On Info */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "16px",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "16px",
-                    color: "#666",
-                  }}
-                >
+              <div className="get-on-info">
+                <div className="get-on-date">
                   Get on{" "}
-                  <span style={{ color: "#4FC3F7", fontWeight: "500" }}>
-                    {destination.getOn.date}
+                  <span className="get-on-date-highlight">
+                    {windowWidth < 640
+                      ? destination.getOn.date.split(",")[0]
+                      : destination.getOn.date}
                   </span>
-                </span>
-                <span
-                  style={{
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                    color: "#333",
-                  }}
-                >
-                  {destination.getOn.price}
-                </span>
+                </div>
+                <div className="get-on-price">{destination.getOn.price}</div>
               </div>
 
               {/* Flight Info (only for some cards) */}
               {destination.flightInfo && (
-                <div
-                  style={{
-                    fontSize: "14px",
-                    color: "#999",
-                    marginTop: "8px",
-                  }}
-                >
-                  {destination.flightInfo}
+                <div className="flight-info">
+                  {windowWidth < 640
+                    ? "30 Flights available"
+                    : destination.flightInfo}
                 </div>
               )}
             </div>

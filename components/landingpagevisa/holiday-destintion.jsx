@@ -8,12 +8,32 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import React, { useState } from "react";
-
-const VISIBLE_CARDS = 4;
+import React, { useState, useEffect } from "react";
+import "../landingpage/styles/holiday-destination.css"
 
 export default function HolidayDestinations() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(4);
+  const [windowWidth, setWindowWidth] = useState(1024);
+
+  useEffect(() => {
+    const updateVisibleCards = () => {
+      const width = window.innerWidth;
+      setWindowWidth(width);
+      if (width < 640) {
+        setVisibleCards(1);
+      } else if (width < 768) {
+        setVisibleCards(2);
+      } else if (width < 1024) {
+        setVisibleCards(3);
+      } else {
+        setVisibleCards(4);
+      }
+    };
+    updateVisibleCards();
+    window.addEventListener("resize", updateVisibleCards);
+    return () => window.removeEventListener("resize", updateVisibleCards);
+  }, []);
 
   const destinations = [
     {
@@ -117,27 +137,26 @@ export default function HolidayDestinations() {
 
   const nextSlide = () => {
     setCurrentSlide((prev) =>
-      prev + VISIBLE_CARDS >= totalSlides ? 0 : prev + VISIBLE_CARDS
+      prev + visibleCards >= totalSlides ? 0 : prev + visibleCards
     );
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) =>
-      prev - VISIBLE_CARDS < 0
-        ? totalSlides - (totalSlides % VISIBLE_CARDS || VISIBLE_CARDS)
-        : prev - VISIBLE_CARDS
+      prev - visibleCards < 0
+        ? totalSlides - (totalSlides % visibleCards || visibleCards)
+        : prev - visibleCards
     );
   };
 
-  // Compute the visible cards window with wrapping
   const getVisibleDestinations = () => {
-    if (totalSlides <= VISIBLE_CARDS) return destinations;
-    if (currentSlide + VISIBLE_CARDS <= totalSlides) {
-      return destinations.slice(currentSlide, currentSlide + VISIBLE_CARDS);
+    if (totalSlides <= visibleCards) return destinations;
+    if (currentSlide + visibleCards <= totalSlides) {
+      return destinations.slice(currentSlide, currentSlide + visibleCards);
     } else {
       return [
         ...destinations.slice(currentSlide),
-        ...destinations.slice(0, (currentSlide + VISIBLE_CARDS) % totalSlides),
+        ...destinations.slice(0, (currentSlide + visibleCards) % totalSlides),
       ];
     }
   };
@@ -146,392 +165,120 @@ export default function HolidayDestinations() {
 
   return (
     <div
-      style={{
-        padding: "40px 120px", // Increased horizontal padding
-        backgroundColor: "#f8fafc",
-        minHeight: "100vh",
-      }}
+      className="holiday-container"
+      style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
-      {/* Section header with navigation */}
       <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "32px",
-        }}
+        className={`holiday-header ${
+          windowWidth < 640 ? "holiday-header-mobile" : ""
+        }`}
       >
-        <h1
-          style={{
-            fontSize: "36px",
-            fontWeight: "700",
-            color: "#1e293b",
-            margin: 0,
-          }}
-        >
+        <h1 className="holiday-title" style={{ fontSize: getHeaderSize(windowWidth) }}>
           Popular Holiday Destinations
         </h1>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "14px",
-              color: "#666",
-              cursor: "pointer",
-            }}
-          >
-            View All
-          </span>
+        <div className="holiday-nav">
+          <span className="view-all">View All</span>
           <button
+            className="nav-btn"
             onClick={prevSlide}
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              border: "none",
-              backgroundColor: "#000",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            style={getNavButtonSize(windowWidth)}
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={windowWidth < 768 ? 16 : 18} />
           </button>
           <button
+            className="nav-btn"
             onClick={nextSlide}
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              border: "none",
-              backgroundColor: "#000",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            style={getNavButtonSize(windowWidth)}
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={windowWidth < 768 ? 16 : 18} />
           </button>
         </div>
       </div>
 
-      {/* Destinations Container */}
       <div
-        style={{
-          display: "flex",
-          gap: "24px",
-          justifyContent: "center",
-          alignItems: "stretch",
-          paddingBottom: "10px",
-          maxWidth: "100%",
-          overflowX: "hidden",
-        }}
+        className={`destinations-wrapper ${
+          windowWidth < 640 ? "destinations-wrapper-mobile" : ""
+        }`}
       >
         {visibleDestinations.map((destination) => (
           <div
             key={destination.id}
-            style={{
-              width: "calc(25% - 16px)", // Changed from calc(33.33% - 16px)
-              minWidth: "250px", // Reduced from 320px
-              maxWidth: "300px", // Added max-width for consistency
-              backgroundColor: "white",
-              borderRadius: "16px",
-              boxShadow:
-                "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-              transition: "transform 0.2s ease, box-shadow 0.2s ease",
-              position: "relative",
-              display: "flex",
-              flexDirection: "column",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-4px)";
-              e.currentTarget.style.boxShadow =
-                "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow =
-                "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
-            }}
+            className="destination-card"
+            style={{ width: getCardWidth(visibleCards, windowWidth) }}
           >
-            {/* Image Section */}
-            <div style={{ position: "relative" }}>
+            <div className="destination-image-wrapper">
               <img
                 src={destination.image}
                 alt={destination.title}
-                style={{
-                  width: "100%",
-                  height: "220px",
-                  objectFit: "cover",
-                  borderTopLeftRadius: "16px",
-                  borderTopRightRadius: "16px",
-                }}
+                className="destination-image"
+                style={{ height: getImageHeight(windowWidth) }}
               />
-              <button
-                style={{
-                  position: "absolute",
-                  top: "16px",
-                  right: "16px",
-                  backgroundColor: "rgba(255, 255, 255, 0.9)",
-                  border: "none",
-                  borderRadius: "50%",
-                  width: "40px",
-                  height: "40px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  transition: "background-color 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor =
-                    "rgba(255, 255, 255, 1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor =
-                    "rgba(255, 255, 255, 0.9)";
-                }}
-              >
-                <Heart size={20} style={{ color: "#64748b" }} />
+              <button className="heart-btn">
+                <Heart
+                  size={windowWidth < 768 ? 18 : 20}
+                  className="heart-icon"
+                />
               </button>
             </div>
 
-            {/* Content Section */}
-            <div
-              style={{
-                padding: "20px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                flex: 1,
-              }}
-            >
-              {/* Title and Rating */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "8px",
-                }}
-              >
+            <div className="destination-content">
+              <div className="title-rating">
                 <h3
-                  style={{
-                    fontSize: "24px",
-                    fontWeight: "600",
-                    color: "#1e293b",
-                    margin: "0",
-                  }}
+                  className="destination-title"
+                  style={{ fontSize: getTitleSize(windowWidth) }}
                 >
                   {destination.title}
                 </h3>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                  }}
-                >
-                  <span style={{ color: "#fbbf24", fontSize: "18px" }}>★</span>
-                  <span
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "600",
-                      color: "#1e293b",
-                    }}
-                  >
-                    {destination.rating}
-                  </span>
+                <div className="rating">
+                  <span className="star">★</span>
+                  <span className="rating-number">{destination.rating}</span>
                 </div>
               </div>
 
-              {/* Duration */}
-              <p
-                style={{
-                  color: "#64748b",
-                  fontSize: "14px",
-                  margin: "0 0 16px 0",
-                }}
-              >
-                {destination.duration}
-              </p>
+              <p className="duration">{destination.duration}</p>
 
-              {/* Icons Section */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(4, 1fr)",
-                  gap: "16px",
-                  marginBottom: "16px",
-                  paddingBottom: "16px",
-                  borderBottom: "1px solid #e2e8f0",
-                }}
-              >
-                <div style={{ textAlign: "center" }}>
-                  <Plane
-                    size={24}
-                    style={{
-                      color: "#64748b",
-                      marginBottom: "8px",
-                      display: "block",
-                      margin: "0 auto 8px auto",
-                    }}
-                  />
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#64748b",
-                      margin: "0",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {destination.flights}
-                  </p>
+              <div className="icons-section">
+                <div className="icon-item">
+                  <Plane size={windowWidth < 640 ? 20 : 24} className="icon" />
+                  <p>{destination.flights}</p>
                 </div>
-                <div style={{ textAlign: "center" }}>
+                <div className="icon-item">
                   <Building2
-                    size={24}
-                    style={{
-                      color: "#64748b",
-                      marginBottom: "8px",
-                      display: "block",
-                      margin: "0 auto 8px auto",
-                    }}
+                    size={windowWidth < 640 ? 20 : 24}
+                    className="icon"
                   />
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#64748b",
-                      margin: "0",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {destination.hotels}
-                  </p>
+                  <p>{destination.hotels}</p>
                 </div>
-                <div style={{ textAlign: "center" }}>
-                  <Car
-                    size={24}
-                    style={{
-                      color: "#64748b",
-                      marginBottom: "8px",
-                      display: "block",
-                      margin: "0 auto 8px auto",
-                    }}
-                  />
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#64748b",
-                      margin: "0",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {destination.transfers}
-                  </p>
+                <div className="icon-item">
+                  <Car size={windowWidth < 640 ? 20 : 24} className="icon" />
+                  <p>{destination.transfers}</p>
                 </div>
-                <div style={{ textAlign: "center" }}>
-                  <Users
-                    size={24}
-                    style={{
-                      color: "#64748b",
-                      marginBottom: "8px",
-                      display: "block",
-                      margin: "0 auto 8px auto",
-                    }}
-                  />
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#64748b",
-                      margin: "0",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {destination.activities}
-                  </p>
+                <div className="icon-item">
+                  <Users size={windowWidth < 640 ? 20 : 24} className="icon" />
+                  <p>{destination.activities}</p>
                 </div>
               </div>
 
-              {/* Features List */}
-              <ul
-                style={{
-                  listStyle: "none",
-                  padding: "0",
-                  margin: "0 0 20px 0",
-                }}
-              >
+              <ul className="features-list">
                 {destination.features.map((feature, index) => (
-                  <li
-                    key={index}
-                    style={{
-                      fontSize: "14px",
-                      color: "#64748b",
-                      marginBottom: "6px",
-                      paddingLeft: "12px",
-                      position: "relative",
-                    }}
-                  >
-                    <span
-                      style={{
-                        position: "absolute",
-                        left: "0",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        width: "4px",
-                        height: "4px",
-                        backgroundColor: "#64748b",
-                        borderRadius: "50%",
-                      }}
-                    ></span>
+                  <li key={index} className="feature-item">
                     {feature}
                   </li>
                 ))}
               </ul>
 
-              {/* Pricing */}
               <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                }}
+                className={`pricing-section ${
+                  windowWidth < 640 ? "pricing-column" : "pricing-row"
+                }`}
               >
-                <span
-                  style={{
-                    fontSize: "14px",
-                    color: "#94a3b8",
-                    textDecoration: "line-through",
-                  }}
-                >
-                  {destination.originalPrice}
-                </span>
-                <span
-                  style={{
-                    fontSize: "24px",
-                    fontWeight: "700",
-                    color: "#1e293b",
-                  }}
-                >
-                  {destination.discountedPrice}
-                </span>
-                <span
-                  style={{
-                    fontSize: "14px",
-                    color: "#64748b",
-                  }}
-                >
-                  Per person
-                </span>
+                <span className="original-price">{destination.originalPrice}</span>
+                <div className="discounted-price-wrapper">
+                  <span className="discounted-price">
+                    {destination.discountedPrice}
+                  </span>
+                  <span className="per-person">Per person</span>
+                </div>
               </div>
             </div>
           </div>
@@ -539,4 +286,41 @@ export default function HolidayDestinations() {
       </div>
     </div>
   );
+}
+
+// Helper functions to compute styles dynamically
+function getContainerPadding(width) {
+  if (width < 640) return "16px";
+  if (width < 768) return "24px";
+  if (width < 1024) return "32px";
+  if (width < 1280) return "48px";
+  return "96px";
+}
+function getCardWidth(visibleCards, width) {
+  if (visibleCards === 1) return "100%";
+  if (visibleCards === 2) return "calc(50% - 12px)";
+  if (visibleCards === 3) return "calc(33.333% - 16px)";
+  return "calc(25% - 18px)";
+}
+function getImageHeight(width) {
+  if (width < 640) return "200px";
+  if (width < 768) return "220px";
+  return "240px";
+}
+function getTitleSize(width) {
+  if (width < 640) return "20px";
+  if (width < 768) return "22px";
+  return "24px";
+}
+function getHeaderSize(width) {
+  if (width < 640) return "28px";
+  if (width < 768) return "32px";
+  return "36px";
+}
+function getNavButtonSize(width) {
+  const size = width < 768 ? "36px" : "40px";
+  return {
+    width: size,
+    height: size,
+  };
 }
