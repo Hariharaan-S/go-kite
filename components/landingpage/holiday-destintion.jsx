@@ -169,9 +169,8 @@ export default function HolidayDestinations() {
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
-        className={`holiday-header ${
-          windowWidth < 640 ? "holiday-header-mobile" : ""
-        }`}
+        className={`holiday-header ${windowWidth < 640 ? "holiday-header-mobile" : ""
+          }`}
       >
         <h1 className="holiday-title" style={{ fontSize: getHeaderSize(windowWidth) }}>
           Popular Holiday Destinations
@@ -196,9 +195,8 @@ export default function HolidayDestinations() {
       </div>
 
       <div
-        className={`destinations-wrapper ${
-          windowWidth < 640 ? "destinations-wrapper-mobile" : ""
-        }`}
+        className={`destinations-wrapper ${windowWidth < 640 ? "destinations-wrapper-mobile" : ""
+          }`}
       >
         {visibleDestinations.map((destination) => (
           <div
@@ -268,9 +266,8 @@ export default function HolidayDestinations() {
               </ul>
 
               <div
-                className={`pricing-section ${
-                  windowWidth < 640 ? "pricing-column" : "pricing-row"
-                }`}
+                className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
+                  }`}
               >
                 <span className="original-price">{destination.originalPrice}</span>
                 <div className="discounted-price-wrapper">

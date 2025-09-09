@@ -26,11 +26,12 @@ const BookFlightCard = () => {
         {/* FROM */}
         <div className="flight-field">
           <img
+
             src="/img/general/from-flight.png"
             className="flight-icon"
             alt="From"
           />
-          <span className="flight-label">From</span>
+          <span style={{ paddingLeft: "10px" }} className="flight-label">From</span>
           <input
             className="flight-input"
             type="text"
@@ -46,7 +47,7 @@ const BookFlightCard = () => {
             className="flight-icon"
             alt="To"
           />
-          <span className="flight-label">To</span>
+          <span style={{ paddingLeft: "10px" }} className="flight-label">To</span>
           <input
             className="flight-input"
             type="text"
@@ -81,7 +82,7 @@ const BookFlightCard = () => {
             className="flight-icon"
             alt="Passenger"
           />
-          <span className="flight-label">Passengers</span>
+          <span style={{ paddingLeft: "10px" }} className="flight-label">Passengers</span>
           <input
             className="flight-input"
             type="text"
@@ -117,9 +118,8 @@ const BookFlightCard = () => {
           </div>
           {/* Multi City */}
           <div
-            className={`trip-option ${
-              tripType === "multiCity" ? "active" : ""
-            }`}
+            className={`trip-option ${tripType === "multiCity" ? "active" : ""
+              }`}
           >
             <input
               type="radio"
@@ -132,9 +132,8 @@ const BookFlightCard = () => {
           </div>
           {/* Round Trip */}
           <div
-            className={`trip-option ${
-              tripType === "roundTrip" ? "active" : ""
-            }`}
+            className={`trip-option ${tripType === "roundTrip" ? "active" : ""
+              }`}
           >
             <input
               type="radio"
@@ -147,9 +146,8 @@ const BookFlightCard = () => {
           </div>
           {/* Direct Flight */}
           <div
-            className={`trip-option ${
-              tripType === "directFlight" ? "active" : ""
-            }`}
+            className={`trip-option ${tripType === "directFlight" ? "active" : ""
+              }`}
           >
             <input
               type="radio"
@@ -196,11 +194,10 @@ const BookFlightCard = () => {
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="text-center cursor-pointer">
     <div
-      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${
-        isActive
-          ? "bg-orange-500 border-orange-500"
-          : "bg-white border-white hover:bg-gray-50"
-      }`}
+      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
+        ? "bg-orange-500 border-orange-500"
+        : "bg-white border-white hover:bg-gray-50"
+        }`}
       style={{
         width: "64px",
         height: "64px",
@@ -212,7 +209,7 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
         src={imgSrc}
         alt={label}
         className="object-contain"
-        style={{ width: "45px", height: "45px" }}
+        style={{ width: "45px", height: "45px", borderRadius: "50%" }}
       />
     </div>
     <span className="text-12 fw-500 text-white d-block">{label}</span>
