@@ -1,0 +1,12 @@
+.accordion,
+.faq {
+    margin: 4rem 4rem;
+}
+
+.expand-all {
+    padding: 15px;
+    margin-left: 78rem;
+    color: #3790ae;
+    font-size: 1.2rem;
+    font-weight: 400;
+}

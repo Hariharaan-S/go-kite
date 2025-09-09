@@ -1,0 +1,40 @@
+.tour-snapshot-section {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin-top: -18rem;
+}
+
+.snapshot-part-1 {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    max-width: 80%;
+}
+
+.trip-nav-btn {
+    padding: 10px 20px;
+    background-color: #EDEDED;
+    color: #9e9e9e;
+    border-radius: 20px;
+}
+
+.trip-nav-active {
+    background-color: #18181a;
+    color: #d3d3d3;
+}
+
+.snapshot-part-2 {
+    position: absolute;
+    left: 58rem;
+    top: -1rem;
+    border: 0.5px solid #E1DDDD;
+    width: 35%;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.snapshot-part-2 .dowload {
+    font-size: 1.2rem;
+    color: #509eb8;
+}
