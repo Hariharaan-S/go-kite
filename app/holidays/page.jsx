@@ -2,6 +2,12 @@ import Header1 from "@/components/header/IconNav";
 import HolidaysHero from "@/components/holidayspage/hero";
 import RecommendationSection from "@/components/holidayspage/recommendation-section/recommendation";
 import RecommendationSection2 from "@/components/holidayspage/recommendation-section/recommendation-section-2";
+
+export const metadata = {
+    title: "GoKite - Travel & Tour ",
+    description: "GoKite - Travel & Tour ",
+};
+
 const Holidays = () => {
     return (
         <>

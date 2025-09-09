@@ -1,0 +1,37 @@
+.trip-images {
+    display: flex;
+    flex-direction: row;
+    column-gap: 1.2rem;
+    width: 100%;
+}
+
+.trip-image-1 {
+    width: 50%;
+}
+
+.trip-image,
+.trip-image img {
+    border-radius: 20px;
+}
+
+.image2,
+.image3 {
+    height: 50%;
+    width: 80%;
+
+}
+
+.image2 img,
+.image3 img {
+    height: 50%;
+    width: 80%;
+}
+
+.image3 {
+    margin-top: -9rem;
+}
+
+.image2 img,
+.image3 img {
+    object-fit: cover;
+}
