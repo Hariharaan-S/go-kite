@@ -1,4 +1,4 @@
-import DefaultFooter from "@/components/footer/default";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 import Header1 from "@/components/header/Navbar";
 import Hero1 from "@/components/landingpage/hero";
 import HolidayDestinations from "@/components/landingpage/holiday-destintion";
@@ -26,7 +26,7 @@ const Home_1 = () => {
 
       <HotelDealsCards />
 
-      <DefaultFooter />
+      <GoKiteFooter />
     </>
   );
 };
