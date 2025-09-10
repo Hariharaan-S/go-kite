@@ -1,6 +1,4 @@
-import HolidayDestinations from "@/components/landingpage/holiday-destintion";
 import GlassmorphMenu from "./menu/menu";
-import RecommendationHeroBG from "./recommendationbg";
 import './recommendation.css'
 import RecommendationDestinations from "./recommendation-slider";
 
@@ -9,7 +7,6 @@ const RecommendationSection = () => {
     return (
         <>
             <div className="recommendation-section">
-                <RecommendationHeroBG />
                 <div className="section-header">
                     <div className="section-header-part-1">
                         <div className="section-header-part-1-1"><h3>Trip Packages</h3></div>

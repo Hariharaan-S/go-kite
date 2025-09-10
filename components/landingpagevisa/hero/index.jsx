@@ -129,11 +129,10 @@ const BookFlightCard = () => {
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="text-center cursor-pointer">
     <div
-      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${
-        isActive
-          ? "bg-orange-500 border-orange-500"
-          : "bg-white border-white hover:bg-gray-50"
-      }`}
+      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
+        ? "bg-orange-500 border-orange-500"
+        : "bg-white border-white hover:bg-gray-50"
+        }`}
       style={{
         width: "64px",
         height: "64px",
@@ -145,7 +144,7 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
         src={imgSrc}
         alt={label}
         className="object-contain"
-        style={{ width: "45px", height: "45px" }}
+        style={{ width: "45px", height: "45px", borderRadius: '50%' }}
       />
     </div>
     <span className="text-12 fw-500 text-white d-block">{label}</span>
@@ -156,6 +155,11 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
 const IconRow = () => {
   const [activeIcon, setActiveIcon] = useState("Flight");
   const iconData = [
+    {
+      id: "Home",
+      label: "Home",
+      imgSrc: "/img/landingpage/icons/home.png",
+    },
     {
       id: "Flight",
       label: "Flight",

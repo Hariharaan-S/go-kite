@@ -7,7 +7,7 @@ import AirlineCard from "@/components/landingpageflight/AirlinesCard";
 import VacationDestinations from "@/components/landingpageflight/VacationCard";
 
 export const metadata = {
-  title: "Home-1 || GoKite - Travel & Tour ",
+  title: "GoKite - Travel & Tour ",
   description: "GoKite - Travel & Tour ",
 };
 

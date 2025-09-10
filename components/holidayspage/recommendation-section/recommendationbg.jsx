@@ -3,7 +3,7 @@ const HolidayHeroBGStyles = `
         .recom-bg-div {
             height: 65%;
             width: 100%;
-            position: absolute;
+            position: relative;
             background: url("img/holidays/recom-sect.jpg") center/cover no-repeat;
         }
 

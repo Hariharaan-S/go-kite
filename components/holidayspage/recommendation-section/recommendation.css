@@ -1,7 +1,8 @@
 .recommendation-section {
     position: relative;
     margin-top: 2rem;
-    min-height: 100vh;
+    height: 90vh;
+    background: url("/img/holidays/recom-sect.jpg") center/cover no-repeat;
     /* full height section */
 }
 
@@ -10,7 +11,7 @@
     flex-direction: row;
     column-gap: 2rem;
     width: 80%;
-    position: absolute;
+    position: relative;
     margin: 3rem 3rem;
 }
 
@@ -18,6 +19,7 @@
 .section-header-part-1 {
     display: flex;
     flex-direction: column;
+    margin-top: 3rem;
     row-gap: 0.5rem;
 }
 
@@ -31,6 +33,7 @@
 
 .section-header-part-2 {
     padding-left: 10.5rem;
+    margin-top: 3rem;
     flex: 2;
     /* shrink the paragraph area */
 }

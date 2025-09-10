@@ -12,7 +12,7 @@ import React, { useState } from "react";
 
 const VISIBLE_CARDS = 4;
 
-export default function RecommendationDestinations({ customStyle }) {
+export default function RecommendationDestinations() {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const destinations = [
@@ -183,15 +183,15 @@ export default function RecommendationDestinations({ customStyle }) {
     const visibleDestinations = getVisibleDestinations();
 
     const styles = `
-        .recommendation-slider-section {
+        .recommendation-slider-section-1 {
             display: flex;
             flex-direction: column;
-            position: absolute;
-            margin-top: 18rem;
+            position: relative;
+            margin-top: 12rem;
         }
 
         @media screen and (max-width: 1500px) {
-            .recommendation-slider-section {
+            .recommendation-slider-section-1 {
                 top: 5rem;
             }
             .dest {
@@ -238,7 +238,7 @@ export default function RecommendationDestinations({ customStyle }) {
         <>
             <style>{styles}</style>
             {/* Section header with navigation */}
-            <div className="recommendation-slider-section">
+            <div className="recommendation-slider-section-1">
                 <div className="recom-slid-section-1"
                     style={{
                         display: "flex",

@@ -12,7 +12,7 @@ import React, { useState } from "react";
 
 const VISIBLE_CARDS = 4;
 
-export default function RecommendationDestinations2({ customStyle }) {
+export default function RecommendationDestinations2() {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const destinations = [
@@ -183,10 +183,10 @@ export default function RecommendationDestinations2({ customStyle }) {
     const visibleDestinations = getVisibleDestinations();
 
     const styles = `
-        .recommendation-slider-section {
+        .recommendation-slider-section-2 {
             display: flex;
             flex-direction: column;
-            position: absolute;
+            position: relative;
             margin-top: 18rem;
         }
         

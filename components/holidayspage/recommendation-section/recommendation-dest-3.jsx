@@ -183,11 +183,11 @@ export default function RecommendationDestinations3({ customStyle }) {
     const visibleDestinations = getVisibleDestinations();
 
     const styles = `
-        .recommendation-slider-section {
+        .recommendation-slider-section-3 {
             display: flex;
             flex-direction: column;
-            position: absolute;
-            margin-top: 18rem;
+            position: relative;
+            margin-top: 5rem;
         }
         
         @media screen and (max-width: 1440px) {

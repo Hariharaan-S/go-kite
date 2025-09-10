@@ -7,6 +7,10 @@ import VisaStepsAndFaq from "@/components/applyvisa/steps"
 import './styles/apply-visa.styles.css'
 import { useEffect, useState } from "react";
 import CustomHeader from "@/components/apply-visa-custom-header/custom-header";
+export const metadata = {
+    title: "GoKite - Travel & Tour ",
+    description: "GoKite - Travel & Tour ",
+};
 const Holidays = () => {
     const [isMobileView, setIsMobileView] = useState(false);
 

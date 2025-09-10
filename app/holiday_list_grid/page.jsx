@@ -8,7 +8,7 @@ import HotelProperties from "@/components/hotel-list-v4/HotelProperties";
 import VacationCard from "@/components/hotel-list-v4/VacationCard";
 
 export const metadata = {
-  title: "Hotel List v5 || GoKite - Travel & Tour ",
+  title: "GoKite - Travel & Tour ",
   description: "GoKite - Travel & Tour ",
 };
 
@@ -38,7 +38,7 @@ const index = () => {
         </div>
       </section>
 
-    
+
       {/* Top SearchBanner */}
 
       <section className="layout-pt-md layout-pb-lg">
@@ -97,14 +97,14 @@ const index = () => {
       </section>
 
       <section style={{ width: "100vw", overflow: "hidden" }}>
-  <img
-    src="/img/general/50+card.png"
-    alt="Get Global Visa"
-    style={{ width: "100vw", display: "block", height: "auto" }}
-  />
-</section>
+        <img
+          src="/img/general/50+card.png"
+          alt="Get Global Visa"
+          style={{ width: "100vw", display: "block", height: "auto" }}
+        />
+      </section>
 
-<VacationCard />
+      <VacationCard />
 
       <DefaultFooter />
     </>
