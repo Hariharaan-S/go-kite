@@ -1,8 +1,9 @@
 import React from "react";
+import './styles/new-nav.styles.css'
 
 const Navbar = () => {
   return (
-    <nav
+    <nav className="navbar"
       style={{
         display: "flex",
         alignItems: "center",
@@ -24,7 +25,7 @@ const Navbar = () => {
       </div>
 
       {/* Center: Destination and Date */}
-      <div
+      <div className="destination-date"
         style={{
           display: "flex",
           border: "2px solid #ffe29b",
@@ -60,8 +61,8 @@ const Navbar = () => {
       </div>
 
       {/* Right: Buttons */}
-      <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-        <button
+      <div className="visa-button-group" style={{ display: "flex", alignItems: "center", gap: 18 }}>
+        <button className="visa-application"
           style={{
             background: "#4694a6",
             color: "#fff",
@@ -73,9 +74,15 @@ const Navbar = () => {
             cursor: "pointer",
           }}
         >
-          Visa Application
+          <span className="visa-text">Visa Application</span>
         </button>
-        <span
+        <button className="search-icon">
+          <img src="img/apply-visa/glass.svg" width='40px' height='40px' alt="" />
+        </button>
+        <button className="user-icon">
+          <img src="img/apply-visa/user.svg" width='40px' height='40px' alt="" />
+        </button>
+        <span className="sign-in"
           style={{
             color: "#222",
             fontSize: 17,
@@ -87,7 +94,7 @@ const Navbar = () => {
         >
           Sign In
         </span>
-        <button
+        <button className="sign-in"
           style={{
             background: "#111",
             color: "#fff",

@@ -1,0 +1,37 @@
+.search-icon {
+    display: none;
+}
+
+@media screen and (max-width: 400px) {
+
+    .destination-date,
+    .sign-in {
+        display: none !important;
+    }
+
+    .visa-application {
+        margin-right: 1rem;
+    }
+
+    .visa-text {
+        font-size: .7rem;
+    }
+
+    .search-icon,
+    .user-icon {
+        display: block;
+        margin-right: 1rem;
+    }
+
+    .user-icon {
+        margin-right: .5rem;
+    }
+
+    .visa-button-group {
+        column-gap: 0 !important;
+    }
+
+    .navbar {
+        padding: 15px !important;
+    }
+}

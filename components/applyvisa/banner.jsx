@@ -1,8 +1,9 @@
 import React from "react";
+import './styles/banner.styles.css'
 
 const Banner = () => {
   return (
-    <section
+    <section className="apply-visa-hero"
       style={{
         width: "100%",
         background: "#def2fd",
@@ -15,7 +16,7 @@ const Banner = () => {
       }}
     >
       {/* Left Side: Title and Subtitle */}
-      <div
+      <div className="visa-hero-title"
         style={{
           flex: "1 1 0",
           display: "flex",
@@ -47,7 +48,7 @@ const Banner = () => {
       </div>
 
       {/* Right Side: Banner Illustration */}
-      <div
+      <div className="visa-hero-img"
         style={{
           flex: "1 1 0",
           display: "flex",
