@@ -35,3 +35,13 @@
 .image3 img {
     object-fit: cover;
 }
+
+@media screen and (max-width: 400px) {
+    .trip-image-1 {
+        width: 100%;
+    }
+
+    .trip-image-group {
+        display: none;
+    }
+}

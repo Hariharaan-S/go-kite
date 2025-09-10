@@ -5,9 +5,7 @@ import Link from "next/link";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import {
   homeItems,
-  blogItems,
   pageItems,
-  dashboardItems,
   categorieMobileItems,
   categorieMegaMenuItems,
 } from "../../data/mainMenuData";
@@ -20,9 +18,9 @@ import { useEffect, useState } from "react";
 const MobileMenu = () => {
   const pathname = usePathname();
 
-  const [isActiveParent, setIsActiveParent] = useState(false);
-  const [isActiveNestedParentTwo, setisActiveNestedParentTwo] = useState(false);
-  const [isActiveNestedParent, setisActiveNestedParent] = useState(false);
+  // const [isActiveParent, setIsActiveParent] = useState(false);
+  // const [isActiveNestedParentTwo, setisActiveNestedParentTwo] = useState(false);
+  // const [isActiveNestedParent, setisActiveNestedParent] = useState(false);
 
   const router = useRouter();
 
@@ -63,169 +61,65 @@ const MobileMenu = () => {
 
       <Sidebar width="400" backgroundColor="#fff">
         <Menu>
-          <SubMenu
-            label="Home"
-            className={
-              homeItems.some(
-                (item) =>
-                  item.routePath?.split("/")[1] == pathname.split("/")[1]
-              )
-                ? "menu-active-link"
-                : ""
-            }
+          <MenuItem
+            onClick={() => router.push("/")}
+            className={pathname === "/" ? "menu-active-link" : ""}
           >
-            {homeItems.map((item, i) => (
-              <MenuItem
-                key={i}
-                onClick={() => router.push(item.routePath)}
-                className={
-                  isActiveLink(item.routePath, pathname)
-                    ? "menu-active-link"
-                    : "inactive-menu"
-                }
-              >
-                {item.name}
-              </MenuItem>
-            ))}
-          </SubMenu>
-          {/* End  All Home Menu */}
-
-          <SubMenu
-            label="Categories"
-            className={isActiveParent ? "menu-active-link" : ""}
-          >
-            {categorieMobileItems.map((item) => (
-              <SubMenu
-                label={item.title}
-                key={item.id}
-                className={
-                  isActiveNestedParent == item.id
-                    ? "menu-active-link"
-                    : "inactive-menu"
-                }
-              >
-                {item.menuItems.map((single) => (
-                  <SubMenu
-                    label={single.title}
-                    key={single.id}
-                    className={
-                      isActiveNestedParentTwo == single.title
-                        ? "menu-active-link"
-                        : "inactive-menu"
-                    }
-                  >
-                    {single.menuList.map((menu, i) => (
-                      <MenuItem
-                        key={i}
-                        onClick={() => router.push(menu.routePath)}
-                        className={
-                          isActiveLink(menu.routePath, pathname)
-                            ? "menu-active-link"
-                            : "inactive-menu"
-                        }
-                      >
-                        {menu.name}
-                      </MenuItem>
-                    ))}
-                  </SubMenu>
-                ))}
-              </SubMenu>
-            ))}
-          </SubMenu>
-          {/* End  All Categories Menu */}
+            Home
+          </MenuItem>
+          {/* End Contact  Menu */}
 
           <MenuItem
-            onClick={() => router.push("/destinations")}
-            className={pathname === "/destinations" ? "menu-active-link" : ""}
+            onClick={() => router.push("/about-us")}
+            className={pathname === "/about-us" ? "menu-active-link" : ""}
           >
-            Desitinations
+            About Us
           </MenuItem>
-          {/* End  Desitinations Menu */}
 
-          <SubMenu
-            label="Blog"
-            className={
-              blogItems.some(
-                (item) =>
-                  item.routePath?.split("/")[1] == pathname.split("/")[1]
-              )
-                ? "menu-active-link"
-                : ""
-            }
+          <MenuItem
+            onClick={() => router.push("/apply_visa")}
+            className={pathname === "/apply_visa" ? "menu-active-link" : ""}
           >
-            {blogItems.map((item, i) => (
-              <MenuItem
-                key={i}
-                onClick={() => router.push(item.routePath)}
-                className={
-                  isActiveLink(item.routePath, pathname)
-                    ? "menu-active-link"
-                    : "inactive-menu"
-                }
-              >
-                {item.name}
-              </MenuItem>
-            ))}
-          </SubMenu>
-          {/* End  All Blog Menu */}
+            Apply Visa
+          </MenuItem>
 
-          <SubMenu
-            label="Pages"
-            className={
-              pageItems.some(
-                (item) =>
-                  item.routePath?.split("/")[1] == pathname.split("/")[1]
-              )
-                ? "menu-active-link"
-                : ""
-            }
+          <MenuItem
+            onClick={() => router.push("/create-account")}
+            className={pathname === "/create-account" ? "menu-active-link" : ""}
           >
-            {pageItems.map((item, i) => (
-              <MenuItem
-                key={i}
-                onClick={() => router.push(item.routePath)}
-                className={
-                  isActiveLink(item.routePath, pathname)
-                    ? "menu-active-link"
-                    : "inactive-menu"
-                }
-              >
-                {item.name}
-              </MenuItem>
-            ))}
-          </SubMenu>
-          {/* End  All Pages Menu */}
-
-          <SubMenu
-            label="Dashboard"
-            className={
-              pathname.split("/")[1] == "dashboard" ||
-              pathname.split("/")[1] == "vendor-dashboard"
-                ? "menu-active-link"
-                : ""
-            }
-          >
-            {dashboardItems.map((item, i) => (
-              <MenuItem
-                key={i}
-                onClick={() => router.push(item.routePath)}
-                className={
-                  isActiveLink(item.routePath, pathname)
-                    ? "menu-active-link"
-                    : "inactive-menu"
-                }
-              >
-                {item.name}
-              </MenuItem>
-            ))}
-          </SubMenu>
-          {/* End  All Dashboard Menu */}
+            Create Account
+          </MenuItem>
 
           <MenuItem
             onClick={() => router.push("/contact")}
             className={pathname === "/contact" ? "menu-active-link" : ""}
           >
             Contact
+          </MenuItem>
+
+          <MenuItem
+            onClick={() => router.push("/holiday_list_grid")}
+            className={pathname === "/holiday_list_grid" ? "menu-active-link" : ""}
+          >
+            Holidays List
+          </MenuItem>
+          <MenuItem
+            onClick={() => router.push("/holidays")}
+            className={pathname === "/holidays" ? "menu-active-link" : ""}
+          >
+            Holidays
+          </MenuItem>
+          <MenuItem
+            onClick={() => router.push("/landing_page_flight")}
+            className={pathname === "/landing_page_flight" ? "menu-active-link" : ""}
+          >
+            Flights
+          </MenuItem>
+          <MenuItem
+            onClick={() => router.push("/sign-in")}
+            className={pathname === "/contact" ? "menu-active-link" : ""}
+          >
+            Sign In
           </MenuItem>
           {/* End Contact  Menu */}
         </Menu>
@@ -241,14 +135,14 @@ const MobileMenu = () => {
             <Social />
           </div>
         </div>
-        <div className="mt-20">
+        {/* <div className="mt-20">
           <Link
             className=" button -dark-1 px-30 fw-400 text-14 bg-blue-1 h-50 text-white"
             href="/login"
           >
             Become An Expert
           </Link>
-        </div>
+        </div> */}
       </div>
       {/* End pro-footer */}
     </>

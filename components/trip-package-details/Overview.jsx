@@ -4,7 +4,7 @@ const Overview = () => {
   return (
     <>
       <div className="row x-gap-40 y-gap-40 overview-section">
-        <div className="col-12">
+        <div className="col-12 overview-section-part-1">
           <h3 className="text-40 fw-500">Bromo Mountain</h3>
 
           <p className="text-dark-1 text-15 mt-20 lh-1.2 overview-para">

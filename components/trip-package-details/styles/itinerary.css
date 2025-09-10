@@ -40,3 +40,30 @@
     font-weight: 300;
     font-size: 1.2rem;
 }
+
+@media screen and (max-width: 400px) {
+
+    .line {
+        margin-left: .45rem;
+        height: 150px;
+    }
+
+    .iti-place p {
+        font-size: 1rem;
+    }
+
+    .iti-places .iti-place {
+        display: grid;
+        column-gap: 2rem;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .iti-track {
+        margin-top: 1rem;
+    }
+
+    .iti-place img {
+        margin-top: 1rem;
+    }
+
+}
