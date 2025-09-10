@@ -4,7 +4,7 @@ const TourSnapShot = () => {
   return (
     <div className="row y-gap-10  tour-snapshot-section">
       <div className="snapshot-part-1">
-        <div className="col-md-auto col-6">
+        <div className="col-md-auto snapshot-part">
           <div className="d-flex trip-nav-btn trip-nav-active">
             <div className="text-18 lh-15 trip-nav-head">
               Overview
@@ -13,30 +13,28 @@ const TourSnapShot = () => {
         </div>
         {/* End .col */}
 
-        <div className="col-md-auto col-6">
+        <div className="col-md-auto snapshot-part">
           <div className="d-flex trip-nav-btn">
-
-            <div className="text-18 lh-15">
+            <div className="text-18 lh-15 trip-nav-head">
               Itinerary
             </div>
           </div>
         </div>
         {/* End .col */}
 
-        <div className="col-md-auto col-6">
+        <div className="col-md-auto snapshot-part">
           <div className="d-flex trip-nav-btn">
 
-            <div className="text-18 lh-15">
+            <div className="text-18 lh-15 trip-nav-head">
               What's Included
             </div>
           </div>
         </div>
         {/* End .col */}
 
-        <div className="col-md-auto col-6">
+        <div className="col-md-auto snapshot-part">
           <div className="d-flex trip-nav-btn">
-
-            <div className="text-18 lh-15">
+            <div className="text-18 lh-15 trip-nav-head">
               FAQs
             </div>
           </div>

@@ -1,135 +1,29 @@
 export const homeItems = [
   {
-    name: "Home 01",
+    name: "Home",
     routePath: "/",
-  },
-  {
-    name: "Home 02",
-    routePath: "/home_2",
-  },
-  {
-    name: "Home 03",
-    routePath: "/home_3",
-  },
-  {
-    name: "Home 04",
-    routePath: "/home_4",
-  },
-  {
-    name: "Home 05",
-    routePath: "/home_5",
-  },
-  {
-    name: "Home 06",
-    routePath: "/home_6",
-  },
-  {
-    name: "Home 07",
-    routePath: "/home_7",
-  },
-  {
-    name: "Home 08",
-    routePath: "/home_8",
-  },
-  {
-    name: "Home 09",
-    routePath: "/home_9",
-  },
-  {
-    name: "Home 10",
-    routePath: "/home_10",
-  },
-];
-export const blogItems = [
-  {
-    name: "Blog List V1",
-    routePath: "/blog-list-v1",
-  },
-  {
-    name: "Blog List V2",
-    routePath: "/blog-list-v2",
-  },
-  {
-    name: "Blog Single",
-    routePath: "/blog-details/1",
-  },
+  }
 ];
 export const pageItems = [
   {
-    name: "404",
-    routePath: "/404",
-  },
-  {
     name: "About",
-    routePath: "/about",
+    routePath: "/about-us",
   },
-  {
-    name: "Become Expert",
-    routePath: "/become-expert",
-  },
-  {
-    name: "Help Center",
-    routePath: "/help-center",
-  },
+
   {
     name: "Login",
-    routePath: "/login",
+    routePath: "/sign-in",
   },
   {
-    name: "Register",
-    routePath: "/signup",
+    name: "Create Account",
+    routePath: "/create-account",
   },
   {
     name: "Terms",
     routePath: "/terms",
   },
-  {
-    name: "Invoice",
-    routePath: "/invoice",
-  },
 ];
-export const dashboardItems = [
-  {
-    name: "Dashboard",
-    routePath: "/dashboard/db-dashboard",
-  },
-  {
-    name: "Booking History",
-    routePath: "/dashboard/db-booking",
-  },
-  {
-    name: "Wishlist",
-    routePath: "/dashboard/db-wishlist",
-  },
-  {
-    name: "Settings",
-    routePath: "/dashboard/db-settings",
-  },
-  {
-    name: "Vendor Dashboard",
-    routePath: "/vendor-dashboard/dashboard",
-  },
-  {
-    name: "Vendor Add Hotel",
-    routePath: "/vendor-dashboard/add-hotel",
-  },
-  {
-    name: "Vendor Booking",
-    routePath: "/vendor-dashboard/booking",
-  },
-  {
-    name: "Vendor Hotels",
-    routePath: "/vendor-dashboard/hotels",
-  },
-  {
-    name: "Vendor Recovery",
-    routePath: "/vendor-dashboard/recovery",
-  },
-  {
-    name: "Logout",
-    routePath: "/login",
-  },
-];
+
 
 export const categorieMegaMenuItems = [
   {

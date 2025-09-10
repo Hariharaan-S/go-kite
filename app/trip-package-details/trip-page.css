@@ -10,3 +10,15 @@
     font-size: 1.2rem;
     font-weight: 400;
 }
+
+@media screen and (max-width: 400px) {
+
+    .accordion,
+    .faq {
+        margin: 1rem;
+    }
+
+    .expand-all {
+        margin-left: 15.5rem;
+    }
+}
