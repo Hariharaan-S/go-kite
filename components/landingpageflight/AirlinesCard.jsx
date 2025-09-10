@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import "./styles/AirlinesCard.css";
 
 const AirlineCard = ({
   logoUrl,
@@ -11,81 +12,32 @@ const AirlineCard = ({
 }) => {
   return (
     <div
-      style={{
-        backgroundColor: bgColor,
-        borderRadius: "16px",
-        padding: "24px",
-        width: "280px",
-        height: "220px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        color: textColor,
-        fontFamily: "Arial, sans-serif",
-        position: "relative",
-        boxShadow: "0 6px 12px rgba(0,0,0,0.1)",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
-      }}
+      className="airline-card"
+      style={{ backgroundColor: bgColor, color: textColor }}
     >
       {/* Logo Container */}
-      <div
-        style={{
-          backgroundColor: "white",
-          borderRadius: "12px",
-          padding: "12px 16px",
-          alignSelf: "flex-start",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: "16px",
-          ...logoStyle,
-        }}
-      >
+      <div className="logo-container" style={logoStyle}>
         <img
           src={logoUrl}
           alt={`${airlineName} logo`}
-          style={{
-            maxWidth: "120px",
-            maxHeight: "50px",
-            objectFit: "contain",
-          }}
+          className="airline-logo"
         />
       </div>
-
       {/* Airline Name */}
-      <div
-        style={{
-          fontSize: "28px",
-          fontWeight: "bold",
-          marginBottom: "12px",
-          lineHeight: "1.2",
-        }}
-      >
-        {airlineName}
-      </div>
-
+      <div className="airline-name">{airlineName}</div>
       {/* Price */}
-      <div
-        style={{
-          fontSize: "18px",
-          fontWeight: "600",
-          opacity: "0.9",
-        }}
-      >
-        {price}
-      </div>
+      <div className="airline-price">{price}</div>
     </div>
   );
 };
 
 const AirlineBookingCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-
   const airlinesData = [
     {
       id: 1,
       logoUrl:
-        "https://cdn.freebiesupply.com/logos/thumbs/2x/fly-dubai-1-logo.png",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1HV1QjNWog1I0OK-NzcaMDAiVe7RbScZFtw&s",
       airlineName: "Fly Dubai",
       price: "$100 - 800",
       bgColor: "#1e7a8c",
@@ -145,120 +97,35 @@ const AirlineBookingCards = () => {
 
   const getVisibleAirlines = () => {
     if (totalSlides <= VISIBLE_CARDS) return airlinesData;
-
     const visibleCards = [];
     for (let i = 0; i < VISIBLE_CARDS; i++) {
       const index = (currentSlide + i) % totalSlides;
       visibleCards.push(airlinesData[index]);
     }
-
     return visibleCards;
   };
 
   const visibleAirlines = getVisibleAirlines();
 
   return (
-    <div
-      style={{
-        backgroundColor: "#f5f5f5",
-        padding: "40px 120px",
-        minHeight: "50vh",
-      }}
-    >
+    <div className="airline-booking-wrapper">
       {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "30px",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: "32px",
-            fontWeight: "bold",
-            color: "#333",
-            margin: "0",
-          }}
-        >
-          Book Based on Airlines
-        </h1>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-          }}
-        >
-          <span
-            style={{
-              color: "#666",
-              fontSize: "14px",
-              cursor: "pointer",
-            }}
-          >
-            View All
-          </span>
-          <div
-            style={{
-              display: "flex",
-              gap: "8px",
-            }}
-          >
-            <button
-              onClick={prevSlide}
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                backgroundColor: "#333",
-                border: "none",
-                color: "white",
-                fontSize: "20px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+      <div className="header-container">
+        <h1 className="header-title">Book Based on Airlines</h1>
+        <div className="header-actions">
+          <span className="view-all">View All</span>
+          <div className="buttons-container">
+            <button onClick={prevSlide} className="nav-button">
               ‹
             </button>
-            <button
-              onClick={nextSlide}
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                backgroundColor: "#333",
-                border: "none",
-                color: "white",
-                fontSize: "20px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <button onClick={nextSlide} className="nav-button">
               ›
             </button>
           </div>
         </div>
       </div>
-
       {/* Cards Container */}
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          justifyContent: "center",
-          alignItems: "stretch",
-          overflowX: "auto",
-          paddingBottom: "10px",
-          scrollbarWidth: "none", // Firefox
-          msOverflowStyle: "none", // Internet Explorer and Edge
-        }}
-      >
+      <div className="cards-container">
         {visibleAirlines.map((airline) => (
           <AirlineCard
             key={airline.id}

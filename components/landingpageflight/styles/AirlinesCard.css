@@ -1,0 +1,221 @@
+.airline-booking-wrapper {
+    background-color: #f5f5f5;
+    padding: 40px 10%;
+    min-height: 50vh;
+    box-sizing: border-box;
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .header-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 200px;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .view-all {
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  
+  .buttons-container {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  
+  .nav-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+  
+  .cards-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: stretch;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    scroll-snap-type: x mandatory;
+  }
+  
+  .cards-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .airline-card {
+    border-radius: 16px;
+    padding: 24px;
+    width: 280px;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: Arial, sans-serif;
+    position: relative;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+  
+  .airline-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .logo-container {
+    background-color: white;
+    border-radius: 12px;
+    padding: 12px 16px;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  
+  .airline-logo {
+    max-width: 120px;
+    max-height: 50px;
+    object-fit: contain;
+  }
+  
+  .airline-name {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    line-height: 1.2;
+    color: inherit;
+  }
+  
+  .airline-price {
+    font-size: 18px;
+    font-weight: 600;
+    opacity: 0.9;
+    color: inherit;
+  }
+  
+  /* Responsive Breakpoints */
+  
+  @media (max-width: 1200px) {
+    .airline-booking-wrapper {
+      padding: 40px 5%;
+    }
+  
+    .header-title {
+      font-size: 28px;
+    }
+  
+    .airline-card {
+      width: 230px;
+      height: 190px;
+      padding: 20px;
+    }
+  
+    .airline-name {
+      font-size: 24px;
+    }
+  
+    .airline-price {
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .header-container {
+      justify-content: center;
+    }
+  
+    .header-actions {
+      justify-content: center;
+    }
+  
+    .header-title {
+      flex-basis: 100%;
+      text-align: center;
+    }
+  
+    .cards-container {
+      gap: 16px;
+    }
+  
+    .airline-card {
+      width: 200px;
+      height: 170px;
+      padding: 16px;
+    }
+  
+    .airline-name {
+      font-size: 20px;
+    }
+  
+    .airline-price {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .airline-booking-wrapper {
+      padding: 20px 4%;
+    }
+  
+    .cards-container {
+      gap: 12px;
+    }
+  
+    .airline-card {
+      width: 160px;
+      height: 150px;
+      padding: 12px;
+    }
+  
+    .logo-container {
+      padding: 8px 10px;
+    }
+  
+    .airline-logo {
+      max-width: 80px;
+      max-height: 35px;
+    }
+  
+    .airline-name {
+      font-size: 18px;
+    }
+  
+    .airline-price {
+      font-size: 12px;
+    }
+  }
+  

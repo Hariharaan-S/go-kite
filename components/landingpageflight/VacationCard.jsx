@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import "./styles/VacationCard.css";
+
 
 const VacationDestinations = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -50,8 +52,7 @@ const VacationDestinations = () => {
   const prevSlide = () => {
     setCurrentSlide((prev) =>
       prev - VISIBLE_CARDS < 0
-        ? totalDestinations -
-          (totalDestinations % VISIBLE_CARDS || VISIBLE_CARDS)
+        ? totalDestinations - (totalDestinations % VISIBLE_CARDS || VISIBLE_CARDS)
         : prev - VISIBLE_CARDS
     );
   };
@@ -64,181 +65,38 @@ const VacationDestinations = () => {
       const index = (currentSlide + i) % totalDestinations;
       visibleCards.push(destinations[index]);
     }
-
     return visibleCards;
   };
 
   const visibleDestinations = getVisibleDestinations();
 
   return (
-    <div
-      style={{
-        width: "100%",
-        maxWidth: "1440px",
-        margin: "0 auto",
-        padding: "40px 120px",
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        backgroundColor: "#f8f9fa",
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "30px",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "32px",
-            fontWeight: "700",
-            margin: "0",
-            color: "#1a1a1a",
-          }}
-        >
-          Top Vacation Destinations
-        </h2>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "14px",
-              color: "#666",
-              marginRight: "8px",
-              cursor: "pointer",
-            }}
-          >
-            View All
-          </span>
-
-          {/* Navigation Arrows */}
-          <button
-            onClick={prevSlide}
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              backgroundColor: "#000",
-              border: "none",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-            }}
-          >
-            <ChevronLeft size={18} color="white" />
-          </button>
-
-          <button
-            onClick={nextSlide}
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              backgroundColor: "#000",
-              border: "none",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-            }}
-          >
-            <ChevronRight size={18} color="white" />
-          </button>
+    <div className="vacation-wrapper">
+      <div className="vacation-header">
+        <h2 className="vacation-title">Top Vacation Destinations</h2>
+        <div className="vacation-actions">
+          <span className="view-all">View All</span>
+          <div className="nav-buttons">
+            <button onClick={prevSlide} className="nav-button">
+              <ChevronLeft size={18} color="white" />
+            </button>
+            <button onClick={nextSlide} className="nav-button">
+              <ChevronRight size={18} color="white" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Cards Container */}
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          justifyContent: "center",
-          alignItems: "stretch",
-          overflowX: "hidden",
-        }}
-      >
+      <div className="cards-container">
         {visibleDestinations.map((destination) => (
-          <div
-            key={destination.id}
-            style={{
-              position: "relative",
-              width: "280px",
-              height: "360px",
-              borderRadius: "16px",
-              overflow: "hidden",
-              cursor: "pointer",
-              transition: "transform 0.3s ease, box-shadow 0.3s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-5px)";
-              e.currentTarget.style.boxShadow = "0 12px 30px rgba(0,0,0,0.2)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
-            }}
-          >
-            {/* Background Image */}
+          <div key={destination.id} className="destination-card">
             <div
-              style={{
-                position: "absolute",
-                top: "0",
-                left: "0",
-                right: "0",
-                bottom: "0",
-                backgroundImage: `url(${destination.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
+              className="card-bg-image"
+              style={{ backgroundImage: `url(${destination.image})` }}
             />
-
-            {/* Dark Overlay */}
-            <div
-              style={{
-                position: "absolute",
-                top: "0",
-                left: "0",
-                right: "0",
-                bottom: "0",
-                background:
-                  "linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0.7) 100%)",
-              }}
-            />
-
-            {/* Destination Name */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: "20px",
-                left: "20px",
-                right: "20px",
-              }}
-            >
-              <h3
-                style={{
-                  color: "white",
-                  fontSize: "22px",
-                  fontWeight: "600",
-                  margin: "0",
-                  textShadow: "0 2px 4px rgba(0,0,0,0.4)",
-                  lineHeight: "1.2",
-                }}
-              >
-                {destination.name}
-              </h3>
+            <div className="card-overlay" />
+            <div className="destination-name">
+              <h3>{destination.name}</h3>
             </div>
           </div>
         ))}

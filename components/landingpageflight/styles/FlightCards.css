@@ -1,0 +1,165 @@
+.flightcards-container {
+    font-family: Arial, sans-serif;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px 10px;
+  }
+  
+  .flightcards-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  
+  .flightcards-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 250px;
+  }
+  
+  .flightcards-toggle {
+    display: flex;
+    gap: 0;
+    margin-top: 12px;
+    flex: 0 0 auto;
+  }
+  
+  .tab-btn {
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  .tab-btn:first-child {
+    border-radius: 25px 0 0 25px;
+    background-color: #0891b2;
+    color: white;
+  }
+  
+  .tab-btn:last-child {
+    border-radius: 0 25px 25px 0;
+    background-color: #f3f4f6;
+    color: #6b7280;
+  }
+  
+  .tab-btn.active {
+    background-color: #0891b2;
+    color: white;
+  }
+  
+  .flightcards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .flightcard {
+    background-color: #e5e7eb;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: none;
+  }
+  
+  .flightcard.highlighted {
+    background-color: #ffffff;
+    border: 2px solid #0891b2;
+    box-shadow: 0 4px 12px rgba(8, 145, 178, 0.1);
+  }
+  
+  .flightcard-location {
+    flex: 1;
+  }
+  
+  .flightcard-from {
+    text-align: left;
+  }
+  
+  .flightcard-to {
+    text-align: right;
+  }
+  
+  .flightcard-main {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 4px;
+  }
+  
+  .flightcard-sub {
+    font-size: 12px;
+    color: #6b7280;
+  }
+  
+  .flightcard-icon {
+    margin: 0 20px;
+    display: flex;
+    align-items: center;
+    min-width: 40px;
+    justify-content: center;
+  }
+  
+  .flight-icon-img {
+    width: 24px;
+    height: 24px;
+    opacity: 0.7;
+    display: inline-block;
+  }
+  
+  .flight-icon-fallback {
+    display: none;
+    font-size: 18px;
+    color: #0891b2;
+  }
+  
+  /* Responsive styling */
+  
+  @media (max-width: 1024px) {
+    .flightcards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .flightcards-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .flightcards-toggle {
+      margin-top: 8px;
+    }
+    .flightcards-grid {
+      grid-template-columns: 1fr;
+    }
+    .flightcard {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .flightcard-icon {
+      margin: 0;
+      justify-content: flex-start;
+    }
+    .flightcard-from,
+    .flightcard-to {
+      text-align: left;
+    }
+    .view-all-link a {
+      font-size: 16px;
+    }
+  }
+  
