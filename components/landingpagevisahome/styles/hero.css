@@ -1,0 +1,165 @@
+.masthead__bg img {
+    width: 100vw;
+    max-width: 100%;
+    height: 390px;
+    object-fit: cover;
+    border-radius: 24px 24px 0 0;
+    display: block;
+  }
+  @media (max-width: 900px) {
+    .masthead__bg img {
+      height: 220px;
+      border-radius: 16px 16px 0 0;
+    }
+  }
+  @media (max-width: 600px) {
+    .masthead__bg img {
+      height: 140px;
+      border-radius: 10px 10px 0 0;
+    }
+  }
+  
+  /* Book flight card */
+  .book-flight-wrapper {
+    background: #fff;
+    padding: 22px 24px;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(40, 47, 60, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    top: -60px;
+    z-index: 20;
+  }
+  @media (max-width: 900px) {
+    .book-flight-wrapper {
+      top: -35px;
+      max-width: 97vw;
+      padding: 14px 8px;
+      border-radius: 12px;
+    }
+  }
+  @media (max-width: 600px) {
+    .book-flight-wrapper {
+      padding: 10px 3vw 14px;
+      top: -17px;
+      max-width: 99vw;
+      border-radius: 8px;
+    }
+  }
+  
+  .flight-search-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 900px) {
+    .flight-search-container {
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: stretch;
+    }
+  }
+  
+  .flight-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 12px;
+    border-right: 1px solid #e0e0e0;
+  }
+  .flight-field:last-child {
+    border-right: none;
+  }
+  @media (max-width: 900px) {
+    .flight-field {
+      border-right: none;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 6px 8px;
+    }
+    .flight-field:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  .flight-label {
+    font-size: 12px;
+    color: #586380;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  @media (max-width: 600px) {
+    .flight-label {
+      font-size: 11px;
+      margin-bottom: 2px;
+    }
+  }
+  
+  .flight-input {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: #252b36;
+    outline: none;
+    width: 100%;
+  }
+  @media (max-width: 600px) {
+    .flight-input {
+      font-size: 15px;
+    }
+  }
+  
+  .flight-btn {
+    background: #000;
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 26px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    transition: background 0.18s;
+  }
+  .flight-btn:hover {
+    background: #222;
+  }
+  @media (max-width: 600px) {
+    .flight-btn {
+      width: 100%;
+      font-size: 15px;
+      padding: 11px 0;
+      justify-content: center;
+      border-radius: 9px;
+    }
+  }
+  
+  /* Icon Row */
+  .icon-row-container {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  @media (max-width: 600px) {
+    .icon-row-container {
+      justify-content: flex-start;
+      gap: 12px;
+      padding: 2px 0 12px 2px;
+      scroll-snap-type: x mandatory;
+    }
+    .icon-row-container > div {
+      scroll-snap-align: start;
+    }
+  }
+  

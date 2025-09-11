@@ -4,35 +4,70 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { addCurrentTab } from "../../../features/hero/findPlaceSlice";
 
-// Embedded (scoped) CSS for BookFlightCard and HeroSection
+// Embedded responsive CSS for HeroSection, BookFlightCard, and IconRow
 const styles = `
-/* HERO Section BG overrides */
 .masthead__bg img {
   width: 100vw;
+  max-width: 100%;
   height: 390px;
   object-fit: cover;
   border-radius: 24px 24px 0 0;
+  display: block;
 }
 @media (max-width: 900px) {
-  .masthead__bg img {height: 220px;}
+  .masthead__bg img {
+    height: 220px;
+    border-radius: 16px 16px 0 0;
+  }
+}
+@media (max-width: 600px) {
+  .masthead__bg img {
+    height: 140px;
+    border-radius: 10px 10px 0 0;
+  }
 }
 .book-flight-wrapper {
   background: #fff;
-  padding: 12px 16px 16px 16px;
+  padding: 22px 24px 22px 24px;
   border-radius: 16px;
   box-shadow: 0 8px 40px 0 rgba(40,47,60,0.10);
-  max-width: 1200px;
+  max-width: 900px;
+  min-width: 0;
   margin: 0 auto;
   position: relative;
   top: -60px;
   z-index: 20;
+}
+@media (max-width: 900px) {
+  .book-flight-wrapper {
+    top: -35px;
+    max-width: 97vw;
+    padding: 14px 8px 14px 8px;
+    border-radius: 12px;
+  }
+}
+@media (max-width: 600px) {
+  .book-flight-wrapper {
+    padding: 10px 3vw 14px 3vw;
+    top: -17px;
+    max-width: 99vw;
+    border-radius: 8px;
+  }
 }
 .flight-search-container {
   display: flex;
   align-items: center;
   gap: 16px;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+}
+@media (max-width: 900px) {
+  .flight-search-container {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: stretch;
+  }
 }
 .flight-field {
   background: transparent;
@@ -43,87 +78,101 @@ const styles = `
   position: relative;
   padding: 0 12px;
   border-right: 1px solid #e0e0e0;
+  min-width: 0;
 }
 .flight-field:last-child {
   border-right: none;
 }
-.flight-icon {
-  position: absolute;
-  left: -4px;
-  top: 4px;
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  opacity: 0.75;
+@media (max-width: 900px) {
+  .flight-field {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 6px 8px;
+    width: 100%;
+  }
+  .flight-field:last-child {
+    border-bottom: none;
+  }
 }
+/* Input, label, button */
 .flight-label {
   font-size: 12px;
   color: #586380;
   margin-bottom: 4px;
   font-weight: 500;
 }
+@media (max-width: 600px) {
+  .flight-label {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+}
 .flight-input {
   background: transparent;
   border: none;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: #252b36;
   outline: none;
   width: 100%;
   padding: 0;
 }
+@media (max-width: 600px) {
+  .flight-input {
+    font-size: 15px;
+  }
+}
 .flight-btn {
   background: #000;
   color: #fff;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
   border: none;
   border-radius: 12px;
-  padding: 12px 24px;
+  padding: 13px 26px;
   display: flex;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
   flex: 0 0 auto;
+  transition: background 0.18s;
 }
-.flight-btn svg {
-  margin-left: 4px;
+.flight-btn:hover {
+  background: #222;
 }
-
-/* Trip Options Styles */
+@media (max-width: 600px) {
+  .flight-btn {
+    width: 100%;
+    font-size: 15px;
+    padding: 11px 0;
+    justify-content: center;
+    border-radius: 9px;
+  }
+}
 .trip-options-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 8px;
   border-top: 1px solid #f0f0f0;
+  gap: 8px;
 }
 .trip-options-left {
   display: flex;
   align-items: center;
   gap: 24px;
 }
-.trip-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-.trip-option input[type="radio"] {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  accent-color: #ff6b35;
-}
-.trip-option label {
-  font-size: 14px;
-  color: #252b36;
-  font-weight: 500;
-  cursor: pointer;
-  margin: 0;
-}
-.trip-option.active label {
-  color: #ff6b35;
+@media (max-width: 900px) {
+  .trip-options-container {
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+    padding-top: 6px;
+  }
+  .trip-options-left {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
 }
 .google-powered {
   display: flex;
@@ -133,45 +182,72 @@ const styles = `
   color: #666;
 }
 .google-logo {
-  width: 60px;
+  width: 50px;
   height: auto;
 }
-
-/* Responsive adjustments */
+@media (max-width: 600px) {
+  .google-logo {
+    width: 36px;
+  }
+}
+.text-60 { font-size: 60px; line-height: 1.1; font-weight: 700;}
+.text-40 { font-size: 40px;}
+.text-30 { font-size: 30px;}
 @media (max-width: 900px) {
-  .book-flight-wrapper {
-    padding: 12px 8px 16px 8px;
-    max-width: 100vw;
+  .text-60 { font-size: 40px;}
+}
+@media (max-width: 600px) {
+  .text-60 { font-size: 28px;}
+  .text-40 { font-size: 24px;}
+  .text-30 { font-size: 17px;}
+}
+.mt-40 { margin-top: 40px;}
+.mb-20 { margin-bottom: 20px;}
+.d-flex { display: flex;}
+.justify-center { justify-content: center;}
+.align-items-center { align-items: center;}
+.text-white { color: #fff;}
+.cursor-pointer { cursor: pointer;}
+.text-12 { font-size: 12px;}
+.fw-500 { font-weight: 500;}
+.rounded-circle { border-radius: 50%;}
+.transition-all { transition: all 0.18s;}
+.shadow-sm { box-shadow: 0 2px 6px 0 rgba(0,0,0,0.08);}
+.bg-orange-500 { background: #f97316;}
+.border-orange-500 { border-color: #f97316 !important;}
+.bg-white { background: #fff;}
+.border-white { border-color: #fff !important;}
+.hover\\:bg-gray-50:hover { background: #f6f6fa;}
+/* Responsive icon row styles */
+.icon-row-container {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+  padding-bottom: 10px;
+}
+.icon-row-container::-webkit-scrollbar { height: 6px; background: transparent; }
+.icon-row-container::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 4px; }
+@media (max-width: 600px) {
+  .icon-row-container {
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 2px 0 12px 2px;
+    scroll-snap-type: x mandatory;
   }
-  .flight-search-container {
-    flex-direction: column;
-    gap: 10px;
+  .icon-row-container > div {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
   }
-  .flight-field {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #e0e0e0;
-    padding: 8px 12px;
-  }
-  .flight-field:last-child {
-    border-bottom: none;
-  }
-  .flight-btn {
-    width: 100%;
-    justify-content: center;
-  }
-  .trip-options-container {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-  }
-  .trip-options-left {
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-}`;
+}
+`;
 
-// Replace icon paths as appropriate for your asset structure
 const fieldIcons = {
   from: "/img/landingpage/icons/flight.png",
   to: "/img/landingpage/icons/flight.png",
@@ -180,10 +256,8 @@ const fieldIcons = {
   direct: "/img/landingpage/icons/tick.png",
 };
 
-// Flight search/book card with trip options
 const BookFlightCard = () => {
   const [visaType, setVisaType] = useState("Tourist");
-
   return (
     <>
       <style>{styles}</style>
@@ -203,16 +277,6 @@ const BookFlightCard = () => {
               defaultValue="United Arab Emirates"
             />
           </div>
-          {/* NATIONALITY */}
-          {/* <div className="flight-field">
-            <span className="flight-label">Nationality</span>
-            <input
-              className="flight-input"
-              type="text"
-              placeholder="Select Nationality"
-              defaultValue="Indian"
-            />
-          </div> */}
           {/* ARRIVAL DATE */}
           <div className="flight-field">
             <span className="flight-label">Date</span>
@@ -233,59 +297,9 @@ const BookFlightCard = () => {
             </svg>
           </button>
         </div>
-
         {/* Visa Type Options Row */}
         <div className="trip-options-container">
-          <div className="trip-options-left">
-            {/* Tourist Visa */}
-            {/* <div
-              className={`trip-option ${
-                visaType === "Tourist" ? "active" : ""
-              }`}
-            >
-              <input
-                type="radio"
-                id="touristVisa"
-                name="visaType"
-                checked={visaType === "Tourist"}
-                onChange={() => setVisaType("Tourist")}
-              />
-              <label htmlFor="touristVisa">Tourist</label>
-            </div> */}
-
-            {/* Business Visa */}
-            {/* <div
-              className={`trip-option ${
-                visaType === "Business" ? "active" : ""
-              }`}
-            >
-              <input
-                type="radio"
-                id="businessVisa"
-                name="visaType"
-                checked={visaType === "Business"}
-                onChange={() => setVisaType("Business")}
-              />
-              <label htmlFor="businessVisa">Business</label>
-            </div> */}
-
-            {/* Transit Visa */}
-            {/* <div
-              className={`trip-option ${
-                visaType === "Transit" ? "active" : ""
-              }`}
-            >
-              <input
-                type="radio"
-                id="transitVisa"
-                name="visaType"
-                checked={visaType === "Transit"}
-                onChange={() => setVisaType("Transit")}
-              />
-              <label htmlFor="transitVisa">Transit</label>
-            </div> */}
-          </div>
-
+          <div className="trip-options-left"></div>
           {/* Google Powered */}
           <div className="google-powered">
             <span>Powered by</span>
@@ -319,7 +333,6 @@ const BookFlightCard = () => {
   );
 };
 
-// Icon button (unchanged)
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="text-center cursor-pointer">
     <div
@@ -346,7 +359,6 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
   </div>
 );
 
-// Icon row (unchanged)
 const IconRow = () => {
   const [activeIcon, setActiveIcon] = useState("Flight");
   const iconData = [
@@ -371,13 +383,7 @@ const IconRow = () => {
   ];
   return (
     <div
-      className="d-flex justify-center align-items-center mt-40 mb-20"
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        gap: "24px",
-        flexWrap: "nowrap",
-      }}
+      className="icon-row-container mt-40 mb-20"
       data-aos="fade-up"
       data-aos-delay="150"
     >
@@ -398,13 +404,11 @@ const IconRow = () => {
   );
 };
 
-// Final combined hero section
 const HeroSection = () => {
   // Redux and router hooks are present if needed for navigation/interactivity
   const { tabs, currentTab } = useSelector((state) => state.hero) || {};
   const dispatch = useDispatch();
   const Router = useRouter();
-
   return (
     <section className="masthead -type-1 z-5">
       <style>{styles}</style>
@@ -414,30 +418,42 @@ const HeroSection = () => {
       <div className="container">
         <div className="row justify-center">
           <div className="col-auto">
-            <div className="text-center" style={{ marginTop: "-100px" }}>
+            <div
+              className="text-center"
+              style={{
+                marginTop: "-100px",
+                paddingTop: "70px",
+                paddingBottom: "20px",
+              }}
+            >
               <h1
-                className="text-60 lg:text-40 md:text-30 text-white"
+                className="text-60 lg:text-40 md:text-30 sm:text-2xl text-white"
                 data-aos="fade-up"
+                style={{ marginBottom: "10px" }}
               >
                 The whole world awaits.
               </h1>
               <p
-                className="text-white mt-6 md:mt-10"
+                className="text-white mt-6 md:mt-10 sm:text-sm"
                 data-aos="fade-up"
                 data-aos-delay="100"
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  marginTop: "10px",
+                  paddingLeft: "15px",
+                  paddingRight: "15px",
+                }}
               >
                 Book a meeting with our travel Agent →
               </p>
             </div>
-
             {/* Icon Row */}
             <IconRow />
-
             {/* Book Flight Card */}
             <div style={{ paddingTop: "70px" }}>
               <BookFlightCard />
             </div>
-
             {/* Travel Agent Meeting Link */}
             <div
               style={{ margintop: "-100px" }}

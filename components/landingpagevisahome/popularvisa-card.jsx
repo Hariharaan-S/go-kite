@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -16,11 +16,17 @@ import {
   AU,
   BD,
 } from "country-flag-icons/react/3x2";
+import "./styles/popularvisa-card.css";
 
 const VISIBLE_CARDS = 5;
+const VISIBLE_VACCINATION_CARDS = 1; // Show one card at a time for mobile
 
 const VisaCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentVaccinationSlide, setCurrentVaccinationSlide] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const vaccinationContainerRef = useRef(null);
 
   const popularVisas = [
     {
@@ -103,6 +109,7 @@ const VisaCards = () => {
   ];
 
   const totalSlides = popularVisas.length;
+  const totalVaccinationSlides = vaccinationCountries.length;
 
   const nextSlide = () => {
     setCurrentSlide((prev) =>
@@ -118,7 +125,46 @@ const VisaCards = () => {
     );
   };
 
-  // Compute the visible cards window with wrapping
+  const nextVaccinationSlide = () => {
+    setCurrentVaccinationSlide((prev) =>
+      prev + 1 >= totalVaccinationSlides ? 0 : prev + 1
+    );
+  };
+
+  const prevVaccinationSlide = () => {
+    setCurrentVaccinationSlide((prev) =>
+      prev - 1 < 0 ? totalVaccinationSlides - 1 : prev - 1
+    );
+  };
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - vaccinationContainerRef.current.offsetLeft);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - vaccinationContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Multiplied by 2 to make dragging more sensitive
+
+    if (walk > 100) {
+      prevVaccinationSlide();
+      setIsDragging(false);
+    } else if (walk < -100) {
+      nextVaccinationSlide();
+      setIsDragging(false);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
   const getVisibleVisas = () => {
     if (totalSlides <= VISIBLE_CARDS) return popularVisas;
     if (currentSlide + VISIBLE_CARDS <= totalSlides) {
@@ -133,179 +179,34 @@ const VisaCards = () => {
 
   const visibleVisas = getVisibleVisas();
 
-  const VisaIcon = () => (
-    <div
-      style={{
-        position: "absolute",
-        top: "8px",
-        right: "8px",
-        backgroundColor: "#e3f2fd",
-        padding: "4px 8px",
-        borderRadius: "4px",
-        fontSize: "10px",
-        color: "#1976d2",
-        fontWeight: "500",
-      }}
-    >
-      VISA
-    </div>
-  );
+  const VisaIcon = () => <div className="visa-icon">VISA</div>;
 
   return (
-    <div
-      style={{
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-        backgroundColor: "#f8f9fa",
-        padding: "24px",
-        minHeight: "100vh",
-      }}
-    >
-      {/* Header with dots */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "24px",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: "24px",
-            fontWeight: "600",
-            color: "#1a1a1a",
-            margin: "0",
-          }}
-        >
-          Popular Visa
-        </h1>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-          }}
-        >
-          <button
-            onClick={prevSlide}
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              border: "none",
-              backgroundColor: "#000",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+    <div className="visa-container">
+      {/* Header */}
+      <div className="visa-header">
+        <h1 className="visa-title">Popular Visa</h1>
+        <div className="visa-controls">
+          <button onClick={prevSlide} className="visa-btn">
             <ChevronLeft size={18} />
           </button>
-          <button
-            onClick={nextSlide}
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              border: "none",
-              backgroundColor: "#000",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <button onClick={nextSlide} className="visa-btn">
             <ChevronRight size={18} />
           </button>
         </div>
       </div>
 
       {/* Popular Visa Cards */}
-      <div
-        style={{
-          display: "flex",
-          gap: "16px",
-          marginBottom: "32px",
-          overflowX: "hidden",
-          paddingBottom: "8px",
-        }}
-      >
+      <div className="visa-card-list">
         {visibleVisas.map((visa, index) => (
-          <div
-            key={index}
-            style={{
-              backgroundColor: "white",
-              borderRadius: "12px",
-              padding: "16px",
-              minWidth: "300px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-              border: "1px solid #e5e7eb",
-              cursor: "pointer",
-              transition: "transform 0.2s ease",
-            }}
-          >
-            <div
-              style={{
-                fontSize: "32px",
-                marginBottom: "8px",
-              }}
-            >
-              <visa.Flag
-                style={{ width: "48px", height: "32px", objectFit: "cover" }}
-              />
-            </div>
-
-            <h3
-              style={{
-                fontSize: "16px",
-                fontWeight: "600",
-                color: "#1a1a1a",
-                margin: "0 0 4px 0",
-              }}
-            >
-              {visa.country}
-            </h3>
-
-            <p
-              style={{
-                fontSize: "12px",
-                color: "#6b7280",
-                margin: "0 0 12px 0",
-              }}
-            >
-              {visa.type}
-            </p>
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
+          <div key={index} className="visa-card">
+            <visa.Flag className="flag" />
+            <h3 className="visa-country">{visa.country}</h3>
+            <p className="visa-type">{visa.type}</p>
+            <div className="visa-price-row">
               <div>
-                <span
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    color: "#1a1a1a",
-                  }}
-                >
-                  {visa.price}
-                </span>
-                <span
-                  style={{
-                    fontSize: "12px",
-                    color: "#6b7280",
-                    marginLeft: "4px",
-                  }}
-                >
-                  {visa.priceText}
-                </span>
+                <span className="visa-price">{visa.price}</span>
+                <span className="visa-price-text">{visa.priceText}</span>
               </div>
               <DetailsIcon size={16} color="#6b7280" />
             </div>
@@ -313,99 +214,54 @@ const VisaCards = () => {
         ))}
       </div>
 
-      {/* Vaccination - Trending Countries */}
-      <h2
-        style={{
-          fontSize: "20px",
-          fontWeight: "600",
-          color: "#1a1a1a",
-          margin: "0 0 20px 0",
-        }}
-      >
-        Vaccination – Trending Countries
-      </h2>
+      {/* Vaccination Countries */}
+      <h2 className="section-title">Vacation – Trending Countries</h2>
 
+      {/* Mobile Carousel */}
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "16px",
-        }}
+        ref={vaccinationContainerRef}
+        className="vaccination-carousel"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
       >
-        {vaccinationCountries.map((country, index) => (
-          <div
-            key={index}
-            style={{
-              backgroundColor: "white",
-              borderRadius: "12px",
-              padding: "16px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-              border: "1px solid #e5e7eb",
-              cursor: "pointer",
-              transition: "transform 0.2s ease",
-              position: "relative",
-            }}
-          >
-            {country.hasVisaIcon && <VisaIcon />}
-
-            <div
-              style={{
-                fontSize: "24px",
-                marginBottom: "8px",
-              }}
-            >
-              <country.Flag
-                style={{ width: "48px", height: "32px", objectFit: "cover" }}
-              />
+        <div
+          className="vaccination-carousel-inner"
+          style={{
+            transform: `translateX(-${currentVaccinationSlide * 100}%)`,
+          }}
+        >
+          {vaccinationCountries.map((country, index) => (
+            <div key={index} className="vaccination-card">
+              {country.hasVisaIcon && <VisaIcon />}
+              <country.Flag className="flag" />
+              <h3 className="visa-country">{country.country}</h3>
+              <p className="visa-type">{country.subtitle}</p>
+              <div className="visa-price-row">
+                <div>
+                  <span className="visa-price">{country.price}</span>
+                  <span className="visa-price-text">{country.priceText}</span>
+                </div>
+                <ChevronRight size={16} color="#6b7280" />
+              </div>
             </div>
+          ))}
+        </div>
+      </div>
 
-            <h3
-              style={{
-                fontSize: "16px",
-                fontWeight: "600",
-                color: "#1a1a1a",
-                margin: "0 0 4px 0",
-              }}
-            >
-              {country.country}
-            </h3>
-
-            <p
-              style={{
-                fontSize: "12px",
-                color: "#6b7280",
-                margin: "0 0 12px 0",
-              }}
-            >
-              {country.subtitle}
-            </p>
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
+      {/* Desktop Grid */}
+      <div className="vaccination-grid">
+        {vaccinationCountries.map((country, index) => (
+          <div key={index} className="vaccination-card">
+            {country.hasVisaIcon && <VisaIcon />}
+            <country.Flag className="flag" />
+            <h3 className="visa-country">{country.country}</h3>
+            <p className="visa-type">{country.subtitle}</p>
+            <div className="visa-price-row">
               <div>
-                <span
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    color: "#1a1a1a",
-                  }}
-                >
-                  {country.price}
-                </span>
-                <span
-                  style={{
-                    fontSize: "12px",
-                    color: "#6b7280",
-                    marginLeft: "4px",
-                  }}
-                >
-                  {country.priceText}
-                </span>
+                <span className="visa-price">{country.price}</span>
+                <span className="visa-price-text">{country.priceText}</span>
               </div>
               <ChevronRight size={16} color="#6b7280" />
             </div>
@@ -413,41 +269,27 @@ const VisaCards = () => {
         ))}
       </div>
 
-      {/* Visa Rules Announcement */}
-      <div
-        style={{
-          marginTop: "32px",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "20px",
-            fontWeight: "600",
-            color: "#1a1a1a",
-            margin: "0 0 20px 0",
-          }}
-        >
-          Visa Rules Announcement
-        </h2>
+      {/* Carousel Navigation */}
+      <div className="vaccination-carousel-nav">
+        {vaccinationCountries.map((_, index) => (
+          <button
+            key={index}
+            className={`vaccination-dot ${
+              index === currentVaccinationSlide ? "active" : ""
+            }`}
+            onClick={() => setCurrentVaccinationSlide(index)}
+          />
+        ))}
+      </div>
 
-        <div
-          style={{
-            width: "300px",
-            borderRadius: "12px",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-            border: "1px solid #e5e7eb",
-            cursor: "pointer",
-          }}
-        >
+      {/* Visa Rules Image */}
+      <div className="visa-rules">
+        <h2 className="section-title">Visa Rules Announcement</h2>
+        <div className="rules-card">
           <img
             src="/img/general/visa-card.png"
             alt="Visa Rules"
-            style={{
-              width: "300px",
-              height: "auto",
-              objectFit: "cover",
-              borderRadius: "12px",
-            }}
+            className="rules-img"
           />
         </div>
       </div>

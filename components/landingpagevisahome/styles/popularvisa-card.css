@@ -1,0 +1,232 @@
+.visa-container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+    sans-serif;
+  background-color: #f8f9fa;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+.visa-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.visa-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.visa-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.visa-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visa-card-list {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  overflow-x: hidden;
+  padding-bottom: 8px;
+}
+
+.visa-card,
+.vaccination-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 300px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+
+.flag {
+  width: 48px;
+  height: 32px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.visa-country {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+}
+
+.visa-type {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 12px 0;
+}
+
+.visa-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visa-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.visa-price-text {
+  font-size: 12px;
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+.visa-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #e3f2fd;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 20px 0;
+}
+
+.vaccination-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.visa-rules {
+  margin-top: 32px;
+}
+
+.rules-card {
+  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+}
+
+.rules-img {
+  width: 300px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.vaccination-carousel {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  cursor: grab;
+}
+
+.vaccination-carousel:active {
+  cursor: grabbing;
+}
+
+.vaccination-carousel-inner {
+  display: flex;
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+.vaccination-carousel-nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  gap: 8px;
+}
+
+.vaccination-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.vaccination-dot.active {
+  background-color: #1976d2;
+}
+
+.vaccination-card {
+  flex: 0 0 100%;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .vaccination-carousel {
+    display: none;
+  }
+
+  .vaccination-carousel-nav {
+    display: none;
+  }
+
+  .vaccination-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+
+  .vaccination-card {
+    flex: none;
+    width: auto;
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 767px) {
+  .vaccination-carousel-inner {
+    display: flex;
+    transition: transform 0.3s ease;
+    width: 100%;
+  }
+
+  .vaccination-card {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .vaccination-grid {
+    display: none;
+  }
+}

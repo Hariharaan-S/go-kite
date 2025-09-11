@@ -2,10 +2,27 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const VISIBLE_CARDS_PER_ROW = 4;
-
 const TravelVisaCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Add responsive check
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Check on initial load
+    checkMobile();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkMobile);
+
+    // Cleanup listener
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const VISIBLE_CARDS_PER_ROW = isMobile ? 1 : 4;
 
   const destinations = [
     {
@@ -158,7 +175,7 @@ const TravelVisaCards = () => {
   return (
     <div
       style={{
-        padding: "20px",
+        padding: isMobile ? "10px" : "20px",
         backgroundColor: "#f8f9fa",
         minHeight: "100vh",
         fontFamily: "system-ui, -apple-system, sans-serif",
@@ -168,12 +185,22 @@ const TravelVisaCards = () => {
       <div
         style={{
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
           alignItems: "center",
           justifyContent: "space-between",
           marginBottom: "24px",
+          gap: isMobile ? "15px" : "0",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            alignItems: "center",
+            gap: "20px",
+            width: isMobile ? "100%" : "auto",
+          }}
+        >
           {/* Search Input */}
           <div
             style={{
@@ -183,7 +210,9 @@ const TravelVisaCards = () => {
               borderRadius: "50px",
               padding: "12px 20px",
               border: "2px solid #e5e7eb",
-              minWidth: "300px",
+              minWidth: isMobile ? "100%" : "300px",
+              width: isMobile ? "100%" : "auto",
+              marginBottom: isMobile ? "10px" : "0",
             }}
           >
             <span
@@ -206,7 +235,15 @@ const TravelVisaCards = () => {
           </div>
 
           {/* Category Buttons */}
-          <div style={{ display: "flex", gap: "16px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "10px",
+              justifyContent: isMobile ? "center" : "flex-start",
+              width: isMobile ? "100%" : "auto",
+            }}
+          >
             {categories.map((category, index) => (
               <button
                 key={index}
@@ -219,6 +256,7 @@ const TravelVisaCards = () => {
                   fontSize: "14px",
                   cursor: "pointer",
                   fontWeight: index === 0 ? "500" : "400",
+                  margin: isMobile ? "5px" : "0",
                 }}
               >
                 {category}
@@ -227,8 +265,16 @@ const TravelVisaCards = () => {
           </div>
         </div>
 
-        {/* Navigation Buttons for First Row */}
-        <div style={{ display: "flex", gap: "8px" }}>
+        {/* Navigation Buttons */}
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            marginTop: isMobile ? "10px" : "0",
+            justifyContent: isMobile ? "center" : "flex-end",
+            width: isMobile ? "100%" : "auto",
+          }}
+        >
           <button
             onClick={prevSlide}
             style={{
@@ -268,9 +314,12 @@ const TravelVisaCards = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gridTemplateColumns: isMobile
+            ? "1fr"
+            : "repeat(auto-fit, minmax(300px, 1fr))",
           gap: "20px",
           maxWidth: "1400px",
+          margin: "0 auto",
         }}
       >
         {/* First Row with Carousel */}
@@ -284,6 +333,8 @@ const TravelVisaCards = () => {
               position: "relative",
               cursor: "pointer",
               transition: "transform 0.2s ease-in-out",
+              width: "100%",
+              maxWidth: isMobile ? "100%" : "auto",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-4px)";
@@ -296,7 +347,7 @@ const TravelVisaCards = () => {
             <div
               style={{
                 position: "relative",
-                height: "200px",
+                height: isMobile ? "250px" : "200px",
                 backgroundImage: `url(${destination.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -369,8 +420,9 @@ const TravelVisaCards = () => {
               <div
                 style={{
                   display: "flex",
+                  flexDirection: isMobile ? "column" : "row",
                   justifyContent: "space-between",
-                  alignItems: "flex-start",
+                  alignItems: isMobile ? "flex-start" : "center",
                   marginBottom: "8px",
                 }}
               >
@@ -380,6 +432,7 @@ const TravelVisaCards = () => {
                     fontWeight: "600",
                     color: "#111827",
                     margin: "0",
+                    marginBottom: isMobile ? "10px" : "0",
                     flex: 1,
                   }}
                 >
@@ -389,7 +442,7 @@ const TravelVisaCards = () => {
                   style={{
                     fontSize: "14px",
                     color: "#6b7280",
-                    marginLeft: "8px",
+                    marginLeft: isMobile ? "0" : "8px",
                   }}
                 >
                   {destination.visaType}
@@ -439,6 +492,8 @@ const TravelVisaCards = () => {
               position: "relative",
               cursor: "pointer",
               transition: "transform 0.2s ease-in-out",
+              width: "100%",
+              maxWidth: isMobile ? "100%" : "auto",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-4px)";
@@ -451,7 +506,7 @@ const TravelVisaCards = () => {
             <div
               style={{
                 position: "relative",
-                height: "200px",
+                height: isMobile ? "250px" : "200px",
                 backgroundImage: `url(${destination.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -484,8 +539,9 @@ const TravelVisaCards = () => {
               <div
                 style={{
                   display: "flex",
+                  flexDirection: isMobile ? "column" : "row",
                   justifyContent: "space-between",
-                  alignItems: "flex-start",
+                  alignItems: isMobile ? "flex-start" : "center",
                   marginBottom: "8px",
                 }}
               >
@@ -495,6 +551,7 @@ const TravelVisaCards = () => {
                     fontWeight: "600",
                     color: "#111827",
                     margin: "0",
+                    marginBottom: isMobile ? "10px" : "0",
                     flex: 1,
                   }}
                 >
@@ -504,7 +561,7 @@ const TravelVisaCards = () => {
                   style={{
                     fontSize: "14px",
                     color: "#6b7280",
-                    marginLeft: "8px",
+                    marginLeft: isMobile ? "0" : "8px",
                   }}
                 >
                   {destination.visaType}
