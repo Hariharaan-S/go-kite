@@ -4,6 +4,13 @@
     /* full height section */
 }
 
+.search-menu {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin-top: -14rem;
+}
+
 .search-section-header {
     display: flex;
     flex-direction: row;
@@ -62,8 +69,28 @@
 
 .search-sub-heading {
     position: relative;
-    margin-top: 12rem;
+    margin-top: -8rem;
     margin-left: 2.7rem;
     font-size: 2.5rem !important;
     color: #FFF !important;
+}
+
+
+@media screen and (max-width: 400px) {
+    .search-section-header {
+        top: 0rem;
+    }
+
+    .search-section-header-part-1-2 h2 {
+        font-size: 1.9rem !important;
+    }
+
+    .search-section-header-part-2 {
+        display: none;
+    }
+
+    .search-sub-heading {
+        margin-top: -3rem;
+        margin-left: 1rem;
+    }
 }

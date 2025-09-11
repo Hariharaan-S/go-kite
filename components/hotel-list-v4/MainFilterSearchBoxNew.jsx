@@ -13,8 +13,10 @@ const MainFilterSearchBoxNew = () => {
                     <div className="search-section-header-part-2"><p>Discover your next adventure with our curated list of the best recommendation trips tailored just for you! . whether you’re seeking relaxation, adventure or exploration, let us guide you to unforgettable destination that will create
                         lasting memories</p>
                     </div>
+
+
                 </div>
-                <GlassmorphMenu styles={{ top: '18rem' }} />
+                <div className="search-menu"><GlassmorphMenu /></div>
                 <h2 className="search-sub-heading">Beaches</h2>
 
                 {/* End Location */}
