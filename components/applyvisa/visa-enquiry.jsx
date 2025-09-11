@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import "./styles/visa-enquiry.styles.css"; // Import the new stylesheet
 
 const tabList = ["Types Of visa", "Visa Process", "Visa Eligibility", "FAQ"];
 
@@ -68,18 +69,10 @@ const VisaTabsAndCards = () => {
       display: "flex",
       flexDirection: "column",
       position: "relative",
-      minWidth: 450,
+      width: "100%",
       maxWidth: 500,
       transition: "transform .12s",
     };
-
-    if (index < 2) {
-      return {
-        ...baseStyle,
-        transform: "scale(1.05)",
-        zIndex: 10,
-      };
-    }
 
     return {
       ...baseStyle,
@@ -89,6 +82,7 @@ const VisaTabsAndCards = () => {
 
   return (
     <div
+      className="visa-enquiry-container"
       style={{
         background: "#f7fcff",
         minHeight: "100vh",
@@ -98,6 +92,7 @@ const VisaTabsAndCards = () => {
     >
       {/* Tabs */}
       <div
+        className="visa-tabs-container"
         style={{
           width: "100%",
           background: "#ededed",
@@ -105,14 +100,17 @@ const VisaTabsAndCards = () => {
           display: "flex",
           borderBottom: "1px solid #d8d8d8",
           fontFamily: "inherit",
+          flexWrap: "wrap",
+          overflowX: "auto",
         }}
       >
         {tabList.map((tab, idx) => (
           <div
             key={tab}
             onClick={() => setActiveTab(idx)}
+            className="visa-tab"
             style={{
-              flex: 1,
+              flex: "1 0 auto",
               textAlign: "center",
               fontWeight: 500,
               fontSize: 16,
@@ -121,8 +119,10 @@ const VisaTabsAndCards = () => {
                 idx === activeTab ? "3px solid #222" : "3px solid transparent",
               background: "none",
               cursor: "pointer",
-              padding: "16px 0 13px 0",
+              padding: "16px 12px",
               transition: "border 0.16s",
+              minWidth: 100,
+              whiteSpace: "nowrap",
             }}
           >
             {tab}
@@ -132,30 +132,43 @@ const VisaTabsAndCards = () => {
 
       {/* Cards */}
       <div
+        className="visa-cards-container"
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "32px",
-          marginTop: 36,
+          gap: "16px",
+          marginTop: 16,
           justifyContent: "center",
           alignItems: "center",
           fontFamily: "inherit",
-          padding: "0 20px",
+          padding: "0 16px",
         }}
       >
-        {/* First Row */}
+        {/* First Row - 2 Cards */}
         <div
+          className="visa-cards-first-row"
           style={{
             display: "flex",
+            flexWrap: "wrap",
             gap: "48px",
             justifyContent: "center",
             width: "100%",
           }}
         >
           {visaCards.slice(0, 2).map((card, idx) => (
-            <div key={idx} style={getCardStyle(idx)}>
-              {/* Header */}
+            <div
+              key={idx}
+              className="visa-card"
+              style={{
+                ...getCardStyle(idx),
+                maxWidth: 450,
+                width: "calc(50% - 24px)", // Adjust width for two cards
+                margin: "0 auto",
+              }}
+            >
+              {/* Card Header */}
               <div
+                className="visa-card-header"
                 style={{
                   background: "#000",
                   color: "#FFC700",
@@ -171,6 +184,7 @@ const VisaTabsAndCards = () => {
                 {card.title}
                 {card.visaBadge && (
                   <span
+                    className="visa-card-header-badge"
                     style={{
                       background: "#ffcf32",
                       color: "#222",
@@ -188,10 +202,11 @@ const VisaTabsAndCards = () => {
                 )}
               </div>
 
-              {/* Card Data */}
+              {/* Card Content */}
               <div
+                className="visa-card-content"
                 style={{
-                  padding: "16px 22px 6px 22px",
+                  padding: "12px 16px", // Reduced padding
                   fontSize: 14,
                   flex: 1,
                   display: "flex",
@@ -199,6 +214,7 @@ const VisaTabsAndCards = () => {
                   justifyContent: "space-between",
                 }}
               >
+                {/* Card Data */}
                 <div>
                   {card.data.map((d) => (
                     <div
@@ -209,14 +225,14 @@ const VisaTabsAndCards = () => {
                         marginBottom: 5,
                       }}
                     >
-                      <span style={{ color: "#555", fontSize: 13 }}>
+                      <span style={{ color: "#555", fontSize: 12 }}>
                         {d.label}
                       </span>
                       <span
                         style={{
                           fontWeight: d.label === "Visa Type" ? 600 : 700,
                           color: d.label === "Visa Type" ? "#222" : "#111",
-                          fontSize: 14,
+                          fontSize: 13, // Slightly smaller font
                         }}
                       >
                         {d.value}
@@ -227,79 +243,87 @@ const VisaTabsAndCards = () => {
 
                 {/* Fees Section */}
                 <div
+                  className="visa-card-fees"
                   style={{
                     display: "flex",
-                    alignItems: "flex-end",
+                    flexDirection: "column", // Stack fees vertically on mobile
+                    alignItems: "stretch",
                     borderTop: "1.5px solid #ebebeb",
                     paddingTop: 12,
-                    paddingBottom: 2,
-                    paddingLeft: 2,
-                    paddingRight: 2,
                     marginTop: 14,
-                    minHeight: 55,
-                    position: "relative",
+                    gap: 10, // Space between fee items
                   }}
                 >
-                  {/* Fee columns */}
-                  <div style={{ display: "flex", gap: 42, flex: 1 }}>
-                    {/* Form Fee + Tax */}
-                    <div style={{ minWidth: 100 }}>
+                  {/* Fee Items */}
+                  {card.fees.slice(0, 2).map((fee) => (
+                    <div
+                      key={fee.label}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
                       <div
                         style={{
                           color: "#757575",
                           fontSize: 12,
                           fontWeight: 500,
-                          marginBottom: 2,
                         }}
                       >
-                        {card.fees[0].label}
+                        {fee.label}
                       </div>
-                      <div
-                        style={{ fontWeight: 700, color: "#222", fontSize: 18 }}
-                      >
-                        {card.fees[0].value}
-                      </div>
-                    </div>
-                    {/* Processing Fee */}
-                    <div style={{ minWidth: 100 }}>
                       <div
                         style={{
-                          color: "#757575",
-                          fontSize: 12,
-                          fontWeight: 500,
-                          marginBottom: 2,
+                          fontWeight: 700,
+                          color: "#222",
+                          fontSize: 16,
                         }}
                       >
-                        {card.fees[1].label}
-                      </div>
-                      <div
-                        style={{ fontWeight: 700, color: "#222", fontSize: 18 }}
-                      >
-                        {card.fees[1].value}
+                        {fee.value}
                       </div>
                     </div>
-                  </div>
-                  {/* Pay At (Total) */}
+                  ))}
+
+                  {/* Total Fee */}
                   <div
                     style={{
-                      marginLeft: "auto",
-                      color: "#111",
-                      fontWeight: 900,
-                      fontSize: 24,
-                      textAlign: "right",
-                      minWidth: 100,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      borderTop: "1px solid #ebebeb",
+                      paddingTop: 8,
+                      marginTop: 8,
                     }}
                   >
-                    {card.fees[2].value}
+                    <div
+                      style={{
+                        color: "#111",
+                        fontWeight: 900,
+                        fontSize: 18,
+                      }}
+                    >
+                      Pay at
+                    </div>
+                    <div
+                      style={{
+                        fontWeight: 900,
+                        color: "#111",
+                        fontSize: 20,
+                      }}
+                    >
+                      {card.fees[2].value}
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Footer Button */}
               <div
+                className="visa-card-footer"
                 style={{
                   borderTop: "1.5px solid #ebebeb",
-                  padding: "12px 22px",
+                  padding: "10px 16px", // Reduced padding
                   display: "flex",
                   alignItems: "center",
                   background: "#fff",
@@ -308,10 +332,11 @@ const VisaTabsAndCards = () => {
                 }}
               >
                 <span
+                  className="visa-card-footer-text"
                   style={{
                     color: "#00aff0",
                     fontWeight: 700,
-                    fontSize: 16,
+                    fontSize: 14, // Slightly smaller font
                     letterSpacing: "0.2px",
                     cursor: "pointer",
                   }}
@@ -323,7 +348,7 @@ const VisaTabsAndCards = () => {
                     marginLeft: "auto",
                     color: "#f5be23",
                     fontWeight: "bold",
-                    fontSize: 22,
+                    fontSize: 20,
                     verticalAlign: "middle",
                     transform: "translateY(1px)",
                   }}
@@ -335,8 +360,9 @@ const VisaTabsAndCards = () => {
           ))}
         </div>
 
-        {/* Second Row */}
+        {/* Second Row - 1 Card */}
         <div
+          className="visa-cards-second-row"
           style={{
             display: "flex",
             justifyContent: "center",
@@ -344,8 +370,17 @@ const VisaTabsAndCards = () => {
           }}
         >
           {visaCards.slice(2).map((card, idx) => (
-            <div key={idx + 2} style={getCardStyle(2)}>
-              {/* Header */}
+            <div
+              key={idx + 2}
+              className="visa-card"
+              style={{
+                ...getCardStyle(2),
+                maxWidth: 450,
+                width: "calc(50% + 24px)", // Slightly wider for single card
+                margin: "0 auto",
+              }}
+            >
+              {/* Card Header */}
               <div
                 style={{
                   background: "#000",
@@ -379,17 +414,19 @@ const VisaTabsAndCards = () => {
                 )}
               </div>
 
-              {/* Card Data */}
+              {/* Card Content */}
               <div
+                className="visa-card-content"
                 style={{
-                  padding: "19px 25px 7px 26px",
-                  fontSize: 15,
+                  padding: "12px 16px", // Reduced padding
+                  fontSize: 14,
                   flex: 1,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                 }}
               >
+                {/* Card Data */}
                 <div>
                   {card.data.map((d) => (
                     <div
@@ -397,14 +434,17 @@ const VisaTabsAndCards = () => {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        marginBottom: 6,
+                        marginBottom: 5,
                       }}
                     >
-                      <span style={{ color: "#555" }}>{d.label}</span>
+                      <span style={{ color: "#555", fontSize: 12 }}>
+                        {d.label}
+                      </span>
                       <span
                         style={{
                           fontWeight: d.label === "Visa Type" ? 600 : 700,
                           color: d.label === "Visa Type" ? "#222" : "#111",
+                          fontSize: 13, // Slightly smaller font
                         }}
                       >
                         {d.value}
@@ -415,79 +455,87 @@ const VisaTabsAndCards = () => {
 
                 {/* Fees Section */}
                 <div
+                  className="visa-card-fees"
                   style={{
                     display: "flex",
-                    alignItems: "flex-end",
+                    flexDirection: "column", // Stack fees vertically on mobile
+                    alignItems: "stretch",
                     borderTop: "1.5px solid #ebebeb",
-                    paddingTop: 14,
-                    paddingBottom: 2,
-                    paddingLeft: 2,
-                    paddingRight: 2,
-                    marginTop: 16,
-                    minHeight: 60,
-                    position: "relative",
+                    paddingTop: 12,
+                    marginTop: 14,
+                    gap: 10, // Space between fee items
                   }}
                 >
-                  {/* Fee columns */}
-                  <div style={{ display: "flex", gap: 52, flex: 1 }}>
-                    {/* Form Fee + Tax */}
-                    <div style={{ minWidth: 108 }}>
+                  {/* Fee Items */}
+                  {card.fees.slice(0, 2).map((fee) => (
+                    <div
+                      key={fee.label}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
                       <div
                         style={{
                           color: "#757575",
-                          fontSize: 13,
+                          fontSize: 12,
                           fontWeight: 500,
-                          marginBottom: 2,
                         }}
                       >
-                        {card.fees[0].label}
+                        {fee.label}
                       </div>
-                      <div
-                        style={{ fontWeight: 700, color: "#222", fontSize: 20 }}
-                      >
-                        {card.fees[0].value}
-                      </div>
-                    </div>
-                    {/* Processing Fee */}
-                    <div style={{ minWidth: 108 }}>
                       <div
                         style={{
-                          color: "#757575",
-                          fontSize: 13,
-                          fontWeight: 500,
-                          marginBottom: 2,
+                          fontWeight: 700,
+                          color: "#222",
+                          fontSize: 16,
                         }}
                       >
-                        {card.fees[1].label}
-                      </div>
-                      <div
-                        style={{ fontWeight: 700, color: "#222", fontSize: 20 }}
-                      >
-                        {card.fees[1].value}
+                        {fee.value}
                       </div>
                     </div>
-                  </div>
-                  {/* Pay At (Total) */}
+                  ))}
+
+                  {/* Total Fee */}
                   <div
                     style={{
-                      marginLeft: "auto",
-                      color: "#111",
-                      fontWeight: 900,
-                      fontSize: 28,
-                      textAlign: "right",
-                      minWidth: 100,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      borderTop: "1px solid #ebebeb",
+                      paddingTop: 8,
+                      marginTop: 8,
                     }}
                   >
-                    {card.fees[2].value}
+                    <div
+                      style={{
+                        color: "#111",
+                        fontWeight: 900,
+                        fontSize: 18,
+                      }}
+                    >
+                      Pay at
+                    </div>
+                    <div
+                      style={{
+                        fontWeight: 900,
+                        color: "#111",
+                        fontSize: 20,
+                      }}
+                    >
+                      {card.fees[2].value}
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Footer Button */}
               <div
+                className="visa-card-footer"
                 style={{
                   borderTop: "1.5px solid #ebebeb",
-                  padding: "13px 24px 11px 26px",
+                  padding: "10px 16px", // Reduced padding
                   display: "flex",
                   alignItems: "center",
                   background: "#fff",
@@ -496,10 +544,11 @@ const VisaTabsAndCards = () => {
                 }}
               >
                 <span
+                  className="visa-card-footer-text"
                   style={{
                     color: "#00aff0",
                     fontWeight: 700,
-                    fontSize: 18,
+                    fontSize: 14, // Slightly smaller font
                     letterSpacing: "0.2px",
                     cursor: "pointer",
                   }}
@@ -511,7 +560,7 @@ const VisaTabsAndCards = () => {
                     marginLeft: "auto",
                     color: "#f5be23",
                     fontWeight: "bold",
-                    fontSize: 25,
+                    fontSize: 20,
                     verticalAlign: "middle",
                     transform: "translateY(1px)",
                   }}
