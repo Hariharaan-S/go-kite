@@ -2,7 +2,7 @@
 import { useState } from "react";
 import "./menu.css";
 
-const GlassmorphMenu = () => {
+const GlassmorphMenu = ({ styles }) => {
     const [active, setActive] = useState(0);
 
     const menuItems = [
@@ -17,7 +17,7 @@ const GlassmorphMenu = () => {
     ];
 
     return (
-        <div className="glassmorph-menu">
+        <div className="glassmorph-menu" style={styles}>
             <div className="menu-items">
                 {menuItems.map((item, index) => (
                     <div

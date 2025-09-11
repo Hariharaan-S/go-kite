@@ -1,0 +1,69 @@
+.mainSearch {
+    height: 70vh;
+    background: url("/img/holidays/recom-sect.jpg") center/cover no-repeat;
+    /* full height section */
+}
+
+.search-section-header {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    width: 80%;
+    position: relative;
+    margin: 3rem 3rem;
+}
+
+/* Make part-1 a column so h3 is above h2 */
+.search-section-header-part-1 {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    row-gap: 0.5rem;
+}
+
+.search-section-header-part-1 {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    flex: 1.2;
+    /* take more space */
+}
+
+.search-section-header-part-2 {
+    padding-left: 10.5rem;
+    margin-top: 3rem;
+    flex: 2;
+    /* shrink the paragraph area */
+}
+
+.search-section-header-part-1-1 h3 {
+    font-size: 1.2rem !important;
+    color: #FFFFFF;
+    font-style: italic;
+    font-weight: 400 !important;
+}
+
+
+.search-section-header-part-1-2 h2 {
+    font-size: 2.3rem !important;
+    color: #FFFFFF;
+    line-height: 1.2;
+    /* adds breathing space */
+    max-width: 100%;
+    /* allows full width usage */
+}
+
+.search-section-header-part-2 p {
+    font-size: 1.2rem !important;
+    font-weight: 100 !important;
+    color: #FFFFFF !important;
+    line-height: 1.5;
+}
+
+.search-sub-heading {
+    position: relative;
+    margin-top: 12rem;
+    margin-left: 2.7rem;
+    font-size: 2.5rem !important;
+    color: #FFF !important;
+}
