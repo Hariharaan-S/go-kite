@@ -2,10 +2,15 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./styles/VacationCard.css";
-
+import { useRouter } from "next/navigation";
 
 const VacationDestinations = () => {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const handleCardClick = (destinationId) => {
+    router.push(`/details-page?id=${destinationId}`);
+  };
 
   const destinations = [
     {
@@ -52,7 +57,8 @@ const VacationDestinations = () => {
   const prevSlide = () => {
     setCurrentSlide((prev) =>
       prev - VISIBLE_CARDS < 0
-        ? totalDestinations - (totalDestinations % VISIBLE_CARDS || VISIBLE_CARDS)
+        ? totalDestinations -
+          (totalDestinations % VISIBLE_CARDS || VISIBLE_CARDS)
         : prev - VISIBLE_CARDS
     );
   };
@@ -89,7 +95,11 @@ const VacationDestinations = () => {
 
       <div className="cards-container">
         {visibleDestinations.map((destination) => (
-          <div key={destination.id} className="destination-card">
+          <div
+            key={destination.id}
+            className="destination-card"
+            onClick={() => handleCardClick(destination.id)}
+          >
             <div
               className="card-bg-image"
               style={{ backgroundImage: `url(${destination.image})` }}

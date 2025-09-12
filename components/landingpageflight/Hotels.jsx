@@ -2,11 +2,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Heart, Star } from "lucide-react";
 import "./styles/hotels.css";
+import { useRouter } from "next/navigation";
 
 const PopularActivities = () => {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  const handleCardClick = (activityId) => {
+    router.push(`/details-page?id=${activityId}`);
+  };
 
   const activitiesData = [
     {
@@ -191,7 +197,11 @@ const PopularActivities = () => {
 
       <div ref={carouselRef} className="activities-cards-container">
         {activitiesData.map((item) => (
-          <div key={item.id} className="activity-card">
+          <div
+            key={item.id}
+            className="activity-card"
+            onClick={() => handleCardClick(item.id)}
+          >
             <div className="image-container">
               <img src={item.img} alt={item.title} />
               <div className="country-flag">{item.countryFlag}</div>
