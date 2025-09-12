@@ -1,5 +1,4 @@
-
-'use client'
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -10,28 +9,27 @@ import isTextMatched from "../../utils/isTextMatched";
 const Tours = () => {
   var settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
     responsive: [
       {
         breakpoint: 992,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
         },
       },
-
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
         },
       },
       {
         breakpoint: 520,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 3,
         },
       },
     ],
@@ -83,52 +81,35 @@ const Tours = () => {
               className="tourCard -type-1 rounded-4 hover-inside-slider"
             >
               <div className="tourCard__image position-relative">
-                <div className="inside-slider">
-                  <Slider
-                    {...itemSettings}
-                    arrows={true}
-                    nextArrow={<Arrow type="next" />}
-                    prevArrow={<Arrow type="prev" />}
-                  >
-                    {item?.slideImg?.map((slide, i) => (
-                      <div className="cardImage ratio ratio-1:1" key={i}>
-                        <div className="cardImage__content ">
-                          <Image
-                            width={300}
-                            height={300}
-                            className="col-12 js-lazy"
-                            src={slide}
-                            alt="image"
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </Slider>
-
-                  <div className="cardImage__wishlist">
-                    <button className="button -blue-1 bg-white size-30 rounded-full shadow-2">
-                      <i className="icon-heart text-12" />
-                    </button>
+                <div className="cardImage ratio ratio-1:1">
+                  <div className="cardImage__content ">
+                    <img
+                      width={300}
+                      height={300}
+                      className="col-12 js-lazy"
+                      src={item?.slideImg[0]}
+                      alt="image"
+                    />
                   </div>
+                </div>
 
-                  <div className="cardImage__leftBadge">
-                    <div
-                      className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${
-                        isTextMatched(item?.tag, "likely to sell out*")
-                          ? "bg-dark-1 text-white"
-                          : ""
-                      } ${
-                        isTextMatched(item?.tag, "best seller")
-                          ? "bg-blue-1 text-white"
-                          : ""
-                      }  ${
-                        isTextMatched(item?.tag, "top rated")
-                          ? "bg-yellow-1 text-dark-1"
-                          : ""
-                      }`}
-                    >
-                      {item.tag}
-                    </div>
+                <div className="cardImage__leftBadge">
+                  <div
+                    className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${
+                      isTextMatched(item?.tag, "likely to sell out*")
+                        ? "bg-dark-1 text-white"
+                        : ""
+                    } ${
+                      isTextMatched(item?.tag, "best seller")
+                        ? "bg-blue-1 text-white"
+                        : ""
+                    }  ${
+                      isTextMatched(item?.tag, "top rated")
+                        ? "bg-yellow-1 text-dark-1"
+                        : ""
+                    }`}
+                  >
+                    {item.tag}
                   </div>
                 </div>
               </div>
