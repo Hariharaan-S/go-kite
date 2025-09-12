@@ -14,6 +14,7 @@ import Link from "next/link";
 import Itinerary from "@/components/tour-single/itinerary";
 import ImportantInfo from "@/components/tour-single/ImportantInfo";
 import TourGallery from "@/components/tour-single/TourGallery";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 
 export const metadata = {
   title: "Tour Single || GoKite - Travel & Tour ",
@@ -261,7 +262,7 @@ const TourSingleV1Dynamic = ({ params }) => {
       <CallToActions />
       {/* End Call To Actions Section */}
 
-      <DefaultFooter />
+      <GoKiteFooter />
     </>
   );
 };
