@@ -1,0 +1,5 @@
+.details-item-center {
+    display: flex;
+    flex-direction: row;
+    column-gap: 20rem;
+}

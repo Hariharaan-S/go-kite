@@ -17,7 +17,7 @@ import TourGallery from "@/components/tour-single/TourGallery";
 import GoKiteFooter from "@/components/footer/footer-gokite";
 
 export const metadata = {
-  title: "Tour Single || GoKite - Travel & Tour ",
+  title: " GoKite - Travel & Tour ",
   description: "GoKite - Travel & Tour ",
 };
 
@@ -63,26 +63,24 @@ const TourSingleV1Dynamic = ({ params }) => {
                     </div>
                   </div>
                 </div>
-
                 <div className="col-auto">
-                  <div className="row x-gap-10 items-center">
-                    <div className="col-auto">
-                      <div className="d-flex x-gap-5 items-center">
-                        <i className="icon-placeholder text-16 text-light-1"></i>
-                        <div className="text-15 text-light-1">
-                          {tour?.location}
-                        </div>
+                  <div
+                    className="d-flex align-items-center"
+                    style={{ gap: "12px", flexWrap: "wrap", minWidth: 0 }}
+                  >
+                    <div className="d-flex align-items-center" style={{ gap: "5px", minWidth: 0 }}>
+                      <i className="icon-placeholder text-16 text-light-1"></i>
+                      <div className="text-15 text-light-1" style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 150 }}>
+                        {tour?.location}
                       </div>
                     </div>
-
-                    <div className="col-auto">
-                      <button
-                        data-x-click="mapFilter"
-                        className="text-blue-1 text-15 underline"
-                      >
-                        Show on map
-                      </button>
-                    </div>
+                    <button
+                      data-x-click="mapFilter"
+                      className="text-blue-1 text-15 underline"
+                      style={{ whiteSpace: "nowrap" }}
+                    >
+                      Show on map
+                    </button>
                   </div>
                 </div>
               </div>
@@ -90,20 +88,22 @@ const TourSingleV1Dynamic = ({ params }) => {
             {/* End .col */}
 
             <div className="col-auto">
-              <div className="row x-gap-10 y-gap-10">
-                <div className="col-auto">
-                  <button className="button px-15 py-10 -blue-1">
-                    <i className="icon-share mr-10"></i>
-                    Share
-                  </button>
-                </div>
-
-                <div className="col-auto">
-                  <button className="button px-15 py-10 -blue-1 bg-light-2">
-                    <i className="icon-heart mr-10"></i>
-                    Save
-                  </button>
-                </div>
+              <div
+                className="d-flex align-items-center"
+                style={{
+                  gap: "12px",
+                  flexWrap: "wrap",
+                  minWidth: 0,
+                }}
+              >
+                <button className="button px-15 py-10 -blue-1 d-flex align-items-center">
+                  <i className="icon-share mr-10"></i>
+                  Share
+                </button>
+                <button className="button px-15 py-10 -blue-1 bg-light-2 d-flex align-items-center">
+                  <i className="icon-heart mr-10"></i>
+                  Save
+                </button>
               </div>
             </div>
             {/* End .col */}
@@ -258,9 +258,6 @@ const TourSingleV1Dynamic = ({ params }) => {
         {/* End .container */}
       </section>
       {/* End Tours Sections */}
-
-      <CallToActions />
-      {/* End Call To Actions Section */}
 
       <GoKiteFooter />
     </>
