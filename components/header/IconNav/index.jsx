@@ -5,12 +5,12 @@ import MobileMenu from "../MobileMenu";
 import { usePathname } from "next/navigation"; // for active state route matching
 
 const navLinks = [
-  { href: "/flights", label: "FLIGHT", icon: "/img/landingpage/icons/flight.png" },
-  { href: "/activities", label: "ATTRACTION", icon: "/img/landingpage/icons/activity.png" },
+  { href: "/", label: "FLIGHT", icon: "/img/landingpage/icons/flight.png" },
+  { href: "/", label: "ATTRACTION", icon: "/img/landingpage/icons/activity.png" },
   { href: "/holidays", label: "HOLIDAYS", icon: "/img/landingpage/icons/holiday.png" },
-  { href: "/hotels", label: "HOTEL", icon: "/img/landingpage/icons/hotel.png" },
-  { href: "/visa", label: "VISA", icon: "/img/landingpage/icons/visa.png" },
-  { href: "/more", label: "MORE", icon: "/img/landingpage/icons/more.png" },
+  { href: "/", label: "HOTEL", icon: "/img/landingpage/icons/hotel.png" },
+  { href: "/master_visa", label: "VISA", icon: "/img/landingpage/icons/visa.png" },
+  { href: "/", label: "MORE", icon: "/img/landingpage/icons/more.png" },
 ];
 
 const Header1 = () => {

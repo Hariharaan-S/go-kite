@@ -191,8 +191,9 @@ const BookFlightCard = () => {
   );
 };
 
-const IconButton = ({ imgSrc, label, isActive = false }) => (
-  <div className="text-center cursor-pointer">
+
+const IconButton = ({ redirectUrl, imgSrc, label, isActive = false, onClick }) => (
+  <div className="text-center cursor-pointer" onClick={onClick}>
     <div
       className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
         ? "bg-orange-500 border-orange-500"
@@ -218,24 +219,28 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
 
 const IconRow = () => {
   const [activeIcon, setActiveIcon] = useState("Flight");
+  const router = useRouter();
   const iconData = [
     {
       id: "Flight",
       label: "Flight",
       imgSrc: "/img/landingpage/icons/flight.png",
+      redirectUrl: '/'
     },
     {
       id: "Activities",
       label: "Activities",
       imgSrc: "/img/landingpage/icons/activity.png",
+      redirectUrl: '/'
     },
     {
       id: "Holidays",
       label: "Holidays",
       imgSrc: "/img/landingpage/icons/holiday.png",
+      redirectUrl: '/holidays'
     },
-    { id: "Hotel", label: "Hotel", imgSrc: "/img/landingpage/icons/hotel.png" },
-    { id: "Visa", label: "Visa", imgSrc: "/img/landingpage/icons/visa.png" },
+    { id: "Hotel", label: "Hotel", imgSrc: "/img/landingpage/icons/hotel.png", redirectUrl: '/' },
+    { id: "Visa", label: "Visa", imgSrc: "/img/landingpage/icons/visa.png", redirectUrl: '/master_visa' },
     { id: "More", label: "More", imgSrc: "/img/landingpage/icons/more.png" },
   ];
   return (
@@ -254,7 +259,6 @@ const IconRow = () => {
       {iconData.map((icon) => (
         <div
           key={icon.id}
-          onClick={() => setActiveIcon(icon.id)}
           className="icon-item sm:flex-grow-0"
           style={{
             flex: "none",
@@ -266,12 +270,19 @@ const IconRow = () => {
             imgSrc={icon.imgSrc}
             label={icon.label}
             isActive={activeIcon === icon.id}
+            onClick={() => {
+              setActiveIcon(icon.id);
+              if (icon.redirectUrl) {
+                router.push(icon.redirectUrl);
+              }
+            }}
           />
         </div>
       ))}
     </div>
   );
 };
+
 
 const HeroSection = () => {
   // Redux and router hooks if needed for navigation/interactivity
