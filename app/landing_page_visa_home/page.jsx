@@ -1,4 +1,5 @@
 import DefaultFooter from "@/components/footer/default";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 import Header1 from "@/components/header/IconNav";
 import Hero1 from "@/components/landingpagevisahome/hero";
 import VisaCards from "@/components/landingpagevisahome/popularvisa-card";
@@ -23,7 +24,7 @@ const Home_1 = () => {
 
       <StepVisa />
 
-      <DefaultFooter />
+      <GoKiteFooter />
     </>
   );
 };

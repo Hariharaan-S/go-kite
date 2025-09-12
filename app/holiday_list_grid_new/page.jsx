@@ -6,6 +6,7 @@ import Sidebar from "@/components/hotel-list-v4/Sidebar";
 import HotelProperties from "@/components/hotel-list-v4/HotelProperties";
 import VacationCard from "@/components/hotel-list-v4/VacationCard";
 import MainFilterSearchBoxNew from "@/components/hotel-list-v4/MainFilterSearchBoxNew";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 
 export const metadata = {
   title: "GoKite - Travel & Tour ",
@@ -106,7 +107,7 @@ const index = () => {
 
       <VacationCard />
 
-      <DefaultFooter />
+      <GoKiteFooter />
     </>
   );
 };

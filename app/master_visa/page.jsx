@@ -1,4 +1,5 @@
 import DefaultFooter from "@/components/footer/default";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 import Header1 from "@/components/header/Navbar";
 import Hero1 from "@/components/landingpagevisa/hero";
 import HolidayDestinations from "@/components/landingpagevisa/holiday-destintion";
@@ -20,7 +21,7 @@ const Home_1 = () => {
 
       <VisaDestinationCards />
 
-      <DefaultFooter />
+      <GoKiteFooter />
     </>
   );
 };

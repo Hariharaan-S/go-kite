@@ -2,6 +2,7 @@
 import Header1 from "@/components/header/Navbar";
 import DefaultFooter from "@/components/footer/default";
 import TermsConent from "@/components/terms/TermsConent";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 
 export const metadata = {
   title: "Terms & Conditions || GoKite - Travel & Tour ",
@@ -27,11 +28,11 @@ const Terms = () => {
         </div>
       </section>
       {/* End terms section */}
-{/* 
+      {/* 
       <CallToActions /> */}
       {/* End Call To Actions Section */}
 
-      <DefaultFooter />
+      <GoKiteFooter />
       {/* End Call To Actions Section */}
     </>
   );

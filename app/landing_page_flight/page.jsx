@@ -5,6 +5,7 @@ import Hotels from "@/components/landingpageflight/Hotels";
 import FlightCards from "@/components/landingpageflight/FlightCards";
 import AirlineCard from "@/components/landingpageflight/AirlinesCard";
 import VacationDestinations from "@/components/landingpageflight/VacationCard";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 
 export const metadata = {
   title: "GoKite - Travel & Tour ",
@@ -26,7 +27,7 @@ const Home_1 = () => {
 
       <Hotels />
 
-      <DefaultFooter />
+      <GoKiteFooter />
     </>
   );
 };

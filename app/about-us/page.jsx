@@ -9,6 +9,7 @@ import Team1 from "@/components/team/Team1";
 import Testimonial from "@/components/testimonial/Testimonial";
 import Counter2 from "@/components/counter/Counter2";
 import Brand from "@/components/brand/Brand";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 
 export const metadata = {
     title: "About || GoKite - Travel & Tour ",
@@ -168,7 +169,7 @@ const About = () => {
             <CallToActions />
             {/* End Call To Actions Section */}
 
-            <DefaultFooter />
+            <GoKiteFooter />
             {/* End Call To Actions Section */}
         </>
     );

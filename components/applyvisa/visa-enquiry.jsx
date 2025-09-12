@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import "./styles/visa-enquiry.styles.css"; // Import the new stylesheet
+import { useRouter } from "next/navigation";
 
 const tabList = ["Types Of visa", "Visa Process", "Visa Eligibility", "FAQ"];
 
@@ -57,6 +58,7 @@ const visaCards = [
 
 const VisaTabsAndCards = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const router = useRouter();
 
   const getCardStyle = (index) => {
     const baseStyle = {
@@ -330,6 +332,8 @@ const VisaTabsAndCards = () => {
                   borderBottomLeftRadius: 16,
                   borderBottomRightRadius: 16,
                 }}
+
+                onClick={() => router.push('/visa_application')}
               >
                 <span
                   className="visa-card-footer-text"
