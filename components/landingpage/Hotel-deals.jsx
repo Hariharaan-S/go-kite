@@ -9,11 +9,17 @@ import {
   ChevronRight,
 } from "lucide-react";
 import "./styles/hotel-deals.css";
+import { useRouter } from "next/navigation";
 
 const HotelDeals = () => {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
   const [windowWidth, setWindowWidth] = useState(1024);
+
+  const handleCardClick = (hotelId) => {
+    router.push(`/details-page?id=${hotelId}`);
+  };
 
   useEffect(() => {
     const updateResponsiveSettings = () => {
@@ -173,7 +179,11 @@ const HotelDeals = () => {
         <div className="hotel-deals-controls">
           <button className="view-all-btn">View All</button>
           <div className="carousel-buttons">
-            <button className="arrow-btn" onClick={prevSlide} aria-label="Previous">
+            <button
+              className="arrow-btn"
+              onClick={prevSlide}
+              aria-label="Previous"
+            >
               <ChevronLeft
                 size={windowWidth < 768 ? 16 : 18}
                 style={{ color: "#ffffff" }}
@@ -204,6 +214,7 @@ const HotelDeals = () => {
               maxWidth: windowWidth < 640 ? "400px" : "320px",
               height: windowWidth < 640 ? "auto" : "460px",
             }}
+            onClick={() => handleCardClick(hotel.id)}
           >
             {/* Image */}
             <div
@@ -267,7 +278,9 @@ const HotelDeals = () => {
                   />
                   <span className="duration-text">
                     {windowWidth < 640
-                      ? hotel.duration.replace(" Night", "N").replace(" Days", "D")
+                      ? hotel.duration
+                          .replace(" Night", "N")
+                          .replace(" Days", "D")
                       : hotel.duration}
                   </span>
                 </div>

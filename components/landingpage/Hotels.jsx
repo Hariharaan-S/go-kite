@@ -2,10 +2,16 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Heart, Star } from "lucide-react";
 import "./styles/hotels.css";
+import { useRouter } from "next/navigation";
 const PopularActivities = () => {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
   const [windowWidth, setWindowWidth] = useState(1024);
+
+  const handleCardClick = (activityId) => {
+    router.push(`/details-page?id=${activityId}`);
+  };
 
   // Update visible cards and window width based on screen size
   useEffect(() => {
@@ -243,6 +249,7 @@ const PopularActivities = () => {
               e.currentTarget.style.transform = "translateY(0)";
               e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
             }}
+            onClick={() => handleCardClick(item.id)}
           >
             {/* Image Container */}
             <div

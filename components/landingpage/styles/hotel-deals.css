@@ -95,6 +95,7 @@
 }
 
 .hotel-card {
+  cursor: pointer;
   border-radius: 16px;
   background-color: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -105,9 +106,8 @@
 }
 
 .hotel-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .hotel-image-wrapper {

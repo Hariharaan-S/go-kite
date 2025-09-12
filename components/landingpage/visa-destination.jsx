@@ -2,11 +2,17 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./styles/visa-destination.css";
+import { useRouter } from "next/navigation";
 
 const VisaDestinationCards = () => {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
   const [windowWidth, setWindowWidth] = useState(1024);
+
+  const handleCardClick = (destinationId) => {
+    router.push(`/details-page?id=${destinationId}`);
+  };
 
   // Update visible cards based on screen size
   useEffect(() => {
@@ -261,6 +267,7 @@ const VisaDestinationCards = () => {
               maxWidth: windowWidth < 640 ? "400px" : "300px",
               height: getCardHeight(),
             }}
+            onClick={() => handleCardClick(destination.id)}
           >
             {/* Image Container */}
             <div
@@ -279,7 +286,10 @@ const VisaDestinationCards = () => {
               </div>
 
               {/* Price overlay */}
-              <div className="price-overlay" style={{ flexDirection: windowWidth < 640 ? "column" : "row" }}>
+              <div
+                className="price-overlay"
+                style={{ flexDirection: windowWidth < 640 ? "column" : "row" }}
+              >
                 {windowWidth < 640 ? (
                   <>
                     <div>
