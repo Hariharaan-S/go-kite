@@ -344,7 +344,7 @@ const TravelVisaCards = () => {
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
             }}
-            onClick={() => router.push('/details-page')}
+            onClick={() => router.push('/apply_visa')}
           >
             {/* Image Container */}
             <div
@@ -504,7 +504,7 @@ const TravelVisaCards = () => {
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
             }}
-            onClick={() => router.push('/details-page')}
+            onClick={() => router.push('/apply_visa')}
           >
             {/* Identical card rendering as above */}
             <div

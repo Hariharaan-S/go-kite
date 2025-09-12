@@ -359,7 +359,7 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
 );
 
 const IconRow = () => {
-  const [activeIcon, setActiveIcon] = useState("Flight");
+  const [activeIcon, setActiveIcon] = useState("Visa");
   const router = useRouter();
   const iconData = [
     {
@@ -387,7 +387,7 @@ const IconRow = () => {
       redirectUrl: '/holidays'
     },
     { id: "Hotel", label: "Hotel", imgSrc: "/img/landingpage/icons/hotel.png", redirectUrl: '#' },
-    { id: "Visa", label: "Visa", imgSrc: "/img/landingpage/icons/visa.png", redirectUrl: '/apply_visa' },
+    { id: "Visa", label: "Visa", imgSrc: "/img/landingpage/icons/visa.png", redirectUrl: '/landing_page_visa_home' },
     { id: "More", label: "More", imgSrc: "/img/landingpage/icons/more.png", redirectUrl: '#' },
   ];
   return (

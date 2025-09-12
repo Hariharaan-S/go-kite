@@ -201,7 +201,7 @@ const VisaCards = () => {
       {/* Popular Visa Cards */}
       <div className="visa-card-list">
         {visibleVisas.map((visa, index) => (
-          <div key={index} className="visa-card" onClick={() => router.push('/details-page')}>
+          <div key={index} className="visa-card" onClick={() => router.push('/apply_visa')}>
             <visa.Flag className="flag" />
             <h3 className="visa-country">{visa.country}</h3>
             <p className="visa-type">{visa.type}</p>
@@ -232,6 +232,7 @@ const VisaCards = () => {
           className="vaccination-carousel-inner"
           style={{
             transform: `translateX(-${currentVaccinationSlide * 100}%)`,
+            zIndex: 1,
           }}
         >
           {vaccinationCountries.map((country, index) => (
@@ -245,7 +246,7 @@ const VisaCards = () => {
                   <span className="visa-price">{country.price}</span>
                   <span className="visa-price-text">{country.priceText}</span>
                 </div>
-                <ChevronRight size={16} color="#6b7280" />
+                <ChevronRight size={16} color="#6b7280" onClick={() => router.push('/apply_visa')} />
               </div>
             </div>
           ))}
@@ -255,7 +256,7 @@ const VisaCards = () => {
       {/* Desktop Grid */}
       <div className="vaccination-grid">
         {vaccinationCountries.map((country, index) => (
-          <div key={index} className="vaccination-card">
+          <div key={index} className="vaccination-card" onClick={() => router.push('/apply_visa')}>
             {country.hasVisaIcon && <VisaIcon />}
             <country.Flag className="flag" />
             <h3 className="visa-country">{country.country}</h3>
