@@ -546,6 +546,7 @@ const VisaTabsAndCards = () => {
                   borderBottomLeftRadius: 16,
                   borderBottomRightRadius: 16,
                 }}
+                onClick={() => router.push('/visa_application')}
               >
                 <span
                   className="visa-card-footer-text"
