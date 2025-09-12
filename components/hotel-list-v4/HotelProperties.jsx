@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { MapPin, Clock, Users, Star } from "lucide-react";
 import "./HotelProperties.css";
+import { useRouter } from "next/navigation";
 
 const HotelProperties = () => {
   const [windowWidth, setWindowWidth] = useState(1024);
@@ -92,7 +93,7 @@ const HotelProperties = () => {
       category: "cruise",
       duration: "3 Days 2 Night",
       persons: "2 Person",
-    },   {
+    }, {
       id: 6,
       tag: "top rated",
       img: "https://media.istockphoto.com/id/1331465591/photo/3d-render-of-a-luxury-hotel-swimming-pool.jpg?s=612x612&w=0&k=20&c=oK3vEzPg3mZrCXgairNgU5qM-vf0jMab9N7udzzVDk0=",
@@ -110,7 +111,7 @@ const HotelProperties = () => {
   ];
 
   const cardWidthValue = windowWidth < 640 ? "100%" : "calc(50% - 24px)";
-
+  const router = useRouter();
   return (
     <div className="hotel-properties-container">
       {hotelsData.slice(0, 6).map((hotel) => (
@@ -123,6 +124,7 @@ const HotelProperties = () => {
             maxWidth: windowWidth < 640 ? "400px" : "600px",
             height: windowWidth < 640 ? "auto" : "500px",
           }}
+          onClick={() => router.push('/details-page')}
         >
           {/* Image */}
           <div
@@ -132,8 +134,8 @@ const HotelProperties = () => {
                 windowWidth < 640
                   ? "180px"
                   : windowWidth < 768
-                  ? "300px"
-                  : "400px",
+                    ? "300px"
+                    : "400px",
             }}
           >
             <img src={hotel.img} alt="Hotel Room" className="hotel-image" />
@@ -169,9 +171,8 @@ const HotelProperties = () => {
 
             {/* Duration and Persons */}
             <div
-              className={`duration-persons ${
-                windowWidth < 640 ? "column-layout" : "row-layout"
-              }`}
+              className={`duration-persons ${windowWidth < 640 ? "column-layout" : "row-layout"
+                }`}
               style={{
                 gap: windowWidth < 640 ? "8px" : "24px",
               }}
@@ -184,8 +185,8 @@ const HotelProperties = () => {
                 <span className="duration-text">
                   {windowWidth < 640
                     ? hotel.duration
-                        .replace(" Night", "N")
-                        .replace(" Days", "D")
+                      .replace(" Night", "N")
+                      .replace(" Days", "D")
                     : hotel.duration}
                 </span>
               </div>
@@ -200,9 +201,8 @@ const HotelProperties = () => {
 
             {/* Price and Rating */}
             <div
-              className={`price-rating ${
-                windowWidth < 480 ? "column-layout" : "row-layout"
-              }`}
+              className={`price-rating ${windowWidth < 480 ? "column-layout" : "row-layout"
+                }`}
               style={{ gap: windowWidth < 480 ? "8px" : 0 }}
             >
               <div className="price">

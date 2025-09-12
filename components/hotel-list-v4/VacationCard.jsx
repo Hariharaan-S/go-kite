@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const VacationDestinations = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -51,7 +52,7 @@ const VacationDestinations = () => {
     setCurrentSlide((prev) =>
       prev - VISIBLE_CARDS < 0
         ? totalDestinations -
-          (totalDestinations % VISIBLE_CARDS || VISIBLE_CARDS)
+        (totalDestinations % VISIBLE_CARDS || VISIBLE_CARDS)
         : prev - VISIBLE_CARDS
     );
   };
@@ -69,7 +70,7 @@ const VacationDestinations = () => {
   };
 
   const visibleDestinations = getVisibleDestinations();
-
+  const router = useRouter();
   return (
     <div
       style={{
@@ -81,6 +82,7 @@ const VacationDestinations = () => {
           '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         backgroundColor: "#f8f9fa",
       }}
+      onClick={() => router.push('/details-page')}
     >
       {/* Header */}
       <div
@@ -99,7 +101,7 @@ const VacationDestinations = () => {
             color: "#1a1a1a",
           }}
         >
-        Popular Dubai Hotels
+          Popular Dubai Hotels
         </h2>
 
         <div
@@ -138,7 +140,7 @@ const VacationDestinations = () => {
           >
             <ChevronLeft size={18} color="white" />
           </button> */}
-{/* 
+          {/* 
           <button
             onClick={nextSlide}
             style={{

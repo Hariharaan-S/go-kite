@@ -8,6 +8,7 @@ import {
     ChevronLeft,
     ChevronRight,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const VISIBLE_CARDS = 4;
@@ -181,7 +182,7 @@ export default function RecommendationDestinations2() {
     };
 
     const visibleDestinations = getVisibleDestinations();
-
+    const router = useRouter();
     const styles = `
         .recommendation-slider-section-2 {
             display: flex;
@@ -352,6 +353,7 @@ export default function RecommendationDestinations2() {
                                 e.currentTarget.style.boxShadow =
                                     "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
                             }}
+                            onClick={() => router.push('/details-page')}
                         >
                             {/* Image Section */}
                             <div style={{ position: "relative" }}>
