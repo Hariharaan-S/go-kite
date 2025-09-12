@@ -336,11 +336,10 @@ const BookFlightCard = () => {
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="text-center cursor-pointer">
     <div
-      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${
-        isActive
-          ? "bg-orange-500 border-orange-500"
-          : "bg-white border-white hover:bg-gray-50"
-      }`}
+      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
+        ? "bg-orange-500 border-orange-500"
+        : "bg-white border-white hover:bg-gray-50"
+        }`}
       style={{
         width: "64px",
         height: "64px",
@@ -361,36 +360,57 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
 
 const IconRow = () => {
   const [activeIcon, setActiveIcon] = useState("Flight");
+  const router = useRouter();
   const iconData = [
+    {
+      id: "Home",
+      label: "Home",
+      imgSrc: "/img/landingpage/icons/home.png",
+      redirectUrl: '/'
+    },
     {
       id: "Flight",
       label: "Flight",
       imgSrc: "/img/landingpage/icons/flight.png",
+      redirectUrl: '/'
     },
     {
       id: "Activities",
       label: "Activities",
       imgSrc: "/img/landingpage/icons/activity.png",
+      redirectUrl: '#'
     },
     {
       id: "Holidays",
       label: "Holidays",
       imgSrc: "/img/landingpage/icons/holiday.png",
+      redirectUrl: '/holidays'
     },
-    { id: "Hotel", label: "Hotel", imgSrc: "/img/landingpage/icons/hotel.png" },
-    { id: "Visa", label: "Visa", imgSrc: "/img/landingpage/icons/visa.png" },
-    { id: "More", label: "More", imgSrc: "/img/landingpage/icons/more.png" },
+    { id: "Hotel", label: "Hotel", imgSrc: "/img/landingpage/icons/hotel.png", redirectUrl: '#' },
+    { id: "Visa", label: "Visa", imgSrc: "/img/landingpage/icons/visa.png", redirectUrl: '/master_visa' },
+    { id: "More", label: "More", imgSrc: "/img/landingpage/icons/more.png", redirectUrl: '#' },
   ];
   return (
     <div
-      className="icon-row-container mt-40 mb-20"
+      className="d-flex justify-center align-items-center mt-40 mb-20"
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        gap: "24px",
+        flexWrap: "nowrap",
+      }}
       data-aos="fade-up"
       data-aos-delay="150"
     >
       {iconData.map((icon) => (
         <div
           key={icon.id}
-          onClick={() => setActiveIcon(icon.id)}
+          onClick={() => {
+            setActiveIcon(icon.id);
+            if (icon.redirectUrl) {
+              router.push(icon.redirectUrl);
+            }
+          }}
           style={{ flex: "none" }}
         >
           <IconButton
@@ -403,6 +423,7 @@ const IconRow = () => {
     </div>
   );
 };
+
 
 const HeroSection = () => {
   // Redux and router hooks are present if needed for navigation/interactivity
