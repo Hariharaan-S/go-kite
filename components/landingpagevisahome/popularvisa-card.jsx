@@ -17,6 +17,7 @@ import {
   BD,
 } from "country-flag-icons/react/3x2";
 import "./styles/popularvisa-card.css";
+import { useRouter } from "next/navigation";
 
 const VISIBLE_CARDS = 5;
 const VISIBLE_VACCINATION_CARDS = 1; // Show one card at a time for mobile
@@ -180,6 +181,7 @@ const VisaCards = () => {
   const visibleVisas = getVisibleVisas();
 
   const VisaIcon = () => <div className="visa-icon">VISA</div>;
+  const router = useRouter();
 
   return (
     <div className="visa-container">
@@ -199,7 +201,7 @@ const VisaCards = () => {
       {/* Popular Visa Cards */}
       <div className="visa-card-list">
         {visibleVisas.map((visa, index) => (
-          <div key={index} className="visa-card">
+          <div key={index} className="visa-card" onClick={() => router.push('/details-page')}>
             <visa.Flag className="flag" />
             <h3 className="visa-country">{visa.country}</h3>
             <p className="visa-type">{visa.type}</p>
@@ -274,9 +276,8 @@ const VisaCards = () => {
         {vaccinationCountries.map((_, index) => (
           <button
             key={index}
-            className={`vaccination-dot ${
-              index === currentVaccinationSlide ? "active" : ""
-            }`}
+            className={`vaccination-dot ${index === currentVaccinationSlide ? "active" : ""
+              }`}
             onClick={() => setCurrentVaccinationSlide(index)}
           />
         ))}

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "../landingpage/styles/visa-destination.css"
+import { useRouter } from "next/navigation";
 
 const VisaDestinationCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -141,6 +142,7 @@ const VisaDestinationCards = () => {
   };
 
   const visibleDestinations = getVisibleDestinations();
+  const router = useRouter();
 
   // Responsive window width update
   useEffect(() => {
@@ -261,6 +263,7 @@ const VisaDestinationCards = () => {
               maxWidth: windowWidth < 640 ? "400px" : "300px",
               height: getCardHeight(),
             }}
+            onClick={() => router.push('/details-page')}
           >
             {/* Image Container */}
             <div

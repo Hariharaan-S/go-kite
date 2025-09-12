@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const TravelVisaCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -146,7 +147,7 @@ const TravelVisaCards = () => {
     setCurrentSlide((prev) =>
       prev - VISIBLE_CARDS_PER_ROW < 0
         ? totalSlides -
-          (totalSlides % VISIBLE_CARDS_PER_ROW || VISIBLE_CARDS_PER_ROW)
+        (totalSlides % VISIBLE_CARDS_PER_ROW || VISIBLE_CARDS_PER_ROW)
         : prev - VISIBLE_CARDS_PER_ROW
     );
   };
@@ -171,6 +172,7 @@ const TravelVisaCards = () => {
   };
 
   const visibleDestinations = getVisibleDestinations();
+  const router = useRouter();
 
   return (
     <div
@@ -342,6 +344,7 @@ const TravelVisaCards = () => {
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
             }}
+            onClick={() => router.push('/details-page')}
           >
             {/* Image Container */}
             <div
@@ -501,6 +504,7 @@ const TravelVisaCards = () => {
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
             }}
+            onClick={() => router.push('/details-page')}
           >
             {/* Identical card rendering as above */}
             <div
