@@ -228,16 +228,14 @@ export default function RecommendationDestinations2() {
 
         @media screen and (max-width: 400px) {
             .recommendation-slider-section-2 {
-                margin-top: 35rem;
+                margin-top: 135rem;
             }
 
             .heading1 {
-                position: absolute !important;
                 color: #000 !important;
                 margin-top: 2.5rem;
                 margin-left: 10rem !important;
             }
-
 
             .button-group1 {
                 position: absolute;
@@ -248,17 +246,21 @@ export default function RecommendationDestinations2() {
             .view-all-btn1 {
                 display: none !important;
             }
+            
 
             .prev-btn1, .next-btn1 {
                 width: 40px !important;
                 height: 40px !important;
             }
-
-            .dest1 {
-                width: 100% !important;
-                margin-left: 23rem !important; 
-                margin-top: 7rem ;
-                overflow-x: visible;
+                .dest1 {
+                display: grid !important;
+                grid-template-columns: repeat(1, 1fr) !important;
+                align-items: center !important;
+                justify-items: center !important;
+            }
+            .dest1 .card {
+                    width: 100% !important;
+                    
             }
         }
     `
@@ -339,7 +341,7 @@ export default function RecommendationDestinations2() {
                     }}
                 >
                     {visibleDestinations.map((destination) => (
-                        <div
+                        <div className="card"
                             key={destination.id}
                             style={{
                                 width: "calc(25% - 16px)", // Changed from calc(33.33% - 16px)

@@ -232,20 +232,19 @@ export default function RecommendationDestinations() {
         @media screen and (max-width: 400px) {
 
             .recom-slid-section-1 {
-                padding: 2.3rem;
+                padding: 2rem 0;
+                column-gap: 10rem !important;
+            
             }
         
             .heading {
-                position: absolute !important;
-                color: #000 !important;
-                margin-top: 2.5rem;
-                margin-left: -57rem !important;
+                position: relative !important;
+                color: #FFF !important;
             }
             
             .button-group {
-                position: absolute;
-                left: 17rem;
-                top: 2.3rem;
+                position: relative !important;
+
             }
 
             .view-all-btn {
@@ -258,7 +257,14 @@ export default function RecommendationDestinations() {
             }
 
             .dest {
-                margin-left: 2rem !important;
+                display: grid !important;
+                grid-template-columns: repeat(1, 1fr) !important;
+                align-items: center !important;
+                justify-items: center !important;
+            }
+            .dest .card {
+                    width: 100% !important;
+                    
             }
             
         }
@@ -361,7 +367,7 @@ export default function RecommendationDestinations() {
                     }}
                 >
                     {visibleDestinations.map((destination) => (
-                        <div
+                        <div className="card"
                             key={destination.id}
                             style={{
                                 width: "calc(25% - 16px)", // Changed from calc(33.33% - 16px)

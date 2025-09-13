@@ -40,7 +40,7 @@ const holidayHeroStyles = `
         }
 
         .book-agent {
-            margin-top: 2rem;
+            margin-top: 5rem;
             font-size: 1.2rem !important;
         }
     }
