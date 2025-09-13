@@ -1,231 +1,366 @@
 "use client";
+import {
+  Heart,
+  Plane,
+  Building2,
+  Car,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { MapPin, Clock, Users, Star } from "lucide-react";
 import "./HotelProperties.css";
 import { useRouter } from "next/navigation";
 
-const HotelProperties = () => {
+export default function HolidayDestinations() {
+  const router = useRouter();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(4);
   const [windowWidth, setWindowWidth] = useState(1024);
 
+  const handleCardClick = (destinationId) => {
+    router.push(`/details-page?id=${destinationId}`);
+  };
+
   useEffect(() => {
-    const updateResponsiveSettings = () => {
+    const updateVisibleCards = () => {
       const width = window.innerWidth;
       setWindowWidth(width);
+      if (width < 640) {
+        setVisibleCards(1);
+      } else if (width < 768) {
+        setVisibleCards(2);
+      } else if (width < 1024) {
+        setVisibleCards(3);
+      } else {
+        setVisibleCards(9);
+      }
+      console.log("Window width:", width);
+      console.log("Visible cards:", visibleCards);
     };
-
-    updateResponsiveSettings();
-    window.addEventListener("resize", updateResponsiveSettings);
-    return () => window.removeEventListener("resize", updateResponsiveSettings);
+    updateVisibleCards();
+    window.addEventListener("resize", updateVisibleCards);
+    return () => window.removeEventListener("resize", updateVisibleCards);
   }, []);
 
-  const hotelsData = [
+  const destinations = [
     {
       id: 1,
-      tag: "Breakfast Included",
-      img: "https://media.istockphoto.com/id/1331465591/photo/3d-render-of-a-luxury-hotel-swimming-pool.jpg?s=612x612&w=0&k=20&c=oK3vEzPg3mZrCXgairNgU5qM-vf0jMab9N7udzzVDk0=",
-      title: "The Montcalm At Brewery London City",
-      location: "Westminster Borough, London",
-      ratings: "4.7",
-      numberOfReviews: "3014",
-      price: "72",
-      delayAnimation: "100",
-      city: "new_york",
-      category: "hotel",
-      duration: "3 Days 2 Night",
-      persons: "2 Person",
+      image:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
+      title: "Swiss Alps",
+      rating: 4.7,
+      duration: "3Days 4 Nights",
+      flights: "2 Flights",
+      hotels: "1 Hotel",
+      transfers: "2 Transfers",
+      activities: "4 Activities",
+      features: [
+        "Tour combo with return airport transfer",
+        "City Tour",
+        "Curious Corner",
+      ],
+      originalPrice: "₹98,952",
+      discountedPrice: "₹88,952",
     },
     {
       id: 2,
-      tag: "",
-      img: "https://media.istockphoto.com/id/1331465591/photo/3d-render-of-a-luxury-hotel-swimming-pool.jpg?s=612x612&w=0&k=20&c=oK3vEzPg3mZrCXgairNgU5qM-vf0jMab9N7udzzVDk0=",
-      title: "Staycity Aparthotels Deptford Bridge Station",
-      location: "Ciutat Vella, Barcelona",
-      ratings: "4.8",
-      numberOfReviews: "2345",
-      price: "85",
-      delayAnimation: "200",
-      city: "london",
-      category: "tour",
-      duration: "4 Days 3 Night",
-      persons: "2 Person",
+      image:
+        "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop",
+      title: "Hallstatt",
+      rating: 4.9,
+      duration: "3Days 4 Nights",
+      flights: "2 Flights",
+      hotels: "1 Hotel",
+      transfers: "2 Transfers",
+      activities: "4 Activities",
+      features: [
+        "Tour combo with return airport transfer",
+        "City Tour",
+        "Curious Corner",
+      ],
+      originalPrice: "₹98,952",
+      discountedPrice: "₹88,952",
     },
     {
       id: 3,
-      tag: "best seller",
-      img: "https://media.istockphoto.com/id/1331465591/photo/3d-render-of-a-luxury-hotel-swimming-pool.jpg?s=612x612&w=0&k=20&c=oK3vEzPg3mZrCXgairNgU5qM-vf0jMab9N7udzzVDk0=",
-      title: "The Westin New York at Times Square West",
-      location: "Manhattan, New York",
-      ratings: "4.7",
-      numberOfReviews: "3014",
-      price: "68",
-      delayAnimation: "300",
-      city: "new_york",
-      category: "activity",
-      duration: "5 Days 4 Night",
-      persons: "4 Person",
+      image:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
+      title: "Faroe Island",
+      rating: 4.5,
+      duration: "3Days 4 Nights",
+      flights: "2 Flights",
+      hotels: "1 Hotel",
+      transfers: "2 Transfers",
+      activities: "4 Activities",
+      features: [
+        "Tour combo with return airport transfer",
+        "City Tour",
+        "Curious Corner",
+      ],
+      originalPrice: "₹98,952",
+      discountedPrice: "₹88,952",
     },
     {
       id: 4,
-      tag: "top rated",
-      img: "https://media.istockphoto.com/id/1331465591/photo/3d-render-of-a-luxury-hotel-swimming-pool.jpg?s=612x612&w=0&k=20&c=oK3vEzPg3mZrCXgairNgU5qM-vf0jMab9N7udzzVDk0=",
-      title: "DoubleTree by Hilton Hotel New York Times Square West",
-      location: "Vaticano Prati, Rome",
-      ratings: "4.5",
-      numberOfReviews: "5633",
-      price: "89",
-      delayAnimation: "400",
-      city: "new_york",
-      category: "cruise",
-      duration: "3 Days 2 Night",
-      persons: "2 Person",
+      image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop",
+      title: "Innsbruck",
+      rating: 4.8,
+      duration: "3Days 4 Nights",
+      flights: "2 Flights",
+      hotels: "1 Hotel",
+      transfers: "2 Transfers",
+      activities: "4 Activities",
+      features: [
+        "Tour combo with return airport transfer",
+        "City Tour",
+        "Curious Corner",
+      ],
+      originalPrice: "₹98,952",
+      discountedPrice: "₹88,952",
     },
     {
       id: 5,
-      tag: "top rated",
-      img: "https://media.istockphoto.com/id/1331465591/photo/3d-render-of-a-luxury-hotel-swimming-pool.jpg?s=612x612&w=0&k=20&c=oK3vEzPg3mZrCXgairNgU5qM-vf0jMab9N7udzzVDk0=",
-      title: "DoubleTree by Hilton Hotel New York Times Square West",
-      location: "Vaticano Prati, Rome",
-      ratings: "4.5",
-      numberOfReviews: "5633",
-      price: "89",
-      delayAnimation: "400",
-      city: "new_york",
-      category: "cruise",
-      duration: "3 Days 2 Night",
-      persons: "2 Person",
-    }, {
+      image:
+        "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop",
+      title: "Another Destination",
+      rating: 4.6,
+      duration: "3Days 4 Nights",
+      flights: "2 Flights",
+      hotels: "1 Hotel",
+      transfers: "2 Transfers",
+      activities: "4 Activities",
+      features: [
+        "Tour combo with return airport transfer",
+        "City Tour",
+        "Curious Corner",
+      ],
+      originalPrice: "₹98,952",
+      discountedPrice: "₹88,952",
+    },
+    {
       id: 6,
-      tag: "top rated",
-      img: "https://media.istockphoto.com/id/1331465591/photo/3d-render-of-a-luxury-hotel-swimming-pool.jpg?s=612x612&w=0&k=20&c=oK3vEzPg3mZrCXgairNgU5qM-vf0jMab9N7udzzVDk0=",
-      title: "DoubleTree by Hilton Hotel New York Times Square West",
-      location: "Vaticano Prati, Rome",
-      ratings: "4.5",
-      numberOfReviews: "5633",
-      price: "89",
-      delayAnimation: "400",
-      city: "new_york",
-      category: "cruise",
-      duration: "3 Days 2 Night",
-      persons: "2 Person",
+      image:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
+      title: "Swiss Alps",
+      rating: 4.7,
+      duration: "3Days 4 Nights",
+      flights: "2 Flights",
+      hotels: "1 Hotel",
+      transfers: "2 Transfers",
+      activities: "4 Activities",
+      features: [
+        "Tour combo with return airport transfer",
+        "City Tour",
+        "Curious Corner",
+      ],
+      originalPrice: "₹98,952",
+      discountedPrice: "₹88,952",
     },
   ];
 
-  const cardWidthValue = windowWidth < 640 ? "100%" : "calc(50% - 24px)";
-  const router = useRouter();
+  console.log("Destinations:", destinations);
+
+  const totalSlides = destinations.length;
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) =>
+      prev + visibleCards >= totalSlides ? 0 : prev + visibleCards
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) =>
+      prev - visibleCards < 0
+        ? totalSlides - (totalSlides % visibleCards || visibleCards)
+        : prev - visibleCards
+    );
+  };
+
+  const getVisibleDestinations = () => {
+    if (totalSlides <= visibleCards) return destinations;
+    if (currentSlide + visibleCards <= totalSlides) {
+      return destinations.slice(currentSlide, currentSlide + visibleCards);
+    } else {
+      return [
+        ...destinations.slice(currentSlide),
+        ...destinations.slice(0, (currentSlide + visibleCards) % totalSlides),
+      ];
+    }
+  };
+
+  const visibleDestinations = getVisibleDestinations();
+
+  console.log("Visible destinations:", visibleDestinations);
+
   return (
-    <div className="hotel-properties-container">
-      {hotelsData.slice(0, 6).map((hotel) => (
-        <div
-          key={hotel.id}
-          className="hotel-card"
-          style={{
-            width: cardWidthValue,
-            minWidth: windowWidth < 640 ? "280px" : "400px",
-            maxWidth: windowWidth < 640 ? "400px" : "600px",
-            height: windowWidth < 640 ? "auto" : "500px",
-          }}
-          onClick={() => router.push('/details-page')}
+    <div
+      className="holiday-container"
+      style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
+    >
+      <div
+        className={`holiday-header ${
+          windowWidth < 640 ? "holiday-header-mobile" : ""
+        }`}
+      >
+        <h1
+          className="holiday-title"
+          style={{ fontSize: getHeaderSize(windowWidth) }}
         >
-          {/* Image */}
-          <div
-            className="hotel-image-wrapper"
-            style={{
-              height:
-                windowWidth < 640
-                  ? "180px"
-                  : windowWidth < 768
-                    ? "300px"
-                    : "400px",
-            }}
+          Popular Holiday Destinations
+        </h1>
+        <div className="holiday-nav">
+          <span className="view-all">View All</span>
+          <button
+            className="nav-btn"
+            onClick={prevSlide}
+            style={getNavButtonSize(windowWidth)}
           >
-            <img src={hotel.img} alt="Hotel Room" className="hotel-image" />
-            {hotel.tag && (
-              <div className="hotel-featured-label">{hotel.tag}</div>
-            )}
-          </div>
-
-          {/* Content */}
-          <div
-            className="hotel-content"
-            style={{
-              padding: windowWidth < 640 ? "16px" : "24px",
-            }}
+            <ChevronLeft size={windowWidth < 768 ? 16 : 18} />
+          </button>
+          <button
+            className="nav-btn"
+            onClick={nextSlide}
+            style={getNavButtonSize(windowWidth)}
           >
-            <h3
-              className="hotel-name"
-              style={{
-                fontSize: windowWidth < 640 ? "18px" : "24px",
-              }}
-            >
-              {hotel.title}
-            </h3>
-
-            {/* Location */}
-            <div className="hotel-location">
-              <MapPin
-                size={windowWidth < 640 ? 14 : 20}
-                className="location-icon"
-              />
-              <span className="location-text">{hotel.location}</span>
-            </div>
-
-            {/* Duration and Persons */}
-            <div
-              className={`duration-persons ${windowWidth < 640 ? "column-layout" : "row-layout"
-                }`}
-              style={{
-                gap: windowWidth < 640 ? "8px" : "24px",
-              }}
-            >
-              <div className="duration pt-3">
-                <Clock
-                  size={windowWidth < 640 ? 14 : 20}
-                  className="duration-icon"
-                />
-                <span className="duration-text">
-                  {windowWidth < 640
-                    ? hotel.duration
-                      .replace(" Night", "N")
-                      .replace(" Days", "D")
-                    : hotel.duration}
-                </span>
-              </div>
-              <div className="persons">
-                <Users
-                  size={windowWidth < 640 ? 14 : 20}
-                  className="persons-icon"
-                />
-                <span className="persons-text">{hotel.persons}</span>
-              </div>
-            </div>
-
-            {/* Price and Rating */}
-            <div
-              className={`price-rating ${windowWidth < 480 ? "column-layout" : "row-layout"
-                }`}
-              style={{ gap: windowWidth < 480 ? "8px" : 0 }}
-            >
-              <div className="price">
-                <span className="price-prefix">From</span>
-                <span className="price-value">US${hotel.price}</span>
-              </div>
-              <div className="rating">
-                <Star
-                  size={windowWidth < 640 ? 12 : 18}
-                  className="star-icon"
-                />
-                <span className="rating-value">{hotel.ratings}</span>
-                <span className="reviews-text">
-                  ({hotel.numberOfReviews}
-                  {windowWidth < 480 ? "" : " Reviews"})
-                </span>
-              </div>
-            </div>
-          </div>
+            <ChevronRight size={windowWidth < 768 ? 16 : 18} />
+          </button>
         </div>
-      ))}
+      </div>
+
+      <div
+        className={`destinations-wrapper ${
+          windowWidth < 640 ? "destinations-wrapper-mobile" : ""
+        }`}
+      >
+        {visibleDestinations.map((destination) => (
+          <div
+            key={destination.id}
+            className="destination-card"
+            style={{ width: getCardWidth(visibleCards, windowWidth) }}
+            onClick={() => handleCardClick(destination.id)}
+          >
+            <div className="destination-image-wrapper">
+              <img
+                src={destination.image}
+                alt={destination.title}
+                className="destination-image"
+                style={{ height: getImageHeight(windowWidth) }}
+              />
+              <button className="heart-btn">
+                <Heart
+                  size={windowWidth < 768 ? 18 : 20}
+                  className="heart-icon"
+                />
+              </button>
+            </div>
+
+            <div className="destination-content">
+              <div className="title-rating">
+                <h3
+                  className="destination-title"
+                  style={{ fontSize: getTitleSize(windowWidth) }}
+                >
+                  {destination.title}
+                </h3>
+                <div className="rating">
+                  <span className="star">★</span>
+                  <span className="rating-number">{destination.rating}</span>
+                </div>
+              </div>
+
+              <p className="duration">{destination.duration}</p>
+
+              <div className="icons-section">
+                <div className="icon-item">
+                  <Plane size={getIconSize(windowWidth)} className="icon" />
+                  <p>{destination.flights}</p>
+                </div>
+                <div className="icon-item">
+                  <Building2 size={getIconSize(windowWidth)} className="icon" />
+                  <p>{destination.hotels}</p>
+                </div>
+                <div className="icon-item">
+                  <Car size={getIconSize(windowWidth)} className="icon" />
+                  <p>{destination.transfers}</p>
+                </div>
+                <div className="icon-item">
+                  <Users size={getIconSize(windowWidth)} className="icon" />
+                  <p>{destination.activities}</p>
+                </div>
+              </div>
+
+              <ul className="features-list">
+                {destination.features.map((feature, index) => (
+                  <li key={index} className="feature-item">
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <div
+                className={`pricing-section ${
+                  windowWidth < 640 ? "pricing-column" : "pricing-row"
+                }`}
+              >
+                <span className="original-price">
+                  {destination.originalPrice}
+                </span>
+                <div className="discounted-price-wrapper">
+                  <span className="discounted-price">
+                    {destination.discountedPrice}
+                  </span>
+                  <span className="per-person">Per person</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
-};
+}
 
-export default HotelProperties;
+// Helper functions to compute styles dynamically
+function getContainerPadding(width) {
+  if (width < 640) return "16px";
+  if (width < 768) return "24px";
+  if (width < 1024) return "32px";
+  if (width < 1280) return "48px";
+  return "96px";
+}
+function getCardWidth(visibleCards, width) {
+  if (visibleCards === 1) return "100%";
+  if (visibleCards === 2) return "calc(50% - 12px)";
+  if (visibleCards === 3) return "calc(33.333% - 16px)";
+  return "calc(25% - 18px)";
+}
+function getImageHeight(width) {
+  if (width < 640) return "200px";
+  if (width < 768) return "220px";
+  return "240px";
+}
+function getTitleSize(width) {
+  if (width < 640) return "20px";
+  if (width < 768) return "22px";
+  return "24px";
+}
+function getHeaderSize(width) {
+  if (width < 640) return "28px";
+  if (width < 768) return "32px";
+  return "36px";
+}
+function getNavButtonSize(width) {
+  const size = width < 768 ? "36px" : "40px";
+  return {
+    width: size,
+    height: size,
+  };
+}
+
+function getIconSize(width) {
+  if (width < 640) return 18; // Smaller on mobile
+  if (width < 1024) return 20; // Slightly larger on tablets
+  return 22; // Largest on desktop
+}
