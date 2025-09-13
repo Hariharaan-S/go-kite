@@ -10,7 +10,7 @@
 
 .place-to-visit {
     position: relative;
-    margin-top: 17rem;
+    margin-top: 7rem;
 }
 
 .place-to-visit-wrapper {
@@ -45,13 +45,83 @@
     margin-left: .2rem;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 1280px) {
     .overview-section-part-1 {
-        margin-top: 10rem;
+        margin-top: 5rem;
     }
 
     .place-to-visit {
-        margin-top: 10rem;
+        margin-top: 7rem;
+    }
+
+    .arrow-div {
+        margin-top: 0;
+        margin-left: 65rem;
+        column-gap: 1rem;
+    }
+
+    .next-btn,
+    .prev-btn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .next-btn img,
+    .prev-btn img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .place-to-visit-wrapper {
+        margin-top: 3rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+@media screen and (max-width: 1080px) {
+    .overview-section-part-1 {
+        margin-top: 1rem;
+    }
+
+    .place-to-visit {
+        margin-top: 5rem;
+    }
+
+    .arrow-div {
+        margin-top: 0;
+        margin-left: 51rem;
+        column-gap: 3rem;
+    }
+
+    .next-btn,
+    .prev-btn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .next-btn img,
+    .prev-btn img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .place-to-visit-wrapper {
+        margin-top: 3rem;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+@media screen and (max-width: 400px) {
+    .overview-section-part-1 {
+        margin-top: 0rem;
+    }
+
+    .place-to-visit {
+        margin-top: 5rem;
     }
 
     .arrow-div {

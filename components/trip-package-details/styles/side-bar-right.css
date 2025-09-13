@@ -1,6 +1,6 @@
 .sidebar-right-section {
     position: absolute !important;
-    left: 68rem;
+    left: 70rem;
 }
 
 .fillDiv {
@@ -45,10 +45,39 @@
     font-size: 1.2rem;
 }
 
+
+@media screen and (max-width: 1280px) {
+    .sidebar-right-section {
+        position: relative !important;
+        left: 2rem;
+        top: 0;
+        margin-top: .5rem;
+    }
+
+    .fillDiv {
+        min-width: 90%;
+    }
+
+}
+
+@media screen and (max-width: 1080px) {
+    .sidebar-right-section {
+        position: relative !important;
+        left: 3rem;
+        top: 0;
+        margin-top: 1rem;
+    }
+
+    .fillDiv {
+        display: none;
+    }
+
+}
+
 @media screen and (max-width: 400px) {
     .sidebar-right-section {
-        left: -.5rem;
-        top: 23rem;
+        left: 1.5rem;
+        top: 22rem;
     }
 
     .fillDiv {
