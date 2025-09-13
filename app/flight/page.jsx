@@ -1,0 +1,34 @@
+import GoKiteFooter from "@/components/footer/footer-gokite";
+import Header1 from "@/components/header/Navbar";
+import Hero1 from "@/components/landingpage/hero";
+import HolidayDestinations from "@/components/landingpage/holiday-destintion";
+import VisaDestinationCards from "@/components/landingpage/visa-destination";
+import HotelDealsCards from "@/components/landingpage/Hotel-deals";
+import Hotels from "@/components/landingpage/Hotels";
+
+export const metadata = {
+    title: "GoKite - Travel & Tour ",
+    description: "GoKite - Travel & Tour ",
+};
+
+const Flight = () => {
+    return (
+        <>
+            <Header1 />
+
+            <Hero1 />
+
+            <HolidayDestinations />
+
+            <VisaDestinationCards />
+
+            <Hotels />
+
+            <HotelDealsCards />
+
+            <GoKiteFooter />
+        </>
+    );
+};
+
+export default Flight;

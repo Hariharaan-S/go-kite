@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"; // for active state route matchin
 
 const navLinks = [
   { href: "/", label: "HOME", icon: "/img/landingpage/icons/home.png" },
-  { href: "/", label: "FLIGHT", icon: "/img/landingpage/icons/flight.png" },
+  { href: "/flight", label: "FLIGHT", icon: "/img/landingpage/icons/flight.png" },
   {
     href: "#",
     label: "ATTRACTION",
