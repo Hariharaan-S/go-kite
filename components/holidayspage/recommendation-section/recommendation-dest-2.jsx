@@ -197,6 +197,35 @@ export default function RecommendationDestinations2() {
             }
         }
 
+        @media screen and (max-width: 1280px) {
+            .rec-slide-subsec-2 {
+                column-gap: 30rem !important;
+            }
+            
+            .rec-slide-subsec-2 h2 {
+                margin-left: 12rem !important;
+                } 
+
+            .button-group1 {
+                margin-left: 15rem !important;
+            }
+            
+            .dest1 {
+                margin: 0 2rem !important;
+            }
+        }
+
+        @media screen and (max-width: 1080px) {
+            .recommendation-slider-section-2 .rec-slide-subsec-2 {
+                column-gap: 18rem !important;
+            }
+            
+            .dest1 {
+                margin: 0 !important;
+                gap: 10px !important;
+            }
+        }
+
         @media screen and (max-width: 400px) {
             .recommendation-slider-section-2 {
                 margin-top: 35rem;
@@ -259,28 +288,10 @@ export default function RecommendationDestinations2() {
                             gap: "5px",
                         }}
                     >
-                        <button className="view-all-btn1"
-                            style={{
-                                width: "100%",
-                                height: "60%",
-                                borderRadius: "20px",
-                                border: "none",
-                                backgroundColor: "#FFFFFF",
-                                color: "black",
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                padding: "7px",
-                                fontSize: ".8rem"
-                            }}
-                        >
-                            View All
-                        </button>
                         <button className="prev-btn1"
                             onClick={prevSlide}
                             style={{
-                                width: "70px",
+                                width: "40px",
                                 height: "40px",
                                 borderRadius: "50%",
                                 border: "none",
@@ -297,7 +308,7 @@ export default function RecommendationDestinations2() {
                         <button className="next-btn1"
                             onClick={nextSlide}
                             style={{
-                                width: "70px",
+                                width: "40px",
                                 height: "40px",
                                 borderRadius: "50%",
                                 border: "none",

@@ -6,8 +6,6 @@ import ReviewProgress2 from "@/components/tour-single/guest-reviews/ReviewProgre
 import DetailsReview2 from "@/components/tour-single/guest-reviews/DetailsReview2";
 import ReplyForm from "@/components/tour-single/ReplyForm";
 import ReplyFormReview2 from "@/components/tour-single/ReplyFormReview2";
-import CallToActions from "@/components/common/CallToActions";
-import DefaultFooter from "@/components/footer/default";
 import Tours from "@/components/tours/Tours";
 import Faq from "@/components/faq/Faq";
 import Link from "next/link";

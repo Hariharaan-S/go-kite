@@ -197,6 +197,34 @@ export default function RecommendationDestinations3({ customStyle }) {
             }
         }
 
+        
+        @media screen and (max-width: 1280px) {
+            .rec-slide-subsec-2 {
+                column-gap: 30rem !important;
+            }
+            
+            .rec-slide-subsec-2 h2 {
+                margin-left: 12rem !important;
+                } 
+
+            .button-group1 {
+                margin-left: 15rem !important;
+            }
+            
+            .dest2 {
+                margin: 0 2rem 4rem 2rem !important;
+            }
+        }
+
+        @media screen and (max-width: 1080px) {
+            
+            .dest2 {
+                margin: 0 0 4rem 0 !important;
+                gap: 10px !important;
+
+            }
+        }
+
         @media screen and (max-width: 400px) {
             .recommendation-slider-section-3 {
                 margin-top: 0;

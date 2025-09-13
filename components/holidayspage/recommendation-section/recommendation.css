@@ -1,6 +1,6 @@
 .recommendation-section {
     position: relative;
-    margin-top: 2rem;
+    margin-top: 8rem;
     height: 90vh;
     background: url("/img/holidays/recom-sect.jpg") center/cover no-repeat;
     /* full height section */
@@ -79,6 +79,46 @@
     .section-header-part-2 {
         flex: 3;
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+
+    .recommendation-section {
+        margin-top: 5rem;
+    }
+
+    .section-header {
+        row-gap: 3rem;
+    }
+
+    .section-header-part-1,
+    .section-header-part-2 {
+        margin-top: -3rem;
+        flex: none;
+    }
+
+    .section-header-part-2 {
+        flex: none;
+        width: 70%;
+    }
+
+}
+
+@media screen and (max-width: 1080px) {
+    .section-header {
+        column-gap: 7rem;
+    }
+
+    .section-header-part-1-2 h2 {
+        font-size: 2rem !important;
+    }
+
+    .section-header-part-2 {
+        padding-left: 0;
+        margin-right: 2rem;
+        flex: none;
+        width: 60%;
     }
 }
 

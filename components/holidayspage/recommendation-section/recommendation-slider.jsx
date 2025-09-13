@@ -200,6 +200,35 @@ export default function RecommendationDestinations() {
                 }
         }
 
+        @media screen and (max-width: 1280px) {
+            .recom-slid-section-1 {
+                column-gap: 55rem !important;
+            }
+            
+            .recom-slid-section-1 h2 {
+                margin-left: 0 !important;
+                } 
+            
+            .dest {
+                margin: 0 2rem !important;
+            }
+        }
+
+        @media screen and (max-width: 1080px) {
+            .recom-slid-section-1 {
+                column-gap: 43rem !important;
+            }
+            
+            .recom-slid-section-1 h2 {
+                margin-left: 0 !important;
+                } 
+            
+            .dest {
+                margin: 0 !important;
+                gap: 10px !important;
+            }
+        }
+
         @media screen and (max-width: 400px) {
 
             .recom-slid-section-1 {
@@ -276,6 +305,7 @@ export default function RecommendationDestinations() {
                                 padding: "7px",
                                 fontSize: ".8rem"
                             }}
+                            onClick={() => router.push('/holiday_list_grid_new')}
                         >
                             View All
                         </button>

@@ -65,6 +65,12 @@
     }
 }
 
+@media screen and (max-width: 1280px) {
+    .glassmorph-menu {
+        top: 14rem;
+    }
+}
+
 @media screen and (max-width: 400px) {
 
     .glassmorph-menu {
