@@ -1,5 +1,4 @@
 import Header1 from "@/components/header/IconNav";
-import DefaultFooter from "@/components/footer/default";
 import TopHeaderFilter from "@/components/hotel-list-v4/TopHeaderFilter";
 import Pagination from "@/components/hotel-list-v4/Pagination";
 import Sidebar from "@/components/hotel-list-v4/Sidebar";

@@ -75,6 +75,55 @@
     color: #FFF !important;
 }
 
+@media screen and (max-width: 1280px) {
+    .search-section-header {
+        top: 0rem;
+        margin: 2rem 2rem;
+        width: 90%;
+    }
+
+    .search-section-header-part-1-2 h2 {
+        font-size: 2.1rem !important;
+    }
+
+    .search-section-header-part-2 {
+        padding-left: 7rem;
+        margin-top: 2rem;
+    }
+
+    .search-sub-heading {
+        margin-top: -5rem;
+        margin-left: 1.5rem;
+        font-size: 2.2rem !important;
+    }
+
+}
+
+@media screen and (max-width: 1080px) {
+    .search-section-header {
+        top: 0rem;
+        margin: 1.5rem 1.5rem;
+        width: 95%;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+
+    .search-section-header-part-1-2 h2 {
+        font-size: 2rem !important;
+    }
+
+    .search-section-header-part-2 {
+        padding-left: 0rem;
+        margin-top: 0rem;
+    }
+
+    .search-sub-heading {
+        margin-top: -4rem;
+        margin-left: 1rem;
+        font-size: 2rem !important;
+    }
+
+}
 
 @media screen and (max-width: 400px) {
     .search-section-header {
