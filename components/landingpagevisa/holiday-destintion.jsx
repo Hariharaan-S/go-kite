@@ -205,7 +205,7 @@ export default function HolidayDestinations() {
             key={destination.id}
             className="destination-card"
             style={{ width: getCardWidth(visibleCards, windowWidth) }}
-            onClick={() => router.push('/details-page')}
+            onClick={() => router.push('/trip-package-details')}
           >
             <div className="destination-image-wrapper">
               <img
