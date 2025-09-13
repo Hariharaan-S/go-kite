@@ -249,22 +249,19 @@ export default function HolidayDestinations() {
 
               <div className="icons-section">
                 <div className="icon-item">
-                  <Plane size={windowWidth < 640 ? 20 : 24} className="icon" />
+                  <Plane size={getIconSize(windowWidth)} className="icon" />
                   <p>{destination.flights}</p>
                 </div>
                 <div className="icon-item">
-                  <Building2
-                    size={windowWidth < 640 ? 20 : 24}
-                    className="icon"
-                  />
+                  <Building2 size={getIconSize(windowWidth)} className="icon" />
                   <p>{destination.hotels}</p>
                 </div>
                 <div className="icon-item">
-                  <Car size={windowWidth < 640 ? 20 : 24} className="icon" />
+                  <Car size={getIconSize(windowWidth)} className="icon" />
                   <p>{destination.transfers}</p>
                 </div>
                 <div className="icon-item">
-                  <Users size={windowWidth < 640 ? 20 : 24} className="icon" />
+                  <Users size={getIconSize(windowWidth)} className="icon" />
                   <p>{destination.activities}</p>
                 </div>
               </div>
@@ -335,4 +332,10 @@ function getNavButtonSize(width) {
     width: size,
     height: size,
   };
+}
+
+function getIconSize(width) {
+  if (width < 640) return 20;
+  if (width < 1024) return 22;
+  return 24;
 }

@@ -6,6 +6,7 @@ import VisaTypesComponent from "@/components/applyvisa/visa-enquiry";
 import VisaStepsAndFaq from "@/components/applyvisa/steps";
 import "./styles/apply-visa.styles.css";
 import { useEffect, useState } from "react";
+import Footer from "@/components/footer/footer-gokite"
 import CustomHeader from "@/components/apply-visa-custom-header/custom-header";
 
 const Holidays = () => {
@@ -37,6 +38,7 @@ const Holidays = () => {
       <Banner />
       <VisaTypesComponent />
       <VisaStepsAndFaq />
+      <Footer/>
     </>
   );
 };

@@ -92,9 +92,6 @@
   cursor: pointer;
 }
 
-.travel-detail {
-}
-
 @media (max-width: 640px) {
   .destination-card {
     min-width: 280px;
@@ -221,12 +218,19 @@
 }
 
 .icons-section {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid #e2e8f0;
+}
+
+@media (max-width: 1024px) {
+  .icons-section {
+    gap: 10px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -237,22 +241,28 @@
 
 .icon-item {
   text-align: center;
-}
-
-.icon {
-  color: #64748b;
-  margin-bottom: 8px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .icon-item p {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   color: #64748b;
-  margin: 0;
+  margin-top: 6px;
   font-weight: 500;
   line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1024px) {
+  .icon-item p {
+    font-size: 0.65rem;
+  }
 }
 
 @media (max-width: 640px) {
