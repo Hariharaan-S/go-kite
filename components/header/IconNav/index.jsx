@@ -5,11 +5,24 @@ import MobileMenu from "../MobileMenu";
 import { usePathname } from "next/navigation"; // for active state route matching
 
 const navLinks = [
+  { href: "/", label: "HOME", icon: "/img/landingpage/icons/home.png" },
   { href: "/", label: "FLIGHT", icon: "/img/landingpage/icons/flight.png" },
-  { href: "#", label: "ATTRACTION", icon: "/img/landingpage/icons/activity.png" },
-  { href: "/holidays", label: "HOLIDAYS", icon: "/img/landingpage/icons/holiday.png" },
+  {
+    href: "#",
+    label: "ATTRACTION",
+    icon: "/img/landingpage/icons/activity.png",
+  },
+  {
+    href: "/holidays",
+    label: "HOLIDAYS",
+    icon: "/img/landingpage/icons/holiday.png",
+  },
   { href: "#", label: "HOTEL", icon: "/img/landingpage/icons/hotel.png" },
-  { href: "/master_visa", label: "VISA", icon: "/img/landingpage/icons/visa.png" },
+  {
+    href: "/master_visa",
+    label: "VISA",
+    icon: "/img/landingpage/icons/visa.png",
+  },
   { href: "#", label: "MORE", icon: "/img/landingpage/icons/more.png" },
 ];
 
@@ -28,10 +41,15 @@ const Header1 = () => {
                 </Link>
 
                 {/* Navigation Icons */}
-                <div className="d-flex items-center ml-40 xl:d-none" style={{ gap: "36px" }}>
+                <div
+                  className="d-flex items-center ml-40 xl:d-none"
+                  style={{ gap: "36px" }}
+                >
                   {navLinks.map((link) => {
                     // For exact match or subpages highlight
-                    const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+                    const isActive =
+                      pathname === link.href ||
+                      pathname.startsWith(link.href + "/");
                     return (
                       <Link
                         href={link.href}
@@ -39,10 +57,12 @@ const Header1 = () => {
                         className="d-flex flex-column items-center text-decoration-none"
                         style={{
                           color: isActive ? "#007bff" : "#333",
-                          borderBottom: isActive ? "3px solid #ffb400" : "3px solid transparent",
+                          borderBottom: isActive
+                            ? "3px solid #ffb400"
+                            : "3px solid transparent",
                           paddingBottom: "4px",
                           fontWeight: 500,
-                          transition: "color 0.18s, border-bottom 0.18s"
+                          transition: "color 0.18s, border-bottom 0.18s",
                         }}
                       >
                         <img
@@ -52,14 +72,16 @@ const Header1 = () => {
                             width: 32,
                             height: 32,
                             marginBottom: 3,
-                            filter: isActive ? "none" : "grayscale(35%)"
+                            filter: isActive ? "none" : "grayscale(35%)",
                           }}
                         />
-                        <span style={{
-                          fontSize: 12,
-                          fontWeight: 500,
-                          color: isActive ? "#007bff" : "#333"
-                        }}>
+                        <span
+                          style={{
+                            fontSize: 12,
+                            fontWeight: 500,
+                            color: isActive ? "#007bff" : "#333",
+                          }}
+                        >
                           {link.label}
                         </span>
                       </Link>
@@ -70,7 +92,10 @@ const Header1 = () => {
             </div>
 
             {/* Search Bar and User Section */}
-            <div className="col-auto d-flex items-center" style={{ gap: "20px" }}>
+            <div
+              className="col-auto d-flex items-center"
+              style={{ gap: "20px" }}
+            >
               {/* Search Bar */}
               <div className="xl:d-none" style={{ position: "relative" }}>
                 <input
@@ -84,7 +109,7 @@ const Header1 = () => {
                     borderRadius: "25px",
                     fontSize: "14px",
                     outline: "none",
-                    backgroundColor: "#f8f9fa"
+                    backgroundColor: "#f8f9fa",
                   }}
                   onFocus={(e) => {
                     e.target.style.borderColor = "#007bff";
@@ -95,20 +120,25 @@ const Header1 = () => {
                     e.target.style.backgroundColor = "#f8f9fa";
                   }}
                 />
-                <div style={{
-                  position: "absolute",
-                  left: "15px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  color: "#999",
-                  fontSize: "18px"
-                }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    left: "15px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "#999",
+                    fontSize: "18px",
+                  }}
+                >
                   🔍
                 </div>
               </div>
 
               {/* User Button */}
-              <div className="is-menu-opened-hide md:d-none" style={{ borderRadius: "20px" }}>
+              <div
+                className="is-menu-opened-hide md:d-none"
+                style={{ borderRadius: "20px" }}
+              >
                 <Link
                   href="/login"
                   style={{ borderRadius: "30px" }}
@@ -136,7 +166,7 @@ const Header1 = () => {
                       background: "none",
                       border: "none",
                       color: "#333",
-                      fontSize: "24px"
+                      fontSize: "24px",
                     }}
                   >
                     ☰
