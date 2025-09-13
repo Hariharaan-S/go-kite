@@ -19,7 +19,7 @@ export default function HolidayDestinations() {
   const [windowWidth, setWindowWidth] = useState(1024);
 
   const handleCardClick = (destinationId) => {
-    router.push(`/details-page?id=${destinationId}`);
+    router.push(`/trip-package-details?id=${destinationId}`);
   };
 
   useEffect(() => {
