@@ -19,7 +19,7 @@ const navLinks = [
   },
   { href: "#", label: "HOTEL", icon: "/img/landingpage/icons/hotel.png" },
   {
-    href: "/master_visa",
+    href: "/landing_page_visa_home",
     label: "VISA",
     icon: "/img/landingpage/icons/visa.png",
   },
@@ -97,7 +97,7 @@ const Header1 = () => {
               style={{ gap: "20px" }}
             >
               {/* Search Bar */}
-              <div className="xl:d-none" style={{ position: "relative" }}>
+              {/* <div className="xl:d-none" style={{ position: "relative" }}>
                 <input
                   type="text"
                   placeholder="Where are you going?"
@@ -132,7 +132,7 @@ const Header1 = () => {
                 >
                   🔍
                 </div>
-              </div>
+              </div> */}
 
               {/* User Button */}
               <div

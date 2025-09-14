@@ -448,7 +448,7 @@ const HeroSection = () => {
     <section className="masthead -type-1 z-5">
       <style>{styles}</style>
       <div className="masthead__bg">
-        <img alt="image" src="/img/landingpage/hero.png" className="js-lazy" />
+        <img alt="image" src="/img/landingpage/hero1.png" className="js-lazy" />
       </div>
       <div className="container">
         <div className="row justify-center">
@@ -473,7 +473,7 @@ const HeroSection = () => {
                 data-aos="fade-up"
                 data-aos-delay="100"
                 style={{
-                  fontSize: "16px",
+                  fontSize: "24px",
                   fontWeight: 400,
                   marginTop: "10px",
                   paddingLeft: "15px",
@@ -484,13 +484,13 @@ const HeroSection = () => {
               </p>
             </div>
             {/* Icon Row */}
-            <IconRow />
+            {/* <IconRow /> */}
             {/* Book Flight Card */}
             <div style={{ paddingTop: "70px" }}>
               <BookFlightCard />
             </div>
             {/* Travel Agent Meeting Link */}
-            <div
+            {/* <div
               style={{ margintop: "-100px" }}
               className="text-center"
               data-aos="fade-up"
@@ -505,7 +505,7 @@ const HeroSection = () => {
               >
                 Book a meeting with our travel Agent →
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

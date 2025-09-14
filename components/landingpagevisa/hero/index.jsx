@@ -391,7 +391,7 @@ const IconRow = () => {
       id: "Visa",
       label: "Visa",
       imgSrc: "/img/landingpage/icons/visa.png",
-      redirectUrl: "/master_visa",
+      redirectUrl: "/landing_page_visa_home",
     },
     {
       id: "More",
@@ -465,7 +465,7 @@ const HeroSection = () => {
             {/* Icon Row */}
             <IconRow />
             {/* Search Container */}
-            <div
+            {/* <div
               className="search-container mb-4"
               style={{
                 maxWidth: "800px",
@@ -520,9 +520,9 @@ const HeroSection = () => {
                   }}
                 />
               </div>
-            </div>
+            </div> */}
             {/* Book Flight Card */}
-            <div style={{ paddingTop: "70px" }}>
+           <div style={{ paddingTop: "70px" }}>
               <BookFlightCard />
             </div>
           </div>

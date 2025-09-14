@@ -265,7 +265,7 @@ const IconRow = () => {
       id: "Visa",
       label: "Visa",
       imgSrc: "/img/landingpage/icons/visa.png",
-      redirectUrl: "/master_visa",
+      redirectUrl: "/landing_page_visa_home",
     },
     {
       id: "More",
