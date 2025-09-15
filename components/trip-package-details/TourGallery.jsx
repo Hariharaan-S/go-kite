@@ -6,7 +6,7 @@ import Overview from "@/components/trip-package-details/Overview";
 import TourSnapShot from "@/components/trip-package-details/TourSnapShot";
 
 import ModalVideo from "../common/ModalVideo";
-import './styles/tour-gallery.css'
+import "./styles/tour-gallery.css";
 
 export default function TourGallery({ tour }) {
   const [isOpen, setOpen] = useState(false);
@@ -40,7 +40,6 @@ export default function TourGallery({ tour }) {
               {/* End relative */}
 
               {/* slider gallery */}
-
 
               <TourSnapShot />
               {/* End toursnapshot */}

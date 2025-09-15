@@ -1,4 +1,4 @@
-import './styles/side-bar-right.css'
+import "./styles/side-bar-right.css";
 const SidebarRight = ({ tour }) => {
   return (
     <div className="d-flex justify-end js-pin-content sidebar-right-section">
@@ -12,33 +12,43 @@ const SidebarRight = ({ tour }) => {
           <div className="trip-place">
             <div className="trip-place-details">
               <div className="trip-icon">
-                <img src="img/trip-package/trip-icon.png" width='20px' height='20px' alt="" />
+                <img
+                  src="img/trip-package/trip-icon.png"
+                  width="20px"
+                  height="20px"
+                  alt=""
+                />
               </div>
               <p className="trip-place-name">Dubai, Desert</p>
             </div>
             <div className="timings">
               <div className="trip-clock-icon">
-                <img src="img/trip-package/clock.jpg" width='20px' height='20px' alt="" />
+                <img
+                  src="img/trip-package/clock.jpg"
+                  width="20px"
+                  height="20px"
+                  alt=""
+                />
               </div>
               <p>1 Days - 2 Night</p>
             </div>
           </div>
 
           <div className="trip-price">
-            <p><span>$ 290/</span>person</p>
+            <p>
+              <span>$ 290/</span>person
+            </p>
           </div>
 
-          <button type="submit" className="enquire-btn">Enquire</button>
+          <button type="submit" className="enquire-btn">
+            Enquire
+          </button>
           {/* End div */}
-
-
         </div>
         {/* End px-30 */}
 
         <div className="px-30 fillDiv">
-          <div className="text-14 text-light-1 mt-30">
-
-          </div>
+          <div className="text-14 text-light-1 mt-30"></div>
         </div>
         {/* End div */}
       </div>
