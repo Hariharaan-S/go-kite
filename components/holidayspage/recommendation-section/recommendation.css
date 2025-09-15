@@ -1,7 +1,7 @@
 .recommendation-section {
     position: relative;
     margin-top: 2rem;
-    height: 70vh;
+    height: 80vh;
     background: url("/img/holidays/recom-sect.jpg") center/cover no-repeat;
     /* full height section */
 }
@@ -63,6 +63,11 @@
 }
 
 @media screen and (max-width: 1500px) {
+
+    .recommendation-section {
+        height: 90vh;
+    }
+
     .section-header {
         top: 7rem;
         width: 90%;

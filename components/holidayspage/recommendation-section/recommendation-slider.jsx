@@ -208,6 +208,15 @@ export default function RecommendationDestinations() {
     max-width: 300px;
   }
 
+  @media screen and (max-width: 1500px) {
+      .recom-slid-section-1 {
+        margin-top: 2rem !important;
+        margin-left: 0 !important;
+        column-gap: 60rem !important;
+    }
+
+  }
+
   /* 1440px */
   @media screen and (max-width: 1440px) {
     .recommendation-slider-section-1 {
