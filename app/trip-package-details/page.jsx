@@ -43,7 +43,7 @@ const TourSingleV1Dynamic = ({ params }) => {
       </div>
 
       {/* Popup Form */}
-      <PopupForm open={popupOpen} onClose={() => setPopupOpen(false)} onSubmit={handleFormSubmit} />
+      {/* <PopupForm open={popupOpen} onClose={() => setPopupOpen(false)} onSubmit={handleFormSubmit} /> */}
 
       {/* End single page content */}
 

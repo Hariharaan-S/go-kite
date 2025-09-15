@@ -1,7 +1,24 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import PopupForm from "./popup/popup";
 
 const BannerPage = () => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  const handleSubmitEnquiry = (formData) => {
+    // Here you can add logic to handle form submission
+    console.log("Enquiry submitted:", formData);
+    // Optionally send data to backend, show success message, etc.
+  };
+
   const containerStyle = {
     width: "100%",
     maxWidth: 1600, // Increased max width for larger screens
@@ -226,6 +243,7 @@ const BannerPage = () => {
                 outline: "none",
                 alignSelf: "flex-start",
               }}
+              onClick={handleOpenPopup}
               onMouseEnter={(e) => {
                 e.target.style.background = "#e67e22";
               }}
@@ -238,6 +256,13 @@ const BannerPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Popup Form */}
+      <PopupForm
+        open={isPopupOpen}
+        onClose={handleClosePopup}
+        onSubmit={handleSubmitEnquiry}
+      />
 
       {/* Responsive styles */}
       <style>{`
