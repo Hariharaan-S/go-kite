@@ -43,26 +43,34 @@ const AboutSection = () => {
       margin: "0 auto",
       display: "flex",
       gap: isMobile ? 16 : 32,
-      alignItems: "start",
+      alignItems: "flex-start",
       flexDirection: isMobile ? "column" : "row",
       width: "100%",
+      position: "relative",
     },
     left: {
       flex: isMobile ? "1" : "2",
       width: "100%",
       minWidth: 280,
+      display: "flex",
+      flexDirection: "column",
     },
     right: {
-      flex: isMobile ? "1" : "1",
-      width: "100%",
-      minWidth: 260,
-      maxWidth: isMobile ? "100%" : 340,
+      ...(isMobile
+        ? {
+            width: "100%",
+            marginTop: 24,
+          }
+        : {
+            position: "absolute",
+            top: 0,
+            right: 0,
+            maxWidth: 340,
+          }),
       background: "#fafbfc",
       borderRadius: 18,
       border: "1px solid #dadbdd",
       padding: "24px 20px",
-      marginTop: isMobile ? 24 : 12,
-      alignSelf: "flex-start",
       boxShadow: "0 2px 6px rgba(40,50,67,0.04)",
     },
     tabList: {
@@ -94,13 +102,14 @@ const AboutSection = () => {
       marginTop: 6,
       color: "#1e2329",
       textAlign: "left",
+      width: "100%",
+      padding: isMobile ? "0 15px" : 0,
     },
     content: {
       fontSize: 16,
       lineHeight: 1.7,
       color: "#303439",
       marginBottom: 10,
-      maxWidth: 740,
       width: "100%",
       textAlign: "left",
       padding: isMobile ? "0 15px" : 0,
@@ -182,7 +191,25 @@ const AboutSection = () => {
             </div>
             {/* Tab Panel: Only 'Overview' implemented here */}
             <div id={`tabpanel-0`} role="tabpanel" aria-labelledby="tab-0">
-              {activeTab === 0 && OverviewTab}
+              {activeTab === 0 && (
+                <>
+                  <div style={styles.heading}>Bromo Mountain</div>
+                  <div style={styles.content}>
+                    Bromo Mountain (Gunung Bromo) is an iconic active volcano
+                    located in East Java, Indonesia, within the Bromo Tengger
+                    Semeru National Park. It stands about 2,329 meters (7,641
+                    feet) above sea level and features a dramatic landscape,
+                    including a smoking crater and a vast "sea of sand" around
+                    it. Known for its frequent volcanic activity, Bromo offers
+                    spectacular sunrise views, with popular activities including
+                    <br />
+                    sunrise tours, horseback riding, and hiking to the crater.
+                  </div>
+                  <a style={styles.readMore} href="#">
+                    Read More...
+                  </a>
+                </>
+              )}
               {/* Add other tab content here if needed */}
             </div>
           </div>
