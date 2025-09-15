@@ -99,6 +99,91 @@ const styles = `
     position: static;
   }
 
+  /* Base styles */
+.responsive-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.responsive-card {
+  flex: 1 1 22%;
+  min-width: 220px;
+  max-width: 300px;
+  padding: 1rem;
+  border-radius: 12px;
+  background: #fff;
+}
+
+/* 1440px */
+@media (max-width: 1440px) {
+  .responsive-section {
+    max-width: 1100px;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+  .responsive-card {
+    max-width: 260px;
+  }
+}
+
+/* 1280px */
+@media (max-width: 1280px) {
+  .responsive-section {
+    max-width: 900px;
+    gap: 1.2rem;
+    padding: 1rem;
+  }
+  .responsive-card {
+    flex: 1 1 30%;
+    max-width: 220px;
+  }
+}
+
+/* 1024px */
+@media (max-width: 1024px) {
+  .responsive-section {
+    max-width: 700px;
+    gap: 1rem;
+    padding: 0.8rem;
+  }
+  .responsive-card {
+    flex: 1 1 45%;
+    max-width: 180px;
+  }
+}
+
+/* 768px */
+@media (max-width: 768px) {
+  .responsive-section {
+    flex-direction: column;
+    max-width: 98vw;
+    gap: 0.7rem;
+    padding: 0.5rem;
+  }
+  .responsive-card {
+    flex: 1 1 100%;
+    max-width: 98vw;
+    min-width: 0;
+  }
+}
+
+/* 480px */
+@media (max-width: 480px) {
+  .responsive-section {
+    padding: 0.2rem;
+    gap: 0.4rem;
+  }
+  .responsive-card {
+    padding: 0.5rem;
+    max-width: 99vw;
+    font-size: 0.95rem;
+  }
+}
+
   @media (max-width: 600px) {
     .book-holiday {
       max-width: 99%;

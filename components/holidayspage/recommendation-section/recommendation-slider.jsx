@@ -184,93 +184,157 @@ export default function RecommendationDestinations() {
   const visibleDestinations = getVisibleDestinations();
 
   const styles = `
-        .recommendation-slider-section-1 {
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            margin-top: 12rem;
-        }
+  .recommendation-slider-section-1 {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 10rem;
+  }
 
-        @media screen and (max-width: 1500px) {
-            .recommendation-slider-section-1 {
-                top: 5rem;
-            }
-            .dest {
-                    margin-left: 0 !important;
-                }
-        }
+  .dest {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: stretch;
+    padding-bottom: 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin-left: 2rem;
+  }
 
-        
+  .card {
+    width: calc(25% - 16px);
+    min-width: 250px;
+    max-width: 300px;
+  }
 
-        @media screen and (max-width: 1280px) {
-            .recom-slid-section-1 {
-                column-gap: 55rem !important;
-            }
-            
-            .recom-slid-section-1 h2 {
-                margin-left: 0 !important;
-                } 
-            
-            .dest {
-                margin: 0 2rem !important;
-            }
-        }
+  /* 1440px */
+  @media screen and (max-width: 1440px) {
+    .recommendation-slider-section-1 {
+      margin-top: 14rem;
+    }
+    .dest {
+      gap: 18px;
+      margin-left: 1rem;
+    }
+    .card {
+      width: calc(25% - 12px);
+      min-width: 220px;
+      max-width: 260px;
+    }
+  }
 
-        @media screen and (max-width: 1080px) {
-            .recom-slid-section-1 {
-                column-gap: 43rem !important;
-            }
-            
-            .recom-slid-section-1 h2 {
-                margin-left: 0 !important;
-                } 
-            
-            .dest {
-                margin: 0 !important;
-                gap: 10px !important;
-            }
-        }
+  /* 1280px */
+  @media screen and (max-width: 1280px) {
+    .recommendation-slider-section-1 {
+      margin-top: 6rem;
+    }
 
-        @media screen and (max-width: 400px) {
+        .recom-slid-section-1 {
+      margin-top: 5rem !important;
+      margin-left: 0 !important;
+      column-gap: 50rem !important;
+    }
 
-            .recom-slid-section-1 {
-                padding: 2rem 0;
-                column-gap: 10rem !important;
-            
-            }
-        
-            .heading {
-                position: relative !important;
-                color: #FFF !important;
-            }
-            
-            .button-group {
-                position: relative !important;
+    .dest {
+      gap: 14px;
+      margin-left: 0.5rem;
+    }
+    .card {
+      width: calc(33.33% - 10px);
+      min-width: 200px;
+      max-width: 240px;
+    }
+  }
 
-            }
+  /* 1024px */
+  @media screen and (max-width: 1024px) {
+    .recommendation-slider-section-1 {
+      margin-top: 10rem;
+    }
 
-            .view-all-btn {
-                display: none !important;
-            }
+    .recom-slid-section-1 {
+      margin-top: 5rem !important;
+      margin-left: 0 !important;
+      column-gap: 40rem !important;
+    }
 
-            .prev-btn, .next-btn {
-                width: 40px !important;
-                height: 40px !important;
-            }
+    .dest {
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-left: 0;
+      justify-content: center;
+    }
+    .card {
+      width: 90vw;
+      min-width: 150px;
+      max-width: 98vw;
+    }
+  }
 
-            .dest {
-                display: grid !important;
-                grid-template-columns: repeat(1, 1fr) !important;
-                align-items: center !important;
-                justify-items: center !important;
-            }
-            .dest .card {
-                    width: 100% !important;
-                    
-            }
-            
-        }
-    `;
+  /* 768px */
+  @media screen and (max-width: 768px) {
+    .recommendation-slider-section-1 {
+      margin-top: 13rem;
+    }
+
+    .recom-slid-section-1 {
+    margin-top: 5rem !important;
+      margin-left: 0 !important;
+      column-gap: 30rem !important;
+    }
+    .dest {
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-left: 0;
+      justify-content: center;
+    }
+    .card {
+      width: 90vw;
+      min-width: 150px;
+      max-width: 98vw;
+    }
+    .heading {
+      font-size: 1.6rem;
+    }
+    .prev-btn, .next-btn {
+      width: 25px !important;
+      height: 25px !important;
+    }
+  }
+
+  /* 480px */
+  @media screen and (max-width: 480px) {
+    .recommendation-slider-section-1 {
+      margin-top: 1rem;
+    }
+    .dest {
+      flex-direction: column;
+      gap: 6px;
+      margin-left: 0;
+      align-items: center;
+    }
+    .card {
+      width: 98vw !important;
+      min-width: 120px;
+      max-width: 99vw;
+      padding: 0;
+    }
+    .heading {
+      font-size: 1rem;
+    }
+    .button-group {
+      gap: 1px;
+    }
+    .view-all-btn {
+      display: none !important;
+    }
+    .prev-btn, .next-btn {
+      width: 32px !important;
+      height: 32px !important;
+    }
+  }
+`;
   const router = useRouter();
 
   return (

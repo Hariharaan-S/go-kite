@@ -1,5 +1,4 @@
 "use client";
-
 import Navbar from "@/components/header/NewNav";
 import Banner from "@/components/applyvisa/banner";
 import VisaTypesComponent from "@/components/applyvisa/visa-enquiry";
@@ -38,7 +37,7 @@ const Holidays = () => {
       <Banner />
       <VisaTypesComponent />
       <VisaStepsAndFaq />
-      <Footer/>
+      <Footer />
     </>
   );
 };

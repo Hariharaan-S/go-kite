@@ -1,7 +1,7 @@
 .recommendation-section {
     position: relative;
-    margin-top: 8rem;
-    height: 90vh;
+    margin-top: 2rem;
+    height: 70vh;
     background: url("/img/holidays/recom-sect.jpg") center/cover no-repeat;
     /* full height section */
 }
@@ -82,27 +82,51 @@
     }
 }
 
+@media screen and (max-width: 1440px) {
+    .section-header {
+        width: 95%;
+        margin: 2rem auto;
+        column-gap: 2rem;
+    }
+
+    .section-header-part-1 {
+        flex: 1.5;
+        margin-top: 2rem;
+    }
+
+    .section-header-part-2 {
+        flex: 2.5;
+        padding-left: 4rem;
+        width: 80%;
+        margin-top: 2rem;
+    }
+}
+
 @media screen and (max-width: 1280px) {
 
     .recommendation-section {
-        margin-top: 5rem;
+        margin-top: 4rem;
+        height: 80vh;
     }
 
     .section-header {
-        row-gap: 3rem;
+        flex-direction: row;
+        row-gap: 2rem;
+        width: 98%;
+        top: 1rem;
     }
 
-    .section-header-part-1,
+    .section-header-part-1 {
+        padding-left: 2rem;
+    }
+
     .section-header-part-2 {
-        margin-top: -3rem;
+        padding-left: 0;
+        margin-right: 2rem;
         flex: none;
+        width: 60%;
+        flex: 1.5
     }
-
-    .section-header-part-2 {
-        flex: none;
-        width: 70%;
-    }
-
 }
 
 @media screen and (max-width: 1080px) {
@@ -122,16 +146,96 @@
     }
 }
 
-@media screen and (max-width: 400px) {
-    .section-header {
-        top: 8rem;
+@media screen and (max-width: 1024px) {
+
+    .recommendation-section {
+        height: 75vh;
     }
 
-    .section-header-part-1-2 h2 {
-        font-size: 2rem !important;
+    .section-header {
+        flex-direction: row;
+        width: 100%;
+        margin: 1.5rem auto;
+    }
+
+    .section-header-part-1 {
+        margin-top: 0;
+        padding-left: 1rem;
     }
 
     .section-header-part-2 {
-        display: none;
+        padding-left: 0;
+        margin-left: -45rem;
+        margin-top: -1rem;
+        flex: 1.5;
+    }
+
+    .section-header-part-2 p {
+        font-size: 1rem !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .recommendation-section {
+        margin-top: 2rem;
+        height: 75vh;
+        padding: 1rem 0;
+    }
+
+    .section-header {
+        flex-direction: row;
+        column-gap: 0;
+        width: 100%;
+        margin-top: -5rem
+    }
+
+    .section-header-part-1 {
+        margin-top: 0;
+        padding-left: 1rem;
+    }
+
+    .section-header-part-2 {
+        padding-left: 0;
+        margin-top: -2rem;
+        margin-left: -31rem;
+        flex: 2;
+    }
+
+    .section-header-part-1-2 h2 {
+        font-size: 1.3rem !important;
+    }
+
+    .section-header-part-2 p {
+        font-size: 0.95rem !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .recommendation-section {
+        margin-top: 1rem;
+        height: auto;
+        padding: 0.5rem 0;
+    }
+
+    .section-header {
+        flex-direction: column;
+        row-gap: 0.5rem;
+        width: 100%;
+        margin: 0.5rem auto;
+    }
+
+    .section-header-part-1,
+    .section-header-part-2 {
+        width: 100%;
+        margin-top: 0;
+        padding-left: 0;
+    }
+
+    .section-header-part-1-2 h2 {
+        font-size: 1rem !important;
+    }
+
+    .section-header-part-2 p {
+        font-size: 0.85rem !important;
     }
 }

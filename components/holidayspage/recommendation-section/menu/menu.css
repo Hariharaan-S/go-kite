@@ -59,17 +59,32 @@
     transition: transform 0.3s ease;
 }
 
-@media screen and (max-width: 1500px) {
-    .glassmorph-menu {
-        top: 18rem;
-    }
+/* Base styles */
+.responsive-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
 }
 
+.responsive-item {
+    flex: 1 1 22%;
+    min-width: 220px;
+    max-width: 300px;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #fff;
+}
+
+/* 1440px */
 @media screen and (max-width: 1440px) {
     .glassmorph-menu {
-        top: 18rem;
         width: 95%;
         left: 1.5rem;
+        top: 18rem;
     }
 
     .glassmorph-menu .menu-items {
@@ -79,40 +94,124 @@
     .glassmorph-menu .menu-item {
         padding: 0.8rem;
     }
-}
 
-@media screen and (max-width: 1280px) {
-    .glassmorph-menu {
-        top: 14rem;
+    .glassmorph-menu img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .menu-item p {
+        font-size: 1rem;
     }
 }
 
-@media screen and (max-width: 400px) {
-
+/* 1280px */
+@media screen and (max-width: 1280px) {
     .glassmorph-menu {
+        width: 98%;
+        left: 1rem;
         top: 13rem;
-
     }
 
     .glassmorph-menu .menu-item {
-        padding: 10px;
-        row-gap: 0;
+        padding: 0.7rem;
     }
 
-    .glassmorph-menu .menu-item p {
-        font-size: .8rem;
+    .glassmorph-menu img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .menu-item p {
+        font-size: 0.95rem;
+    }
+}
+
+/* 1024px */
+@media screen and (max-width: 1024px) {
+    .glassmorph-menu {
+        width: 99%;
+        left: 0.5rem;
+        top: 15rem;
     }
 
     .glassmorph-menu .menu-items {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        overflow-x: scroll;
-        margin-left: -1rem;
-        margin-right: 2rem;
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    .glassmorph-menu .menu-item {
+        padding: 0.6rem;
+    }
+
+    .glassmorph-menu img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .menu-item p {
+        font-size: 0.9rem;
+    }
+}
+
+/* 768px */
+@media screen and (max-width: 768px) {
+    .glassmorph-menu {
+        width: 90%;
+        left: 2rem;
+        top: 9rem;
+        min-width: 0;
+    }
+
+    .glassmorph-menu .menu-item {
+        padding: 0.5rem;
+        row-gap: 0.5rem;
+    }
+
+    .glassmorph-menu img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .menu-item p {
+        font-size: 0.85rem;
     }
 
     .underline {
         display: none;
     }
+}
 
+/* 480px */
+@media screen and (max-width: 480px) {
+    .glassmorph-menu {
+        width: 100%;
+        left: 0;
+        top: 7rem;
+        min-width: 0;
+    }
+
+    .glassmorph-menu .menu-items {
+        grid-template-columns: repeat(2, 1fr);
+        overflow-x: auto;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .glassmorph-menu .menu-item {
+        padding: 0.4rem;
+        row-gap: 0.3rem;
+    }
+
+    .glassmorph-menu img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .menu-item p {
+        font-size: 0.75rem;
+    }
+
+    .underline {
+        display: none;
+    }
 }

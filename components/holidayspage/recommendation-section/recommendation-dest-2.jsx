@@ -184,86 +184,200 @@ export default function RecommendationDestinations2() {
   const visibleDestinations = getVisibleDestinations();
   const router = useRouter();
   const styles = `
-        .recommendation-slider-section-2 {
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            margin-top: 18rem;
-        }
-        
-        @media screen and (max-width: 1440px) {
-            .rec-slide-subsec-2 {
-                margin-left: -12rem !important;
-            }
-        }
+  .recommendation-slider-section-2 {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 20rem;
+  }
+  .rec-slide-subsec-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-left: -8rem;
+    margin-top: 20rem;
+    column-gap: 42rem;
+    margin-bottom: 2rem;
+  }
+  .heading1 {
+    color: #000;
+    position: relative;
+    font-size: 2.2rem;
+  }
+  .button-group1 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .dest1 {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: stretch;
+    padding-bottom: 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin-left: -1rem;
+  }
+  .card {
+    width: calc(25% - 16px);
+    min-width: 250px;
+    max-width: 300px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
 
-        @media screen and (max-width: 1280px) {
-            .rec-slide-subsec-2 {
-                column-gap: 30rem !important;
-            }
-            
-            .rec-slide-subsec-2 h2 {
-                margin-left: 12rem !important;
-                } 
+  /* 1440px */
+  @media screen and (max-width: 1440px) {
+    .recommendation-slider-section-2 {
+      margin-top: 5rem;
+    }
+    .rec-slide-subsec-2 {
+      margin-left: -4rem;
+      column-gap: 18rem;
+      margin-top: 10rem;
+    }
+    .dest1 {
+      gap: 18px;
+      margin-left: 0;
+    }
+    .card {
+      width: calc(25% - 12px);
+      min-width: 220px;
+      max-width: 260px;
+    }
+    .heading1 {
+      font-size: 2rem;
+    }
+  }
 
-            .button-group1 {
-                margin-left: 15rem !important;
-            }
-            
-            .dest1 {
-                margin: 0 2rem !important;
-            }
-        }
+  /* 1280px */
+  @media screen and (max-width: 1280px) {
+    .recommendation-slider-section-2 {
+      margin-top: 12rem;
+    }
+    .rec-slide-subsec-2 {
+      margin-left: 0;
+      column-gap: 39rem !important;
+    }
+    .dest1 {
+      column-gap: 14px;
+      flex-wrap: wrap;
+      margin-left: .5rem !important;
+    }
+    .card {
+      width: calc(33.33% - 10px);
+      min-width: 200px;
+      max-width: 220px;
+    }
+    .heading1 {
+      font-size: 1.7rem;
+    }
+  }
 
-        @media screen and (max-width: 1080px) {
-            .recommendation-slider-section-2 .rec-slide-subsec-2 {
-                column-gap: 18rem !important;
-            }
-            
-            .dest1 {
-                margin: 0 !important;
-                gap: 10px !important;
-            }
-        }
+  /* 1024px */
+  @media screen and (max-width: 1024px) {
+    .recommendation-slider-section-2 {
+      margin-top: 60rem;
+    }
+    .rec-slide-subsec-2 {
+      flex-direction: row;
+      column-gap: 20rem !important;
+    }
+    .heading1 {
+      font-size: 1.7rem;
+      margin-left: 5rem;
+    }
+    .button-group1 {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
+    .dest1 {
+      gap: 10px;
+      margin-left: 0;
+      flex-wrap: wrap;
+    }
+    .card {
+      width: calc(50% - 10px);
+      min-width: 160px;
+      max-width: 98vw;
+    }
+  }
 
-        @media screen and (max-width: 400px) {
-            .recommendation-slider-section-2 {
-                margin-top: 135rem;
-            }
+  /* 768px */
+  @media screen and (max-width: 768px) {
+    .recommendation-slider-section-2 {
+      margin-top: 50rem;
+    }
+    .rec-slide-subsec-2 {
+      column-gap: 12rem !important;
+      flex-direction: row;
+      margin-left: 0rem !important;
+    }
+    .heading1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .button-group1 {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
+    .dest1 {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-left: 1rem !important;
+      align-items: center;
+    }
+    .card {
+      width: 95vw !important;
+      min-width: 120px;
+      max-width: 98vw;
+      padding: 0;
+    }
+  }
 
-            .heading1 {
-                color: #000 !important;
-                margin-top: 2.5rem;
-                margin-left: 10rem !important;
-            }
-
-            .button-group1 {
-                position: absolute;
-                left: 30rem;
-                top: 2.5rem;
-            }
-
-            .view-all-btn1 {
-                display: none !important;
-            }
-            
-
-            .prev-btn1, .next-btn1 {
-                width: 40px !important;
-                height: 40px !important;
-            }
-                .dest1 {
-                display: grid !important;
-                grid-template-columns: repeat(1, 1fr) !important;
-                align-items: center !important;
-                justify-items: center !important;
-            }
-            .dest1 .card {
-                    width: 100% !important;
-                    
-            }
-        }
-    `;
+  /* 480px */
+  @media screen and (max-width: 480px) {
+    .recommendation-slider-section-2 {
+      margin-top: 1rem;
+    }
+    .rec-slide-subsec-2 {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: 0;
+      column-gap: 0;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .heading1 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .button-group1 {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
+    .dest1 {
+      flex-direction: column;
+      gap: 6px;
+      margin-left: 0;
+      align-items: center;
+    }
+    .card {
+      width: 98vw !important;
+      min-width: 100px;
+      max-width: 99vw;
+      padding: 0;
+    }
+  }
+`;
 
   return (
     <>

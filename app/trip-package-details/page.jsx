@@ -7,7 +7,6 @@ import Faq from "@/components/faq/Faq";
 import Itinerary from "@/components/trip-package-details/itinerary";
 import TourGallery from "@/components/trip-package-details/TourGallery";
 import IncludedAccordion from "@/components/trip-package-details/accordion";
-import PopupForm from "@/components/trip-package-details/popup/popup";
 import './trip-page.css'
 
 const TourSingleV1Dynamic = ({ params }) => {
