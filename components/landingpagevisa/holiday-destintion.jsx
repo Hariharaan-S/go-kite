@@ -9,7 +9,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import "../landingpage/styles/holiday-destination.css"
+import "../landingpage/styles/holiday-destination.css";
 import { useRouter } from "next/navigation";
 
 export default function HolidayDestinations() {
@@ -171,10 +171,14 @@ export default function HolidayDestinations() {
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
-        className={`holiday-header ${windowWidth < 640 ? "holiday-header-mobile" : ""
-          }`}
+        className={`holiday-header ${
+          windowWidth < 640 ? "holiday-header-mobile" : ""
+        }`}
       >
-        <h1 className="holiday-title" style={{ fontSize: getHeaderSize(windowWidth) }}>
+        <h1
+          className="holiday-title"
+          style={{ fontSize: getHeaderSize(windowWidth) }}
+        >
           Popular Holiday Destinations
         </h1>
         <div className="holiday-nav">
@@ -197,15 +201,16 @@ export default function HolidayDestinations() {
       </div>
 
       <div
-        className={`destinations-wrapper ${windowWidth < 640 ? "destinations-wrapper-mobile" : ""
-          }`}
+        className={`destinations-wrapper ${
+          windowWidth < 640 ? "destinations-wrapper-mobile" : ""
+        }`}
       >
         {visibleDestinations.map((destination) => (
           <div
             key={destination.id}
             className="destination-card"
             style={{ width: getCardWidth(visibleCards, windowWidth) }}
-            onClick={() => router.push('/trip-package-details')}
+            onClick={() => router.push("/trip-details")}
           >
             <div className="destination-image-wrapper">
               <img
@@ -269,10 +274,13 @@ export default function HolidayDestinations() {
               </ul>
 
               <div
-                className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
-                  }`}
+                className={`pricing-section ${
+                  windowWidth < 640 ? "pricing-column" : "pricing-row"
+                }`}
               >
-                <span className="original-price">{destination.originalPrice}</span>
+                <span className="original-price">
+                  {destination.originalPrice}
+                </span>
                 <div className="discounted-price-wrapper">
                   <span className="discounted-price">
                     {destination.discountedPrice}
