@@ -1,0 +1,8 @@
+/* For wide screens ( > 1440px ) */
+@media screen and (max-width: 1441px) {
+    .recom-sec-2 {
+        min-height: 70vh;
+        /* or whatever you need */
+        margin-top: 30rem;
+    }
+}
