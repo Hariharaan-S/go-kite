@@ -1,3 +1,5 @@
+"use client";
+import React, { useState } from "react";
 import "photoswipe/dist/photoswipe.css";
 import toursData from "@/data/tours";
 import Header1 from "@/components/header/IconNav";
@@ -5,16 +7,19 @@ import Faq from "@/components/faq/Faq";
 import Itinerary from "@/components/trip-package-details/itinerary";
 import TourGallery from "@/components/trip-package-details/TourGallery";
 import IncludedAccordion from "@/components/trip-package-details/accordion";
+import PopupForm from "@/components/trip-package-details/popup/popup";
 import './trip-page.css'
-
-export const metadata = {
-  title: "GoKite - Travel & Tour ",
-  description: "GoKite - Travel & Tour ",
-};
 
 const TourSingleV1Dynamic = ({ params }) => {
   const id = params.id;
   const tour = toursData.find((item) => item.id == id) || toursData[0];
+
+  const [popupOpen, setPopupOpen] = useState(false);
+
+  const handleFormSubmit = (data) => {
+    // Handle form data (send to API, etc.)
+    console.log("Form submitted:", data);
+  };
 
   return (
     <>
@@ -26,11 +31,22 @@ const TourSingleV1Dynamic = ({ params }) => {
       <Header1 />
       {/* End Header 1 */}
 
-
       <TourGallery tour={tour} />
 
-      {/* End single page content */}
+      {/* Enquire Button */}
+      <div style={{ display: "flex", justifyContent: "flex-end", margin: "2rem" }}>
+        <button
+          className="button px-15 py-10 -blue-1"
+          onClick={() => setPopupOpen(true)}
+        >
+          Enquire
+        </button>
+      </div>
 
+      {/* Popup Form */}
+      <PopupForm open={popupOpen} onClose={() => setPopupOpen(false)} onSubmit={handleFormSubmit} />
+
+      {/* End single page content */}
 
       <section className="border-top-light  mt-40 pt-40">
         <div className="container">
@@ -47,7 +63,6 @@ const TourSingleV1Dynamic = ({ params }) => {
         <p className="expand-all">Expand All</p>
         <IncludedAccordion />
       </section>
-
 
       <section className="faq">
         <h3>FAQ</h3>

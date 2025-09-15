@@ -200,6 +200,8 @@ export default function RecommendationDestinations() {
                 }
         }
 
+        
+
         @media screen and (max-width: 1280px) {
             .recom-slid-section-1 {
                 column-gap: 55rem !important;

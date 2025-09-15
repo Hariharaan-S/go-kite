@@ -1,4 +1,3 @@
-
 const HolidayHeroBGStyles = `
         .bg-div {
             height: 90%;

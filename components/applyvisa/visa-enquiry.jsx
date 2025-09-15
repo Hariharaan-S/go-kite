@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "./styles/visa-enquiry.styles.css"; // Import the new stylesheet
 import { useRouter } from "next/navigation";
+import PopupForm from "./popup/popup"; // Adjust path as needed
 
 const tabList = ["Types Of visa", "Visa Process", "Visa Eligibility", "FAQ"];
 
@@ -58,6 +59,7 @@ const visaCards = [
 
 const VisaTabsAndCards = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const [popupOpen, setPopupOpen] = useState(false);
   const router = useRouter();
 
   const getCardStyle = (index) => {
@@ -80,6 +82,13 @@ const VisaTabsAndCards = () => {
       ...baseStyle,
       transform: "scale(1)",
     };
+  };
+
+  const handleEnquire = () => setPopupOpen(true);
+
+  const handleFormSubmit = (data) => {
+    // Handle form data (send to API, etc.)
+    console.log("Form submitted:", data);
   };
 
   return (
@@ -332,8 +341,7 @@ const VisaTabsAndCards = () => {
                   borderBottomLeftRadius: 16,
                   borderBottomRightRadius: 16,
                 }}
-
-                onClick={() => router.push('/visa_application')}
+                onClick={handleEnquire}
               >
                 <span
                   className="visa-card-footer-text"
@@ -546,7 +554,7 @@ const VisaTabsAndCards = () => {
                   borderBottomLeftRadius: 16,
                   borderBottomRightRadius: 16,
                 }}
-                onClick={() => router.push('/visa_application')}
+                onClick={handleEnquire}
               >
                 <span
                   className="visa-card-footer-text"
@@ -577,6 +585,7 @@ const VisaTabsAndCards = () => {
           ))}
         </div>
       </div>
+      <PopupForm open={popupOpen} onClose={() => setPopupOpen(false)} onSubmit={handleFormSubmit} />
     </div>
   );
 };
