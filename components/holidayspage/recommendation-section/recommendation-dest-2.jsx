@@ -196,7 +196,7 @@ export default function RecommendationDestinations2() {
     align-items: center;
     position: relative;
     margin-left: -8rem;
-    margin-top: 20rem;
+    margin-top: 10rem !important;
     column-gap: 42rem;
     margin-bottom: 2rem;
   }
@@ -255,6 +255,35 @@ export default function RecommendationDestinations2() {
     .heading1 {
       font-size: 2rem;
     }
+  }
+    
+
+
+  @media screen and (max-width: 1440px) {
+    .recommendation-slider-section-2 {
+      margin-top: 8rem;
+    } 
+      .rec-slide-subsec-2 { 
+        margin-bottom: 2rem;
+      }
+  } 
+
+    @media screen and (max-width: 1400px) {
+    .recommendation-slider-section-2 {
+      margin-top: 10rem;
+    }
+      .rec-slide-subsec-2 {
+        margin-top: 13rem !important;
+      }
+  }
+
+  @media screen and (max-width: 1320px) {
+    .recommendation-slider-section-2 {
+      margin-top: 15rem;
+    }
+      .rec-slide-subsec-2 { 
+        margin-top: 20rem !important;
+      } 
   }
 
   /* 1280px */
