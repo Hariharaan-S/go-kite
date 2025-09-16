@@ -1,6 +1,5 @@
 import GlassmorphMenu from "./menu/menu";
 import './recommendation.css'
-import RecommendationDestinations from "./recommendation-slider";
 
 const RecommendationSection = () => {
 
@@ -18,7 +17,6 @@ const RecommendationSection = () => {
                 </div>
 
                 <GlassmorphMenu />
-                <RecommendationDestinations />
             </div>
         </>
 

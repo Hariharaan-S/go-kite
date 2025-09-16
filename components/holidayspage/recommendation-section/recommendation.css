@@ -216,6 +216,7 @@
 
 @media screen and (max-width: 400px) {
     .recommendation-section {
+        position: relative;
         margin-top: 1rem;
         height: 70vh;
         padding: 0.5rem 0;
