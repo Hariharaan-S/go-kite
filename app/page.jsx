@@ -18,6 +18,7 @@ const Home_1 = () => {
       <Hero1 />
 
       <HolidayDestinations />
+      
 
       <VisaDestinationCards />
 

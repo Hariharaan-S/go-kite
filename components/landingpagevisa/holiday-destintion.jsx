@@ -36,6 +36,14 @@ export default function HolidayDestinations() {
     return () => window.removeEventListener("resize", updateVisibleCards);
   }, []);
 
+  // Automatic carousel effect: slide every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [visibleCards, currentSlide]);
+
   const destinations = [
     {
       id: 1,

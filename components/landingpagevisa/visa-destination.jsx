@@ -1,15 +1,16 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import "../landingpage/styles/visa-destination.css"
+import "../landingpage/styles/visa-destination.css";
 import { useRouter } from "next/navigation";
+
+const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds
 
 const VisaDestinationCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
   const [windowWidth, setWindowWidth] = useState(1024);
 
-  // Update visible cards based on screen size
   useEffect(() => {
     const updateVisibleCards = () => {
       const width = window.innerWidth;
@@ -128,6 +129,17 @@ const VisaDestinationCards = () => {
     );
   };
 
+  // Auto slide effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) =>
+        prev + visibleCards >= totalSlides ? 0 : prev + visibleCards
+      );
+    }, AUTO_SCROLL_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [visibleCards, totalSlides]);
+
   // Compute the visible cards window with wrapping
   const getVisibleDestinations = () => {
     if (totalSlides <= visibleCards) return destinations;
@@ -144,7 +156,7 @@ const VisaDestinationCards = () => {
   const visibleDestinations = getVisibleDestinations();
   const router = useRouter();
 
-  // Responsive window width update
+  // Responsive window width update for style calculations
   useEffect(() => {
     const updateWindowWidth = () => {
       setWindowWidth(window.innerWidth);
@@ -155,7 +167,8 @@ const VisaDestinationCards = () => {
     return () => window.removeEventListener("resize", updateWindowWidth);
   }, []);
 
-  // Helper functions for responsive styles
+  // Style helpers
+
   const getContainerPadding = () => {
     if (windowWidth < 640) return "16px";
     if (windowWidth < 768) return "24px";
@@ -262,8 +275,9 @@ const VisaDestinationCards = () => {
               minWidth: windowWidth < 640 ? "280px" : "250px",
               maxWidth: windowWidth < 640 ? "400px" : "300px",
               height: getCardHeight(),
+              cursor: "pointer",
             }}
-            onClick={() => router.push('/details-page')}
+            onClick={() => router.push("/details-page")}
           >
             {/* Image Container */}
             <div
@@ -282,7 +296,12 @@ const VisaDestinationCards = () => {
               </div>
 
               {/* Price overlay */}
-              <div className="price-overlay" style={{ flexDirection: windowWidth < 640 ? "column" : "row" }}>
+              <div
+                className="price-overlay"
+                style={{
+                  flexDirection: windowWidth < 640 ? "column" : "row",
+                }}
+              >
                 {windowWidth < 640 ? (
                   <>
                     <div>
