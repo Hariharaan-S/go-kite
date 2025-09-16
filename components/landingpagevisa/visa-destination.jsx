@@ -337,7 +337,7 @@ const VisaDestinationCards = () => {
               {/* Country Name */}
               <h3
                 className="visa-card-title"
-                style={{ fontSize: getTitleSize() }}
+                style={{ fontSize: getTitleSize(), marginBottom: "8px" }}
               >
                 {destination.country}
               </h3>

@@ -26,12 +26,13 @@ const BookFlightCard = () => {
         {/* FROM */}
         <div className="flight-field">
           <img
-
             src="/img/general/from-flight.png"
             className="flight-icon"
             alt="From"
           />
-          <span style={{ paddingLeft: "10px" }} className="flight-label">From</span>
+          <span style={{ paddingLeft: "10px" }} className="flight-label">
+            From
+          </span>
           <input
             className="flight-input"
             type="text"
@@ -47,7 +48,9 @@ const BookFlightCard = () => {
             className="flight-icon"
             alt="To"
           />
-          <span style={{ paddingLeft: "10px" }} className="flight-label">To</span>
+          <span style={{ paddingLeft: "10px" }} className="flight-label">
+            To
+          </span>
           <input
             className="flight-input"
             type="text"
@@ -82,7 +85,9 @@ const BookFlightCard = () => {
             className="flight-icon"
             alt="Passenger"
           />
-          <span style={{ paddingLeft: "10px" }} className="flight-label">Passengers</span>
+          <span style={{ paddingLeft: "10px" }} className="flight-label">
+            Passengers
+          </span>
           <input
             className="flight-input"
             type="text"
@@ -118,8 +123,9 @@ const BookFlightCard = () => {
           </div>
           {/* Multi City */}
           <div
-            className={`trip-option ${tripType === "multiCity" ? "active" : ""
-              }`}
+            className={`trip-option ${
+              tripType === "multiCity" ? "active" : ""
+            }`}
           >
             <input
               type="radio"
@@ -132,8 +138,9 @@ const BookFlightCard = () => {
           </div>
           {/* Round Trip */}
           <div
-            className={`trip-option ${tripType === "roundTrip" ? "active" : ""
-              }`}
+            className={`trip-option ${
+              tripType === "roundTrip" ? "active" : ""
+            }`}
           >
             <input
               type="radio"
@@ -146,8 +153,9 @@ const BookFlightCard = () => {
           </div>
           {/* Direct Flight */}
           <div
-            className={`trip-option ${tripType === "directFlight" ? "active" : ""
-              }`}
+            className={`trip-option ${
+              tripType === "directFlight" ? "active" : ""
+            }`}
           >
             <input
               type="radio"
@@ -191,14 +199,20 @@ const BookFlightCard = () => {
   );
 };
 
-
-const IconButton = ({ redirectUrl, imgSrc, label, isActive = false, onClick }) => (
+const IconButton = ({
+  redirectUrl,
+  imgSrc,
+  label,
+  isActive = false,
+  onClick,
+}) => (
   <div className="text-center cursor-pointer" onClick={onClick}>
     <div
-      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
-        ? "bg-orange-500 border-orange-500"
-        : "bg-white border-white hover:bg-gray-50"
-        }`}
+      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${
+        isActive
+          ? "bg-orange-500 border-orange-500"
+          : "bg-white border-white hover:bg-gray-50"
+      }`}
       style={{
         width: "64px",
         height: "64px",
@@ -225,23 +239,38 @@ const IconRow = () => {
       id: "Flight",
       label: "Flight",
       imgSrc: "/img/landingpage/icons/flight.png",
-      redirectUrl: '/'
+      redirectUrl: "/",
     },
     {
       id: "Activities",
       label: "Activities",
       imgSrc: "/img/landingpage/icons/activity.png",
-      redirectUrl: '#'
+      redirectUrl: "#",
     },
     {
       id: "Holidays",
       label: "Holidays",
       imgSrc: "/img/landingpage/icons/holiday.png",
-      redirectUrl: '/holidays'
+      redirectUrl: "/holidays",
     },
-    { id: "Hotel", label: "Hotel", imgSrc: "/img/landingpage/icons/hotel.png", redirectUrl: '#' },
-    { id: "Visa", label: "Visa", imgSrc: "/img/landingpage/icons/visa.png", redirectUrl: '/landing_page_visa_home' },
-    { id: "More", label: "More", imgSrc: "/img/landingpage/icons/more.png", redirectUrl: '#' },
+    {
+      id: "Hotel",
+      label: "Hotel",
+      imgSrc: "/img/landingpage/icons/hotel.png",
+      redirectUrl: "#",
+    },
+    {
+      id: "Visa",
+      label: "Visa",
+      imgSrc: "/img/landingpage/icons/visa.png",
+      redirectUrl: "/landing_page_visa_home",
+    },
+    {
+      id: "More",
+      label: "More",
+      imgSrc: "/img/landingpage/icons/more.png",
+      redirectUrl: "#",
+    },
   ];
   return (
     <div
@@ -282,7 +311,6 @@ const IconRow = () => {
     </div>
   );
 };
-
 
 const HeroSection = () => {
   // Redux and router hooks if needed for navigation/interactivity
