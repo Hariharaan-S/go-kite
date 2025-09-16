@@ -121,7 +121,8 @@ const holidayHeroStyles = `
             padding-top: 0.5rem;
         }
         .hero h1, .hero .hero-subtopic {
-            display: none;
+            display: block;
+            text-align: center;
         }
         .book-agent {
             margin-top: 2rem;

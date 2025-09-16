@@ -188,7 +188,7 @@ export default function RecommendationDestinations2() {
     display: flex;
     flex-direction: column;
     position: relative;
-    margin-top: 20rem;
+    margin-top: -27rem;
   }
   .rec-slide-subsec-2 {
     display: flex;
@@ -233,6 +233,12 @@ export default function RecommendationDestinations2() {
     flex-direction: column;
   }
 
+  @media screen and (max-width: 1500px) {
+        .recommendation-slider-section-2 {
+      margin-top: -27rem;
+    }
+  }
+
   /* 1440px */
   @media screen and (max-width: 1440px) {
     .recommendation-slider-section-2 {
@@ -261,7 +267,7 @@ export default function RecommendationDestinations2() {
 
   @media screen and (max-width: 1440px) {
     .recommendation-slider-section-2 {
-      margin-top: 8rem;
+      margin-top: -27rem;
     } 
       .rec-slide-subsec-2 { 
         margin-bottom: 2rem;
@@ -289,7 +295,7 @@ export default function RecommendationDestinations2() {
   /* 1280px */
   @media screen and (max-width: 1280px) {
     .recommendation-slider-section-2 {
-      margin-top: 12rem;
+      margin-top: -36rem;
     }
     .rec-slide-subsec-2 {
       margin-left: 0;
@@ -313,7 +319,7 @@ export default function RecommendationDestinations2() {
   /* 1024px */
   @media screen and (max-width: 1024px) {
     .recommendation-slider-section-2 {
-      margin-top: 60rem;
+      margin-top: -37rem;
     }
     .rec-slide-subsec-2 {
       flex-direction: row;
@@ -342,10 +348,10 @@ export default function RecommendationDestinations2() {
   /* 768px */
   @media screen and (max-width: 768px) {
     .recommendation-slider-section-2 {
-      margin-top: 50rem;
+      margin-top: -37rem;
     }
     .rec-slide-subsec-2 {
-      column-gap: 12rem !important;
+      column-gap: 16rem !important;
       flex-direction: row;
       margin-left: 0rem !important;
     }
@@ -400,7 +406,7 @@ export default function RecommendationDestinations2() {
       margin-left: 0;
       align-items: center;
     }
-    .card {
+    .dest1 .card {
       width: 98vw !important;
       min-width: 100px;
       max-width: 99vw;

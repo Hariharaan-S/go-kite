@@ -3,6 +3,8 @@ import HolidaysHero from "@/components/holidayspage/hero";
 import RecommendationSection from "@/components/holidayspage/recommendation-section/recommendation";
 import RecommendationSection2 from "@/components/holidayspage/recommendation-section/recommendation-section-2";
 import Footer from "@/components/footer/footer-gokite"
+import RecommendationDestinations from "@/components/holidayspage/recommendation-section/recommendation-slider";
+
 
 export const metadata = {
     title: "GoKite - Travel & Tour ",
@@ -15,8 +17,9 @@ const Holidays = () => {
             <Header1 />
             <HolidaysHero />
             <RecommendationSection />
+            <RecommendationDestinations />
             <RecommendationSection2 />
-            <Footer/>
+            <Footer />
         </>
 
     )

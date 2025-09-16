@@ -188,7 +188,7 @@ export default function RecommendationDestinations() {
     display: flex;
     flex-direction: column;
     position: relative;
-    margin-top: 10rem;
+    margin-top: -15rem;
   }
 
   .dest {
@@ -210,7 +210,7 @@ export default function RecommendationDestinations() {
 
   @media screen and (max-width: 1500px) {
       .recom-slid-section-1 {
-        margin-top: 2rem !important;
+        margin-top: -25rem !important;
         margin-left: 0 !important;
         column-gap: 60rem !important;
     }
@@ -220,7 +220,7 @@ export default function RecommendationDestinations() {
   /* 1440px */
   @media screen and (max-width: 1440px) {
     .recommendation-slider-section-1 {
-      margin-top: 14rem;
+      margin-top: -14rem;
     }
     .dest {
       gap: 18px;
@@ -236,7 +236,7 @@ export default function RecommendationDestinations() {
   /* 1280px */
   @media screen and (max-width: 1280px) {
     .recommendation-slider-section-1 {
-      margin-top: 6rem;
+      margin-top: -15rem;
     }
 
         .recom-slid-section-1 {
@@ -259,7 +259,7 @@ export default function RecommendationDestinations() {
   /* 1024px */
   @media screen and (max-width: 1024px) {
     .recommendation-slider-section-1 {
-      margin-top: 10rem;
+      margin-top: -12rem;
     }
 
     .recom-slid-section-1 {
@@ -284,7 +284,7 @@ export default function RecommendationDestinations() {
   /* 768px */
   @media screen and (max-width: 768px) {
     .recommendation-slider-section-1 {
-      margin-top: 3rem;
+      margin-top: -15rem;
     }
 
     .recom-slid-section-1 {
@@ -315,20 +315,19 @@ export default function RecommendationDestinations() {
   /* 400px */
   @media screen and (max-width: 400px) {
     .recommendation-slider-section-1 {
-      margin-top: 6rem;
-      height: 130vh;
+      margin-top: -15rem;
+      height: auto;
     }
 
-        .recom-slid-section-1 {
+      .recom-slid-section-1 {
     margin-top: 7rem !important;
       margin-left: 0 !important;
       column-gap: 12rem !important;
     }
     .dest {
-      flex-direction: column;
-      gap: 6px;
-      margin-left: 0;
-      align-items: center;
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 6px !important;
     }
     .card {
       width: 98vw !important;
