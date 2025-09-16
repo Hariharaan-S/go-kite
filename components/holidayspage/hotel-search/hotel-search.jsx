@@ -207,7 +207,7 @@ const styles = `
     .book-holiday {
       min-height: 120px;
       padding: 1rem 0.25rem;
-      margin-top: -1rem;
+      margin-top: 1rem;
     }
     .book-holiday h2 {
       font-size: 1.05rem;

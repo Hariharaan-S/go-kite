@@ -373,8 +373,9 @@ export default function RecommendationDestinations2() {
   }
 
   /* 480px */
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 400px) {
     .recommendation-slider-section-2 {
+    display: none;
       margin-top: 1rem;
     }
     .rec-slide-subsec-2 {

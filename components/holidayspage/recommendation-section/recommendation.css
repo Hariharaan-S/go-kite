@@ -189,9 +189,8 @@
 
     .section-header {
         flex-direction: row;
-        column-gap: 0;
+        column-gap: 25rem;
         width: 100%;
-        margin-top: -5rem
     }
 
     .section-header-part-1 {
@@ -215,29 +214,31 @@
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 400px) {
     .recommendation-section {
         margin-top: 1rem;
-        height: auto;
+        height: 70vh;
         padding: 0.5rem 0;
     }
 
     .section-header {
-        flex-direction: column;
-        row-gap: 0.5rem;
         width: 100%;
         margin: 0.5rem auto;
+        padding: 0 .5rem;
     }
 
-    .section-header-part-1,
-    .section-header-part-2 {
+    .section-header-part-1 {
         width: 100%;
         margin-top: 0;
         padding-left: 0;
     }
 
+    .section-header-part-2 {
+        display: none;
+    }
+
     .section-header-part-1-2 h2 {
-        font-size: 1rem !important;
+        font-size: 1.3rem !important;
     }
 
     .section-header-part-2 p {

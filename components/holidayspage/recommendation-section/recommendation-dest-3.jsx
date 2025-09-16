@@ -236,15 +236,16 @@ export default function RecommendationDestinations3({ customStyle }) {
   .dest2 {
     flex-direction: row !important;
     flex-wrap: wrap !important;
-    gap: 1rem !important;
-    margin: 2rem 4rem !important;
-    align-items: center !important;
+    margin: 0 !important;
+    gap: 2rem !important;
+    align-items: start !important;
   }
 }
 
 /* 480px */
 @media screen and (max-width: 480px) {
   .recommendation-slider-section-3 {
+  display: none;
     margin-top: 1.2rem;
   }
   .dest2 {

@@ -115,9 +115,9 @@ const holidayHeroStyles = `
     }
 
     /* 480px */
-    @media screen and (max-width: 480px) {
+    @media screen and (max-width: 400px) {
         .hero {
-            margin-top: 40px;
+            margin-top: 5.5rem;
             padding-top: 0.5rem;
         }
         .hero h1, .hero .hero-subtopic {

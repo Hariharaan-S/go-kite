@@ -186,12 +186,12 @@
     .glassmorph-menu {
         width: 100%;
         left: 0;
-        top: 7rem;
+        top: 9rem;
         min-width: 0;
     }
 
     .glassmorph-menu .menu-items {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         overflow-x: auto;
         margin-left: 0;
         margin-right: 0;
