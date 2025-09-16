@@ -1,0 +1,183 @@
+.about-container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+    background: #fff;
+  }
+  
+  /* Main section wrapper */
+  .about-section {
+    font-family: inherit;
+    background: #fff;
+    padding: 40px 24px 24px 24px;
+    min-height: auto;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  
+  .about-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    flex-direction: row;
+    width: 100%;
+    position: relative;
+  }
+  .about-wrapper.mobile {
+    flex-direction: column;
+    gap: 16px;
+    position: static;
+  }
+  
+  .about-left {
+    flex: 2;
+    width: 100%;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Ensure about-right doesn't hide mobile content */
+  .about-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    max-width: 340px;
+    background: #fafbfc;
+    border-radius: 18px;
+    border: 1px solid #dadbdd;
+    padding: 24px 20px;
+    box-shadow: 0 2px 6px rgba(40, 50, 67, 0.04);
+  }
+  
+  .about-right.mobile {
+    width: 100%;
+    position: static;
+    margin-top: 24px;
+  }
+  
+  .tab-list {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    margin-bottom: 28px;
+    width: 100%;
+  }
+  .tab-list.mobile {
+    flex-direction: column;
+  }
+  
+  .tab-button {
+    padding: 7px 18px;
+    font-size: 16px;
+    background: #f4f4f4;
+    color: #222;
+    border: none;
+    outline: none;
+    border-radius: 22px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    text-align: center;
+  }
+  .tab-button.active {
+    background: #232527;
+    color: #fff;
+  }
+  .tab-button.mobile {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  /* Tab panel content always visible */
+  .tab-panel {
+    width: 100%;
+    display: block;
+  }
+  
+  .tab-heading {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 7px;
+    margin-top: 6px;
+    color: #1e2329;
+    text-align: left;
+  }
+  
+  .tab-heading.mobile {
+    font-size: 24px;
+    padding: 0 15px;
+  }
+  
+  .tab-content {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #303439;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .tab-content.mobile {
+    padding: 0 15px;
+  }
+  
+  .read-more {
+    color: #229ddb;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 12px;
+    display: block;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .brochure-small {
+    font-size: 15px;
+    color: #656b73;
+    margin-bottom: 9px;
+    text-align: center;
+  }
+  
+  .brochure-link {
+    color: #229ddb;
+    text-decoration: underline;
+    font-weight: 500;
+    font-size: 16px;
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Mobile media query to ensure stacking/visibility */
+  @media (max-width: 900px) {
+    .about-wrapper {
+      flex-direction: column;
+      gap: 16px;
+      position: static;
+    }
+    .about-right {
+      width: 100%;
+      position: static;
+      margin-top: 24px;
+      max-width: none;
+    }
+    .tab-heading {
+      font-size: 24px;
+      padding: 0 15px;
+    }
+    .tab-content {
+      padding: 0 15px;
+    }
+    .tab-button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  
