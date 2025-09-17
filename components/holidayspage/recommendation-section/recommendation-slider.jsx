@@ -199,7 +199,6 @@ export default function RecommendationDestinations() {
     padding-bottom: 10px;
     max-width: 100%;
     overflow-x: hidden;
-    margin-left: 2rem;
   }
 
   .card {
@@ -247,7 +246,6 @@ export default function RecommendationDestinations() {
 
     .dest {
       gap: 14px;
-      margin-left: 4.5rem !important;
       max-width: 90% !important;
     }
     .card {
@@ -460,7 +458,6 @@ export default function RecommendationDestinations() {
             paddingBottom: "10px",
             maxWidth: "100%",
             overflowX: "hidden",
-            marginLeft: "2rem",
           }}
         >
           {visibleDestinations.map((destination) => (
@@ -469,7 +466,7 @@ export default function RecommendationDestinations() {
               key={destination.id}
               style={{
                 width: "calc(25% - 16px)", // Changed from calc(33.33% - 16px)
-                minWidth: "250px", // Reduced from 320px
+                minWidth: "330px", // Reduced from 320px
                 maxWidth: "300px", // Added max-width for consistency
                 backgroundColor: "white",
                 borderRadius: "16px",
@@ -493,7 +490,7 @@ export default function RecommendationDestinations() {
               onClick={() => router.push("/trip-details")}
             >
               {/* Image Section */}
-              <div style={{ position: "relative" }}>
+              <div style={{ position: "relative", padding: '16px' }}>
                 <img
                   src={destination.image}
                   alt={destination.title}
@@ -501,15 +498,14 @@ export default function RecommendationDestinations() {
                     width: "100%",
                     height: "220px",
                     objectFit: "cover",
-                    borderTopLeftRadius: "16px",
-                    borderTopRightRadius: "16px",
+                    borderRadius: "16px",
                   }}
                 />
                 <button
                   style={{
                     position: "absolute",
-                    top: "16px",
-                    right: "16px",
+                    top: "20px",
+                    right: "20px",
                     backgroundColor: "rgba(255, 255, 255, 0.9)",
                     border: "none",
                     borderRadius: "50%",
