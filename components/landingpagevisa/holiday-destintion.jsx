@@ -124,7 +124,7 @@ export default function HolidayDestinations() {
     {
       id: 5,
       image:
-        "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
+        "https://images.surferseo.art/743e6bc9-7f37-4614-92e4-827081b1d352.png",
       title: "Another Destination",
       rating: 4.6,
       duration: "3Days 4 Nights",

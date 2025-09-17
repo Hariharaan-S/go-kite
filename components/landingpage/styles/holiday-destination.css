@@ -90,12 +90,14 @@
   overflow: hidden;
   min-width: 250px;
   cursor: pointer;
+  padding: 16px; /* Add padding to create space around the image */
 }
 
 @media (max-width: 640px) {
   .destination-card {
     min-width: 280px;
     max-width: 400px;
+    padding: 12px; /* Smaller padding on mobile */
   }
 }
 
@@ -106,18 +108,22 @@
 
 .destination-image-wrapper {
   position: relative;
+  border-radius: 12px; /* Add border radius to image wrapper */
+  overflow: hidden; /* Ensure image respects border radius */
+  margin-bottom: 16px; /* Add space between image and content */
 }
 
 .destination-image {
   width: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 12px; /* Match the wrapper border radius */
 }
 
 .heart-btn {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 12px; /* Adjust position since we now have card padding */
+  right: 12px;
   background-color: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
@@ -128,12 +134,15 @@
   transition: background-color 0.2s ease;
   width: 40px;
   height: 40px;
+  backdrop-filter: blur(10px); /* Add subtle blur effect */
 }
 
 @media (max-width: 768px) {
   .heart-btn {
     width: 36px;
     height: 36px;
+    top: 8px;
+    right: 8px;
   }
 }
 
@@ -146,17 +155,11 @@
 }
 
 .destination-content {
-  padding: 15px;
+  padding: 0; /* Remove padding since card now has padding */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
-}
-
-@media (max-width: 640px) {
-  .destination-content {
-    padding: 16px;
-  }
 }
 
 .title-rating {
