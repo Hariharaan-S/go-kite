@@ -14,104 +14,112 @@ const StepVisa = () => {
     }
   }, []);
 
-  // Define responsive breakpoints
   const isMobile = windowWidth <= 640;
-  const isTablet = windowWidth > 640 && windowWidth <= 1024;
 
   return (
     <div
       style={{
         width: "100%",
         maxWidth: "1400px",
-        height: isMobile ? "auto" : "400px",
-        background:
-          "linear-gradient(135deg, #e8f4fd 0%, #d1e9f8 50%, #b8ddf4 100%)",
-        borderRadius: "20px",
-        padding: isMobile ? "20px 20px" : isTablet ? "30px 40px" : "40px 60px",
+        minHeight: isMobile ? "auto" : "400px",
+        background: "#eaf5fb",
+        borderRadius: "18px",
+        padding: isMobile ? "20px 20px 20px 20px" : "40px 60px 30px 40px",
         position: "relative",
         fontFamily: "Arial, sans-serif",
         overflow: "hidden",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.08)",
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
-        alignItems: isMobile ? "center" : "flex-start",
         justifyContent: "space-between",
+        alignItems: isMobile ? "center" : "flex-start",
       }}
     >
       {/* Left Content */}
       <div
         style={{
-          flex: "1",
+          flex: 1,
           paddingRight: isMobile ? "0" : "40px",
           textAlign: isMobile ? "center" : "left",
+          zIndex: 10,
         }}
       >
-        {/* Main Heading */}
-        <h1
+        {/* Top Titles */}
+        <div
           style={{
-            fontSize: isMobile ? "32px" : "48px",
-            fontWeight: "700",
-            color: "#1e88c7",
-            margin: "0 0 10px 0",
-            lineHeight: "1.1",
+            marginBottom: isMobile ? 12 : 16,
           }}
         >
-          Get Visa in 3
-        </h1>
+          <span
+            style={{
+              display: "block",
+              fontSize: isMobile ? 29 : 32,
+              fontWeight: 600,
+              color: "#168AAA",
+              lineHeight: 1.1,
+              marginBottom: 4,
+              userSelect: "none",
+            }}
+          >
+            Get Visa in 3
+          </span>
+          <span
+            style={{
+              display: "block",
+              fontSize: isMobile ? 18 : 22,
+              fontWeight: 300,
+              color: "#379BB4",
+              letterSpacing: 0.4,
+              lineHeight: 1.1,
+              userSelect: "none",
+            }}
+          >
+            simple steps
+          </span>
+        </div>
 
-        <h2
-          style={{
-            fontSize: isMobile ? "32px" : "48px",
-            fontWeight: "700",
-            color: "#1e88c7",
-            margin: "0 0 40px 0",
-            lineHeight: "1.1",
-          }}
-        >
-          simple steps
-        </h2>
-
-        {/* Subheading */}
-        <h3
-          style={{
-            fontSize: isMobile ? "20px" : "32px",
-            fontWeight: "600",
-            color: "#2c3e50",
-            margin: "0 0 15px 0",
-            lineHeight: "1.2",
-          }}
-        >
-          Upload your Documents we take care of the Process
-        </h3>
-
-        {/* Description */}
-        <p
-          style={{
-            fontSize: isMobile ? "14px" : "20px",
-            color: "#5a6c7d",
-            margin: "0",
-            fontWeight: "400",
-          }}
-        >
-          get Visa in 24 Hours through express visa service
-        </p>
+        {/* Main Heading/Subheading */}
+        <div>
+          <div
+            style={{
+              fontSize: isMobile ? 17 : 21,
+              fontWeight: 700,
+              color: "#242E3D",
+              marginBottom: isMobile ? 10 : 14,
+              lineHeight: 1.2,
+            }}
+          >
+            Upload your Documents we take care of the Process
+          </div>
+          <p
+            style={{
+              fontSize: isMobile ? 15 : 18,
+              fontWeight: 400,
+              color: "#5A6C7D",
+              margin: 0,
+              lineHeight: 1.3,
+            }}
+          >
+            get Visa in 24 Hours through express visa service
+          </p>
+        </div>
       </div>
 
-      {/* Right Side Icons */}
+      {/* Step Icons Top Right */}
       <div
         style={{
           position: isMobile ? "relative" : "absolute",
-          top: isMobile ? "auto" : "20px",
-          right: isMobile ? "auto" : "60px",
+          top: isMobile ? "auto" : 20,
+          right: isMobile ? "auto" : 60,
           display: "flex",
-          flexDirection: isMobile ? "row" : "row", // Ensure consistent row layout
-          gap: isMobile ? "15px" : "20px",
-          marginTop: isMobile ? "20px" : "0",
+          flexDirection: "row",
+          gap: isMobile ? 12 : 20,
+          marginTop: isMobile ? 20 : 0,
           justifyContent: "center",
-          alignItems: "center", // Center align items
-          flexWrap: isMobile ? "wrap" : "nowrap", // Allow wrapping on mobile
+          alignItems: "center",
+          flexWrap: isMobile ? "wrap" : "nowrap",
           width: isMobile ? "100%" : "auto",
-          zIndex: 3,
+          zIndex: 15,
         }}
       >
         {[
@@ -122,38 +130,40 @@ const StepVisa = () => {
           <div
             key={idx}
             style={{
-              width: isMobile ? "80px" : "80px", // Consistent width
-              height: isMobile ? "80px" : "80px", // Consistent height
+              width: 80,
+              height: 80,
               backgroundColor: "rgba(255,255,255,0.9)",
-              borderRadius: "15px",
+              borderRadius: 15,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
-              padding: isMobile ? "10px" : "10px",
-              fontSize: isMobile ? "12px" : "10px",
+              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
+              padding: 10,
+              fontSize: isMobile ? 12 : 10,
               color: "#5a6c7d",
-              fontWeight: "500",
+              fontWeight: 500,
               whiteSpace: "pre-line",
               textAlign: "center",
-              transition: "transform 0.2s ease", // Add subtle hover effect
+              transition: "transform 0.2s ease",
               cursor: "pointer",
+              userSelect: "none",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             <img
               src={src}
               alt={`Icon ${idx + 1}`}
               style={{
-                width: isMobile ? "40px" : "40px",
-                height: isMobile ? "40px" : "40px",
-                marginBottom: "5px",
-                objectFit: "contain", // Ensure image maintains aspect ratio
+                width: 40,
+                height: 40,
+                marginBottom: 6,
+                objectFit: "contain",
+                userSelect: "none",
+                pointerEvents: "none",
               }}
+              draggable={false}
             />
             {text}
           </div>
@@ -164,24 +174,29 @@ const StepVisa = () => {
       <div
         style={{
           position: isMobile ? "relative" : "absolute",
-          bottom: isMobile ? "auto" : "0",
-          right: isMobile ? "auto" : "0",
+          bottom: isMobile ? "auto" : 0,
+          right: isMobile ? "auto" : 0,
           display: "flex",
           justifyContent: isMobile ? "center" : "flex-end",
-          marginTop: isMobile ? "20px" : "0",
-          width: isMobile ? "100%" : "200px",
-          height: isMobile ? "auto" : "280px",
-          paddingTop: isMobile ? "0" : "100px",
+          marginTop: isMobile ? 20 : 0,
+          width: isMobile ? "100%" : 200,
+          height: isMobile ? "auto" : 280,
+          paddingTop: isMobile ? 0 : 100,
+          userSelect: "none",
+          zIndex: 5,
         }}
       >
         <img
           src="/img/general/img.png"
           alt="Character"
           style={{
-            width: isMobile ? "150px" : "100%",
+            width: isMobile ? 150 : "100%",
             height: isMobile ? "auto" : "100%",
             objectFit: "contain",
+            userSelect: "none",
+            pointerEvents: "none",
           }}
+          draggable={false}
         />
       </div>
     </div>
