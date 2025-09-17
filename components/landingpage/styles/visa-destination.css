@@ -84,30 +84,30 @@
   background-position: center;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .fast-track-overlay {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   background-color: rgba(255, 255, 255, 0.95);
   padding: 6px 12px;
-  border-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   font-size: 12px;
   font-weight: 500;
   color: #333;
-  max-width: auto;
+  max-width: 70%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: 11rem;
 }
 
 .price-overlay {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 6px 12px;
+  position: relative;
   border-radius: 20px;
   font-size: 14px;
   font-weight: bold;
@@ -116,6 +116,13 @@
   align-items: center;
   gap: 4px;
   line-height: normal;
+}
+
+.total-price-label {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 2px;
 }
 
 .original-price {
@@ -133,7 +140,7 @@
 }
 
 .visa-card-content {
-  padding: 20px;
+  padding: 10px 11px;
   display: flex;
   flex-direction: column;
   /* justify-content: space-between; */
@@ -178,6 +185,18 @@
 
 /* Responsive overrides for smaller screens */
 
+@media screen and (max-width: 1280px) {
+  .fast-track-overlay {
+    max-width: 90% !important;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .fast-track-overlay {
+    max-width: 90% !important;
+  }
+}
+
 @media (max-width: 640px) {
   .visa-container {
     min-height: auto;
@@ -217,18 +236,12 @@
   }
 
   .fast-track-overlay {
-    padding: 4px 8px;
+    margin-top: 8rem;
     font-size: 10px;
-    max-width: calc(100% - 100px);
   }
 
   .price-overlay {
-    padding: 4px 8px;
     font-size: 11px;
-    flex-direction: column !important;
-    align-items: flex-end !important;
-    gap: 2px !important;
-    line-height: 1.2 !important;
   }
 
   .visa-card-title {
@@ -263,12 +276,11 @@
   }
 
   .fast-track-overlay {
-    padding: 6px 12px;
+    margin-top: 9rem;
     font-size: 12px;
   }
 
   .price-overlay {
-    padding: 6px 12px;
     font-size: 14px;
   }
 

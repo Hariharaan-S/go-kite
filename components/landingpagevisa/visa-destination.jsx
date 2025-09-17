@@ -192,13 +192,13 @@ const VisaDestinationCards = () => {
 
   const getCardHeight = () => {
     if (windowWidth < 640) return "auto";
-    return "500px";
+    return "400px";
   };
 
   const getTitleSize = () => {
     if (windowWidth < 640) return "20px";
     if (windowWidth < 768) return "22px";
-    return "24px";
+    return "23px";
   };
 
   const getHeaderSize = () => {
@@ -293,10 +293,38 @@ const VisaDestinationCards = () => {
                 {windowWidth < 640
                   ? destination.fastTrack.date.split(",")[0]
                   : destination.fastTrack.date}
-              </div>
 
+
+                {windowWidth < 640 ? (
+                  <div className="price-overlay">
+                    <div>
+                      <span className="original-price">
+                        {destination.fastTrack.originalPrice}
+                      </span>
+                      <span className="discount-price">
+                        + {destination.fastTrack.discountPrice}
+                      </span>
+                    </div>
+                    <span className="total-price">
+                      = {destination.fastTrack.totalPrice}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="price-overlay">
+                    <span className="original-price">
+                      {destination.fastTrack.originalPrice}
+                    </span>
+                    <span className="discount-price">
+                      + {destination.fastTrack.discountPrice}
+                    </span>
+                    <span className="total-price">
+                      = {destination.fastTrack.totalPrice}
+                    </span>
+                  </div>
+                )}
+              </div>
               {/* Price overlay */}
-              <div
+              {/* <div
                 className="price-overlay"
                 style={{
                   flexDirection: windowWidth < 640 ? "column" : "row",
@@ -329,7 +357,7 @@ const VisaDestinationCards = () => {
                     </span>
                   </>
                 )}
-              </div>
+              </div> */}
             </div>
 
             {/* Card Content */}
