@@ -228,6 +228,10 @@
 
 @media screen and (max-width: 400px) {
 
+    .visa-custom-container {
+        padding-top: 2rem;
+    }
+
     .customContainer {
         display: flex;
         flex-direction: row;
@@ -236,13 +240,16 @@
     .stepsContainer {
         flex-direction: column;
         padding: 0 20px;
-        min-width: 200px;
+        margin: 12px 0;
+        min-width: 100px;
     }
 
     .customStepContainer {
         flex-direction: column;
         padding: 20px;
-        width: 100%;
+        margin: 0 15px;
+        min-width: 100px;
+        width: 40%;
     }
 
     .step {
