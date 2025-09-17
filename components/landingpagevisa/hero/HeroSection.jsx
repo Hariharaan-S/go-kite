@@ -87,10 +87,24 @@ const IconRow = () => {
         flexDirection: "row",
         gap: "24px",
         flexWrap: "nowrap",
+        position: "relative",
       }}
       data-aos="fade-up"
       data-aos-delay="150"
     >
+      {/* Connecting line */}
+      <div
+        style={{
+          position: "absolute",
+          top: "32px", // Center of the icons (64px height / 2)
+          left: "198px", // Start after first icon (32px + 32px radius + 24px gap)
+          right: "198px", // End before last icon (32px + 32px radius + 24px gap)
+          height: "2px",
+          background: "orange",
+          zIndex: 1,
+        }}
+      />
+      
       {iconData.map((icon) => (
         <div
           key={icon.id}
@@ -100,7 +114,7 @@ const IconRow = () => {
               router.push(icon.redirectUrl);
             }
           }}
-          style={{ flex: "none" }}
+          style={{ flex: "none", position: "relative", zIndex: 2 }}
         >
           <IconButton
             imgSrc={icon.imgSrc}
