@@ -7,7 +7,20 @@ import "../styles/hero.css"; // import CSS file
 
 // Flight search/book card with trip options
 const BookFlightCard = () => {
-  const [visaType, setVisaType] = useState("Tourist");
+  const [date, setDate] = useState(new Date());
+  const [isDatePopupOpen, setIsDatePopupOpen] = useState(false);
+
+  const d = new Date(date);
+  const month = d.toLocaleString("en-US", { month: "long" });
+  const day = d.getDate();
+  const year = d.getFullYear();
+  const weekday = d.toLocaleString("en-US", { weekday: "long" });
+
+  const handleDateSelect = (newDate) => {
+    setDate(newDate);
+  };
+
+  const [visaType, setVisaType] = React.useState("Tourist");
   const styles = `
 .masthead__bg img {
   width: 100vw;
@@ -258,6 +271,7 @@ const BookFlightCard = () => {
         data-aos="fade-up"
         data-aos-delay="200"
       >
+        <h2 className="book-flight-title">Get Visa</h2>
         <div className="flight-search-container">
           {/* DESTINATION */}
           <div className="flight-field">
@@ -271,22 +285,76 @@ const BookFlightCard = () => {
           </div>
           {/* ARRIVAL DATE */}
           <div className="flight-field">
-            <span className="flight-label">Date</span>
-            <input
-              className="flight-input"
-              type="date"
-              defaultValue="2025-01-11"
-            />
+            {/* formatted display */}
+            <div className="date-display">
+              <div className="date-content">
+                <h3 className="date-month">{month}</h3>
+                <p className="date-detail">
+                  {day}–{weekday}, {year}
+                </p>
+              </div>
+              <div
+                className="date-icon-wrapper"
+                onClick={() => setIsDatePopupOpen(!isDatePopupOpen)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="date-icon"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+            </div>
+            {isDatePopupOpen && (
+              <DateSelectionPopup
+                onClose={() => setIsDatePopupOpen(false)}
+                onSelect={handleDateSelect}
+              />
+            )}
           </div>
           {/* BUTTON */}
           <button className="flight-btn">
-            <span>Get Visa</span>
-            <svg width="21" height="21" fill="none" viewBox="0 0 21 21">
-              <path
-                d="M11.69 5.01v7.46l2.84-2.85a.75.75 0 111.06 1.07l-4.13 4.13a.75.75 0 01-1.06 0L6.27 10.7a.75.75 0 111.06-1.06l2.84 2.85V5.01a.75.75 0 011.52 0z"
-                fill="#fff"
-              />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              width="20"
+              height="20"
+              viewBox="0 0 256 256"
+            >
+              <g
+                fill="#ffffff"
+                fillRule="nonzero"
+                stroke="none"
+                strokeWidth="1"
+                strokeLinecap="butt"
+                strokeLinejoin="miter"
+                strokeMiterlimit="10"
+                strokeDasharray=""
+                strokeDashoffset="0"
+                fontFamily="none"
+                fontWeight="none"
+                fontSize="none"
+                textAnchor="none"
+                style={{ mixBlendMode: "normal" }}
+              >
+                <g transform="scale(8.53333,8.53333)">
+                  <path d="M13,3c-5.511,0 -10,4.489 -10,10c0,5.511 4.489,10 10,10c2.39651,0 4.59738,-0.85101 6.32227,-2.26367l5.9707,5.9707c0.25082,0.26124 0.62327,0.36648 0.97371,0.27512c0.35044,-0.09136 0.62411,-0.36503 0.71547,-0.71547c0.09136,-0.35044 -0.01388,-0.72289 -0.27512,-0.97371l-5.9707,-5.9707c1.41266,-1.72488 2.26367,-3.92576 2.26367,-6.32227c0,-5.511 -4.489,-10 -10,-10zM13,5c4.43012,0 8,3.56988 8,8c0,4.43012 -3.56988,8 -8,8c-4.43012,0 -8,-3.56988 -8,-8c0,-4.43012 3.56988,-8 8,-8z"></path>
+                </g>
+              </g>
             </svg>
+            <span>Visa Types</span>
           </button>
         </div>
         {/* Visa Type Options Row */}
@@ -325,6 +393,46 @@ const BookFlightCard = () => {
   );
 };
 
+// Date Selection Popup Component
+const DateSelectionPopup = ({ onClose, onSelect }) => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleDateChange = (e) => {
+    setSelectedDate(new Date(e.target.value));
+  };
+
+  const handleSelect = () => {
+    onSelect(selectedDate);
+    onClose();
+  };
+
+  return (
+    <div className="date-selection-popup">
+      <div className="date-selection-content">
+        <div className="date-selection-header">
+          <h3>Select Date</h3>
+          <button className="date-selection-close" onClick={onClose}>
+            &times;
+          </button>
+        </div>
+        <div className="date-selection-body">
+          <input
+            type="date"
+            value={selectedDate.toISOString().split("T")[0]}
+            onChange={handleDateChange}
+            className="full-width-date-input"
+          />
+        </div>
+        <div className="date-selection-footer">
+          <button className="date-select-btn" onClick={handleSelect}>
+            Select Date
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Icon button
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="text-center cursor-pointer">
@@ -354,7 +462,7 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
 
 // Icon row
 const IconRow = () => {
-  const [activeIcon, setActiveIcon] = useState("Home");
+  const [activeIcon, setActiveIcon] = React.useState("Home");
   const router = useRouter();
   const iconData = [
     {
@@ -522,7 +630,7 @@ const HeroSection = () => {
               </div>
             </div> */}
             {/* Book Flight Card */}
-           <div style={{ paddingTop: "70px" }}>
+            <div style={{ paddingTop: "70px" }}>
               <BookFlightCard />
             </div>
           </div>
