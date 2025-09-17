@@ -147,7 +147,7 @@ const TravelVisaCards = () => {
     setCurrentSlide((prev) =>
       prev - VISIBLE_CARDS_PER_ROW < 0
         ? totalSlides -
-        (totalSlides % VISIBLE_CARDS_PER_ROW || VISIBLE_CARDS_PER_ROW)
+          (totalSlides % VISIBLE_CARDS_PER_ROW || VISIBLE_CARDS_PER_ROW)
         : prev - VISIBLE_CARDS_PER_ROW
     );
   };
@@ -174,13 +174,213 @@ const TravelVisaCards = () => {
   const visibleDestinations = getVisibleDestinations();
   const router = useRouter();
 
+  // Card Component to avoid duplication
+  const CardComponent = ({ destination }) => (
+    <div
+      style={{
+        backgroundColor: "white",
+        borderRadius: "12px",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+        position: "relative",
+        cursor: "pointer",
+        transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+        width: "100%",
+        maxWidth: isMobile ? "100%" : "320px",
+        overflow: "hidden",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-2px)";
+        e.currentTarget.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.12)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.08)";
+      }}
+      onClick={() => router.push("/apply_visa")}
+    >
+      {/* Image Container */}
+      <div
+        style={{
+          position: "relative",
+          height: "180px",
+          backgroundImage: `url(${destination.image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          borderTopLeftRadius: "12px",
+          borderTopRightRadius: "12px",
+        }}
+      >
+        {/* Top Right Badge - Special offers */}
+        {destination.badge && (
+          <div
+            style={{
+              position: "absolute",
+              top: "8px",
+              right: "8px",
+              backgroundColor: "#ff6b35",
+              color: "white",
+              padding: "3px 8px",
+              borderRadius: "12px",
+              fontSize: "10px",
+              fontWeight: "500",
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              maxWidth: "120px",
+              textAlign: "center",
+            }}
+          >
+            {destination.badge}
+          </div>
+        )}
+
+        {/* Bottom Left - Visa Date and Logo */}
+        {destination.visaDate && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "8px",
+              left: "8px",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <span
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.75)",
+                color: "white",
+                padding: "2px 6px",
+                borderRadius: "3px",
+                fontSize: "9px",
+                fontFamily:
+                  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                fontWeight: "400",
+              }}
+            >
+              {destination.visaDate}
+            </span>
+            {destination.visaLogo && (
+              <div
+                style={{
+                  backgroundColor: "#ffd321",
+                  color: "black",
+                  padding: "2px 4px",
+                  borderRadius: "2px",
+                  fontSize: "8px",
+                  fontWeight: "bold",
+                  fontFamily:
+                    "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                }}
+              >
+                VISA
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div style={{ padding: "12px 12px 12px 12px" }}>
+        {" "}
+        {/* Reduced bottom padding */}
+        {/* Country Name and Visa Type Row */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "2px", // Reduced from 4px
+          }}
+        >
+          <h3
+            style={{
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "#1a1a1a",
+              margin: "0",
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              lineHeight: "1.2",
+              flex: 1,
+            }}
+          >
+            {destination.country}
+          </h3>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "4px", // Reduced from 8px
+              alignItems: "flex-end",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "12px",
+                color: "#666666",
+                fontFamily:
+                  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                lineHeight: "1",
+              }}
+            >
+              {destination.visaType.split(" ").slice(0, 2).join(" ")}
+            </span>
+            <span
+              style={{
+                fontSize: "12px",
+                color: "black",
+                fontWeight: "bold",
+                fontFamily:
+                  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                lineHeight: "1",
+              }}
+            >
+              {destination.visaType.split(" ").slice(2).join(" ")}
+            </span>
+          </div>
+        </div>
+        {/* Price Section */}
+        <div style={{ marginBottom: "0px" }}>
+          {" "}
+          {/* Reduced to 0px */}
+          <span
+            style={{
+              fontSize: "18px",
+              fontWeight: "700",
+              color: "#1a1a1a",
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              marginRight: "4px",
+              lineHeight: "1.2",
+            }}
+          >
+            {destination.price}
+          </span>
+        </div>
+        {/* Additional Fee */}
+        <div
+          style={{
+            fontSize: "11px",
+            color: "#666666",
+            fontFamily:
+              "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            lineHeight: "1.2", // Slightly reduced line height
+          }}
+        >
+          {destination.additionalFee}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div
       style={{
         padding: isMobile ? "10px" : "20px",
         backgroundColor: "#f8f9fa",
         minHeight: "100vh",
-        fontFamily: "system-ui, -apple-system, sans-serif",
+        fontFamily:
+          "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       }}
     >
       {/* Search and Category Section */}
@@ -232,6 +432,8 @@ const TravelVisaCards = () => {
                 color: "#9ca3af",
                 backgroundColor: "transparent",
                 width: "100%",
+                fontFamily:
+                  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
               }}
             />
           </div>
@@ -259,6 +461,8 @@ const TravelVisaCards = () => {
                   cursor: "pointer",
                   fontWeight: index === 0 ? "500" : "400",
                   margin: isMobile ? "5px" : "0",
+                  fontFamily:
+                    "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                 }}
               >
                 {category}
@@ -318,290 +522,24 @@ const TravelVisaCards = () => {
           display: "grid",
           gridTemplateColumns: isMobile
             ? "1fr"
-            : "repeat(auto-fit, minmax(300px, 1fr))",
+            : "repeat(auto-fit, minmax(320px, 1fr))",
           gap: "20px",
-          maxWidth: "1400px",
+          maxWidth: "1600px",
           margin: "0 auto",
+          justifyItems: "center",
         }}
       >
         {/* First Row with Carousel */}
         {visibleDestinations.map((destination) => (
-          <div
-            key={destination.id}
-            style={{
-              backgroundColor: "white",
-              borderRadius: "16px",
-              boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-              position: "relative",
-              cursor: "pointer",
-              transition: "transform 0.2s ease-in-out",
-              width: "100%",
-              maxWidth: isMobile ? "100%" : "auto",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-4px)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-            }}
-            onClick={() => router.push('/apply_visa')}
-          >
-            {/* Image Container */}
-            <div
-              style={{
-                position: "relative",
-                height: isMobile ? "250px" : "200px",
-                backgroundImage: `url(${destination.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                borderTopLeftRadius: "16px",
-                borderTopRightRadius: "16px",
-              }}
-            >
-              {/* Badge */}
-              {destination.badge && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "12px",
-                    right: "12px",
-                    backgroundColor: "#f59e0b",
-                    color: "white",
-                    padding: "4px 12px",
-                    borderRadius: "20px",
-                    fontSize: "12px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {destination.badge}
-                </div>
-              )}
-
-              {/* Visa Date and Logo */}
-              {destination.visaDate && (
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: "12px",
-                    left: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <span
-                    style={{
-                      backgroundColor: "rgba(0, 0, 0, 0.7)",
-                      color: "white",
-                      padding: "4px 8px",
-                      borderRadius: "4px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    {destination.visaDate}
-                  </span>
-                  {destination.visaLogo && (
-                    <div
-                      style={{
-                        backgroundColor: "#1e40af",
-                        color: "white",
-                        padding: "2px 6px",
-                        borderRadius: "4px",
-                        fontSize: "10px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      VISA
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Content */}
-            <div style={{ padding: "16px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: isMobile ? "column" : "row",
-                  justifyContent: "space-between",
-                  alignItems: isMobile ? "flex-start" : "center",
-                  marginBottom: "8px",
-                }}
-              >
-                <h3
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    color: "#111827",
-                    margin: "0",
-                    marginBottom: isMobile ? "10px" : "0",
-                    flex: 1,
-                  }}
-                >
-                  {destination.country}
-                </h3>
-                <span
-                  style={{
-                    fontSize: "14px",
-                    color: "#6b7280",
-                    marginLeft: isMobile ? "0" : "8px",
-                  }}
-                >
-                  {destination.visaType}
-                </span>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: "700",
-                      color: "#111827",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    {destination.price}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      color: "#6b7280",
-                    }}
-                  >
-                    {destination.additionalFee}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CardComponent key={destination.id} destination={destination} />
         ))}
 
         {/* Remaining Rows */}
         {destinations.slice(VISIBLE_CARDS_PER_ROW).map((destination) => (
-          <div
-            key={destination.id}
-            style={{
-              backgroundColor: "white",
-              borderRadius: "16px",
-              boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-              position: "relative",
-              cursor: "pointer",
-              transition: "transform 0.2s ease-in-out",
-              width: "100%",
-              maxWidth: isMobile ? "100%" : "auto",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-4px)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-            }}
-            onClick={() => router.push('/apply_visa')}
-          >
-            {/* Identical card rendering as above */}
-            <div
-              style={{
-                position: "relative",
-                height: isMobile ? "250px" : "200px",
-                backgroundImage: `url(${destination.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                borderTopLeftRadius: "16px",
-                borderTopRightRadius: "16px",
-              }}
-            >
-              {/* Badge */}
-              {destination.badge && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "12px",
-                    right: "12px",
-                    backgroundColor: "#f59e0b",
-                    color: "white",
-                    padding: "4px 12px",
-                    borderRadius: "20px",
-                    fontSize: "12px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {destination.badge}
-                </div>
-              )}
-            </div>
-
-            {/* Content */}
-            <div style={{ padding: "16px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: isMobile ? "column" : "row",
-                  justifyContent: "space-between",
-                  alignItems: isMobile ? "flex-start" : "center",
-                  marginBottom: "8px",
-                }}
-              >
-                <h3
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    color: "#111827",
-                    margin: "0",
-                    marginBottom: isMobile ? "10px" : "0",
-                    flex: 1,
-                  }}
-                >
-                  {destination.country}
-                </h3>
-                <span
-                  style={{
-                    fontSize: "14px",
-                    color: "#6b7280",
-                    marginLeft: isMobile ? "0" : "8px",
-                  }}
-                >
-                  {destination.visaType}
-                </span>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: "700",
-                      color: "#111827",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    {destination.price}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      color: "#6b7280",
-                    }}
-                  >
-                    {destination.additionalFee}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CardComponent
+            key={`static-${destination.id}`}
+            destination={destination}
+          />
         ))}
       </div>
     </div>
