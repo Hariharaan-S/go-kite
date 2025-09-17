@@ -1,14 +1,27 @@
 /* Responsive styles for Visa Enquiry Component */
-@media screen and (max-width: 768px) {
-  .visa-tabs-container {
-    flex-direction: column;
+
+@media screen and (max-width: 1024px) {
+  .visa-cards-container {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 30px !important;
+    padding: 20px !important;
   }
 
-  .visa-tabs-container > div {
-    flex: none;
-    width: 100%;
-    padding: 12px 0;
-    font-size: 14px;
+  .visa-card {
+    max-width: 100% !important;
+    margin: 0 !important;
+    transform: scale(1) !important;
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+
+  .visa-tabs-container {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding: 0 !important;
   }
 
   .visa-cards-container {
@@ -39,7 +52,6 @@
   }
 
   .visa-card-fees {
-    flex-direction: column !important;
     gap: 10px !important;
   }
 
@@ -63,7 +75,14 @@
 }
 
 /* Additional mobile-friendly adjustments */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 400px) {
+
+  .visa-cards-container {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
   .visa-card {
     border-radius: 10px !important;
   }
@@ -85,14 +104,18 @@
     padding: 0 !important;
   }
 
+  /* 
   .visa-tabs-container {
     overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-  }
+    scrollbar-width: none;
+    /* Firefox 
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ 
+} */
 
   .visa-tabs-container::-webkit-scrollbar {
-    display: none; /* WebKit */
+    display: none;
+    /* WebKit */
   }
 
   .visa-tab {
@@ -175,6 +198,7 @@
 
 /* Ensure full-width and centered layout on mobile */
 @media screen and (max-width: 480px) {
+
   .visa-cards-first-row,
   .visa-cards-second-row {
     width: 100% !important;

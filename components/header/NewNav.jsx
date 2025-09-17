@@ -79,9 +79,6 @@ const Navbar = () => {
         <button className="search-icon">
           <img src="img/apply-visa/glass.svg" width='40px' height='40px' alt="" />
         </button>
-        <button className="user-icon">
-          <img src="img/apply-visa/user.svg" width='40px' height='40px' alt="" />
-        </button>
         <span className="sign-in"
           style={{
             color: "#222",
