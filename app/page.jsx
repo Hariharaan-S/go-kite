@@ -1,9 +1,8 @@
-import DefaultFooter from "@/components/footer/default";
-import GoKiteFooter from "@/components/footer/footer-gokite";
-import Header1 from "@/components/header/Navbar";
-import Hero1 from "@/components/landingpagevisa/hero";
+import Navbar from "@/components/header/Navbar/Navbar";
+import HeroSection from "@/components/landingpagevisa/hero/HeroSection";
 import HolidayDestinations from "@/components/landingpagevisa/holiday-destintion";
 import VisaDestinationCards from "@/components/landingpagevisa/visa-destination";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 
 export const metadata = {
   title: "GoKite - Travel & Tour ",
@@ -13,22 +12,16 @@ export const metadata = {
 const Home_1 = () => {
   return (
     <>
-      <Header1 />
-
-      <Hero1 />
-
+      <Navbar />
+      <HeroSection />
       <HolidayDestinations />
-      
-
       <VisaDestinationCards />
-
       <GoKiteFooter />
     </>
   );
 };
 
 export default Home_1;
-
 
 // import DefaultFooter from "@/components/footer/default";
 // import GoKiteFooter from "@/components/footer/footer-gokite";
