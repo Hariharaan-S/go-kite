@@ -36,8 +36,12 @@
 
 .view-all {
   font-size: 14px;
-  color: #666666;
+  color: black;
+  font-weight: bold;
   cursor: pointer;
+  background : #f2f0f0;
+  padding: 10px;
+  border-radius: 15px;
   transition: color 0.2s ease;
 }
 
