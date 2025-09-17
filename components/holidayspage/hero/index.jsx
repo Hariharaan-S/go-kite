@@ -3,9 +3,8 @@ import HotelSearch from "../hotel-search/hotel-search";
 const holidayHeroStyles = `
     .hero {
         height: 90%;
-        width: 100%;
+        max-width: 95%;
         position: relative;
-        margin-top: 91px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -16,6 +15,9 @@ const holidayHeroStyles = `
         background-size: 100% auto; 
         background-position: top center;  
         background-repeat: no-repeat;
+        border-radius: 60px;
+        margin: 7rem 2rem;
+        margin-bottom: 3rem;
     }
     .hero h1 {
         font-weight: 700;
@@ -105,30 +107,57 @@ const holidayHeroStyles = `
         }
 
         .hero p {
-            display: none;
+            display: block;
+            text-align: center;
+            padding-top: .5rem;
         }
         .book-agent {
             display: block !important;
+            position: relative;
             margin-top: 1.5rem;
             font-size: 0.95rem !important;
         }
     }
 
-    /* 480px */
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 600px) {
         .hero {
-            margin-top: 5.5rem;
-            padding-top: 0.5rem;
+            padding-top: 3rem;
         }
-        .hero h1, .hero .hero-subtopic {
+        .hero .hero-subtopic {
             display: block;
-            text-align: center;
-        }
-        .book-agent {
-            margin-top: 2rem;
-            font-size: 0.85rem !important;
+            text-align: center;           
+            padding: 0 1rem;              
         }
     }
+
+    /* 400px */
+@media screen and (max-width: 400px) {
+  .hero {
+    height: 100vh;                
+    max-width: 100%;  
+    margin-top: 7rem !important;            
+    margin: 1rem;                 
+    margin-bottom: 2rem;         
+    padding-bottom: 1rem;         
+    border-radius: 12px;          
+    background-size: cover;       
+    background-position: center;  
+  }
+
+  .hero h1,
+  .hero .hero-subtopic {
+  display: block;
+    text-align: center;           
+    padding: 0 1rem;              
+  }
+
+  .book-agent {
+    margin-top: 1.5rem;
+    font-size: 0.85rem !important;
+    text-align: center;
+  }
+}
+
 `
 
 const HolidaysHero = () => {

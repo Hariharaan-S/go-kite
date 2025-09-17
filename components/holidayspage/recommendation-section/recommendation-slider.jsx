@@ -210,7 +210,7 @@ export default function RecommendationDestinations() {
 
   @media screen and (max-width: 1500px) {
       .recom-slid-section-1 {
-        margin-top: -25rem !important;
+        margin-top: 2rem !important;
         margin-left: 0 !important;
         column-gap: 60rem !important;
     }
@@ -220,11 +220,11 @@ export default function RecommendationDestinations() {
   /* 1440px */
   @media screen and (max-width: 1440px) {
     .recommendation-slider-section-1 {
-      margin-top: -14rem;
+      margin-top: 13rem;
     }
     .dest {
       gap: 18px;
-      margin-left: 1rem;
+      margin-left: 0 !important;
     }
     .card {
       width: calc(25% - 12px);
@@ -236,10 +236,10 @@ export default function RecommendationDestinations() {
   /* 1280px */
   @media screen and (max-width: 1280px) {
     .recommendation-slider-section-1 {
-      margin-top: -15rem;
+      margin-top: -20rem;
     }
 
-        .recom-slid-section-1 {
+    .recom-slid-section-1 {
       margin-top: 5rem !important;
       margin-left: 0 !important;
       column-gap: 50rem !important;
@@ -247,7 +247,8 @@ export default function RecommendationDestinations() {
 
     .dest {
       gap: 14px;
-      margin-left: 0.5rem;
+      margin-left: 4.5rem !important;
+      max-width: 90% !important;
     }
     .card {
       width: calc(33.33% - 10px);
@@ -259,7 +260,7 @@ export default function RecommendationDestinations() {
   /* 1024px */
   @media screen and (max-width: 1024px) {
     .recommendation-slider-section-1 {
-      margin-top: -12rem;
+      margin-top: -15rem;
     }
 
     .recom-slid-section-1 {
@@ -284,13 +285,13 @@ export default function RecommendationDestinations() {
   /* 768px */
   @media screen and (max-width: 768px) {
     .recommendation-slider-section-1 {
-      margin-top: -15rem;
+      margin-top: -18rem;
     }
 
     .recom-slid-section-1 {
     margin-top: 5rem !important;
       margin-left: 0 !important;
-      column-gap: 30rem !important;
+      column-gap: 27rem !important;
     }
     .dest {
       flex-wrap: wrap;
@@ -307,15 +308,15 @@ export default function RecommendationDestinations() {
       font-size: 1.6rem;
     }
     .prev-btn, .next-btn {
-      width: 25px !important;
-      height: 25px !important;
+      width: 35px !important;
+      height: 30px !important;
     }
   }
 
   /* 400px */
   @media screen and (max-width: 400px) {
     .recommendation-slider-section-1 {
-      margin-top: -15rem;
+      margin-top: -16rem;
       height: auto;
     }
 
@@ -328,6 +329,7 @@ export default function RecommendationDestinations() {
       display: grid !important;
       grid-template-columns: 1fr !important;
       gap: 6px !important;
+      margin-left: 3rem !important;
     }
     .card {
       width: 98vw !important;
@@ -391,7 +393,7 @@ export default function RecommendationDestinations() {
             <button
               className="view-all-btn"
               style={{
-                width: "100%",
+                width: "55%",
                 height: "60%",
                 borderRadius: "20px",
                 border: "none",
@@ -412,7 +414,7 @@ export default function RecommendationDestinations() {
               className="prev-btn"
               onClick={prevSlide}
               style={{
-                width: "70px",
+                width: "50px",
                 height: "40px",
                 borderRadius: "50%",
                 border: "none",
@@ -430,7 +432,7 @@ export default function RecommendationDestinations() {
               className="next-btn"
               onClick={nextSlide}
               style={{
-                width: "70px",
+                width: "50px",
                 height: "40px",
                 borderRadius: "50%",
                 border: "none",

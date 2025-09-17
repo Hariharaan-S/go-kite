@@ -83,7 +83,7 @@
     .glassmorph-menu {
         width: 96%;
         left: 2rem;
-        top: 20rem;
+        top: 15rem;
     }
 
 }
@@ -93,7 +93,7 @@
     .glassmorph-menu {
         width: 95%;
         left: 1.5rem;
-        top: 18rem;
+        top: 12rem;
     }
 
     .glassmorph-menu .menu-items {
@@ -141,11 +141,13 @@
     .glassmorph-menu {
         width: 99%;
         left: 0.5rem;
-        top: 15rem;
+        top: 10rem;
     }
 
     .glassmorph-menu .menu-items {
         grid-template-columns: repeat(8, 1fr);
+        margin-left: 1rem;
+        max-width: 95%;
     }
 
     .glassmorph-menu .menu-item {
@@ -165,9 +167,9 @@
 /* 768px */
 @media screen and (max-width: 768px) {
     .glassmorph-menu {
-        width: 90%;
-        left: 2rem;
-        top: 9rem;
+        width: 97%;
+        left: 1rem;
+        top: 12rem;
         min-width: 0;
     }
 
@@ -195,15 +197,15 @@
     .glassmorph-menu {
         width: 100%;
         left: 0;
-        top: 9rem;
-        min-width: 0;
+        top: 15rem;
     }
 
     .glassmorph-menu .menu-items {
         grid-template-columns: repeat(4, 1fr);
         overflow-x: auto;
-        margin-left: 0;
+        margin-left: 0.7rem;
         margin-right: 0;
+        max-width: 95%;
     }
 
     .glassmorph-menu .menu-item {

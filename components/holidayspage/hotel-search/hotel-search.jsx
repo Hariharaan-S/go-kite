@@ -3,11 +3,13 @@ const styles = `
     position: relative;
     background: #FFFFFF;
     width: 100%;
-    max-width: 70vw;
+    max-width: 85vw;
     min-height: 180px;
     padding: 2rem 1rem;
+    padding-bottom: 3rem;
     border-radius: 10px;
     margin-top: 1.25rem;
+    margin-left: 3rem;
     box-shadow: 0 2px 14px 0 rgba(40,80,120,.07);
     display: flex;
     flex-direction: column;
@@ -27,15 +29,20 @@ const styles = `
     display: flex;
     flex-direction: row;
     width: 100%;
-    gap: 0.8rem;
+    gap: 24rem;
     align-items: center;
   }
 
+
   .search-hotel .hotel-search-box {
     border: 0.5px solid #EAEBEE;
-    border-radius: 25px;
-    padding: 0.6rem 0.7rem 0.6rem 2.7rem;
+    border-radius: 10px;
     width: 100%;
+    max-width: 50%;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
     font-size: 1rem;
     height: 2.5rem;
     box-sizing: border-box;
@@ -54,7 +61,7 @@ const styles = `
     color: #FFFFFF;
     border-radius: 10px;
     font-size: 1.08rem;
-    padding: 0.5rem 0;
+    padding: 1.4rem 0;
     border: none;
     cursor: pointer;
     display: flex;
@@ -68,35 +75,13 @@ const styles = `
     vertical-align: middle;
   }
 
-  /* Place Google review icon and rating at the container bottom right */
-  .google-review-container {
-    position: absolute;
-    bottom: 1rem;
-    right: 1.7rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .google-review-icon {
-    width: 86px;
-    height: 48px;
-    margin: 0;
-  }
-
-  .rating {
-    color: #000000 !important;
-    font-size: 0.95rem !important;
-    font-weight: 500;
-    margin-left: 0.1rem;
-  }
-
   .search-info {
     color: #071516 !important;
     font-size: 1.01rem !important;
     opacity: 0.45;
-    margin: 0.6rem 0 0 0.5rem;
-    position: static;
+    bottom: 5.5rem;
+    left: 2.5rem;
+    position: absolute;
   }
 
   /* Base styles */
@@ -132,44 +117,75 @@ const styles = `
 
 /* 1280px */
 @media (max-width: 1280px) {
-  .responsive-section {
-    max-width: 900px;
-    gap: 1.2rem;
-    padding: 1rem;
-  }
-  .responsive-card {
-    flex: 1 1 30%;
-    max-width: 220px;
-  }
+  .book-holiday {
+      max-width: 90%;
+      padding: 1.4rem 0.5rem;
+      margin: 0;
+      margin-top: 1rem;
+      margin-left: 2rem;
+    }
+    .book-holiday .search-hotel {
+      flex-direction: row;
+      gap: 7rem;
+    }
+
+    .search-hotel .hotel-search-box {
+      max-width: 65%;
+    }
+
+    .search-info {
+      top: 4.7rem;
+      left: 2rem;
+    }
 }
 
 /* 1024px */
 @media (max-width: 1024px) {
-  .responsive-section {
-    max-width: 700px;
-    gap: 1rem;
-    padding: 0.8rem;
-  }
-  .responsive-card {
-    flex: 1 1 45%;
-    max-width: 180px;
-  }
+  .book-holiday {
+      max-width: 90%;
+      padding: 1.4rem 0.5rem;
+      margin: 0;
+      margin-top: 1rem;
+      margin-left: 2rem;
+    }
+    .book-holiday .search-hotel {
+      flex-direction: row;
+      gap: 7rem;
+    }
+
+    .search-hotel .hotel-search-box {
+      max-width: 60%;
+    }
+
+    .search-info {
+      top: 4.7rem;
+      left: 2rem;
+    }
 }
 
 /* 768px */
 @media (max-width: 768px) {
-  .responsive-section {
-    flex-direction: column;
-    max-width: 98vw;
-    gap: 0.7rem;
-    padding: 0.5rem;
-  }
-  .responsive-card {
-    flex: 1 1 100%;
-    max-width: 98vw;
-    min-width: 0;
-  }
-}
+    .book-holiday {
+      max-width: 99%;
+      padding: 1.4rem 0.5rem;
+      margin: 0;
+      margin-top: 1rem;
+    }
+
+    .book-holiday .search-hotel {
+      flex-direction: row;
+      gap: 7rem;
+    }
+
+    .search-hotel .hotel-search-box {
+      max-width: 60%;
+    }
+
+    .search-info {
+      top: 4.3rem;
+      left: 2rem;
+    }
+} 
 
 /* 480px */
 @media (max-width: 480px) {
@@ -188,31 +204,53 @@ const styles = `
     .book-holiday {
       max-width: 99%;
       padding: 1.4rem 0.5rem;
+      margin: 0;
+      margin-top: 1rem;
     }
     .book-holiday .search-hotel {
       flex-direction: column;
       gap: 0.7rem;
     }
+
+    .search-hotel .hotel-search-box {
+      max-width: 100%;
+      padding-top: 3rem;
+    }
+    .search-info {
+      display: block !important;
+      font-size: 0.9rem !important;
+      bottom: 9.8rem;
+      left: 2rem;
+    }
     .search-hotel .hotel-search-box-submit {
       width: 100%;
       margin: 0 auto;
-    }
-    .google-review-container {
-      display: none; /* Hide on small screens */
     }
 
   }
 
   @media (max-width: 400px) {
     .book-holiday {
-      min-height: 120px;
-      padding: 1rem 0.25rem;
+      min-height: 220px;
+      min-width: 100px;
+      margin: 0;
       margin-top: 1rem;
     }
     .book-holiday h2 {
       font-size: 1.05rem;
     }
-  }
+
+    .search-hotel .hotel-search-box {
+      max-width: 100%;
+      padding-top: 3rem;
+    }
+
+    .search-info {
+      display: block !important;
+      font-size: 0.9rem !important;
+      bottom: 9.8rem;
+      left: 2rem;
+    }
 `;
 
 const HotelSearch = () => (
@@ -221,6 +259,7 @@ const HotelSearch = () => (
     <div className="book-holiday">
       <h2>Book Holiday</h2>
       <div className="search-hotel">
+        <p className="search-info">Where are you going for holiday?</p>
         <input
           className="hotel-search-box"
           type="search"
@@ -236,20 +275,8 @@ const HotelSearch = () => (
               alt="Search Icon"
             />
           </span>
-          Hotel
+          Search Plan
         </button>
-      </div>
-      <p className="search-info">Where are you staying?</p>
-
-      <div className="google-review-container">
-        <img
-          className="google-review-icon"
-          src="img/holidays/google review.png"
-          alt="Google review"
-          width="86px"
-          height="48px"
-        />
-        <span className="rating">4.4</span>
       </div>
     </div>
   </>

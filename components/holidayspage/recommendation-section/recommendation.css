@@ -1,8 +1,11 @@
 .recommendation-section {
     position: relative;
-    margin-top: 2rem;
-    height: 80vh;
+    margin: 2rem;
+    height: 70vh;
+    max-width: 95%;
     background: url("/img/holidays/recom-sect.jpg") center/cover no-repeat;
+    border-radius: 60px;
+    ;
     /* full height section */
 }
 
@@ -27,14 +30,16 @@
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
-    flex: 1.2;
+    flex: 2 1;
+    min-height: 100vh;
+    /* add this */
     /* take more space */
 }
 
 .section-header-part-2 {
     padding-left: 10.5rem;
     margin-top: 3rem;
-    flex: 2;
+    flex: 3;
     /* shrink the paragraph area */
 }
 
@@ -62,35 +67,16 @@
     line-height: 1.5;
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1440px) {
 
     .recommendation-section {
-        height: 90vh;
+        margin-top: 3rem;
+        height: 65vh;
     }
 
-    .section-header {
-        top: 7rem;
-        width: 90%;
-    }
-
-    .section-header-part-2 {
-        padding-top: 2rem;
-    }
-
-    .section-header-part-1 {
-        flex: 1.8;
-    }
-
-    .section-header-part-2 {
-        flex: 3;
-        width: 100%;
-    }
-}
-
-@media screen and (max-width: 1440px) {
     .section-header {
         width: 95%;
-        margin: 2rem auto;
+        top: 1rem;
         column-gap: 2rem;
     }
 
@@ -154,13 +140,17 @@
 @media screen and (max-width: 1024px) {
 
     .recommendation-section {
-        height: 75vh;
+        display: flex;
+        height: 70vh;
     }
 
     .section-header {
+        display: flex;
         flex-direction: row;
+        flex: 1.5;
         width: 100%;
         margin: 1.5rem auto;
+        column-gap: 0 !important;
     }
 
     .section-header-part-1 {
@@ -169,10 +159,11 @@
     }
 
     .section-header-part-2 {
-        padding-left: 0;
-        margin-left: -45rem;
-        margin-top: -1rem;
-        flex: 1.5;
+        padding: 0;
+        margin: 0;
+        margin-top: 1rem;
+        padding-right: 1rem;
+        flex: 2;
     }
 
     .section-header-part-2 p {
@@ -200,8 +191,7 @@
 
     .section-header-part-2 {
         padding-left: 0;
-        margin-top: -2rem;
-        margin-left: -31rem;
+        margin: 0;
         flex: 2;
     }
 
@@ -217,25 +207,37 @@
 @media screen and (max-width: 400px) {
     .recommendation-section {
         position: relative;
-        margin-top: 1rem;
-        height: 70vh;
-        padding: 0.5rem 0;
+        width: 100%;
+        margin: 0.5rem;
+        min-height: 85vh;
+        padding: 1rem;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .section-header {
         width: 100%;
-        margin: 0.5rem auto;
-        padding: 0 .5rem;
+        margin: 0 auto;
+        padding: 0 0.5rem;
+        flex-direction: column;
+        row-gap: 1rem;
     }
 
     .section-header-part-1 {
         width: 100%;
+        flex: none;
         margin-top: 0;
         padding-left: 0;
+        min-height: auto;
     }
 
     .section-header-part-2 {
-        display: none;
+        width: 100%;
+        flex: none;
+        margin: 0;
+        padding: 0;
     }
 
     .section-header-part-1-2 h2 {
