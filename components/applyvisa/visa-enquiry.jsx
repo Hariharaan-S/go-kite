@@ -67,7 +67,7 @@ const VisaTabsAndCards = () => {
       background: "#fff",
       borderRadius: 18,
       boxShadow: "0 4px 16px 0 rgba(32,67,114,0.07)",
-      minHeight: 266,
+      height: 400,
       marginBottom: 12,
       overflow: "hidden",
       display: "flex",
@@ -162,6 +162,7 @@ const VisaTabsAndCards = () => {
             style={{
               ...getCardStyle(idx),
               width: "100%", // Adjust width for two cards
+              maxWidth: '400px',
               margin: "0 auto",
             }}
           >
@@ -214,7 +215,7 @@ const VisaTabsAndCards = () => {
               }}
             >
               {/* Card Data */}
-              <div style={{ padding: "10px 22px", flexGrow: 1 }}>
+              <div style={{ padding: "10px 22px", flexGrow: 1, maxHeight: 200 }}>
                 {card.data.map((d) => (
                   <div
                     key={d.label}
