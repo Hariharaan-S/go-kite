@@ -38,7 +38,7 @@ const TourSingleV1Dynamic = ({ params }) => {
           className="button px-15 py-10 -blue-1"
           onClick={() => setPopupOpen(true)}
         >
-          Enquire
+          Enquiry
         </button>
       </div>
 

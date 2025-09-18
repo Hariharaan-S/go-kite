@@ -99,7 +99,7 @@ const BannerPage = () => {
             <div className="price">AED 1,120</div>
 
             <button className="enquire-btn" onClick={handleOpenPopup}>
-              Enquire
+              Enquiry
             </button>
           </div>
         </div>

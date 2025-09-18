@@ -41,7 +41,7 @@ const SidebarRight = ({ tour }) => {
           </div>
 
           <button type="submit" className="enquire-btn">
-            Enquire
+            Enquiry
           </button>
           {/* End div */}
         </div>

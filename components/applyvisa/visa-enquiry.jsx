@@ -21,7 +21,7 @@ const visaCards = [
       { label: "Processing Fee", value: "₹350" },
       { label: "Pay at", value: "₹6,350", strong: true },
     ],
-    buttonLabel: "Enquire",
+    buttonLabel: "Enquiry",
   },
   {
     title: "30 Days Tourist Visa",
@@ -37,7 +37,7 @@ const visaCards = [
       { label: "Express Processing Fee", value: "₹4,350" },
       { label: "Pay at", value: "₹10,900", strong: true },
     ],
-    buttonLabel: "Enquire",
+    buttonLabel: "Enquiry",
   },
   {
     title: "90 Days Tourist Visa",
@@ -53,7 +53,7 @@ const visaCards = [
       { label: "Processing Fee", value: "₹4,350" },
       { label: "Pay at", value: "₹12,350", strong: true },
     ],
-    buttonLabel: "Enquire",
+    buttonLabel: "Enquiry",
   },
 ];
 
