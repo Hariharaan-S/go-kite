@@ -1,11 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import DatePicker from "react-datepicker";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 const styles = `
 
 .masthead {
   margin: 7rem 2rem;
+}
+
+.date-display {
+  display: flex;
+  flex-direction: row;
+}
+
+.book-flight-wrapper {
+  width: 100%;
 }
 
 .masthead__bg img {
@@ -261,7 +271,14 @@ const fieldIcons = {
 
 const BookFlightCard = () => {
   const [date, setDate] = useState(new Date());
-  const [isDatePopupOpen, setIsDatePopupOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const datePickerRef = useRef(null);
+
+  const handleIconClick = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.setFocus(); // programmatically open
+    }
+  };
 
   const d = new Date(date);
   const month = d.toLocaleString("en-US", { month: "long" });
@@ -303,35 +320,56 @@ const BookFlightCard = () => {
                 {day}–{weekday}, {year}
               </p>
             </div>
-            <div
-              className="date-icon-wrapper"
-              onClick={() => setIsDatePopupOpen(!isDatePopupOpen)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="date-icon"
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              {/* Hidden datepicker (input is invisible but functional) */}
+              <DatePicker
+                ref={datePickerRef}
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                customInput={<div />} // hide default input box
+              />
+
+              {/* Your SVG icon */}
+              <div
+                className="date-icon-wrapper"
+                style={{ marginTop: 20, marginLeft: "auto", cursor: "pointer" }}
+                onClick={handleIconClick}
               >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="date-icon"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+
+              {/* Display chosen date */}
+              {selectedDate && (
+                <span style={{ marginLeft: "10px" }}>
+                  {selectedDate.toLocaleDateString()}
+                </span>
+              )}
             </div>
           </div>
-          {isDatePopupOpen && (
-            <DateSelectionPopup
-              onClose={() => setIsDatePopupOpen(false)}
-              onSelect={handleDateSelect}
-            />
-          )}
+
+          <DatePicker
+            ref={datePickerRef}
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            customInput={<div />} // hide default input
+          />
+
         </div>
         {/* BUTTON */}
         <button className="flight-btn">
@@ -520,8 +558,8 @@ const HeroSection = () => {
         <img alt="image" src="/img/landingpage/hero1.png" className="js-lazy" />
       </div>
       <div className="container">
-        <div className="row justify-center">
-          <div className="col-auto">
+        <div className="visa-row row justify-center">
+          <div className="col">
             <div
               className="text-center"
               style={{
