@@ -437,11 +437,10 @@ const DateSelectionPopup = ({ onClose, onSelect }) => {
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="text-center cursor-pointer">
     <div
-      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${
-        isActive
+      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
           ? "bg-orange-500 border-orange-500"
           : "bg-white border-white hover:bg-gray-50"
-      }`}
+        }`}
       style={{
         width: "64px",
         height: "64px",
@@ -548,7 +547,7 @@ const HeroSection = () => {
   const dispatch = useDispatch();
   const Router = useRouter();
   return (
-    <section className="masthead -type-1 z-5">
+    <section className="masthead">
       <div className="masthead__bg">
         <img alt="image" src="/img/landingpage/hero.png" className="js-lazy" />
       </div>
