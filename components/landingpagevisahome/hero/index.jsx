@@ -2,10 +2,12 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { addCurrentTab } from "../../../features/hero/findPlaceSlice";
-
-// Embedded responsive CSS for HeroSection, BookFlightCard, and IconRow
 const styles = `
+
+.masthead {
+  margin: 7rem 2rem;
+}
+
 .masthead__bg img {
   width: 100vw;
   max-width: 100%;
@@ -13,6 +15,7 @@ const styles = `
   object-fit: cover;
   border-radius: 24px 24px 0 0;
   display: block;
+  border-radius: 20px;
 }
 @media (max-width: 900px) {
   .masthead__bg img {
@@ -283,18 +286,16 @@ const BookFlightCard = () => {
             <input
               className="flight-input"
               type="date"
-              defaultValue="2025-01-11"
+              min={new Date().toISOString().split("T")[0]} // today's date
+              defaultValue={new Date().toISOString().split("T")[0]}
             />
           </div>
+
           {/* BUTTON */}
           <button className="flight-btn">
-            <span>Get Visa</span>
-            <svg width="21" height="21" fill="none" viewBox="0 0 21 21">
-              <path
-                d="M11.69 5.01v7.46l2.84-2.85a.75.75 0 111.06 1.07l-4.13 4.13a.75.75 0 01-1.06 0L6.27 10.7a.75.75 0 111.06-1.06l2.84 2.85V5.01a.75.75 0 011.52 0z"
-                fill="#fff"
-              />
-            </svg>
+            <span><img src="img/holidays/search.svg" alt="" width={20} height={20} /></span>
+            <span>Visa Types</span>
+
           </button>
         </div>
         {/* Visa Type Options Row */}
@@ -468,20 +469,6 @@ const HeroSection = () => {
               >
                 The whole world awaits.
               </h1>
-              <p
-                className="text-white mt-6 md:mt-10 sm:text-sm"
-                data-aos="fade-up"
-                data-aos-delay="100"
-                style={{
-                  fontSize: "24px",
-                  fontWeight: 400,
-                  marginTop: "10px",
-                  paddingLeft: "15px",
-                  paddingRight: "15px",
-                }}
-              >
-                Book a meeting with our travel Agent →
-              </p>
             </div>
             {/* Icon Row */}
             {/* <IconRow /> */}
@@ -489,23 +476,21 @@ const HeroSection = () => {
             <div style={{ paddingTop: "70px" }}>
               <BookFlightCard />
             </div>
-            {/* Travel Agent Meeting Link */}
-            {/* <div
-              style={{ margintop: "-100px" }}
-              className="text-center"
+            <p
+              className="text-white mt-6 md:mt-10 sm:text-sm"
               data-aos="fade-up"
-              data-aos-delay="200"
+              data-aos-delay="100"
+              style={{
+                fontSize: "24px",
+                fontWeight: 400,
+                marginTop: "10px",
+                paddingLeft: "15px",
+                paddingRight: "15px",
+                textAlign: 'center'
+              }}
             >
-              <p
-                className="text-white cursor-pointer hover:underline"
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "500",
-                }}
-              >
-                Book a meeting with our travel Agent →
-              </p>
-            </div> */}
+              Book a meeting with our travel Agent →
+            </p>
           </div>
         </div>
       </div>
