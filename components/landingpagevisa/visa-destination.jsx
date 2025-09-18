@@ -233,7 +233,12 @@ const VisaDestinationCards = () => {
           Top Visa Destination
         </h1>
         <div className="visa-nav">
-          <span className="visa-view-all">View All</span>
+          <span
+            className="visa-view-all"
+            onClick={() => router.push("/visa-destinations")}
+          >
+            View All
+          </span>
           <button
             className="visa-nav-button"
             style={{
@@ -293,8 +298,6 @@ const VisaDestinationCards = () => {
                 {windowWidth < 640
                   ? destination.fastTrack.date.split(",")[0]
                   : destination.fastTrack.date}
-
-
                 {windowWidth < 640 ? (
                   <div className="price-overlay">
                     <div>
