@@ -1,5 +1,5 @@
 import GoKiteFooter from "@/components/footer/footer-gokite";
-import Header1 from "@/components/header/Navbar";
+import Header1 from "@/components/header/IconNav";
 import BromoMountainBanner from "@/components/trip-details/banner";
 import AboutSection from "@/components/trip-details/about";
 import PlacesCarousel from "@/components/trip-details/place";
