@@ -189,6 +189,9 @@ const VisaCards = () => {
       <div className="visa-header">
         <h1 className="visa-title">Popular Visa</h1>
         <div className="visa-controls">
+          <span className="view-all" style={{background:"#f2f0f0", padding:"5px", borderRadius:"12px"}} onClick={() => router.push("/apply_visa")}>
+            View All
+          </span>
           <button onClick={prevSlide} className="visa-btn">
             <ChevronLeft size={18} />
           </button>
@@ -201,16 +204,25 @@ const VisaCards = () => {
       {/* Popular Visa Cards */}
       <div className="visa-card-list">
         {visibleVisas.map((visa, index) => (
-          <div key={index} className="visa-card" onClick={() => router.push('/apply_visa')}>
-            <visa.Flag className="flag" />
-            <h3 className="visa-country">{visa.country}</h3>
-            <p className="visa-type">{visa.type}</p>
+          <div
+            key={index}
+            className="visa-card"
+            onClick={() => router.push("/apply_visa")}
+          >
+            <div className="card-header">
+              <visa.Flag className="flag" />
+              <div className="card-content">
+                <h3 className="visa-country">{visa.country}</h3>
+                <p className="visa-type">{visa.type}</p>
+              </div>
+            </div>
+            {/* need to add line between this  */}
             <div className="visa-price-row">
-              <div>
+              <div className="price-section">
                 <span className="visa-price">{visa.price}</span>
                 <span className="visa-price-text">{visa.priceText}</span>
               </div>
-              <DetailsIcon size={16} color="#6b7280" />
+              <DetailsIcon size={16} color="#6b7280" className="arrow-icon" />
             </div>
           </div>
         ))}
@@ -238,15 +250,24 @@ const VisaCards = () => {
           {vaccinationCountries.map((country, index) => (
             <div key={index} className="vaccination-card">
               {country.hasVisaIcon && <VisaIcon />}
-              <country.Flag className="flag" />
-              <h3 className="visa-country">{country.country}</h3>
-              <p className="visa-type">{country.subtitle}</p>
+              <div className="card-header">
+                <country.Flag className="flag" />
+                <div className="card-content">
+                  <h3 className="visa-country">{country.country}</h3>
+                  <p className="visa-type">{country.subtitle}</p>
+                </div>
+              </div>
               <div className="visa-price-row">
-                <div>
+                <div className="price-section">
                   <span className="visa-price">{country.price}</span>
                   <span className="visa-price-text">{country.priceText}</span>
                 </div>
-                <ChevronRight size={16} color="#6b7280" onClick={() => router.push('/apply_visa')} />
+                <ChevronRight
+                  size={16}
+                  color="#6b7280"
+                  className="arrow-icon"
+                  onClick={() => router.push("/apply_visa")}
+                />
               </div>
             </div>
           ))}
@@ -256,17 +277,25 @@ const VisaCards = () => {
       {/* Desktop Grid */}
       <div className="vaccination-grid">
         {vaccinationCountries.map((country, index) => (
-          <div key={index} className="vaccination-card" onClick={() => router.push('/apply_visa')}>
+          <div
+            key={index}
+            className="vaccination-card"
+            onClick={() => router.push("/apply_visa")}
+          >
             {country.hasVisaIcon && <VisaIcon />}
-            <country.Flag className="flag" />
-            <h3 className="visa-country">{country.country}</h3>
-            <p className="visa-type">{country.subtitle}</p>
+            <div className="card-header">
+              <country.Flag className="flag" />
+              <div className="card-content">
+                <h3 className="visa-country">{country.country}</h3>
+                <p className="visa-type">{country.subtitle}</p>
+              </div>
+            </div>
             <div className="visa-price-row">
-              <div>
+              <div className="price-section">
                 <span className="visa-price">{country.price}</span>
                 <span className="visa-price-text">{country.priceText}</span>
               </div>
-              <ChevronRight size={16} color="#6b7280" />
+              <ChevronRight size={16} color="#6b7280" className="arrow-icon" />
             </div>
           </div>
         ))}
@@ -277,8 +306,9 @@ const VisaCards = () => {
         {vaccinationCountries.map((_, index) => (
           <button
             key={index}
-            className={`vaccination-dot ${index === currentVaccinationSlide ? "active" : ""
-              }`}
+            className={`vaccination-dot ${
+              index === currentVaccinationSlide ? "active" : ""
+            }`}
             onClick={() => setCurrentVaccinationSlide(index)}
           />
         ))}
