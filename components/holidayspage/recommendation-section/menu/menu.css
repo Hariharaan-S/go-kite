@@ -39,7 +39,7 @@
 }
 
 .menu-item p {
-    color: var(--color-light-1);
+    color: rgba(255, 255, 255, 0.6);
     font-size: 1.1rem;
     transition: color 0.3s ease;
 }

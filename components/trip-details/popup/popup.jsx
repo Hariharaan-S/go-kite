@@ -9,15 +9,20 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
     customerLastName: "",
     countryOfResidence: "",
     nationality: "",
-    destinationCountry: "",
-    visaType: "",
-    contactNumber: "",
-    email: "",
+    customerPhone: "",
+    customerEmail: "",
+    type: "",
+    nameOfTheCompany: "",
+    residence: "",
     numberOfAdults: 1,
     numberOfChildren: 0,
-    tentativeTravelDate: "",
+    numberOfInfants: 0,
+    budget: 0,
+    destination: "",
     description: "",
-    fileAttachment: null,
+    packageName: "",
+    fromDate: "",
+    toDate: ""
   });
 
   const [errors, setErrors] = useState({});
@@ -28,15 +33,15 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
   const countries = Country.getAllCountries();
 
   // Visa types (you can customize these based on your needs)
-  const visaTypes = [
-    "Tourist Visa",
-    "Business Visa",
-    "Student Visa",
-    "Work Visa",
-    "Transit Visa",
-    "Medical Visa",
-    "Family Visit Visa",
-  ];
+  // const visaTypes = [
+  //   "Tourist Visa",
+  //   "Business Visa",
+  //   "Student Visa",
+  //   "Work Visa",
+  //   "Transit Visa",
+  //   "Medical Visa",
+  //   "Family Visit Visa",
+  // ];
 
   // Get minimum date (today)
   const today = new Date().toISOString().split("T")[0];
@@ -774,7 +779,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 paddingBottom: "12px",
               }}
             >
-            Passenger Details
+              Passenger Details
             </h3>
           </div>
 
