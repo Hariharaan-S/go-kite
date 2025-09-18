@@ -1,9 +1,42 @@
 "use client";
 import React, { useState, useRef } from "react";
-import DatePicker from "react-datepicker";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 const styles = `
+.react-datepicker {
+  font-family: 'Inter', sans-serif;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.react-datepicker__header {
+  background-color: #2563eb; /* blue-600 */
+  color: white;
+  border-bottom: none;
+  padding: 12px 0;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day {
+  width: 2.5rem;
+  line-height: 2.5rem;
+  margin: 0.2rem;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #2563eb;
+  color: white;
+  border-radius: 50%;
+}
+
+.react-datepicker__day:hover {
+  background-color: #e5e7eb; /* gray-200 */
+  border-radius: 50%;
+}
+
 
 .masthead {
   margin: 7rem 2rem;
@@ -272,11 +305,16 @@ const fieldIcons = {
 const BookFlightCard = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
-  const datePickerRef = useRef(null);
+  const dateInputRef = useRef(null);
 
   const handleIconClick = () => {
-    if (datePickerRef.current) {
-      datePickerRef.current.setFocus(); // programmatically open
+    if (dateInputRef.current) {
+      if (typeof dateInputRef.current.showPicker === "function") {
+        dateInputRef.current.showPicker();
+      } else {
+        dateInputRef.current.focus();
+        dateInputRef.current.click();
+      }
     }
   };
 
@@ -320,19 +358,38 @@ const BookFlightCard = () => {
                 {day}–{weekday}, {year}
               </p>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              {/* Hidden datepicker (input is invisible but functional) */}
-              <DatePicker
-                ref={datePickerRef}
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                customInput={<div />} // hide default input box
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "auto" }}>
+              {/* Hidden native date input (invisible but functional) */}
+              <input
+                ref={dateInputRef}
+                type="date"
+                value={selectedDate || ""}
+                min={new Date().toISOString().split("T")[0]}
+                onChange={(e) => {
+                  const value = e.target.value; // yyyy-mm-dd
+                  setSelectedDate(value);
+                  if (value) {
+                    const parsed = new Date(value + "T00:00:00");
+                    if (!isNaN(parsed.getTime())) {
+                      setDate(parsed);
+                    }
+                  }
+                }}
+                style={{
+                  position: "absolute",
+                  opacity: 0,
+                  width: 0,
+                  height: 0,
+                  pointerEvents: "none",
+                }}
+                aria-hidden="true"
+                tabIndex={-1}
               />
 
               {/* Your SVG icon */}
               <div
                 className="date-icon-wrapper"
-                style={{ marginTop: 20, marginLeft: "auto", cursor: "pointer" }}
+                style={{ cursor: "pointer" }}
                 onClick={handleIconClick}
               >
                 <svg
@@ -353,23 +410,8 @@ const BookFlightCard = () => {
                   <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
               </div>
-
-              {/* Display chosen date */}
-              {selectedDate && (
-                <span style={{ marginLeft: "10px" }}>
-                  {selectedDate.toLocaleDateString()}
-                </span>
-              )}
             </div>
           </div>
-
-          <DatePicker
-            ref={datePickerRef}
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            customInput={<div />} // hide default input
-          />
-
         </div>
         {/* BUTTON */}
         <button className="flight-btn">
