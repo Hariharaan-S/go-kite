@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import "../styles/hero.css";
@@ -8,11 +8,10 @@ import "../styles/hero.css";
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="text-center cursor-pointer">
     <div
-      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${
-        isActive
-          ? "bg-orange-500 border-orange-500"
-          : "bg-white border-white hover:bg-gray-50"
-      }`}
+      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
+        ? "bg-orange-500 border-orange-500"
+        : "bg-white border-white hover:bg-gray-50"
+        }`}
       style={{
         width: "64px",
         height: "64px",
@@ -104,7 +103,7 @@ const IconRow = () => {
           zIndex: 1,
         }}
       />
-      
+
       {iconData.map((icon) => (
         <div
           key={icon.id}
@@ -170,7 +169,19 @@ const DateSelectionPopup = ({ onClose, onSelect }) => {
 // Book Flight Card Component
 const BookFlightCard = () => {
   const [date, setDate] = useState(new Date());
-  const [isDatePopupOpen, setIsDatePopupOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const dateInputRef = useRef(null);
+
+  const handleIconClick = () => {
+    if (dateInputRef.current) {
+      if (typeof dateInputRef.current.showPicker === "function") {
+        dateInputRef.current.showPicker();
+      } else {
+        dateInputRef.current.focus();
+        dateInputRef.current.click();
+      }
+    }
+  };
 
   const d = new Date(date);
   const month = d.toLocaleString("en-US", { month: "long" });
@@ -212,35 +223,60 @@ const BookFlightCard = () => {
                 {day}–{weekday}, {year}
               </p>
             </div>
-            <div
-              className="date-icon-wrapper"
-              onClick={() => setIsDatePopupOpen(!isDatePopupOpen)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="date-icon"
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "auto" }}>
+              {/* Hidden native date input (invisible but functional) */}
+              <input
+                ref={dateInputRef}
+                type="date"
+                value={selectedDate || ""}
+                min={new Date().toISOString().split("T")[0]}
+                onChange={(e) => {
+                  const value = e.target.value; // yyyy-mm-dd
+                  setSelectedDate(value);
+                  if (value) {
+                    const parsed = new Date(value + "T00:00:00");
+                    if (!isNaN(parsed.getTime())) {
+                      setDate(parsed);
+                    }
+                  }
+                }}
+                style={{
+                  position: "absolute",
+                  opacity: 0,
+                  width: 0,
+                  height: 0,
+                  pointerEvents: "none",
+                }}
+                aria-hidden="true"
+                tabIndex={-1}
+              />
+
+              {/* Your SVG icon */}
+              <div
+                className="date-icon-wrapper"
+                style={{ cursor: "pointer" }}
+                onClick={handleIconClick}
               >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="date-icon"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
             </div>
           </div>
-          {isDatePopupOpen && (
-            <DateSelectionPopup
-              onClose={() => setIsDatePopupOpen(false)}
-              onSelect={handleDateSelect}
-            />
-          )}
         </div>
         {/* BUTTON */}
         <button className="flight-btn">
@@ -311,6 +347,7 @@ const BookFlightCard = () => {
   );
 };
 
+
 // Hero Section Component
 const HeroSection = () => {
   return (
@@ -344,11 +381,11 @@ const HeroSection = () => {
             </div>
             {/* Travel Agent Meeting Link */}
             <div
-  className="travel-agent-meeting"
-  style={{ marginTop: "-50px" }} // adjust this value as needed
->
-  <a href="#">Book a meeting with our Travel Agent →</a>
-</div>
+              className="travel-agent-meeting"
+              style={{ marginTop: "-50px" }} // adjust this value as needed
+            >
+              <a href="#">Book a meeting with our Travel Agent →</a>
+            </div>
           </div>
         </div>
       </div>

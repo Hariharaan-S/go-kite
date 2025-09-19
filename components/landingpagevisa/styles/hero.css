@@ -2,6 +2,7 @@
 .masthead__bg {
   padding: 0 20px;
   max-width: 1600px;
+  min-width: 100%;
   margin: 0 auto;
 }
 
@@ -242,24 +243,29 @@
     flex-direction: column;
     gap: 10px;
   }
+
   .flight-field {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid #e0e0e0;
     padding: 8px 12px;
   }
+
   .flight-field:last-child {
     border-bottom: none;
   }
+
   .flight-btn {
     width: 100%;
     justify-content: center;
   }
+
   .trip-options-container {
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
   }
+
   .trip-options-left {
     flex-wrap: wrap;
     gap: 16px;
