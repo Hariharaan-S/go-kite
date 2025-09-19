@@ -193,7 +193,7 @@ const VisaCards = () => {
             className="view-all"
             style={{
               background: "#f2f0f0",
-              padding: "5px",
+              padding: "5px 10px",
               borderRadius: "12px",
             }}
             onClick={() => router.push("/apply_visa")}
