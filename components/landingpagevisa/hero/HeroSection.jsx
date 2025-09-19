@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import "../styles/hero.css";
@@ -170,19 +170,7 @@ const DateSelectionPopup = ({ onClose, onSelect }) => {
 // Book Flight Card Component
 const BookFlightCard = () => {
   const [date, setDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const dateInputRef = useRef(null);
-
-  const handleIconClick = () => {
-    if (dateInputRef.current) {
-      if (typeof dateInputRef.current.showPicker === "function") {
-        dateInputRef.current.showPicker();
-      } else {
-        dateInputRef.current.focus();
-        dateInputRef.current.click();
-      }
-    }
-  };
+  const [isDatePopupOpen, setIsDatePopupOpen] = useState(false);
 
   const d = new Date(date);
   const month = d.toLocaleString("en-US", { month: "long" });
@@ -224,60 +212,35 @@ const BookFlightCard = () => {
                 {day}–{weekday}, {year}
               </p>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "auto" }}>
-              {/* Hidden native date input (invisible but functional) */}
-              <input
-                ref={dateInputRef}
-                type="date"
-                value={selectedDate || ""}
-                min={new Date().toISOString().split("T")[0]}
-                onChange={(e) => {
-                  const value = e.target.value; // yyyy-mm-dd
-                  setSelectedDate(value);
-                  if (value) {
-                    const parsed = new Date(value + "T00:00:00");
-                    if (!isNaN(parsed.getTime())) {
-                      setDate(parsed);
-                    }
-                  }
-                }}
-                style={{
-                  position: "absolute",
-                  opacity: 0,
-                  width: 0,
-                  height: 0,
-                  pointerEvents: "none",
-                }}
-                aria-hidden="true"
-                tabIndex={-1}
-              />
-
-              {/* Your SVG icon */}
-              <div
-                className="date-icon-wrapper"
-                style={{ cursor: "pointer" }}
-                onClick={handleIconClick}
+            <div
+              className="date-icon-wrapper"
+              onClick={() => setIsDatePopupOpen(!isDatePopupOpen)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="date-icon"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="date-icon"
-                >
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-              </div>
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
             </div>
           </div>
+          {isDatePopupOpen && (
+            <DateSelectionPopup
+              onClose={() => setIsDatePopupOpen(false)}
+              onSelect={handleDateSelect}
+            />
+          )}
         </div>
         {/* BUTTON */}
         <button className="flight-btn">
