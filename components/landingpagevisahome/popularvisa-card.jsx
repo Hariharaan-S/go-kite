@@ -180,7 +180,7 @@ const VisaCards = () => {
 
   const visibleVisas = getVisibleVisas();
 
-  const VisaIcon = () => <div className="visa-icon">VISA</div>;
+  const VisaIcon = () => <div className="visa-icon">E-VISA</div>;
   const router = useRouter();
 
   return (
@@ -189,7 +189,15 @@ const VisaCards = () => {
       <div className="visa-header">
         <h1 className="visa-title">Popular Visa</h1>
         <div className="visa-controls">
-          <span className="view-all" style={{background:"#f2f0f0", padding:"5px", borderRadius:"12px"}} onClick={() => router.push("/apply_visa")}>
+          <span
+            className="view-all"
+            style={{
+              background: "#f2f0f0",
+              padding: "5px",
+              borderRadius: "12px",
+            }}
+            onClick={() => router.push("/apply_visa")}
+          >
             View All
           </span>
           <button onClick={prevSlide} className="visa-btn">
@@ -216,13 +224,12 @@ const VisaCards = () => {
                 <p className="visa-type">{visa.type}</p>
               </div>
             </div>
-            {/* need to add line between this  */}
             <div className="visa-price-row">
               <div className="price-section">
                 <span className="visa-price">{visa.price}</span>
                 <span className="visa-price-text">{visa.priceText}</span>
               </div>
-              <DetailsIcon size={16} color="#6b7280" className="arrow-icon" />
+              <ChevronRight size={20} className="arrow-icon" />
             </div>
           </div>
         ))}
@@ -263,8 +270,7 @@ const VisaCards = () => {
                   <span className="visa-price-text">{country.priceText}</span>
                 </div>
                 <ChevronRight
-                  size={16}
-                  color="#6b7280"
+                  size={20}
                   className="arrow-icon"
                   onClick={() => router.push("/apply_visa")}
                 />
