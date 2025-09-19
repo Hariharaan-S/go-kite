@@ -57,42 +57,16 @@ const VisaCards = () => {
   const vaccinationContainerRef = useRef(null);
   const router = useRouter();
 
-  // Authorization and claims headers
-  const CLAIMS = {
-    AUTHENTICATED: "true",
-    org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
-    OTP_VERFICATION_REQD: "false",
-    USER_ID: "0af402d1-98f0-18ae-8198-f493454d0001",
-    refreshtoken: "false",
-    client_ip: "14.99.174.62",
-    USER_ID_LONG: "563",
-    USER_NAME: "codetezteam@gmail.com",
-    "authorized-domains": "b603f35d-9242-11f0-b493-fea20be86931, b603edb7-9242-11f0-b493-fea20be86931, b603e748-9242-11f0-b493-fea20be86931, b603d5d9-9242-11f0-b493-fea20be86931",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
-  };
-
-  const getAuthHeaders = () => {
-    const baseHeaders = {
-      'Content-Type': 'application/json',
-      'claims': JSON.stringify(CLAIMS),
-    };
-    return baseHeaders;
-  };
-
-  // Example/static page id to include in API body
-  const PAGE_ID = 10;
-
   // Fetch sections data
   const fetchSectionsData = async () => {
     try {
       const sectionsResponse = await fetch(
         'https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/pages-sections',
         {
-          method: 'POST',
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            pageId: PAGE_ID
-          }),
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
       );
 
@@ -108,34 +82,32 @@ const VisaCards = () => {
     }
   };
 
-  // Fetch visa cards data for each section id, return flattened array
+  // Fetch visa cards data
   const fetchVisaCardsData = async (sectionIds) => {
-    const aggregated = [];
-    for (const sectionId of sectionIds) {
-      try {
-        const response = await fetch(
-          'https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/sections-visa-cards',
-          {
-            method: 'POST',
-            headers: getAuthHeaders(),
-            body: JSON.stringify({
-              pageSectionId: sectionId,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch visa cards data');
+    try {
+      const response = await fetch(
+        'https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/sections-visa-cards',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sectionIds: sectionIds
+          }),
         }
+      );
 
-        const data = await response.json();
-        const items = Array.isArray(data?.data) ? data.data : [];
-        aggregated.push(...items);
-      } catch (err) {
-        console.error('Error fetching visa cards for section', sectionId, err);
+      if (!response.ok) {
+        throw new Error('Failed to fetch visa cards data');
       }
+
+      const data = await response.json();
+      return data.data || [];
+    } catch (err) {
+      console.error('Error fetching visa cards:', err);
+      throw err;
     }
-    return aggregated;
   };
 
   // Get country flag component
@@ -164,267 +136,297 @@ const VisaCards = () => {
     return apiData
       .filter(item => item.pageSectionId === sectionId)
       .map(item => ({
-        Flag: getCountryFlag(item.visaCardJson.flagImage || 'US'),
-        country: item.visaCardTitle || 'Unknown Country',
-        type: item.visaCardJson.subTitle || 'Tourist visa',
-        price: item.newPrice || '₹1,60,500',
-        priceText: item.newPrice || 'per adult',
+        Flag: getCountryFlag(item.country || item.countryName || 'US'),
+        country: item.country || item.countryName || 'Unknown Country',
+        type: item.visaType || item.type || 'Tourist visa',
+        price: item.price ? `₹${item.price}` : '₹1,60,500',
+        priceText: item.priceText || 'per adult',
         subtitle: item.subtitle || item.description,
-        hasVisaIcon: item.visaCardJson.eVisa || false,
+        hasVisaIcon: item.hasVisaIcon || false,
       }));
-};
+  };
 
-// Load data on component mount
-useEffect(() => {
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  // Load data on component mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-      // Fetch sections first
-      const sections = await fetchSectionsData();
-      console.log(sections);
+        // Fetch sections first
+        const sections = await fetchSectionsData();
 
-      // Find relevant section IDs
-      const popularVisaSection = sections.find(
-        section => section.title === 'popular-visa' && section.contentType === 'VISA'
-      );
+        // Find relevant section IDs
+        const popularVisaSection = sections.find(
+          section => section.title === 'popular-visa' && section.contentType === 'VISA'
+        );
 
-      const vacationSection = sections.find(
-        section => section.title === 'Vacation Trending countries' && section.contentType === 'VISA'
-      );
+        const vacationSection = sections.find(
+          section => section.title === 'Vacation Trending countries' && section.contentType === 'VISA'
+        );
 
-      if (!popularVisaSection && !vacationSection) {
-        throw new Error('Required sections not found');
+        if (!popularVisaSection && !vacationSection) {
+          throw new Error('Required sections not found');
+        }
+
+        const sectionIds = [
+          popularVisaSection?.pageSectionId,
+          vacationSection?.pageSectionId
+        ].filter(Boolean);
+
+        // Fetch visa cards data
+        const visaCardsData = await fetchVisaCardsData(sectionIds);
+
+        // Transform and set data
+        if (popularVisaSection) {
+          const popularVisaData = transformVisaData(visaCardsData, popularVisaSection.pageSectionId);
+          setPopularVisas(popularVisaData);
+        }
+
+        if (vacationSection) {
+          const vacationData = transformVisaData(visaCardsData, vacationSection.pageSectionId);
+          setVaccinationCountries(vacationData);
+        }
+
+      } catch (err) {
+        console.error('Error loading data:', err);
+        setError(err.message);
+
+        // Fallback to default data if API fails
+        setPopularVisas([
+          {
+            Flag: US,
+            country: "US Visa",
+            type: "Green card visa",
+            price: "₹1,60,500",
+            priceText: "per adult",
+          },
+          {
+            Flag: IN,
+            country: "India",
+            type: "Tourist visa",
+            price: "₹1,60,500",
+            priceText: "per adult",
+          },
+        ]);
+
+        setVaccinationCountries([
+          {
+            Flag: LK,
+            country: "Sri Lanka",
+            subtitle: "Get your Visa by 24hours",
+            price: "₹6,500",
+            priceText: "per adult",
+            hasVisaIcon: true,
+          },
+        ]);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const sectionIds = [
-        popularVisaSection?.pageSectionId,
-        vacationSection?.pageSectionId
-      ].filter(Boolean);
+    loadData();
+  }, []);
 
-      // Fetch visa cards data
-      const visaCardsData = await fetchVisaCardsData(sectionIds);
-      console.log(visaCardsData);
+  const totalSlides = popularVisas.length;
+  const totalVaccinationSlides = vaccinationCountries.length;
 
-      // Transform and set data
-      if (popularVisaSection) {
-        const popularVisaData = transformVisaData(visaCardsData, popularVisaSection.pageSectionId);
-        setPopularVisas(popularVisaData);
-      }
+  const nextSlide = () => {
+    setCurrentSlide((prev) =>
+      prev + VISIBLE_CARDS >= totalSlides ? 0 : prev + VISIBLE_CARDS
+    );
+  };
 
-      if (vacationSection) {
-        const vacationData = transformVisaData(visaCardsData, vacationSection.pageSectionId);
-        setVaccinationCountries(vacationData);
-      }
+  const prevSlide = () => {
+    setCurrentSlide((prev) =>
+      prev - VISIBLE_CARDS < 0
+        ? totalSlides - (totalSlides % VISIBLE_CARDS || VISIBLE_CARDS)
+        : prev - VISIBLE_CARDS
+    );
+  };
 
-    } catch (err) {
-      console.error('Error loading data:', err);
-      setError(err.message);
+  const nextVaccinationSlide = () => {
+    setCurrentVaccinationSlide((prev) =>
+      prev + 1 >= totalVaccinationSlides ? 0 : prev + 1
+    );
+  };
 
-      // Fallback to default data if API fails
-      setPopularVisas([
-        {
-          Flag: US,
-          country: "US Visa",
-          type: "Green card visa",
-          price: "₹1,60,500",
-          priceText: "per adult",
-        },
-        {
-          Flag: IN,
-          country: "India",
-          type: "Tourist visa",
-          price: "₹1,60,500",
-          priceText: "per adult",
-        },
-      ]);
+  const prevVaccinationSlide = () => {
+    setCurrentVaccinationSlide((prev) =>
+      prev - 1 < 0 ? totalVaccinationSlides - 1 : prev - 1
+    );
+  };
 
-      setVaccinationCountries([
-        {
-          Flag: LK,
-          country: "Sri Lanka",
-          subtitle: "Get your Visa by 24hours",
-          price: "₹6,500",
-          priceText: "per adult",
-          hasVisaIcon: true,
-        },
-      ]);
-    } finally {
-      setLoading(false);
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - vaccinationContainerRef.current.offsetLeft);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - vaccinationContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+
+    if (walk > 100) {
+      prevVaccinationSlide();
+      setIsDragging(false);
+    } else if (walk < -100) {
+      nextVaccinationSlide();
+      setIsDragging(false);
     }
   };
 
-  loadData();
-}, []);
-
-const totalSlides = popularVisas.length;
-const totalVaccinationSlides = vaccinationCountries.length;
-
-const nextSlide = () => {
-  setCurrentSlide((prev) =>
-    prev + VISIBLE_CARDS >= totalSlides ? 0 : prev + VISIBLE_CARDS
-  );
-};
-
-const prevSlide = () => {
-  setCurrentSlide((prev) =>
-    prev - VISIBLE_CARDS < 0
-      ? totalSlides - (totalSlides % VISIBLE_CARDS || VISIBLE_CARDS)
-      : prev - VISIBLE_CARDS
-  );
-};
-
-const nextVaccinationSlide = () => {
-  setCurrentVaccinationSlide((prev) =>
-    prev + 1 >= totalVaccinationSlides ? 0 : prev + 1
-  );
-};
-
-const prevVaccinationSlide = () => {
-  setCurrentVaccinationSlide((prev) =>
-    prev - 1 < 0 ? totalVaccinationSlides - 1 : prev - 1
-  );
-};
-
-const handleMouseDown = (e) => {
-  setIsDragging(true);
-  setStartX(e.pageX - vaccinationContainerRef.current.offsetLeft);
-};
-
-const handleMouseMove = (e) => {
-  if (!isDragging) return;
-  e.preventDefault();
-  const x = e.pageX - vaccinationContainerRef.current.offsetLeft;
-  const walk = (x - startX) * 2;
-
-  if (walk > 100) {
-    prevVaccinationSlide();
+  const handleMouseUp = () => {
     setIsDragging(false);
-  } else if (walk < -100) {
-    nextVaccinationSlide();
+  };
+
+  const handleMouseLeave = () => {
     setIsDragging(false);
-  }
-};
+  };
 
-const handleMouseUp = () => {
-  setIsDragging(false);
-};
+  const getVisibleVisas = () => {
+    if (totalSlides <= VISIBLE_CARDS) return popularVisas;
+    if (currentSlide + VISIBLE_CARDS <= totalSlides) {
+      return popularVisas.slice(currentSlide, currentSlide + VISIBLE_CARDS);
+    } else {
+      return [
+        ...popularVisas.slice(currentSlide),
+        ...popularVisas.slice(0, (currentSlide + VISIBLE_CARDS) % totalSlides),
+      ];
+    }
+  };
 
-const handleMouseLeave = () => {
-  setIsDragging(false);
-};
+  const visibleVisas = getVisibleVisas();
 
-const getVisibleVisas = () => {
-  if (totalSlides <= VISIBLE_CARDS) return popularVisas;
-  if (currentSlide + VISIBLE_CARDS <= totalSlides) {
-    return popularVisas.slice(currentSlide, currentSlide + VISIBLE_CARDS);
-  } else {
-    return [
-      ...popularVisas.slice(currentSlide),
-      ...popularVisas.slice(0, (currentSlide + VISIBLE_CARDS) % totalSlides),
-    ];
-  }
-};
+  const VisaIcon = () => <div className="visa-icon">E-VISA</div>;
 
-const visibleVisas = getVisibleVisas();
-
-const VisaIcon = () => <div className="visa-icon">E-VISA</div>;
-
-if (loading) {
-  return (
-    <div className="visa-container">
-      <div style={{ textAlign: 'center', padding: '2rem' }}>
-        <p>Loading visa information...</p>
-      </div>
-    </div>
-  );
-}
-
-if (error) {
-  return (
-    <div className="visa-container">
-      <div style={{ textAlign: 'center', padding: '2rem' }}>
-        <p>Error loading data: {error}</p>
-        <p>Showing default content...</p>
-      </div>
-    </div>
-  );
-}
-
-return (
-  <div className="visa-container">
-    {/* Header */}
-    <div className="visa-header">
-      <h1 className="visa-title">Popular Visa</h1>
-      <div className="visa-controls">
-        <span
-          className="view-all"
-          style={{
-            background: "#f2f0f0",
-            padding: "5px",
-            borderRadius: "12px",
-          }}
-          onClick={() => router.push("/apply_visa")}
-        >
-          View All
-        </span>
-        <button onClick={prevSlide} className="visa-btn">
-          <ChevronLeft size={18} />
-        </button>
-        <button onClick={nextSlide} className="visa-btn">
-          <ChevronRight size={18} />
-        </button>
-      </div>
-    </div>
-
-    {/* Popular Visa Cards */}
-    <div className="visa-card-list">
-      {visibleVisas.map((visa, index) => (
-        <div
-          key={index}
-          className="visa-card"
-          onClick={() => router.push("/apply_visa")}
-        >
-          <div className="card-header">
-            <visa.Flag className="flag" />
-            <div className="card-content">
-              <h3 className="visa-country">{visa.country}</h3>
-              <p className="visa-type">{visa.type}</p>
-            </div>
-          </div>
-          <div className="visa-price-row">
-            <div className="price-section">
-              <span className="visa-price">{visa.price}</span>
-              <span className="visa-price-text">{visa.priceText}</span>
-            </div>
-            <ChevronRight size={20} className="arrow-icon" />
-          </div>
+  if (loading) {
+    return (
+      <div className="visa-container">
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <p>Loading visa information...</p>
         </div>
-      ))}
-    </div>
+      </div>
+    );
+  }
 
-    {/* Vaccination Countries */}
-    <h2 className="section-title">Vacation – Trending Countries</h2>
+  if (error) {
+    return (
+      <div className="visa-container">
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <p>Error loading data: {error}</p>
+          <p>Showing default content...</p>
+        </div>
+      </div>
+    );
+  }
 
-    {/* Mobile Carousel */}
-    <div
-      ref={vaccinationContainerRef}
-      className="vaccination-carousel"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseLeave}
-    >
+  return (
+    <div className="visa-container">
+      {/* Header */}
+      <div className="visa-header">
+        <h1 className="visa-title">Popular Visa</h1>
+        <div className="visa-controls">
+          <span
+            className="view-all"
+            style={{
+              background: "#f2f0f0",
+              padding: "5px",
+              borderRadius: "12px",
+            }}
+            onClick={() => router.push("/apply_visa")}
+          >
+            View All
+          </span>
+          <button onClick={prevSlide} className="visa-btn">
+            <ChevronLeft size={18} />
+          </button>
+          <button onClick={nextSlide} className="visa-btn">
+            <ChevronRight size={18} />
+          </button>
+        </div>
+      </div>
+
+      {/* Popular Visa Cards */}
+      <div className="visa-card-list">
+        {visibleVisas.map((visa, index) => (
+          <div
+            key={index}
+            className="visa-card"
+            onClick={() => router.push("/apply_visa")}
+          >
+            <div className="card-header">
+              <visa.Flag className="flag" />
+              <div className="card-content">
+                <h3 className="visa-country">{visa.country}</h3>
+                <p className="visa-type">{visa.type}</p>
+              </div>
+            </div>
+            <div className="visa-price-row">
+              <div className="price-section">
+                <span className="visa-price">{visa.price}</span>
+                <span className="visa-price-text">{visa.priceText}</span>
+              </div>
+              <ChevronRight size={20} className="arrow-icon" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Vaccination Countries */}
+      <h2 className="section-title">Vacation – Trending Countries</h2>
+
+      {/* Mobile Carousel */}
       <div
-        className="vaccination-carousel-inner"
-        style={{
-          transform: `translateX(-${currentVaccinationSlide * 100}%)`,
-          zIndex: 1,
-        }}
+        ref={vaccinationContainerRef}
+        className="vaccination-carousel"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
       >
+        <div
+          className="vaccination-carousel-inner"
+          style={{
+            transform: translateX(`-${currentVaccinationSlide * 100}%`),
+            zIndex: 1,
+          }}
+        >
+          {vaccinationCountries.map((country, index) => (
+            <div key={index} className="vaccination-card">
+              {country.hasVisaIcon && <VisaIcon />}
+              <div className="card-header">
+                <country.Flag className="flag" />
+                <div className="card-content">
+                  <h3 className="visa-country">{country.country}</h3>
+                  <p className="visa-type">{country.subtitle}</p>
+                </div>
+              </div>
+              <div className="visa-price-row">
+                <div className="price-section">
+                  <span className="visa-price">{country.price}</span>
+                  <span className="visa-price-text">{country.priceText}</span>
+                </div>
+                <ChevronRight
+                  size={20}
+                  className="arrow-icon"
+                  onClick={() => router.push("/apply_visa")}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop Grid */}
+      <div className="vaccination-grid">
         {vaccinationCountries.map((country, index) => (
-          <div key={index} className="vaccination-card">
+          <div
+            key={index}
+            className="vaccination-card"
+            onClick={() => router.push("/apply_visa")}
+          >
             {country.hasVisaIcon && <VisaIcon />}
             <div className="card-header">
               <country.Flag className="flag" />
@@ -438,69 +440,37 @@ return (
                 <span className="visa-price">{country.price}</span>
                 <span className="visa-price-text">{country.priceText}</span>
               </div>
-              <ChevronRight
-                size={20}
-                className="arrow-icon"
-                onClick={() => router.push("/apply_visa")}
-              />
+              <ChevronRight size={16} color="#6b7280" className="arrow-icon" />
             </div>
           </div>
         ))}
       </div>
-    </div>
 
-    {/* Desktop Grid */}
-    <div className="vaccination-grid">
-      {vaccinationCountries.map((country, index) => (
-        <div
-          key={index}
-          className="vaccination-card"
-          onClick={() => router.push("/apply_visa")}
-        >
-          {country.hasVisaIcon && <VisaIcon />}
-          <div className="card-header">
-            <country.Flag className="flag" />
-            <div className="card-content">
-              <h3 className="visa-country">{country.country}</h3>
-              <p className="visa-type">{country.subtitle}</p>
-            </div>
-          </div>
-          <div className="visa-price-row">
-            <div className="price-section">
-              <span className="visa-price">{country.price}</span>
-              <span className="visa-price-text">{country.priceText}</span>
-            </div>
-            <ChevronRight size={16} color="#6b7280" className="arrow-icon" />
-          </div>
+      {/* Carousel Navigation */}
+      <div className="vaccination-carousel-nav">
+        {vaccinationCountries.map((_, index) => (
+          <button
+            key={index}
+            className={`vaccination-dot ${index === currentVaccinationSlide ? "active" : ""
+              }`}
+            onClick={() => setCurrentVaccinationSlide(index)}
+          />
+        ))}
+      </div>
+
+      {/* Visa Rules Image */}
+      <div className="visa-rules">
+        <h2 className="section-title">Visa Rules Announcement</h2>
+        <div className="rules-card">
+          <img
+            src="/img/general/visa-card.png"
+            alt="Visa Rules"
+            className="rules-img"
+          />
         </div>
-      ))}
-    </div>
-
-    {/* Carousel Navigation */}
-    <div className="vaccination-carousel-nav">
-      {vaccinationCountries.map((_, index) => (
-        <button
-          key={index}
-          className={`vaccination-dot ${index === currentVaccinationSlide ? "active" : ""
-            }`}
-          onClick={() => setCurrentVaccinationSlide(index)}
-        />
-      ))}
-    </div>
-
-    {/* Visa Rules Image */}
-    <div className="visa-rules">
-      <h2 className="section-title">Visa Rules Announcement</h2>
-      <div className="rules-card">
-        <img
-          src="/img/general/visa-card.png"
-          alt="Visa Rules"
-          className="rules-img"
-        />
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default VisaCards;
