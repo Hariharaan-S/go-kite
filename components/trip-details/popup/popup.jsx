@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import { Country, State, City } from "country-state-city";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
+import React, { useMemo, useState } from "react";
+import { Country } from "country-state-city";
 
 const PopupForm = ({ open, onClose, onSubmit }) => {
   const [form, setForm] = useState({
@@ -27,21 +25,17 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
 
   const [errors, setErrors] = useState({});
 
+  const countries = Country.getAllCountries();
+  const phoneCodes = useMemo(() => {
+    const codes = Array.from(new Set(countries.map((c) => c.phonecode))).filter(Boolean);
+    return codes.sort((a, b) => Number(a) - Number(b));
+  }, [countries]);
+
   if (!open) return null;
 
-  // Get all countries for dropdowns
-  const countries = Country.getAllCountries();
+  // Get all countries for dropdowns (already memoized above)
 
-  // Visa types (you can customize these based on your needs)
-  // const visaTypes = [
-  //   "Tourist Visa",
-  //   "Business Visa",
-  //   "Student Visa",
-  //   "Work Visa",
-  //   "Transit Visa",
-  //   "Medical Visa",
-  //   "Family Visit Visa",
-  // ];
+  const tripTypes = ["Solo", "Group", "Corporate", "Student", "Cruise", "Others"];
 
   // Get minimum date (today)
   const today = new Date().toISOString().split("T")[0];
@@ -59,12 +53,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
     }
   };
 
-  const handlePhoneChange = (value) => {
-    setForm({ ...form, contactNumber: value || "" });
-    if (errors.contactNumber) {
-      setErrors({ ...errors, contactNumber: "" });
-    }
-  };
+  // Removed phone input handler (customerPhone will be a select)
 
   const handleNumberChange = (field, increment) => {
     const currentValue = form[field];
@@ -77,21 +66,15 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!form.customerFirstName.trim())
-      newErrors.customerFirstName = "First name is required";
-    if (!form.customerLastName.trim())
-      newErrors.customerLastName = "Last name is required";
-    if (!form.countryOfResidence)
-      newErrors.countryOfResidence = "Country of residence is required";
+    if (!form.customerFirstName.trim()) newErrors.customerFirstName = "First name is required";
+    if (!form.customerLastName.trim()) newErrors.customerLastName = "Last name is required";
+    if (!form.countryOfResidence) newErrors.countryOfResidence = "Country of residence is required";
     if (!form.nationality) newErrors.nationality = "Nationality is required";
-    if (!form.destinationCountry)
-      newErrors.destinationCountry = "Destination country is required";
-    if (!form.visaType) newErrors.visaType = "Visa type is required";
-    if (!form.contactNumber)
-      newErrors.contactNumber = "Contact number is required";
-    if (!form.email.trim()) newErrors.email = "Email is required";
-    if (!form.tentativeTravelDate)
-      newErrors.tentativeTravelDate = "Travel date is required";
+    if (!form.customerPhone) newErrors.customerPhone = "Phone code is required";
+    if (!form.customerEmail.trim()) newErrors.customerEmail = "Email is required";
+    if (!form.type) newErrors.type = "Trip type is required";
+    if (!form.fromDate) newErrors.fromDate = "From date is required";
+    if (!form.toDate) newErrors.toDate = "To date is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -217,7 +200,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               lineHeight: "1.2",
             }}
           >
-            Visa Enquiry Form
+            Holidays Enquiry Form
           </h2>
           <p
             style={{
@@ -227,11 +210,12 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               fontWeight: "500",
             }}
           >
-            Please fill in your details for visa assistance
+            Please fill in your details for holidays assistance
           </p>
         </div>
 
-        {/* Form Grid */}
+        {/* Form Grid */
+        }
         <div
           style={{
             display: "grid",
@@ -454,14 +438,8 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             )}
           </div>
 
-          {/* Travel Information Section */}
-          <div
-            style={{
-              gridColumn: "1 / -1",
-              marginTop: "32px",
-              marginBottom: "16px",
-            }}
-          >
+          {/* Contact and Trip Details */}
+          <div style={{ gridColumn: "1 / -1", marginTop: "32px", marginBottom: "16px" }}>
             <h3
               style={{
                 margin: "0 0 20px 0",
@@ -472,246 +450,8 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 paddingBottom: "12px",
               }}
             >
-              Travel Information
+              Contact & Trip Details
             </h3>
-          </div>
-
-          <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
-              Destination Country *
-            </label>
-            <select
-              name="destinationCountry"
-              value={form.destinationCountry}
-              onChange={handleChange}
-              required
-              style={{
-                ...inputStyle,
-                ...(errors.destinationCountry ? errorStyle : {}),
-              }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.destinationCountry
-                  ? "#ef4444"
-                  : "#e2e8f0";
-                e.target.style.backgroundColor = errors.destinationCountry
-                  ? "#fef2f2"
-                  : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
-            >
-              <option value="">Select destination country</option>
-              {countries.map((country) => (
-                <option key={country.isoCode} value={country.isoCode}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-            {errors.destinationCountry && (
-              <span
-                style={{
-                  color: "#ef4444",
-                  fontSize: "0.875rem",
-                  marginTop: "4px",
-                  display: "block",
-                }}
-              >
-                {errors.destinationCountry}
-              </span>
-            )}
-          </div>
-
-          <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
-              Type of Visa *
-            </label>
-            <select
-              name="visaType"
-              value={form.visaType}
-              onChange={handleChange}
-              required
-              style={{
-                ...inputStyle,
-                ...(errors.visaType ? errorStyle : {}),
-              }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.visaType
-                  ? "#ef4444"
-                  : "#e2e8f0";
-                e.target.style.backgroundColor = errors.visaType
-                  ? "#fef2f2"
-                  : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
-            >
-              <option value="">Select visa type</option>
-              {visaTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-            {errors.visaType && (
-              <span
-                style={{
-                  color: "#ef4444",
-                  fontSize: "0.875rem",
-                  marginTop: "4px",
-                  display: "block",
-                }}
-              >
-                {errors.visaType}
-              </span>
-            )}
-          </div>
-
-          <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
-              Tentative Travel Date *
-            </label>
-            <input
-              name="tentativeTravelDate"
-              type="date"
-              min={today}
-              value={form.tentativeTravelDate}
-              onChange={handleChange}
-              required
-              style={{
-                ...inputStyle,
-                ...(errors.tentativeTravelDate ? errorStyle : {}),
-              }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.tentativeTravelDate
-                  ? "#ef4444"
-                  : "#e2e8f0";
-                e.target.style.backgroundColor = errors.tentativeTravelDate
-                  ? "#fef2f2"
-                  : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
-            />
-            {errors.tentativeTravelDate && (
-              <span
-                style={{
-                  color: "#ef4444",
-                  fontSize: "0.875rem",
-                  marginTop: "4px",
-                  display: "block",
-                }}
-              >
-                {errors.tentativeTravelDate}
-              </span>
-            )}
-          </div>
-
-          {/* Contact Information Section */}
-          <div
-            style={{
-              gridColumn: "1 / -1",
-              marginTop: "32px",
-              marginBottom: "16px",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 20px 0",
-                color: "#1e293b",
-                fontSize: "1.4rem",
-                fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
-              }}
-            >
-              Contact Information
-            </h3>
-          </div>
-
-          <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
-              Contact Number *
-            </label>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                border: "2px solid #e2e8f0",
-                borderRadius: "12px",
-                overflow: "hidden",
-                backgroundColor: "#fafafa",
-                transition: "all 0.3s ease",
-              }}
-            >
-              <PhoneInput
-                placeholder="Enter phone number"
-                value={form.contactNumber}
-                onChange={handlePhoneChange}
-                defaultCountry="IN"
-                style={{
-                  "--PhoneInputCountryFlag-height": "1.2em",
-                  "--PhoneInput-color--focus": "#3b82f6",
-                  width: "100%",
-                }}
-                className="phone-input"
-                inputStyle={{
-                  width: "100%",
-                  border: "none",
-                  backgroundColor: "transparent",
-                  padding: "14px 16px",
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  color: "#374151",
-                  outline: "none",
-                }}
-                countrySelectStyle={{
-                  border: "none",
-                  backgroundColor: "transparent",
-                  marginRight: "8px",
-                }}
-              />
-            </div>
-            {errors.contactNumber && (
-              <span
-                style={{
-                  color: "#ef4444",
-                  fontSize: "0.875rem",
-                  marginTop: "4px",
-                  display: "block",
-                }}
-              >
-                {errors.contactNumber}
-              </span>
-            )}
           </div>
 
           <div>
@@ -726,42 +466,194 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               Email Address *
             </label>
             <input
-              name="email"
+              name="customerEmail"
               type="email"
               placeholder="Enter your email address"
-              value={form.email}
+              value={form.customerEmail}
               onChange={handleChange}
               required
               style={{
                 ...inputStyle,
-                ...(errors.email ? errorStyle : {}),
+                ...(errors.customerEmail ? errorStyle : {}),
               }}
               onFocus={(e) => Object.assign(e.target.style, focusStyle)}
               onBlur={(e) => {
-                e.target.style.borderColor = errors.email
-                  ? "#ef4444"
-                  : "#e2e8f0";
-                e.target.style.backgroundColor = errors.email
-                  ? "#fef2f2"
-                  : "#fafafa";
+                e.target.style.borderColor = errors.customerEmail ? "#ef4444" : "#e2e8f0";
+                e.target.style.backgroundColor = errors.customerEmail ? "#fef2f2" : "#fafafa";
                 e.target.style.boxShadow = "none";
               }}
             />
-            {errors.email && (
+            {errors.customerEmail && (
               <span
-                style={{
-                  color: "#ef4444",
-                  fontSize: "0.875rem",
-                  marginTop: "4px",
-                  display: "block",
-                }}
+                style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}
               >
-                {errors.email}
+                {errors.customerEmail}
               </span>
             )}
           </div>
 
-          {/* Travel Party Section */}
+          <div>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "8px",
+                fontWeight: "600",
+                color: "#374151",
+              }}
+            >
+              Phone Code *
+            </label>
+            <select
+              name="customerPhone"
+              value={form.customerPhone}
+              onChange={handleChange}
+              required
+              style={{
+                ...inputStyle,
+                ...(errors.customerPhone ? errorStyle : {}),
+              }}
+              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+              onBlur={(e) => {
+                e.target.style.borderColor = errors.customerPhone ? "#ef4444" : "#e2e8f0";
+                e.target.style.backgroundColor = errors.customerPhone ? "#fef2f2" : "#fafafa";
+                e.target.style.boxShadow = "none";
+              }}
+            >
+              <option value="">Select phone code</option>
+              {phoneCodes.map((code) => (
+                <option key={code} value={code}>
+                  +{code}
+                </option>
+              ))}
+            </select>
+            {errors.customerPhone && (
+              <span
+                style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}
+              >
+                {errors.customerPhone}
+              </span>
+            )}
+          </div>
+
+          <div style={{ gridColumn: "1 / -1" }}>
+            <label
+              style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}
+            >
+              Type *
+            </label>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+              {tripTypes.map((t) => (
+                <label key={t} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <input
+                    type="radio"
+                    name="type"
+                    value={t}
+                    checked={form.type === t}
+                    onChange={handleChange}
+                    required
+                  />
+                  <span>{t}</span>
+                </label>
+              ))}
+            </div>
+            {errors.type && (
+              <span style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}>
+                {errors.type}
+              </span>
+            )}
+          </div>
+
+          <div>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
+              Name of the Company
+            </label>
+            <input
+              name="nameOfTheCompany"
+              placeholder="Enter company name"
+              value={form.nameOfTheCompany}
+              onChange={handleChange}
+              style={inputStyle}
+              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#e2e8f0";
+                e.target.style.backgroundColor = "#fafafa";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
+              Residence
+            </label>
+            <input
+              name="residence"
+              placeholder="Enter your city / residence"
+              value={form.residence}
+              onChange={handleChange}
+              style={inputStyle}
+              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#e2e8f0";
+                e.target.style.backgroundColor = "#fafafa";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+          </div>
+          {/* Date Range */}
+          <div>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
+              From Date
+            </label>
+            <input
+              name="fromDate"
+              type="date"
+              min={today}
+              value={form.fromDate}
+              onChange={handleChange}
+              
+              style={{ ...inputStyle, ...(errors.fromDate ? errorStyle : {}) }}
+              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+              onBlur={(e) => {
+                e.target.style.borderColor = errors.fromDate ? "#ef4444" : "#e2e8f0";
+                e.target.style.backgroundColor = errors.fromDate ? "#fef2f2" : "#fafafa";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+            {errors.fromDate && (
+              <span style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}>
+                {errors.fromDate}
+              </span>
+            )}
+          </div>
+
+          <div>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
+              To Date
+            </label>
+            <input
+              name="toDate"
+              type="date"
+              min={today}
+              value={form.toDate}
+              onChange={handleChange}
+              
+              style={{ ...inputStyle, ...(errors.toDate ? errorStyle : {}) }}
+              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+              onBlur={(e) => {
+                e.target.style.borderColor = errors.toDate ? "#ef4444" : "#e2e8f0";
+                e.target.style.backgroundColor = errors.toDate ? "#fef2f2" : "#fafafa";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+            {errors.toDate && (
+              <span style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}>
+                {errors.toDate}
+              </span>
+            )}
+          </div>
+
+          {/* Party & Budget */}
           <div
             style={{
               gridColumn: "1 / -1",
@@ -779,10 +671,11 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 paddingBottom: "12px",
               }}
             >
-              Passenger Details
+              Passenger & Budget
             </h3>
           </div>
 
+          {/* Number of infants */}
           <div>
             <label
               style={{
@@ -951,6 +844,163 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               </button>
             </div>
           </div>
+          <div>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
+              Number of Infants *
+            </label>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                width: "100%",
+                border: "2px solid #e2e8f0",
+                borderRadius: "12px",
+                overflow: "hidden",
+                backgroundColor: "#fafafa",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => handleNumberChange("numberOfInfants", false)}
+                disabled={form.numberOfInfants <= 0}
+                style={{
+                  width: "44px",
+                  height: "44px",
+                  background: form.numberOfInfants <= 0 ? "#f8fafc" : "#fff",
+                  cursor: form.numberOfInfants <= 0 ? "not-allowed" : "pointer",
+                  border: "none",
+                  borderRight: "1px solid #e2e8f0",
+                  fontSize: "20px",
+                  fontWeight: "600",
+                  color: form.numberOfInfants <= 0 ? "#cbd5e1" : "#374151",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                −
+              </button>
+              <input
+                type="number"
+                value={form.numberOfInfants}
+                required
+                readOnly
+                style={{
+                  flex: 1,
+                  border: "none",
+                  textAlign: "center",
+                  fontSize: "16px",
+                  backgroundColor: "transparent",
+                  padding: "10px",
+                  fontWeight: "600",
+                  color: "#374151",
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => handleNumberChange("numberOfInfants", true)}
+                style={{
+                  width: "44px",
+                  height: "44px",
+                  background: "#fff",
+                  cursor: "pointer",
+                  border: "none",
+                  borderLeft: "1px solid #e2e8f0",
+                  fontSize: "20px",
+                  fontWeight: "600",
+                  color: "#374151",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
+              Budget
+            </label>
+            <input
+              name="budget"
+              type="number"
+              placeholder="Enter budget"
+              value={form.budget}
+              onChange={handleChange}
+              style={inputStyle}
+              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#e2e8f0";
+                e.target.style.backgroundColor = "#fafafa";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+          </div>
+
+          {/* Destination & Package */}
+          <div
+            style={{
+              gridColumn: "1 / -1",
+              marginTop: "32px",
+              marginBottom: "16px",
+            }}
+          >
+            <h3
+              style={{
+                margin: "0 0 20px 0",
+                color: "#1e293b",
+                fontSize: "1.4rem",
+                fontWeight: "700",
+                borderBottom: "3px solid #e2e8f0",
+                paddingBottom: "12px",
+              }}
+            >
+              Destination & Package
+            </h3>
+          </div>
+          <div>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
+              Destination
+            </label>
+            <input
+              name="destination"
+              placeholder="Enter destination"
+              value={form.destination}
+              onChange={handleChange}
+              style={inputStyle}
+              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#e2e8f0";
+                e.target.style.backgroundColor = "#fafafa";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
+              Package Name *
+            </label>
+            <input
+              name="packageName"
+              placeholder="Enter package name"
+              required
+              value={form.packageName}
+              onChange={handleChange}
+              style={inputStyle}
+              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#e2e8f0";
+                e.target.style.backgroundColor = "#fafafa";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+          </div>
 
           {/* Additional Information Section */}
           <div style={{ gridColumn: "1 / -1", marginTop: "32px" }}>
@@ -988,35 +1038,6 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                   ...inputStyle,
                   resize: "vertical",
                   minHeight: "120px",
-                }}
-                onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.backgroundColor = "#fafafa";
-                  e.target.style.boxShadow = "none";
-                }}
-              />
-            </div>
-
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "8px",
-                  fontWeight: "600",
-                  color: "#374151",
-                }}
-              >
-                File Attachment (Optional)
-              </label>
-              <input
-                name="fileAttachment"
-                type="file"
-                onChange={handleChange}
-                style={{
-                  ...inputStyle,
-                  paddingTop: "12px",
-                  paddingBottom: "12px",
                 }}
                 onFocus={(e) => Object.assign(e.target.style, focusStyle)}
                 onBlur={(e) => {
@@ -1098,27 +1119,6 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
       </form>
 
       <style jsx>{`
-        .phone-input .PhoneInputInput {
-          border: none !important;
-          background: transparent !important;
-          padding: 14px 16px !important;
-          font-size: 16px !important;
-          outline: none !important;
-          width: 100% !important;
-          color: #374151 !important;
-          font-weight: 400 !important;
-        }
-
-        .phone-input .PhoneInputCountrySelect {
-          border: none !important;
-          background: transparent !important;
-          margin-right: 8px !important;
-        }
-
-        .phone-input .PhoneInputCountryIcon {
-          height: 1.2em !important;
-        }
-
         @media (max-width: 768px) {
           form {
             padding: 24px !important;
