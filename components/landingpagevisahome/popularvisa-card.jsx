@@ -6,97 +6,256 @@ import "./styles/popularvisa-card.css";
 import { useRouter } from "next/navigation";
 
 const VISIBLE_CARDS = 5;
+const VISIBLE_VACCINATION_CARDS = 1; // Show one card at a time for mobile
 
-// Using only default content, API calls removed
+// Country flag mapping
+const countryFlagMap = {
+  US: US,
+  USA: US,
+  "United States": US,
+  IN: IN,
+  India: IN,
+  SG: SG,
+  Singapore: SG,
+  CH: CH,
+  Switzerland: CH,
+  ES: ES,
+  Spain: ES,
+  TR: TR,
+  Turkey: TR,
+  LK: LK,
+  "Sri Lanka": LK,
+  AU: AU,
+  Australia: AU,
+  BD: BD,
+  Bangladesh: BD,
+};
 
 const VisaCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentVaccinationSlide, setCurrentVaccinationSlide] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
+  const [popularVisas, setPopularVisas] = useState([]);
+  const [vaccinationCountries, setVaccinationCountries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const vaccinationContainerRef = useRef(null);
   const router = useRouter();
 
-  // Default static content
-  const popularVisas = [
-    {
-      Flag: US,
-      country: "US Visa",
-      type: "Green card visa",
-      price: "₹1,60,500",
-      priceText: "per adult",
-    },
-    {
-      Flag: IN,
-      country: "India",
-      type: "Tourist visa",
-      price: "₹1,60,500",
-      priceText: "per adult",
-    },
-    {
-      Flag: SG,
-      country: "Singapore",
-      type: "Business visa",
-      price: "₹1,60,500",
-      priceText: "per adult",
-    },
-    {
-      Flag: CH,
-      country: "Switzerland",
-      type: "Business visa",
-      price: "₹1,60,500",
-      priceText: "per adult",
-    },
-    {
-      Flag: ES,
-      country: "Spain",
-      type: "Tourist visa",
-      price: "₹1,60,500",
-      priceText: "per adult",
-    },
-    {
-      Flag: TR,
-      country: "Turkey",
-      type: "Business visa",
-      price: "₹1,60,500",
-      priceText: "per adult",
-    },
-  ];
+  // Authorization and claims headers
+  const CLAIMS = {
+    AUTHENTICATED: "true",
+    org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
+    OTP_VERFICATION_REQD: "false",
+    USER_ID: "0af402d1-98f0-18ae-8198-f493454d0001",
+    refreshtoken: "false",
+    client_ip: "14.99.174.62",
+    USER_ID_LONG: "563",
+    USER_NAME: "codetezteam@gmail.com",
+    "authorized-domains":
+      "b603f35d-9242-11f0-b493-fea20be86931, b603edb7-9242-11f0-b493-fea20be86931, b603e748-9242-11f0-b493-fea20be86931, b603d5d9-9242-11f0-b493-fea20be86931",
+    "user-agent":
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  };
 
-  const vaccinationCountries = [
-    {
-      Flag: LK,
-      country: "Sri Lanka",
-      subtitle: "Get your Visa by 24hours",
-      price: "₹6,500",
-      priceText: "per adult",
-      hasVisaIcon: true,
-    },
-    {
-      Flag: SG,
-      country: "Singapore",
-      subtitle: "Get your Visa by 24hours",
-      price: "₹6,500",
-      priceText: "per adult",
-      hasVisaIcon: true,
-    },
-    {
-      Flag: AU,
-      country: "Australia",
-      subtitle: "Get your Visa by 24hours",
-      price: "₹6,500",
-      priceText: "per adult",
-      hasVisaIcon: true,
-    },
-    {
-      Flag: BD,
-      country: "Bangladesh",
-      subtitle: "Get your Visa by 24hours",
-      price: "₹6,500",
-      priceText: "per adult",
-      hasVisaIcon: true,
-    },
-  ];
+  const getAuthHeaders = () => {
+    const baseHeaders = {
+      "Content-Type": "application/json",
+      claims: JSON.stringify(CLAIMS),
+    };
+    return baseHeaders;
+  };
+
+  // Example/static page id to include in API body
+  const PAGE_ID = 10;
+
+  // Fetch sections data
+  const fetchSectionsData = async () => {
+    try {
+      const sectionsResponse = await fetch(
+        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/pages-sections",
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            pageId: PAGE_ID,
+          }),
+        }
+      );
+
+      if (!sectionsResponse.ok) {
+        throw new Error("Failed to fetch sections data");
+      }
+
+      const sectionsData = await sectionsResponse.json();
+      return sectionsData.data || [];
+    } catch (err) {
+      console.error("Error fetching sections:", err);
+      throw err;
+    }
+  };
+
+  // Fetch visa cards data for each section id, return flattened array
+  const fetchVisaCardsData = async (sectionIds) => {
+    const aggregated = [];
+    for (const sectionId of sectionIds) {
+      try {
+        const response = await fetch(
+          "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/sections-visa-cards",
+          {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify({
+              pageSectionId: sectionId,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch visa cards data");
+        }
+
+        const data = await response.json();
+        const items = Array.isArray(data?.data) ? data.data : [];
+        aggregated.push(...items);
+      } catch (err) {
+        console.error("Error fetching visa cards for section", sectionId, err);
+      }
+    }
+    return aggregated;
+  };
+
+  // Get country flag component
+  const getCountryFlag = (countryName) => {
+    // Try exact match first
+    if (countryFlagMap[countryName]) {
+      return countryFlagMap[countryName];
+    }
+
+    // Try case-insensitive match
+    const lowerCountryName = countryName.toLowerCase();
+    const matchingKey = Object.keys(countryFlagMap).find(
+      (key) => key.toLowerCase() === lowerCountryName
+    );
+
+    if (matchingKey) {
+      return countryFlagMap[matchingKey];
+    }
+
+    // Default fallback
+    return US;
+  };
+
+  // Transform API data to component format
+  const transformVisaData = (apiData, sectionId) => {
+    return apiData
+      .filter((item) => item.pageSectionId === sectionId)
+      .map((item) => ({
+        Flag: getCountryFlag(item.visaCardJson.flagImage || "US"),
+        country: item.visaCardTitle || "Unknown Country",
+        type: item.visaCardJson.subTitle || "Tourist visa",
+        price: `${item.currency} ${item.newPrice}` || "₹1,60,500",
+        priceText: item.visaCardJson.priceContent || "per adult",
+        subtitle:
+          item.subtitle || item.description || "Get your Visa by 24hours",
+        hasVisaIcon: item.visaCardJson.eVisa || false,
+      }));
+  };
+
+  // Load data on component mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch sections first
+        const sections = await fetchSectionsData();
+        console.log(sections);
+
+        // Find relevant section IDs
+        const popularVisaSection = sections.find(
+          (section) =>
+            section.title === "popular-visa" && section.contentType === "VISA"
+        );
+
+        const vacationSection = sections.find(
+          (section) =>
+            section.title === "Vacation Trending countries" &&
+            section.contentType === "VISA"
+        );
+
+        if (!popularVisaSection && !vacationSection) {
+          throw new Error("Required sections not found");
+        }
+
+        const sectionIds = [
+          popularVisaSection?.pageSectionId,
+          vacationSection?.pageSectionId,
+        ].filter(Boolean);
+
+        // Fetch visa cards data
+        const visaCardsData = await fetchVisaCardsData(sectionIds);
+        console.log(visaCardsData);
+
+        // Transform and set data
+        if (popularVisaSection) {
+          const popularVisaData = transformVisaData(
+            visaCardsData,
+            popularVisaSection.pageSectionId
+          );
+          setPopularVisas(popularVisaData);
+        }
+
+        if (vacationSection) {
+          const vacationData = transformVisaData(
+            visaCardsData,
+            vacationSection.pageSectionId
+          );
+          setVaccinationCountries(vacationData);
+        }
+      } catch (err) {
+        console.error("Error loading data:", err);
+        setError(err.message);
+
+        // Fallback to default data if API fails
+        setPopularVisas([
+          {
+            Flag: US,
+            country: "US Visa",
+            type: "Green card visa",
+            price: "₹1,60,500",
+            priceText: "per adult",
+            subtitle: "Get your Visa by 24hours",
+          },
+          {
+            Flag: IN,
+            country: "India",
+            type: "Tourist visa",
+            price: "₹1,60,500",
+            priceText: "per adult",
+            subtitle: "Get your Visa by 24hours",
+          },
+        ]);
+
+        setVaccinationCountries([
+          {
+            Flag: LK,
+            country: "Sri Lanka",
+            subtitle: "Get your Visa by 24hours",
+            price: "₹6,500",
+            priceText: "per adult",
+            hasVisaIcon: true,
+          },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const totalSlides = popularVisas.length;
   const totalVaccinationSlides = vaccinationCountries.length;
@@ -171,7 +330,26 @@ const VisaCards = () => {
 
   const VisaIcon = () => <div className="visa-icon">E-VISA</div>;
 
-  // No loading or error states when using default content
+  if (loading) {
+    return (
+      <div className="visa-container">
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          <p>Loading visa information...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="visa-container">
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          <p>Error loading data: {error}</p>
+          <p>Showing default content...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="visa-container">
