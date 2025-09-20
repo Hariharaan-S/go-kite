@@ -37,10 +37,9 @@ const VisaDestinationCards = () => {
         "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=300&fit=crop&crop=center",
       country: "United Arab Emirates",
       fastTrack: {
-        date: "26 Mar, 11:03PM",
-        originalPrice: "₹6,500",
-        discountPrice: "₹8,500",
-        totalPrice: "₹15,000",
+        originalPrice: "₹6500",
+        extraCharges: "₹8500",
+        totalPrice: "₹15000",
       },
       getOn: {
         date: "25 Mar, 11:02PM",
@@ -53,10 +52,9 @@ const VisaDestinationCards = () => {
         "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=400&h=300&fit=crop&crop=center",
       country: "United Arab Emirates",
       fastTrack: {
-        date: "26 Mar, 11:03PM",
-        originalPrice: "₹6,500",
-        discountPrice: "₹8,500",
-        totalPrice: "₹15,000",
+        originalPrice: "₹6500",
+        extraCharges: "₹8500",
+        totalPrice: "₹15000",
       },
       getOn: {
         date: "25 Mar, 11:02PM",
@@ -69,10 +67,9 @@ const VisaDestinationCards = () => {
         "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=300&fit=crop&crop=center",
       country: "Singapore",
       fastTrack: {
-        date: "26 Mar, 11:03PM",
-        originalPrice: "₹6,500",
-        discountPrice: "₹8,500",
-        totalPrice: "₹15,000",
+        originalPrice: "₹6500",
+        extraCharges: "₹8500",
+        totalPrice: "₹15000",
       },
       getOn: {
         date: "25 Mar, 11:02PM",
@@ -85,10 +82,9 @@ const VisaDestinationCards = () => {
         "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=300&fit=crop&crop=center",
       country: "Egypt",
       fastTrack: {
-        date: "26 Mar, 11:03PM",
-        originalPrice: "₹6,500",
-        discountPrice: "₹8,500",
-        totalPrice: "₹15,000",
+        originalPrice: "₹6500",
+        extraCharges: "₹8500",
+        totalPrice: "₹15000",
       },
       getOn: {
         date: "25 Mar, 11:02PM",
@@ -101,10 +97,9 @@ const VisaDestinationCards = () => {
         "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center",
       country: "Japan",
       fastTrack: {
-        date: "26 Mar, 11:03PM",
-        originalPrice: "₹6,500",
-        discountPrice: "₹8,500",
-        totalPrice: "₹15,000",
+        originalPrice: "₹6500",
+        extraCharges: "₹8500",
+        totalPrice: "₹15000",
       },
       getOn: {
         date: "25 Mar, 11:02PM",
@@ -301,11 +296,11 @@ const VisaDestinationCards = () => {
                 {windowWidth < 640 ? (
                   <div className="price-overlay">
                     <div>
-                      <span className="original-price">
+                      <span className="extra-charges">
                         {destination.fastTrack.originalPrice}
                       </span>
-                      <span className="discount-price">
-                        + {destination.fastTrack.discountPrice}
+                      <span className="extra-charges">
+                        + {destination.fastTrack.extraCharges}
                       </span>
                     </div>
                     <span className="total-price">
@@ -314,11 +309,11 @@ const VisaDestinationCards = () => {
                   </div>
                 ) : (
                   <div className="price-overlay">
-                    <span className="original-price">
+                    <span className="extra-charges">
                       {destination.fastTrack.originalPrice}
                     </span>
-                    <span className="discount-price">
-                      + {destination.fastTrack.discountPrice}
+                    <span className="extra-charges">
+                      + {destination.fastTrack.extraCharges}
                     </span>
                     <span className="total-price">
                       = {destination.fastTrack.totalPrice}
@@ -327,40 +322,6 @@ const VisaDestinationCards = () => {
                 )}
               </div>
               {/* Price overlay */}
-              {/* <div
-                className="price-overlay"
-                style={{
-                  flexDirection: windowWidth < 640 ? "column" : "row",
-                }}
-              >
-                {windowWidth < 640 ? (
-                  <>
-                    <div>
-                      <span className="original-price">
-                        {destination.fastTrack.originalPrice}
-                      </span>
-                      <span className="discount-price">
-                        + {destination.fastTrack.discountPrice}
-                      </span>
-                    </div>
-                    <span className="total-price">
-                      = {destination.fastTrack.totalPrice}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span className="original-price">
-                      {destination.fastTrack.originalPrice}
-                    </span>
-                    <span className="discount-price">
-                      + {destination.fastTrack.discountPrice}
-                    </span>
-                    <span className="total-price">
-                      = {destination.fastTrack.totalPrice}
-                    </span>
-                  </>
-                )}
-              </div> */}
             </div>
 
             {/* Card Content */}
