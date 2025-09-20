@@ -133,8 +133,8 @@
 
 .price-section {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  gap: 8px;
 }
 
 .visa-price {
@@ -142,16 +142,20 @@
   font-weight: 700;
   color: #1a1a1a;
   line-height: 1.2;
+  margin-right: 4px;
 }
 
 .visa-price-text {
   font-size: 12px;
   color: #6b7280;
   font-weight: 400;
+  margin-right: 8px;
 }
 
 .arrow-icon {
-  color: #6b7280;
+  color: #fab60a;
+  display: flex;
+  align-items: center;
 }
 
 .visa-icon {
@@ -321,7 +325,7 @@
 
 /* Update vaccination card styles */
 .vaccination-card {
-  flex: 0 0 220px; /* Reduce from 250px to 220px */
+  flex: 0 0 260px; /* Increased from 220px to 300px */
   background-color: white;
   border-radius: 12px;
   padding: 16px;
@@ -338,7 +342,7 @@
 
 @media (max-width: 767px) {
   .vaccination-card {
-    flex: 0 0 220px; /* Reduce mobile card width */
+    flex: 0 0 260px; /* Increase mobile card width */
     height: 180px; /* Consistent height */
     padding: 16px;
     margin-right: 12px; /* Add spacing between mobile cards */
@@ -349,7 +353,7 @@
   .vaccination-grid {
     grid-template-columns: repeat(
       auto-fit,
-      minmax(200px, 1fr)
+      minmax(220px, 1fr)
     ); /* Adjust grid column sizing */
     gap: 12px; /* Slightly reduce gap */
   }
@@ -357,7 +361,7 @@
   .vaccination-card {
     flex: none;
     width: auto;
-    min-width: 200px; /* Reduce minimum width */
-    max-width: 220px; /* Add maximum width */
+    min-width: 220px; /* Increase minimum width */
+    max-width: 250px; /* Increase maximum width */
   }
 }
