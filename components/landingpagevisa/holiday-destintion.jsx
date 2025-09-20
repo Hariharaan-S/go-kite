@@ -12,11 +12,215 @@ import React, { useState, useEffect } from "react";
 import "../landingpage/styles/holiday-destination.css";
 import { useRouter } from "next/navigation";
 
+// Authorization and claims headers
+const CLAIMS = {
+  AUTHENTICATED: "true",
+  org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
+  OTP_VERFICATION_REQD: "false",
+  USER_ID: "0af402d1-98f0-18ae-8198-f493454d0001",
+  refreshtoken: "false",
+  client_ip: "14.99.174.62",
+  USER_ID_LONG: "563",
+  USER_NAME: "codetezteam@gmail.com",
+  "authorized-domains":
+    "b603f35d-9242-11f0-b493-fea20be86931, b603edb7-9242-11f0-b493-fea20be86931, b603e748-9242-11f0-b493-fea20be86931, b603d5d9-9242-11f0-b493-fea20be86931",
+  "user-agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+};
+
 export default function HolidayDestinations() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
   const [windowWidth, setWindowWidth] = useState(1024);
+  const [destinations, setDestinations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  const getAuthHeaders = () => {
+    return {
+      "Content-Type": "application/json",
+      claims: JSON.stringify(CLAIMS),
+    };
+  };
+
+  // Fetch sections data
+  const fetchSectionsData = async () => {
+    try {
+      const sectionsResponse = await fetch(
+        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/pages-sections",
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            pageId: 9, // Hardcoded page ID from the example
+          }),
+        }
+      );
+
+      if (!sectionsResponse.ok) {
+        throw new Error("Failed to fetch sections data");
+      }
+
+      const sectionsData = await sectionsResponse.json();
+      return sectionsData.data || [];
+    } catch (err) {
+      console.error("Error fetching sections:", err);
+      throw err;
+    }
+  };
+
+  // Fetch holiday cards data for a specific section
+  const fetchHolidayCardsData = async (sectionId) => {
+    try {
+      const response = await fetch(
+        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/sections-holiday-cards",
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            pageSectionId: sectionId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch holiday cards data");
+      }
+
+      const data = await response.json();
+      return Array.isArray(data?.data) ? data.data : [];
+    } catch (err) {
+      console.error("Error fetching holiday cards:", err);
+      throw err;
+    }
+  };
+
+  // Currency conversion and formatting
+  const convertAndFormatCurrency = (amount, currency) => {
+    const exchangeRates = {
+      AED: 20, // 1 AED = 20 INR (example rate)
+      USD: 80, // 1 USD = 80 INR (example rate)
+      INR: 1, // 1 INR = 1 INR
+    };
+
+    const rate = exchangeRates[currency] || 1;
+    const convertedAmount = Math.round(parseFloat(amount) * rate);
+
+    // Format price based on currency
+    switch (currency) {
+      case "AED":
+        return `${convertedAmount.toFixed(2)} ${currency}`;
+      case "INR":
+      default:
+        return `₹${convertedAmount.toFixed(2)}`;
+    }
+  };
+
+  // Transform holiday card data
+  const transformHolidayData = (apiData) => {
+    return apiData.map((item) => {
+      // Convert prices
+      const oldPrice = parseFloat(item.oldPrice);
+      const newPrice = parseFloat(item.newPrice);
+
+      return {
+        id: item.holidayCardId,
+        image: `/img/general/${item.cardJson.heroImage}`, // Assuming images are stored in public/img/general/
+        title: item.title,
+        rating: parseFloat(item.packageRating),
+        duration: `${item.noOfDays} Days ${item.noOfNights} Nights`,
+        flights:
+          item.cardJson.itineraryIcons.find((icon) =>
+            icon.text.includes("Flight")
+          )?.text || "2 Flights",
+        hotels:
+          item.cardJson.itineraryIcons.find(
+            (icon) =>
+              icon.text.includes("Hotel") || icon.text.includes("Accomodation")
+          )?.text || "1 Hotel",
+        transfers:
+          item.cardJson.itineraryIcons.find(
+            (icon) =>
+              icon.text.includes("Transfer") || icon.text.includes("Cars")
+          )?.text || "2 Transfers",
+        activities:
+          item.cardJson.itineraryIcons.find((icon) =>
+            icon.text.includes("Activities")
+          )?.text || "4 Activities",
+        features: item.cardJson.inclusions || [],
+        originalPrice: convertAndFormatCurrency(oldPrice, item.currency),
+        discountedPrice: convertAndFormatCurrency(newPrice, item.currency),
+        currency: item.currency,
+        cityName: item.cityName,
+        categoryName: item.categoryName,
+      };
+    });
+  };
+
+  // Load data on component mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch sections first
+        const sections = await fetchSectionsData();
+
+        // Find the holiday destinations section
+        const holidaySection = sections.find(
+          (section) =>
+            section.title === "home-holiday-section" &&
+            section.contentType === "HOLIDAY"
+        );
+
+        if (!holidaySection) {
+          throw new Error("Holiday destinations section not found");
+        }
+
+        // Fetch holiday cards for this section
+        const holidayCardsData = await fetchHolidayCardsData(
+          holidaySection.pageSectionId
+        );
+
+        // Transform and set destinations
+        const transformedDestinations = transformHolidayData(holidayCardsData);
+        setDestinations(transformedDestinations);
+      } catch (err) {
+        console.error("Error loading data:", err);
+        setError(err.message);
+
+        // Fallback to default data if API fails
+        setDestinations([
+          {
+            id: 1,
+            image:
+              "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
+            title: "Swiss Alps",
+            rating: 4.7,
+            duration: "3 Days 4 Nights",
+            flights: "2 Flights",
+            hotels: "1 Hotel",
+            transfers: "2 Transfers",
+            activities: "4 Activities",
+            features: [
+              "Tour combo with return airport transfer",
+              "City Tour",
+              "Curious Corner",
+            ],
+            originalPrice: "₹98,952",
+            discountedPrice: "₹88,952",
+          },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  // Existing responsive and UI logic
   useEffect(() => {
     const updateVisibleCards = () => {
       const width = window.innerWidth;
@@ -43,104 +247,6 @@ export default function HolidayDestinations() {
     }, 3000);
     return () => clearInterval(interval);
   }, [visibleCards, currentSlide]);
-
-  const destinations = [
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
-      title: "Swiss Alps",
-      rating: 4.7,
-      duration: "3Days 4 Nights",
-      flights: "2 Flights",
-      hotels: "1 Hotel",
-      transfers: "2 Transfers",
-      activities: "4 Activities",
-      features: [
-        "Tour combo with return airport transfer",
-        "City Tour",
-        "Curious Corner",
-      ],
-      originalPrice: "₹98,952",
-      discountedPrice: "₹88,952",
-    },
-    {
-      id: 2,
-      image:
-        "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop",
-      title: "Hallstatt",
-      rating: 4.9,
-      duration: "3Days 4 Nights",
-      flights: "2 Flights",
-      hotels: "1 Hotel",
-      transfers: "2 Transfers",
-      activities: "4 Activities",
-      features: [
-        "Tour combo with return airport transfer",
-        "City Tour",
-        "Curious Corner",
-      ],
-      originalPrice: "₹98,952",
-      discountedPrice: "₹88,952",
-    },
-    {
-      id: 3,
-      image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
-      title: "Faroe Island",
-      rating: 4.5,
-      duration: "3Days 4 Nights",
-      flights: "2 Flights",
-      hotels: "1 Hotel",
-      transfers: "2 Transfers",
-      activities: "4 Activities",
-      features: [
-        "Tour combo with return airport transfer",
-        "City Tour",
-        "Curious Corner",
-      ],
-      originalPrice: "₹98,952",
-      discountedPrice: "₹88,952",
-    },
-    {
-      id: 4,
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop",
-      title: "Innsbruck",
-      rating: 4.8,
-      duration: "3Days 4 Nights",
-      flights: "2 Flights",
-      hotels: "1 Hotel",
-      transfers: "2 Transfers",
-      activities: "4 Activities",
-      features: [
-        "Tour combo with return airport transfer",
-        "City Tour",
-        "Curious Corner",
-      ],
-      originalPrice: "₹98,952",
-      discountedPrice: "₹88,952",
-    },
-    {
-      id: 5,
-      image:
-        "https://images.surferseo.art/743e6bc9-7f37-4614-92e4-827081b1d352.png",
-      title: "Another Destination",
-      rating: 4.6,
-      duration: "3Days 4 Nights",
-      flights: "2 Flights",
-      hotels: "1 Hotel",
-      transfers: "2 Transfers",
-      activities: "4 Activities",
-      features: [
-        "Tour combo with return airport transfer",
-        "City Tour",
-        "Curious Corner",
-      ],
-      originalPrice: "₹98,952",
-      discountedPrice: "₹88,952",
-    },
-  ];
 
   const totalSlides = destinations.length;
 
@@ -173,6 +279,28 @@ export default function HolidayDestinations() {
   const visibleDestinations = getVisibleDestinations();
   const router = useRouter();
 
+  // Loading and error states
+  if (loading) {
+    return (
+      <div className="holiday-container">
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          <p>Loading holiday destinations...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="holiday-container">
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          <p>Error loading destinations: {error}</p>
+          <p>Showing default content...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="holiday-container"
@@ -190,7 +318,9 @@ export default function HolidayDestinations() {
           Popular Holiday Destinations
         </h1>
         <div className="holiday-nav">
-          <span className="view-all">View All</span>
+          <span className="view-all" onClick={() => router.push("/holidays")}>
+            View All
+          </span>
           <button
             className="nav-btn"
             onClick={prevSlide}
@@ -312,27 +442,32 @@ function getContainerPadding(width) {
   if (width < 1280) return "48px";
   return "96px";
 }
+
 function getCardWidth(visibleCards, width) {
   if (visibleCards === 1) return "100%";
   if (visibleCards === 2) return "calc(50% - 12px)";
   if (visibleCards === 3) return "calc(33.333% - 16px)";
   return "calc(25% - 18px)";
 }
+
 function getImageHeight(width) {
   if (width < 640) return "200px";
   if (width < 768) return "220px";
   return "240px";
 }
+
 function getTitleSize(width) {
   if (width < 640) return "20px";
   if (width < 768) return "22px";
   return "24px";
 }
+
 function getHeaderSize(width) {
   if (width < 640) return "28px";
   if (width < 768) return "32px";
   return "36px";
 }
+
 function getNavButtonSize(width) {
   const size = width < 768 ? "36px" : "40px";
   return {
