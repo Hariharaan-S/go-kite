@@ -4,6 +4,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { US, IN, SG, CH, ES, TR, LK, AU, BD } from "country-flag-icons/react/3x2";
 import "./styles/popularvisa-card.css";
 import { useRouter } from "next/navigation";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const VISIBLE_CARDS = 5;
 const VISIBLE_VACCINATION_CARDS = 1; // Show one card at a time for mobile
@@ -41,6 +44,7 @@ const VisaCards = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const vaccinationContainerRef = useRef(null);
+  const sliderRef = useRef(null);
   const router = useRouter();
 
   // Authorization and claims headers
@@ -261,17 +265,11 @@ const VisaCards = () => {
   const totalVaccinationSlides = vaccinationCountries.length;
 
   const nextSlide = () => {
-    setCurrentSlide((prev) =>
-      prev + VISIBLE_CARDS >= totalSlides ? 0 : prev + VISIBLE_CARDS
-    );
+    if (sliderRef.current) sliderRef.current.slickNext();
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) =>
-      prev - VISIBLE_CARDS < 0
-        ? totalSlides - (totalSlides % VISIBLE_CARDS || VISIBLE_CARDS)
-        : prev - VISIBLE_CARDS
-    );
+    if (sliderRef.current) sliderRef.current.slickPrev();
   };
 
   const nextVaccinationSlide = () => {
@@ -314,19 +312,55 @@ const VisaCards = () => {
     setIsDragging(false);
   };
 
-  const getVisibleVisas = () => {
-    if (totalSlides <= VISIBLE_CARDS) return popularVisas;
-    if (currentSlide + VISIBLE_CARDS <= totalSlides) {
-      return popularVisas.slice(currentSlide, currentSlide + VISIBLE_CARDS);
-    } else {
-      return [
-        ...popularVisas.slice(currentSlide),
-        ...popularVisas.slice(0, (currentSlide + VISIBLE_CARDS) % totalSlides),
-      ];
-    }
+  const sliderSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
-  const visibleVisas = getVisibleVisas();
+  // Adjusted settings for Vacation slider based on data length
+  const sliderSettingsVacation = (() => {
+    const count = vaccinationCountries.length || 1;
+    const base = { ...sliderSettings };
+    base.slidesToShow = Math.min(4, count);
+    base.infinite = count > base.slidesToShow;
+    base.autoplay = count > 1;
+    base.responsive = sliderSettings.responsive.map((r) => ({
+      ...r,
+      settings: {
+        ...r.settings,
+        slidesToShow: Math.min(r.settings.slidesToShow, count),
+      },
+    }));
+    return base;
+  })();
 
   const VisaIcon = () => <div className="visa-icon">E-VISA</div>;
 
@@ -361,130 +395,74 @@ const VisaCards = () => {
             className="view-all"
             style={{
               background: "#f2f0f0",
-              padding: "5px",
+              padding: "10px 20px",
               borderRadius: "12px",
             }}
             onClick={() => router.push("/apply_visa")}
           >
             View All
           </span>
-          <button onClick={prevSlide} className="visa-btn">
-            <ChevronLeft size={18} />
-          </button>
-          <button onClick={nextSlide} className="visa-btn">
-            <ChevronRight size={18} />
-          </button>
         </div>
       </div>
 
       {/* Popular Visa Cards */}
       <div className="visa-card-list">
-        {visibleVisas.map((visa, index) => (
-          <div
-            key={index}
-            className="visa-card"
-            onClick={() => router.push("/apply_visa")}
-          >
-            <div className="card-header">
-              <visa.Flag className="flag" />
-              <div className="card-content">
-                <h3 className="visa-country">{visa.country}</h3>
-                <p className="visa-type">{visa.type}</p>
+        <Slider ref={sliderRef} {...sliderSettings} style={{ width: "90%" }}>
+          {popularVisas.map((visa, index) => (
+            <div key={index} style={{ padding: "0 12px" }}>
+              <div
+                className="visa-card"
+                onClick={() => router.push("/apply_visa")}
+              >
+                <div className="card-header">
+                  <visa.Flag className="flag" />
+                  <div className="card-content">
+                    <h3 className="visa-country">{visa.country}</h3>
+                    <p className="visa-type">{visa.type}</p>
+                  </div>
+                </div>
+                <div className="visa-price-row">
+                  <div className="price-section">
+                    <span className="visa-price">{visa.price}</span>
+                    <span className="visa-price-text">{visa.priceText}</span>
+                  </div>
+                  <ChevronRight size={20} className="arrow-icon" />
+                </div>
               </div>
             </div>
-            <div className="visa-price-row">
-              <div className="price-section">
-                <span className="visa-price">{visa.price}</span>
-                <span className="visa-price-text">{visa.priceText}</span>
-              </div>
-              <ChevronRight size={20} className="arrow-icon" />
-            </div>
-          </div>
-        ))}
+          ))}
+        </Slider>
       </div>
 
       {/* Vaccination Countries */}
       <h2 className="section-title">Vacation – Trending Countries</h2>
-
-      {/* Mobile Carousel */}
-      <div
-        ref={vaccinationContainerRef}
-        className="vaccination-carousel"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div
-          className="vaccination-carousel-inner"
-          style={{
-            transform: `translateX(-${currentVaccinationSlide * 100}%)`,
-            zIndex: 1,
-          }}
-        >
+      <div className="visa-card-list">
+        <Slider ref={sliderRef} {...sliderSettingsVacation} style={{ width: "90%" }}>
           {vaccinationCountries.map((country, index) => (
-            <div key={index} className="vaccination-card">
-              {country.hasVisaIcon && <VisaIcon />}
-              <div className="card-header">
-                <country.Flag className="flag" />
-                <div className="card-content">
-                  <h3 className="visa-country">{country.country}</h3>
-                  <p className="visa-type">{country.subtitle}</p>
+            <div key={index} style={{ padding: "0 12px" }}>
+              <div
+                className="vaccination-card"
+                onClick={() => router.push("/apply_visa")}
+              >
+                {country.hasVisaIcon && <VisaIcon />}
+                <div className="card-header">
+                  <country.Flag className="flag" />
+                  <div className="card-content">
+                    <h3 className="visa-country">{country.country}</h3>
+                    <p className="visa-type">{country.subtitle}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="visa-price-row">
-                <div className="price-section">
-                  <span className="visa-price">{country.price}</span>
-                  <span className="visa-price-text">{country.priceText}</span>
+                <div className="visa-price-row">
+                  <div className="price-section">
+                    <span className="visa-price">{country.price}</span>
+                    <span className="visa-price-text">{country.priceText}</span>
+                  </div>
+                  <ChevronRight size={20} className="arrow-icon" />
                 </div>
-                <ChevronRight
-                  size={20}
-                  className="arrow-icon"
-                  onClick={() => router.push("/apply_visa")}
-                />
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Desktop Grid */}
-      <div className="vaccination-grid">
-        {vaccinationCountries.map((country, index) => (
-          <div
-            key={index}
-            className="vaccination-card"
-            onClick={() => router.push("/apply_visa")}
-          >
-            {country.hasVisaIcon && <VisaIcon />}
-            <div className="card-header">
-              <country.Flag className="flag" />
-              <div className="card-content">
-                <h3 className="visa-country">{country.country}</h3>
-                <p className="visa-type">{country.subtitle}</p>
-              </div>
-            </div>
-            <div className="visa-price-row">
-              <div className="price-section">
-                <span className="visa-price">{country.price}</span>
-                <span className="visa-price-text">{country.priceText}</span>
-              </div>
-              <ChevronRight size={16} color="#6b7280" className="arrow-icon" />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Carousel Navigation */}
-      <div className="vaccination-carousel-nav">
-        {vaccinationCountries.map((_, index) => (
-          <button
-            key={index}
-            className={`vaccination-dot ${index === currentVaccinationSlide ? "active" : ""
-              }`}
-            onClick={() => setCurrentVaccinationSlide(index)}
-          />
-        ))}
+        </Slider>
       </div>
 
       {/* Visa Rules Image */}

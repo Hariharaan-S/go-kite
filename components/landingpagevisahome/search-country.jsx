@@ -1,11 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const TravelVisaCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const sliderRefRow1 = useRef(null);
+  const sliderRefRow2 = useRef(null);
 
   // Add responsive check
   React.useEffect(() => {
@@ -136,20 +141,13 @@ const TravelVisaCards = () => {
   const totalSlides = destinations.length;
 
   const nextSlide = () => {
-    setCurrentSlide((prev) =>
-      prev + VISIBLE_CARDS_PER_ROW >= totalSlides
-        ? 0
-        : prev + VISIBLE_CARDS_PER_ROW
-    );
+    if (sliderRefRow1.current) sliderRefRow1.current.slickNext();
+    if (sliderRefRow2.current) sliderRefRow2.current.slickNext();
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) =>
-      prev - VISIBLE_CARDS_PER_ROW < 0
-        ? totalSlides -
-        (totalSlides % VISIBLE_CARDS_PER_ROW || VISIBLE_CARDS_PER_ROW)
-        : prev - VISIBLE_CARDS_PER_ROW
-    );
+    if (sliderRefRow1.current) sliderRefRow1.current.slickPrev();
+    if (sliderRefRow2.current) sliderRefRow2.current.slickPrev();
   };
 
   // Compute the visible cards window with wrapping for first row
@@ -173,6 +171,39 @@ const TravelVisaCards = () => {
 
   const visibleDestinations = getVisibleDestinations();
   const router = useRouter();
+
+  const sliderSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
 
   // Card Component to avoid duplication
   const CardComponent = ({ destination }) => (
@@ -521,31 +552,29 @@ const TravelVisaCards = () => {
         </div>
       </div>
 
-      {/* Cards Grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: isMobile
-            ? "1fr"
-            : "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "20px",
-          maxWidth: "1600px",
-          margin: "0 auto",
-          justifyItems: "center",
-        }}
-      >
-        {/* First Row with Carousel */}
-        {visibleDestinations.map((destination) => (
-          <CardComponent key={destination.id} destination={destination} />
-        ))}
+      {/* Two rows of carousels */}
+      <div style={{ maxWidth: "1600px", margin: "0 auto", marginBottom: "24px" }}>
+        <Slider ref={sliderRefRow1} {...sliderSettings} style={{ width: "100%" }}>
+          {destinations
+            .slice(0, Math.ceil(destinations.length / 2))
+            .map((destination) => (
+              <div key={`row1-${destination.id}`} style={{ padding: "0 12px" }}>
+                <CardComponent destination={destination} />
+              </div>
+            ))}
+        </Slider>
+      </div>
 
-        {/* Remaining Rows */}
-        {destinations.slice(VISIBLE_CARDS_PER_ROW).map((destination) => (
-          <CardComponent
-            key={`static-${destination.id}`}
-            destination={destination}
-          />
-        ))}
+      <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+        <Slider ref={sliderRefRow2} {...sliderSettings} style={{ width: "100%" }}>
+          {destinations
+            .slice(Math.ceil(destinations.length / 2))
+            .map((destination) => (
+              <div key={`row2-${destination.id}`} style={{ padding: "0 12px" }}>
+                <CardComponent destination={destination} />
+              </div>
+            ))}
+        </Slider>
       </div>
     </div>
   );

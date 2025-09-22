@@ -68,6 +68,15 @@
   display: none;
 }
 
+/* Spacing between slides in slick carousel */
+.visa-card-list .slick-list {
+  margin: 0 -12px; /* balance inner slide padding */
+}
+
+.visa-card-list .slick-slide {
+  padding: 0 12px; /* horizontal gap between cards */
+}
+
 .visa-card,
 .vaccination-card {
   flex: 0 0 250px;
