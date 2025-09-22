@@ -11,6 +11,9 @@ import {
 import React, { useState, useEffect } from "react";
 import "../landingpage/styles/holiday-destination.css";
 import { useRouter } from "next/navigation";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // Authorization and claims headers
 const CLAIMS = {
@@ -28,6 +31,53 @@ const CLAIMS = {
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
 };
 
+// Helper function to get slider settings
+function getSliderSettings(windowWidth) {
+  let slidesToShow = 4;
+  if (windowWidth < 640) {
+    slidesToShow = 1;
+  } else if (windowWidth < 768) {
+    slidesToShow = 2;
+  } else if (windowWidth < 1024) {
+    slidesToShow = 3;
+  }
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: slidesToShow,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  return settings;
+}
+
 export default function HolidayDestinations() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
@@ -35,6 +85,10 @@ export default function HolidayDestinations() {
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sliderSettings, setSliderSettings] = useState(
+    getSliderSettings(windowWidth)
+  );
+  const router = useRouter();
 
   const getAuthHeaders = () => {
     return {
@@ -222,62 +276,16 @@ export default function HolidayDestinations() {
 
   // Existing responsive and UI logic
   useEffect(() => {
-    const updateVisibleCards = () => {
+    const updateSliderSettings = () => {
       const width = window.innerWidth;
       setWindowWidth(width);
-      if (width < 640) {
-        setVisibleCards(1);
-      } else if (width < 768) {
-        setVisibleCards(2);
-      } else if (width < 1024) {
-        setVisibleCards(3);
-      } else {
-        setVisibleCards(4);
-      }
+      setSliderSettings(getSliderSettings(width));
     };
-    updateVisibleCards();
-    window.addEventListener("resize", updateVisibleCards);
-    return () => window.removeEventListener("resize", updateVisibleCards);
+
+    updateSliderSettings();
+    window.addEventListener("resize", updateSliderSettings);
+    return () => window.removeEventListener("resize", updateSliderSettings);
   }, []);
-
-  // Automatic carousel effect: slide every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [visibleCards, currentSlide]);
-
-  const totalSlides = destinations.length;
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) =>
-      prev + visibleCards >= totalSlides ? 0 : prev + visibleCards
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) =>
-      prev - visibleCards < 0
-        ? totalSlides - (totalSlides % visibleCards || visibleCards)
-        : prev - visibleCards
-    );
-  };
-
-  const getVisibleDestinations = () => {
-    if (totalSlides <= visibleCards) return destinations;
-    if (currentSlide + visibleCards <= totalSlides) {
-      return destinations.slice(currentSlide, currentSlide + visibleCards);
-    } else {
-      return [
-        ...destinations.slice(currentSlide),
-        ...destinations.slice(0, (currentSlide + visibleCards) % totalSlides),
-      ];
-    }
-  };
-
-  const visibleDestinations = getVisibleDestinations();
-  const router = useRouter();
 
   // Loading and error states
   if (loading) {
@@ -307,8 +315,9 @@ export default function HolidayDestinations() {
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
-        className={`holiday-header ${windowWidth < 640 ? "holiday-header-mobile" : ""
-          }`}
+        className={`holiday-header ${
+          windowWidth < 640 ? "holiday-header-mobile" : ""
+        }`}
       >
         <h1
           className="holiday-title"
@@ -320,32 +329,14 @@ export default function HolidayDestinations() {
           <span className="view-all" onClick={() => router.push("/holidays")}>
             View All
           </span>
-          <button
-            className="nav-btn"
-            onClick={prevSlide}
-            style={getNavButtonSize(windowWidth)}
-          >
-            <ChevronLeft size={windowWidth < 768 ? 16 : 18} />
-          </button>
-          <button
-            className="nav-btn"
-            onClick={nextSlide}
-            style={getNavButtonSize(windowWidth)}
-          >
-            <ChevronRight size={windowWidth < 768 ? 16 : 18} />
-          </button>
         </div>
       </div>
 
-      <div
-        className={`destinations-wrapper ${windowWidth < 640 ? "destinations-wrapper-mobile" : ""
-          }`}
-      >
-        {visibleDestinations.map((destination) => (
+      <Slider {...sliderSettings} className="destinations-wrapper">
+        {destinations.map((destination) => (
           <div
             key={destination.id}
             className="destination-card"
-            style={{ width: getCardWidth(visibleCards, windowWidth) }}
             onClick={() => router.push("/trip-details")}
           >
             <div className="destination-image-wrapper">
@@ -381,22 +372,19 @@ export default function HolidayDestinations() {
 
               <div className="icons-section">
                 <div className="icon-item">
-                  <Plane size={windowWidth < 640 ? 20 : 24} className="icon" />
+                  <Plane size={getIconSize(windowWidth)} className="icon" />
                   <p>{destination.flights}</p>
                 </div>
                 <div className="icon-item">
-                  <Building2
-                    size={windowWidth < 640 ? 20 : 24}
-                    className="icon"
-                  />
+                  <Building2 size={getIconSize(windowWidth)} className="icon" />
                   <p>{destination.hotels}</p>
                 </div>
                 <div className="icon-item">
-                  <Car size={windowWidth < 640 ? 20 : 24} className="icon" />
+                  <Car size={getIconSize(windowWidth)} className="icon" />
                   <p>{destination.transfers}</p>
                 </div>
                 <div className="icon-item">
-                  <Users size={windowWidth < 640 ? 20 : 24} className="icon" />
+                  <Users size={getIconSize(windowWidth)} className="icon" />
                   <p>{destination.activities}</p>
                 </div>
               </div>
@@ -410,8 +398,9 @@ export default function HolidayDestinations() {
               </ul>
 
               <div
-                className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
-                  }`}
+                className={`pricing-section ${
+                  windowWidth < 640 ? "pricing-column" : "pricing-row"
+                }`}
               >
                 <span className="original-price">
                   {destination.originalPrice}
@@ -426,7 +415,7 @@ export default function HolidayDestinations() {
             </div>
           </div>
         ))}
-      </div>
+      </Slider>
     </div>
   );
 }
@@ -438,13 +427,6 @@ function getContainerPadding(width) {
   if (width < 1024) return "32px";
   if (width < 1280) return "48px";
   return "96px";
-}
-
-function getCardWidth(visibleCards, width) {
-  if (visibleCards === 1) return "100%";
-  if (visibleCards === 2) return "calc(60% - 19px)";
-  if (visibleCards === 3) return "calc(33.333% - 16px)";
-  return "calc(29% - 5px)";
 }
 
 function getImageHeight(width) {
@@ -465,10 +447,8 @@ function getHeaderSize(width) {
   return "36px";
 }
 
-function getNavButtonSize(width) {
-  const size = width < 768 ? "36px" : "40px";
-  return {
-    width: size,
-    height: size,
-  };
+function getIconSize(width) {
+  if (width < 640) return 20;
+  if (width < 1024) return 22;
+  return 24;
 }
