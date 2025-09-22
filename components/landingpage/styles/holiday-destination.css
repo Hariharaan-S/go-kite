@@ -368,3 +368,21 @@
   font-size: 14px;
   color: #64748b;
 }
+
+.slick-list {
+  margin: 0 -10px; /* Compensate for card margins */
+}
+
+.slick-slide {
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+
+.destinations-wrapper .destination-card {
+  width: 100% !important; /* Override inline width */
+  margin: 0;
+}

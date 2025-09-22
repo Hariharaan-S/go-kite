@@ -11,34 +11,78 @@ import {
 import React, { useState, useEffect } from "react";
 import "./styles/holiday-destination.css";
 import { useRouter } from "next/navigation";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+// Helper function to get slider settings
+function getSliderSettings(windowWidth) {
+  let slidesToShow = 4;
+  if (windowWidth < 640) {
+    slidesToShow = 1;
+  } else if (windowWidth < 768) {
+    slidesToShow = 2;
+  } else if (windowWidth < 1024) {
+    slidesToShow = 3;
+  }
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: slidesToShow,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  return settings;
+}
 
 export default function HolidayDestinations() {
   const router = useRouter();
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [visibleCards, setVisibleCards] = useState(4);
   const [windowWidth, setWindowWidth] = useState(1024);
+  const [sliderSettings, setSliderSettings] = useState(
+    getSliderSettings(windowWidth)
+  );
 
   const handleCardClick = (destinationId) => {
     router.push(`/trip-details?id=${destinationId}`);
   };
 
   useEffect(() => {
-    const updateVisibleCards = () => {
+    const updateSliderSettings = () => {
       const width = window.innerWidth;
       setWindowWidth(width);
-      if (width < 640) {
-        setVisibleCards(1);
-      } else if (width < 768) {
-        setVisibleCards(2);
-      } else if (width < 1024) {
-        setVisibleCards(3);
-      } else {
-        setVisibleCards(4);
-      }
+      setSliderSettings(getSliderSettings(width));
     };
-    updateVisibleCards();
-    window.addEventListener("resize", updateVisibleCards);
-    return () => window.removeEventListener("resize", updateVisibleCards);
+
+    updateSliderSettings();
+    window.addEventListener("resize", updateSliderSettings);
+    return () => window.removeEventListener("resize", updateSliderSettings);
   }, []);
 
   const destinations = [
@@ -139,36 +183,6 @@ export default function HolidayDestinations() {
     },
   ];
 
-  const totalSlides = destinations.length;
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) =>
-      prev + visibleCards >= totalSlides ? 0 : prev + visibleCards
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) =>
-      prev - visibleCards < 0
-        ? totalSlides - (totalSlides % visibleCards || visibleCards)
-        : prev - visibleCards
-    );
-  };
-
-  const getVisibleDestinations = () => {
-    if (totalSlides <= visibleCards) return destinations;
-    if (currentSlide + visibleCards <= totalSlides) {
-      return destinations.slice(currentSlide, currentSlide + visibleCards);
-    } else {
-      return [
-        ...destinations.slice(currentSlide),
-        ...destinations.slice(0, (currentSlide + visibleCards) % totalSlides),
-      ];
-    }
-  };
-
-  const visibleDestinations = getVisibleDestinations();
-
   return (
     <div
       className="holiday-container"
@@ -187,33 +201,14 @@ export default function HolidayDestinations() {
         </h1>
         <div className="holiday-nav">
           <span className="view-all">View All</span>
-          <button
-            className="nav-btn"
-            onClick={prevSlide}
-            style={getNavButtonSize(windowWidth)}
-          >
-            <ChevronLeft size={windowWidth < 768 ? 16 : 18} />
-          </button>
-          <button
-            className="nav-btn"
-            onClick={nextSlide}
-            style={getNavButtonSize(windowWidth)}
-          >
-            <ChevronRight size={windowWidth < 768 ? 16 : 18} />
-          </button>
         </div>
       </div>
 
-      <div
-        className={`destinations-wrapper ${
-          windowWidth < 640 ? "destinations-wrapper-mobile" : ""
-        }`}
-      >
-        {visibleDestinations.map((destination) => (
+      <Slider {...sliderSettings} className="destinations-wrapper">
+        {destinations.map((destination) => (
           <div
             key={destination.id}
             className="destination-card"
-            style={{ width: getCardWidth(visibleCards, windowWidth) }}
             onClick={() => handleCardClick(destination.id)}
           >
             <div className="destination-image-wrapper">
@@ -292,7 +287,7 @@ export default function HolidayDestinations() {
             </div>
           </div>
         ))}
-      </div>
+      </Slider>
     </div>
   );
 }
