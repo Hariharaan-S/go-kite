@@ -307,9 +307,8 @@ export default function HolidayDestinations() {
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
-        className={`holiday-header ${
-          windowWidth < 640 ? "holiday-header-mobile" : ""
-        }`}
+        className={`holiday-header ${windowWidth < 640 ? "holiday-header-mobile" : ""
+          }`}
       >
         <h1
           className="holiday-title"
@@ -339,9 +338,8 @@ export default function HolidayDestinations() {
       </div>
 
       <div
-        className={`destinations-wrapper ${
-          windowWidth < 640 ? "destinations-wrapper-mobile" : ""
-        }`}
+        className={`destinations-wrapper ${windowWidth < 640 ? "destinations-wrapper-mobile" : ""
+          }`}
       >
         {visibleDestinations.map((destination) => (
           <div
@@ -412,9 +410,8 @@ export default function HolidayDestinations() {
               </ul>
 
               <div
-                className={`pricing-section ${
-                  windowWidth < 640 ? "pricing-column" : "pricing-row"
-                }`}
+                className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
+                  }`}
               >
                 <span className="original-price">
                   {destination.originalPrice}
@@ -445,9 +442,9 @@ function getContainerPadding(width) {
 
 function getCardWidth(visibleCards, width) {
   if (visibleCards === 1) return "100%";
-  if (visibleCards === 2) return "calc(50% - 12px)";
+  if (visibleCards === 2) return "calc(60% - 19px)";
   if (visibleCards === 3) return "calc(33.333% - 16px)";
-  return "calc(25% - 18px)";
+  return "calc(29% - 5px)";
 }
 
 function getImageHeight(width) {

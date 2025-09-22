@@ -94,14 +94,16 @@
   overflow: hidden;
   min-width: 250px;
   cursor: pointer;
-  padding: 16px; /* Add padding to create space around the image */
+  padding: 16px;
+  /* Add padding to create space around the image */
 }
 
 @media (max-width: 640px) {
   .destination-card {
     min-width: 280px;
     max-width: 400px;
-    padding: 12px; /* Smaller padding on mobile */
+    padding: 12px;
+    /* Smaller padding on mobile */
   }
 }
 
@@ -112,21 +114,26 @@
 
 .destination-image-wrapper {
   position: relative;
-  border-radius: 12px; /* Add border radius to image wrapper */
-  overflow: hidden; /* Ensure image respects border radius */
-  margin-bottom: 16px; /* Add space between image and content */
+  border-radius: 12px;
+  /* Add border radius to image wrapper */
+  overflow: hidden;
+  /* Ensure image respects border radius */
+  margin-bottom: 16px;
+  /* Add space between image and content */
 }
 
 .destination-image {
   width: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 12px; /* Match the wrapper border radius */
+  border-radius: 12px;
+  /* Match the wrapper border radius */
 }
 
 .heart-btn {
   position: absolute;
-  top: 12px; /* Adjust position since we now have card padding */
+  top: 12px;
+  /* Adjust position since we now have card padding */
   right: 12px;
   background-color: rgba(255, 255, 255, 0.9);
   border: none;
@@ -138,7 +145,8 @@
   transition: background-color 0.2s ease;
   width: 40px;
   height: 40px;
-  backdrop-filter: blur(10px); /* Add subtle blur effect */
+  backdrop-filter: blur(10px);
+  /* Add subtle blur effect */
 }
 
 @media (max-width: 768px) {
@@ -159,7 +167,8 @@
 }
 
 .destination-content {
-  padding: 0; /* Remove padding since card now has padding */
+  padding: 0;
+  /* Remove padding since card now has padding */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -334,14 +343,24 @@
 }
 
 .discounted-price {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: #1e293b;
 }
 
 @media (max-width: 640px) {
+  .pricing-row {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .destinations-wrapper {
+    flex-wrap: nowrap;
+  }
+
   .discounted-price {
-    font-size: 20px;
+    font-size: 14px;
   }
 }
 

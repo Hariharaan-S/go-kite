@@ -150,7 +150,7 @@ export default function RecommendationDestinations() {
         // Fetch sections first
         const sections = await fetchSectionsData();
         console.log(sections);
-        
+
 
         // Find the beaches/recommendation section
         const holidaysSection = sections.find(
@@ -544,6 +544,7 @@ export default function RecommendationDestinations() {
                 width: "calc(25% - 16px)", // Changed from calc(33.33% - 16px)
                 minWidth: "330px", // Reduced from 320px
                 maxWidth: "300px", // Added max-width for consistency
+
                 backgroundColor: "white",
                 borderRadius: "16px",
                 boxShadow:
@@ -811,7 +812,7 @@ export default function RecommendationDestinations() {
                   style={{
                     listStyle: "none",
                     padding: "0",
-                    margin: "0 0 20px 0",
+                    height: "150px"
                   }}
                 >
                   {destination.features.map((feature, index) => (
