@@ -179,6 +179,7 @@ export default function HolidayDestinations() {
 
       return {
         id: item.holidayCardId,
+        holidayId: item.holidayCardId, // Add this line
         image: `/img/general/${item.cardJson.heroImage}`, // Assuming images are stored in public/img/general/
         title: item.title,
         rating: parseFloat(item.packageRating),
@@ -337,7 +338,24 @@ export default function HolidayDestinations() {
           <div
             key={destination.id}
             className="destination-card"
-            onClick={() => router.push("/trip-details")}
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                try {
+                  window.sessionStorage.setItem(
+                    "holidayId",
+                    String(destination.id)
+                  );
+                } catch (e) {
+                  // ignore storage errors
+                }
+              }
+              const slug = encodeURIComponent(
+                String(destination.title || "trip")
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")
+              );
+              router.push(`/trip-details/${slug}`);
+            }}
           >
             <div className="destination-image-wrapper">
               <img
