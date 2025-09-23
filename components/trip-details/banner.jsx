@@ -5,7 +5,7 @@ import "./styles/banner.css";
 
 const NavbarHeightMobile = 76; // px -- adjust based on your actual navbar
 
-const BannerPage = () => {
+const BannerPage = ({ holidaysDetails, loading, error }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleOpenPopup = () => setIsPopupOpen(true);
@@ -49,7 +49,7 @@ const BannerPage = () => {
 
           {/* Right Content */}
           <div className="right-content">
-            <h2>Bromo Mountain</h2>
+            <h2>{holidaysDetails.title}</h2>
 
             <div className="info-row">
               <div className="info-item">
@@ -67,7 +67,7 @@ const BannerPage = () => {
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
-                <span>Dubai, Desert</span>
+                <span>{holidaysDetails.cityName}</span>
               </div>
 
               <div className="info-item">
@@ -87,7 +87,7 @@ const BannerPage = () => {
                   <line x1="8" y1="2" x2="8" y2="6" />
                   <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
-                <span>1 Days - 2 Night</span>
+                <span>{`${holidaysDetails.noOfDays} Days - ${holidaysDetails.noOfNights} Nights`}</span>
               </div>
             </div>
 
@@ -96,7 +96,7 @@ const BannerPage = () => {
               <span>Excellent</span>
             </div>
 
-            <div className="price">AED 1,120</div>
+            <div className="price">{`${holidaysDetails.currency} ${holidaysDetails.newPrice}`}</div>
 
             <button className="enquire-btn" onClick={handleOpenPopup}>
               Enquiry

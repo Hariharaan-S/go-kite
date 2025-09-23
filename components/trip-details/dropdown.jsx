@@ -34,13 +34,125 @@ const faqData = [
   { title: "Essential UK Visa Requirements from India", content: "" },
 ];
 
-const ItineraryAccordion = () => {
+const ItineraryAccordion = ({ holidaysDetails }) => {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const renderAccordion = (data, sectionName, useIcon = false) => {
+  const getDescriptionNode = (item) => {
+    if (Array.isArray(item?.descriptions)) {
+      return item.descriptions.map((d, i) => (
+        <p key={i}>{d?.text || ""}</p>
+      ));
+    }
+    if (item?.descriptions?.text) return item.descriptions.text;
+    if (Array.isArray(item?.description)) {
+      return item.description.map((d, i) => (
+        <p key={i}>{d?.text || ""}</p>
+      ));
+    }
+    if (typeof item?.description === "string") return item.description;
+    if (item?.content) return item.content;
+    return "Information coming soon.";
+  };
+
+  const renderInclusions = (inclusions) => {
+    const items = Array.isArray(inclusions) ? inclusions : [];
     return (
       <div className="accordion">
-        {data.map((item, idx) => (
+        {items.map((inc, idx) => (
+          <div key={`included_${idx}`}>
+            <button
+              className="accordion-item"
+              onClick={() =>
+                setOpenIndex(
+                  openIndex === `included_${idx}` ? null : `included_${idx}`
+                )
+              }
+              aria-expanded={openIndex === `included_${idx}`}
+            >
+              <span className="icon-wrapper">
+                <img
+                  src="/img/general/accordion.png"
+                  alt="Accordion Icon"
+                  className="accordion-icon"
+                />
+              </span>
+              <span className="time-title-wrap">
+                <span className="summary-text">{inc?.title || "Included"}</span>
+              </span>
+              <svg
+                viewBox="0 0 20 20"
+                className={
+                  openIndex === `included_${idx}` ? "arrow arrow-open" : "arrow"
+                }
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M6 8l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <div className={openIndex === `included_${idx}` ? "details" : "details hide"}>
+              {Array.isArray(inc?.description)
+                ? inc.description.map((d, i) => <p key={i}>{d?.text || ""}</p>)
+                : (inc?.description || "")}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderFaqs = (faqs) => {
+    const items = Array.isArray(faqs) ? faqs : [];
+    return (
+      <div className="accordion">
+        {items.map((faq, idx) => (
+          <div key={`faq_${idx}`}>
+            <button
+              className="accordion-item"
+              onClick={() =>
+                setOpenIndex(openIndex === `faq_${idx}` ? null : `faq_${idx}`)
+              }
+              aria-expanded={openIndex === `faq_${idx}`}
+            >
+              <span className="icon-wrapper">
+                <img
+                  src="/img/general/accordion.png"
+                  alt="Accordion Icon"
+                  className="accordion-icon"
+                />
+              </span>
+              <span className="time-title-wrap">
+                <span className="summary-text">{faq?.question || "Question"}</span>
+              </span>
+              <svg
+                viewBox="0 0 20 20"
+                className={
+                  openIndex === `faq_${idx}` ? "arrow arrow-open" : "arrow"
+                }
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M6 8l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <div className={openIndex === `faq_${idx}` ? "details" : "details hide"}>
+              {(Array.isArray(faq?.answers) ? faq.answers : []).map((a, i) => (
+                <p key={i}>{a?.text || ""}</p>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderAccordion = (data, sectionName, useIcon = false) => {
+    const safeData = Array.isArray(data) ? data : [];
+    return (
+      <div className="accordion">
+        {safeData.map((item, idx) => (
           <div key={`${sectionName}_${idx}`}>
             <button
               className="accordion-item"
@@ -66,8 +178,7 @@ const ItineraryAccordion = () => {
               )}
               <span className="time-title-wrap">
                 <span className="summary-text">
-                  {item.time ? `${item.time} - ` : ""}
-                  {item.title}
+                  {item?.title || item?.time || "Details"}
                 </span>
               </span>
               <svg
@@ -95,7 +206,7 @@ const ItineraryAccordion = () => {
                   : "details hide"
               }
             >
-              {item.content}
+              {getDescriptionNode(item)}
             </div>
           </div>
         ))}
@@ -108,20 +219,15 @@ const ItineraryAccordion = () => {
       {/* Itinerary Section */}
       <div className="title">Itinerary</div>
       <div className="desc">
-        Starting from the meeting point for the rest of the group Bromo tour at
-        Malang Train Station and ending at this point too. This trip begins
-        after all participants gather and are ready to depart from Malang city
-        at 01.30 AM, then will explore a total of 8 spots starting from the
-        Bromo sunrise point. This tour includes transport, guide, documentation,
-        and breakfast
+        {holidaysDetails?.cardJson?.itineraryMainDescription || "Itinerary details will be available shortly."}
       </div>
-      {renderAccordion(itineraryData, "itinerary")}
+      {renderAccordion(holidaysDetails?.cardJson?.itineraries, "itinerary")}
       {/* What Included Section */}
       <div className="title">What Included</div>
-      {renderAccordion(whatIncludedData, "included", true)}
+      {renderInclusions(holidaysDetails?.cardJson?.inclusions)}
       {/* FAQ Section */}
       <div className="title">FAQ's</div>
-      {renderAccordion(faqData, "faq", true)}
+      {renderFaqs(holidaysDetails?.cardJson?.faqs)}
     </div>
   );
 };

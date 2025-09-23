@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "./styles/about.css";
 
-const AboutSection = () => {
+const AboutSection = ({ holidaysDetails }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -54,20 +54,12 @@ const AboutSection = () => {
                   <div
                     className={`tab-heading${isMobile ? " mobile" : ""}`}
                   >
-                    Bromo Mountain
+                    {holidaysDetails?.title || "Trip Overview"}
                   </div>
                   <div
                     className={`tab-content${isMobile ? " mobile" : ""}`}
                   >
-                    Bromo Mountain (Gunung Bromo) is an iconic active volcano
-                    located in East Java, Indonesia, within the Bromo Tengger
-                    Semeru National Park. It stands about 2,329 meters (7,641
-                    feet) above sea level and features a dramatic landscape,
-                    including a smoking crater and a vast "sea of sand" around
-                    it. Known for its frequent volcanic activity, Bromo offers
-                    spectacular sunrise views, with popular activities including
-                    <br />
-                    sunrise tours, horseback riding, and hiking to the crater.
+                    {holidaysDetails?.cardJson?.overview || "Details will be available shortly."}
                   </div>
                   <a className="read-more" href="#">
                     Read More...

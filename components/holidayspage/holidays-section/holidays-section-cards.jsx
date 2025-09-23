@@ -38,6 +38,7 @@ export default function HolidaysSectionCards() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const sliderRef = useRef(null);
+  const router = useRouter();
 
   const getAuthHeaders = () => {
     return {
@@ -139,7 +140,8 @@ export default function HolidaysSectionCards() {
         ],
         originalPrice: `${item.currency} ${parseFloat(item.oldPrice || 98952).toLocaleString()}`,
         discountedPrice: `${item.currency} ${parseFloat(item.newPrice || 88952).toLocaleString()}`,
-        priceContent: item.cardJson.priceContent
+        priceContent: item.cardJson.priceContent,
+        holidayId: item.holidayId
       };
     });
   };
@@ -179,6 +181,7 @@ export default function HolidaysSectionCards() {
 
         // Transform and set destinations
         const transformedDestinations = transformRecommendationData(recommendationCardsData);
+        console.log(transformedDestinations);
         setDestinations(transformedDestinations);
       } catch (err) {
         console.error("Error loading data:", err);
@@ -430,7 +433,6 @@ export default function HolidaysSectionCards() {
     }
   }
 `;
-  const router = useRouter();
 
   const sliderSettings = {
     dots: false,
@@ -562,7 +564,19 @@ export default function HolidaysSectionCards() {
                 e.currentTarget.style.boxShadow =
                   "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
               }}
-              onClick={() => router.push("/trip-details")}
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  try {
+                    window.sessionStorage.setItem("holidayId", String(destination.holidayId));
+                  } catch (e) {
+                    // ignore storage errors
+                  }
+                }
+                const slug = encodeURIComponent(
+                  String(destination.title || "trip").toLowerCase().replace(/\s+/g, "-")
+                );
+                router.push(`/trip-details/${slug}`);
+              }}
             >
               {/* Image Section */}
               <div style={{ position: "relative", padding: '16px' }}>
