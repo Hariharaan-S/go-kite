@@ -1,7 +1,7 @@
 import GlassmorphMenu from "./menu/menu";
-import './recommendation.css'
+import '../styles/recommendation.css'
 
-const RecommendationSection = () => {
+const HolidaysSection1 = () => {
 
     return (
         <>
@@ -15,7 +15,6 @@ const RecommendationSection = () => {
                         lasting memories</p>
                     </div>
                 </div>
-
                 <GlassmorphMenu />
             </div>
         </>
@@ -23,4 +22,4 @@ const RecommendationSection = () => {
     )
 }
 
-export default RecommendationSection;
+export default HolidaysSection1;

@@ -1,9 +1,9 @@
 import Header1 from "@/components/header/IconNav";
 import HolidaysHero from "@/components/holidayspage/hero";
-import RecommendationSection from "@/components/holidayspage/recommendation-section/recommendation";
-import RecommendationSection2 from "@/components/holidayspage/recommendation-section/recommendation-section-2";
+import HolidaysSection1 from "@/components/holidayspage/holidays-section/HolidaysSection1";
+import HolidaysSectionCards from "@/components/holidayspage/holidays-section/holidays-section-cards";
 import Footer from "@/components/footer/footer-gokite"
-import RecommendationDestinations from "@/components/holidayspage/recommendation-section/recommendation-slider";
+import HoneymoonFreebiesCards from "@/components/holidayspage/holidays-section/honeymoon-freebies-cards";
 
 
 export const metadata = {
@@ -16,9 +16,9 @@ const Holidays = () => {
         <>
             <Header1 />
             <HolidaysHero />
-            <RecommendationSection />
-            <RecommendationDestinations />
-            <RecommendationSection2 />
+            <HolidaysSection1 />
+            <HolidaysSectionCards />
+            <HoneymoonFreebiesCards />
             <Footer />
         </>
 

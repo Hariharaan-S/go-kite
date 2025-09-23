@@ -21,7 +21,7 @@ const HolidayHeroBGStyles = `
         }
 `
 
-const RecommendationHeroBG = () => {
+const HolidaysHeroBG = () => {
     return (
         <>
             <style>{HolidayHeroBGStyles}</style>
@@ -33,4 +33,4 @@ const RecommendationHeroBG = () => {
 }
 
 
-export default RecommendationHeroBG;
+export default HolidaysHeroBG;

@@ -32,7 +32,7 @@ const CLAIMS = {
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
 };
 
-export default function RecommendationDestinations2() {
+export default function HoneymoonFreebiesCards1() {
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
