@@ -133,6 +133,7 @@ export default function HolidayDestinations() {
           headers: getAuthHeaders(),
           body: JSON.stringify({
             pageSectionId: sectionId,
+            limitValue : 10
           }),
         }
       );

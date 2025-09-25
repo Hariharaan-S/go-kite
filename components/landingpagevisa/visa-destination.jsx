@@ -37,42 +37,16 @@ const VisaDestinationCards = () => {
     };
   };
 
-  // Fetch sections data
-  const fetchSectionsData = async () => {
-    try {
-      const sectionsResponse = await fetch(
-        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/pages-sections",
-        {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            pageId: 9, // Hardcoded page ID from the example
-          }),
-        }
-      );
-
-      if (!sectionsResponse.ok) {
-        throw new Error("Failed to fetch sections data");
-      }
-
-      const sectionsData = await sectionsResponse.json();
-      return sectionsData.data || [];
-    } catch (err) {
-      console.error("Error fetching sections:", err);
-      throw err;
-    }
-  };
-
   // Fetch visa cards data for a specific section
-  const fetchVisaCardsData = async (sectionId) => {
+  const fetchVisaCardsData = async () => {
     try {
       const response = await fetch(
-        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/sections-visa-cards",
+        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/cms-section-visa-country-all",
         {
           method: "POST",
           headers: getAuthHeaders(),
           body: JSON.stringify({
-            pageSectionId: sectionId,
+            // No specific body parameters needed based on the example
           }),
         }
       );
@@ -115,6 +89,7 @@ const VisaDestinationCards = () => {
 
       // Calculate total price
       const basePrice = parseFloat(item.newPrice);
+      const oldPrice = parseFloat(item.oldPrice);
       const totalPrice = basePrice + EXTRA_CHARGES;
 
       // Convert currency
@@ -125,9 +100,9 @@ const VisaDestinationCards = () => {
         image: `/img/general/${item.visaCardJson.image}`, // Assuming images are stored in public/img/general/
         country: item.visaCardTitle,
         fastTrack: {
-          originalPrice: `₹${basePrice.toFixed(2)}`,
+          originalPrice: `₹${Math.round(oldPrice)}`, // Remove decimal places
           extraCharges: `₹${EXTRA_CHARGES}`,
-          totalPrice: `₹${totalPrice.toFixed(2)}`,
+          totalPrice: `₹${Math.round(totalPrice)}`, // Remove decimal places
           date: getOnDate.toLocaleString("en-IN", {
             day: "2-digit",
             month: "short",
@@ -144,9 +119,10 @@ const VisaDestinationCards = () => {
             hour: "2-digit",
             minute: "2-digit",
           }),
-          price: `₹${basePrice.toFixed(2)}`, // Show only the original price
+          price: `₹${Math.round(basePrice)}`, // Remove decimal places
         },
         currency: item.currency,
+        expiryDate: item.expiryDate,
       };
     });
   };
@@ -158,24 +134,8 @@ const VisaDestinationCards = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch sections first
-        const sections = await fetchSectionsData();
-
-        // Find the home visa section
-        const homeVisaSection = sections.find(
-          (section) =>
-            section.title === "home-Visa-section" &&
-            section.contentType === "VISA"
-        );
-
-        if (!homeVisaSection) {
-          throw new Error("Home Visa section not found");
-        }
-
-        // Fetch visa cards for this section
-        const visaCardsData = await fetchVisaCardsData(
-          homeVisaSection.pageSectionId
-        );
+        // Fetch visa cards directly
+        const visaCardsData = await fetchVisaCardsData();
 
         // Transform and set destinations
         const transformedDestinations = transformVisaData(visaCardsData);

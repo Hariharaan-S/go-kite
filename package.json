@@ -13,6 +13,7 @@
     "@popperjs/core": "2.11.8",
     "@reduxjs/toolkit": "^2.8.2",
     "aos": "^2.3.4",
+    "axios": "^1.12.2",
     "bootstrap": "^5.3.6",
     "chart.js": "^4.4.9",
     "country-flag-icons": "^1.5.19",
