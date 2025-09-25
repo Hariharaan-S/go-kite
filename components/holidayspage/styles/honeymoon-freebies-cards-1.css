@@ -1,0 +1,452 @@
+.recommendation-slider-section-2 {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: -27rem;
+}
+
+.rec-slide-subsec-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-left: -8rem;
+    margin-top: 10rem !important;
+    column-gap: 42rem;
+    margin-bottom: 2rem;
+}
+
+.heading1 {
+    color: #000;
+    position: relative;
+    font-size: 2.2rem;
+}
+
+.button-group1 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dest1 {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: stretch;
+    padding-bottom: 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin-left: -1rem;
+}
+
+.card {
+    width: calc(25% - 16px);
+    min-width: 250px;
+    max-width: 300px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Slider wrapper width */
+.slider-wrapper-2 {
+    width: 90%;
+}
+
+/* Image block */
+.image-wrapper-2 {
+    position: relative;
+    padding: 16px;
+}
+
+.image-2 {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.wishlist-btn-2 {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.wishlist-btn-2:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.wishlist-btn-2 svg {
+    color: #64748b;
+}
+
+/* Card body */
+.card-body-2 {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.card-header-2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.card-title-2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.rating-2 {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.rating-star-2 {
+    color: #fbbf24;
+    font-size: 18px;
+}
+
+.rating-value-2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.duration-2 {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0 0 16px 0;
+}
+
+/* Icons row */
+.icons-row-2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.icon-item-2 {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.icon-item-2 svg {
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.icon-label-2 {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin: 0;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Features list */
+.features-list-2 {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.features-list-2 li {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 6px;
+    padding-left: 12px;
+    position: relative;
+}
+
+.features-list-2 li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background-color: #64748b;
+    border-radius: 50%;
+}
+
+/* Pricing */
+.pricing-2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.original-price-2 {
+    font-size: 14px;
+    color: #94a3b8;
+    text-decoration: line-through;
+}
+
+.discounted-price-2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.price-content-2 {
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* Prev/Next buttons */
+.prev-btn1,
+.next-btn1 {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: #000;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 1500px) {
+    .recommendation-slider-section-2 {
+        margin-top: -27rem;
+    }
+}
+
+/* 1440px */
+@media screen and (max-width: 1440px) {
+    .recommendation-slider-section-2 {
+        margin-top: 5rem;
+    }
+
+    .rec-slide-subsec-2 {
+        margin-left: -4rem;
+        column-gap: 18rem;
+        margin-top: 10rem;
+    }
+
+    .dest1 {
+        gap: 18px;
+        margin-left: 0;
+    }
+
+    .card {
+        width: calc(25% - 12px);
+        min-width: 220px;
+        max-width: 260px;
+    }
+
+    .heading1 {
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .recommendation-slider-section-2 {
+        margin-top: -27rem;
+    }
+
+    .rec-slide-subsec-2 {
+        margin-bottom: 2rem;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .recommendation-slider-section-2 {
+        margin-top: 10rem;
+    }
+
+    .rec-slide-subsec-2 {
+        margin-top: 13rem !important;
+    }
+}
+
+@media screen and (max-width: 1320px) {
+    .recommendation-slider-section-2 {
+        margin-top: 15rem;
+    }
+
+    .rec-slide-subsec-2 {
+        margin-top: 20rem !important;
+    }
+}
+
+/* 1280px */
+@media screen and (max-width: 1280px) {
+    .recommendation-slider-section-2 {
+        margin-top: -36rem;
+    }
+
+    .rec-slide-subsec-2 {
+        margin-left: 0;
+        column-gap: 39rem !important;
+    }
+
+    .dest1 {
+        column-gap: 14px;
+        flex-wrap: wrap;
+        margin-left: .5rem !important;
+    }
+
+    .card {
+        width: calc(33.33% - 10px);
+        min-width: 200px;
+        max-width: 220px;
+    }
+
+    .heading1 {
+        font-size: 1.7rem;
+    }
+}
+
+/* 1024px */
+@media screen and (max-width: 1024px) {
+    .recommendation-slider-section-2 {
+        margin-top: -37rem;
+    }
+
+    .rec-slide-subsec-2 {
+        flex-direction: row;
+        column-gap: 20rem !important;
+    }
+
+    .heading1 {
+        font-size: 1.7rem;
+        margin-left: 5rem;
+    }
+
+    .button-group1 {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+
+    .dest1 {
+        gap: 10px;
+        margin-left: 0;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        width: calc(50% - 10px);
+        min-width: 160px;
+        max-width: 98vw;
+    }
+}
+
+/* 768px */
+@media screen and (max-width: 768px) {
+    .recommendation-slider-section-2 {
+        margin-top: -37rem;
+    }
+
+    .rec-slide-subsec-2 {
+        column-gap: 16rem !important;
+        flex-direction: row;
+        margin-left: 0rem !important;
+    }
+
+    .heading1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .button-group1 {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+
+    .dest1 {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-left: 1rem !important;
+        align-items: center;
+    }
+
+    .card {
+        width: 95vw !important;
+        min-width: 120px;
+        max-width: 98vw;
+        padding: 0;
+    }
+}
+
+/* 480px */
+@media screen and (max-width: 400px) {
+    .recommendation-slider-section-2 {
+        display: none;
+        margin-top: 1rem;
+    }
+
+    .rec-slide-subsec-2 {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 0;
+        column-gap: 0;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .heading1 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .button-group1 {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+
+    .dest1 {
+        flex-direction: column;
+        gap: 6px;
+        margin-left: 0;
+        align-items: center;
+    }
+
+    .dest1 .card {
+        width: 98vw !important;
+        min-width: 100px;
+        max-width: 99vw;
+        padding: 0;
+    }
+}

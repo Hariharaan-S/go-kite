@@ -13,8 +13,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "../styles/honeymoon-freebies-cards-2.css";
 
- 
+
 
 // Authorization and claims headers (similar to recommendation-dest-2.jsx)
 const CLAIMS = {
@@ -81,6 +82,7 @@ export default function HoneymoonFreebiesCards2({ customStyle }) {
           headers: getAuthHeaders(),
           body: JSON.stringify({
             pageSectionId: sectionId,
+            limitValue: 4
           }),
         }
       );
@@ -263,456 +265,107 @@ export default function HoneymoonFreebiesCards2({ customStyle }) {
     );
   }
 
-  const styles = `
-        .recommendation-slider-section-3 {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  margin-top: 5rem;
-}
 
-/* 1440px */
-@media screen and (max-width: 1440px) {
-  .rec-slide-subsec-3 {
-    margin-left: -8rem !important;
-    column-gap: 18rem !important;
-  }
-  .dest2 {
-    gap: 1.5rem !important;
-  }
-}
-
-/* 1280px */
-@media screen and (max-width: 1280px) {
-  .rec-slide-subsec-3 {
-    margin-left: 0 !important;
-    column-gap: 0rem !important;
-  }
-  .rec-slide-subsec-3 h2 {
-    margin-left: 4rem !important;
-  }
-  .button-group2 {
-    margin-left: 10rem !important;
-  }
-  .dest2 {
-    margin: 0 1rem 3rem 1rem !important;
-    gap: 1.2rem !important;
-  }
-}
-
-/* 1024px */
-@media screen and (max-width: 1024px) {
-  .dest2 {
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    gap: 1rem !important;
-    margin: 2rem 4rem !important;
-    align-items: center !important;
-  }
-}
-
-/* 768px */
-@media screen and (max-width: 768px) {
-  .dest2 {
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    margin: 0 !important;
-    gap: 2rem !important;
-    align-items: start !important;
-  }
-}
-
-/* 480px */
-@media screen and (max-width: 480px) {
-  .recommendation-slider-section-3 {
-  display: none;
-    margin-top: 1.2rem;
-  }
-  .dest2 {
-    display: grid !important;
-    grid-template-columns: repeat(1, 1fr) !important;
-    align-items: center !important;
-    justify-items: center !important;
-    gap: 0.5rem !important;
-    margin: 0 0 1rem 0 !important;
-    overflow-x: visible !important;
-  }
-  .dest2 .card {
-    width: 99vw !important;
-    min-width: 100px !important;
-    max-width: 99vw !important;
-    padding: 0.3rem !important;
-    font-size: 0.95rem !important;
-  }
-}
-    `;
 
   return (
     <>
-      <style>{styles}</style>
       {/* Section header with navigation */}
       <div className="recommendation-slider-section-3">
         {/* Destinations Container */}
-        <div
-          className="dest2"
-          style={{
-            display: "flex",
-            gap: "24px",
-            justifyContent: "center",
-            alignItems: "stretch",
-            paddingBottom: "10px",
-            maxWidth: "100%",
-            overflowX: "hidden",
-            marginLeft: "0rem",
-            marginBottom: "3rem",
-          }}
-        >
-          <Slider ref={sliderRef} {...sliderSettings} style={{ width: "90%" }}>
-          {destinations.map((destination) => (
-            <div
-              className="card"
-              key={destination.id}
-              style={{
-                width: "calc(25% - 16px)", // Changed from calc(33.33% - 16px)
-                minWidth: "330px", // Reduced from 320px
-                maxWidth: "300px", // Added max-width for consistency
-                backgroundColor: "white",
-                borderRadius: "16px",
-                boxShadow:
-                  "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                position: "relative",
-                display: "flex",
-                flexDirection: "column",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow =
-                  "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow =
-                  "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
-              }}
-              onClick={() => router.push("/trip-details")}
-            >
-              {/* Image Section */}
-              <div style={{ position: "relative", padding: '16px' }}>
-                <img
-                  src={destination.image}
-                  alt={destination.title}
-                  style={{
-                    width: "100%",
-                    height: "220px",
-                    objectFit: "cover",
-                    borderRadius: "16px",
-                  }}
-                />
-                <button
-                  style={{
-                    position: "absolute",
-                    top: "16px",
-                    right: "16px",
-                    backgroundColor: "rgba(255, 255, 255, 0.9)",
-                    border: "none",
-                    borderRadius: "50%",
-                    width: "40px",
-                    height: "40px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    transition: "background-color 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "rgba(255, 255, 255, 1)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "rgba(255, 255, 255, 0.9)";
-                  }}
-                >
-                  <Heart size={20} style={{ color: "#64748b" }} />
-                </button>
-              </div>
-
-              {/* Content Section */}
+        <div className="dest2">
+          <Slider ref={sliderRef} {...sliderSettings} className="slider-wrapper-3">
+            {destinations.map((destination) => (
               <div
-                style={{
-                  padding: "20px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  flex: 1,
-                }}
+                className="card"
+                key={destination.id}
+                onClick={() => router.push("/trip-details")}
               >
-                {/* Title and Rating */}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "8px",
-                  }}
-                >
-                  <h3
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: "600",
-                      color: "#1e293b",
-                      margin: "0",
-                    }}
-                  >
-                    {destination.title}
-                  </h3>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                    }}
-                  >
-                    <span style={{ color: "#fbbf24", fontSize: "18px" }}>
-                      ★
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "18px",
-                        fontWeight: "600",
-                        color: "#1e293b",
-                      }}
-                    >
-                      {destination.rating}
-                    </span>
-                  </div>
+                {/* Image Section */}
+                <div className="image-wrapper-3">
+                  <img
+                    src={destination.image}
+                    alt={destination.title}
+                    className="image-3"
+                  />
+                  <button className="wishlist-btn-3">
+                    <Heart size={20} />
+                  </button>
                 </div>
 
-                {/* Duration */}
-                <p
-                  style={{
-                    color: "#64748b",
-                    fontSize: "14px",
-                    margin: "0 0 16px 0",
-                  }}
-                >
-                  {destination.duration}
-                </p>
+                {/* Content Section */}
+                <div className="card-body-3">
+                  {/* Title and Rating */}
+                  <div className="card-header-3">
+                    <h3 className="card-title-3">
+                      {destination.title}
+                    </h3>
+                    <div className="rating-3">
+                      <span className="rating-star-3">
+                        ★
+                      </span>
+                      <span className="rating-value-3">
+                        {destination.rating}
+                      </span>
+                    </div>
+                  </div>
 
-                {/* Icons Section */}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "15px",
-                    marginBottom: "16px",
-                    paddingBottom: "16px",
-                    borderBottom: "1px solid #e2e8f0",
-                  }}
-                >
-                  <div
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flex: 1,
-                    }}
-                  >
-                    <Plane
-                      size={24}
-                      style={{
-                        color: "#64748b",
-                        marginBottom: "8px",
-                      }}
-                    />
-                    <p
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "#64748b",
-                        margin: 0,
-                        fontWeight: "500",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {destination.flights}
-                    </p>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flex: 1,
-                    }}
-                  >
-                    <Building2
-                      size={24}
-                      style={{
-                        color: "#64748b",
-                        marginBottom: "8px",
-                      }}
-                    />
-                    <p
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "#64748b",
-                        margin: 0,
-                        fontWeight: "500",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {destination.hotels}
-                    </p>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flex: 1,
-                    }}
-                  >
-                    <Car
-                      size={24}
-                      style={{
-                        color: "#64748b",
-                        marginBottom: "8px",
-                      }}
-                    />
-                    <p
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "#64748b",
-                        margin: 0,
-                        fontWeight: "500",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {destination.transfers}
-                    </p>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flex: 1,
-                    }}
-                  >
-                    <Users
-                      size={24}
-                      style={{
-                        color: "#64748b",
-                        marginBottom: "8px",
-                      }}
-                    />
-                    <p
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "#64748b",
-                        margin: 0,
-                        fontWeight: "500",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {destination.activities}
-                    </p>
-                  </div>
-                </div>
+                  {/* Duration */}
+                  <p className="duration-3">
+                    {destination.duration}
+                  </p>
 
-                {/* Features List */}
-                <ul
-                  style={{
-                    listStyle: "none",
-                    padding: "0",
-                    margin: "0 0 20px 0",
-                    height: "150px",
-                  }}
-                >
-                  {destination.features.map((feature, index) => (
-                    <li
-                      key={index}
-                      style={{
-                        fontSize: "14px",
-                        color: "#64748b",
-                        marginBottom: "6px",
-                        paddingLeft: "12px",
-                        position: "relative",
-                      }}
-                    >
-                      <span
-                        style={{
-                          position: "absolute",
-                          left: "0",
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          width: "4px",
-                          height: "4px",
-                          backgroundColor: "#64748b",
-                          borderRadius: "50%",
-                        }}
-                      ></span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                  {/* Icons Section */}
+                  <div className="icons-row-3">
+                    <div className="icon-item-3">
+                      <Plane size={24} />
+                      <p className="icon-label-3">
+                        {destination.flights}
+                      </p>
+                    </div>
+                    <div className="icon-item-3">
+                      <Building2 size={24} />
+                      <p className="icon-label-3">
+                        {destination.hotels}
+                      </p>
+                    </div>
+                    <div className="icon-item-3">
+                      <Car size={24} />
+                      <p className="icon-label-3">
+                        {destination.transfers}
+                      </p>
+                    </div>
+                    <div className="icon-item-3">
+                      <Users size={24} />
+                      <p className="icon-label-3">
+                        {destination.activities}
+                      </p>
+                    </div>
+                  </div>
 
-                {/* Pricing */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "14px",
-                      color: "#94a3b8",
-                      textDecoration: "line-through",
-                    }}
-                  >
-                    {destination.originalPrice}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "700",
-                      color: "#1e293b",
-                    }}
-                  >
-                    {destination.discountedPrice}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "14px",
-                      color: "#64748b",
-                    }}
-                  >
-                    {destination.priceContent}
-                  </span>
+                  {/* Features List */}
+                  <ul className="features-list-3">
+                    {destination.features.map((feature, index) => (
+                      <li key={index}>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Pricing */}
+                  <div className="pricing-3">
+                    <span className="original-price-3">
+                      {destination.originalPrice}
+                    </span>
+                    <span className="discounted-price-3">
+                      {destination.discountedPrice}
+                    </span>
+                    <span className="price-content-3">
+                      {destination.priceContent}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           </Slider>
         </div>
       </div>

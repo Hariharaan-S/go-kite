@@ -13,6 +13,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "../styles/holidays-section-cards.styles.css";
 
 const VISIBLE_CARDS = 4;
 
@@ -83,6 +84,7 @@ export default function HolidaysSectionCards() {
           headers: getAuthHeaders(),
           body: JSON.stringify({
             pageSectionId: sectionId,
+            limitValue: 4
           }),
         }
       );
@@ -474,51 +476,17 @@ export default function HolidaysSectionCards() {
       <div className="recommendation-slider-section-1">
         <div
           className="recom-slid-section-1"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "relative",
-            marginLeft: "2rem",
-            marginTop: "3rem",
-            columnGap: "67rem",
-            marginBottom: "2rem",
-          }}
         >
           <h2
             className="heading"
-            style={{
-              color: "#FFFFFF",
-              position: "relative",
-              marginLeft: "1.2rem",
-            }}
           >
             Beaches
           </h2>
           <div
             className="button-group"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
-            }}
           >
             <button
               className="view-all-btn"
-              style={{
-                width: "100%",
-                height: "60%",
-                borderRadius: "20px",
-                border: "none",
-                backgroundColor: "#FFFFFF",
-                color: "black",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "10px 22px",
-                fontSize: ".8rem",
-              }}
               onClick={() => router.push("/holiday_list_grid_new")}
             >
               View All
@@ -530,369 +498,135 @@ export default function HolidaysSectionCards() {
         {/* Destinations Container */}
         <div
           className="dest"
-          style={{
-            width: "100%",
-            overflow: "hidden",
-          }}
         >
-          <Slider ref={sliderRef} {...sliderSettings} style={{ width: "90%" }}>
-          {destinations.map((destination) => (
-            <div
-              className="card"
-              key={destination.id}
-              style={{
-                width: "calc(25% - 16px)", // Changed from calc(33.33% - 16px)
-                minWidth: "330px", // Reduced from 320px
-                maxWidth: "300px", // Added max-width for consistency
-
-                backgroundColor: "white",
-                borderRadius: "16px",
-                boxShadow:
-                  "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                position: "relative",
-                display: "flex",
-                flexDirection: "column",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow =
-                  "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow =
-                  "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
-              }}
-              onClick={() => {
-                if (typeof window !== "undefined") {
-                  try {
-                    window.sessionStorage.setItem("holidayId", String(destination.holidayId));
-                  } catch (e) {
-                    // ignore storage errors
-                  }
-                }
-                const slug = encodeURIComponent(
-                  String(destination.title || "trip").toLowerCase().replace(/\s+/g, "-")
-                );
-                router.push(`/trip-details/${slug}`);
-              }}
-            >
-              {/* Image Section */}
-              <div style={{ position: "relative", padding: '16px' }}>
-                <img
-                  src={destination.image}
-                  alt={destination.title}
-                  style={{
-                    width: "100%",
-                    height: "220px",
-                    objectFit: "cover",
-                    borderRadius: "16px",
-                  }}
-                />
-                <button
-                  style={{
-                    position: "absolute",
-                    top: "20px",
-                    right: "20px",
-                    backgroundColor: "rgba(255, 255, 255, 0.9)",
-                    border: "none",
-                    borderRadius: "50%",
-                    width: "40px",
-                    height: "40px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    transition: "background-color 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "rgba(255, 255, 255, 1)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "rgba(255, 255, 255, 0.9)";
-                  }}
-                >
-                  <Heart size={20} style={{ color: "#64748b" }} />
-                </button>
-              </div>
-
-              {/* Content Section */}
+          <Slider ref={sliderRef} {...sliderSettings} className="slider-wrapper">
+            {destinations.map((destination) => (
               <div
-                style={{
-                  padding: "20px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  flex: 1,
+                className="card"
+                key={destination.id}
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    try {
+                      window.sessionStorage.setItem("holidayId", String(destination.holidayId));
+                    } catch (e) {
+                      // ignore storage errors
+                    }
+                  }
+                  const slug = encodeURIComponent(
+                    String(destination.title || "trip").toLowerCase().replace(/\s+/g, "-")
+                  );
+                  router.push(`/trip-details/${slug}`);
                 }}
               >
-                {/* Title and Rating */}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "8px",
-                  }}
-                >
-                  <h3
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: "600",
-                      color: "#1e293b",
-                      margin: "0",
+                {/* Image Section */}
+                <div className="image-wrapper">
+                  <img
+                    src={destination.image}
+                    alt={destination.title}
+                    className="card-img"
+                  />
+                  <button
+                    className="wishlist-btn"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        "rgba(255, 255, 255, 1)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        "rgba(255, 255, 255, 0.9)";
                     }}
                   >
-                    {destination.title}
-                  </h3>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                    }}
-                  >
-                    <span style={{ color: "#fbbf24", fontSize: "18px" }}>
-                      ★
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "18px",
-                        fontWeight: "600",
-                        color: "#1e293b",
-                      }}
-                    >
-                      {destination.rating}
-                    </span>
-                  </div>
+                    <Heart size={20} style={{ color: "#64748b" }} />
+                  </button>
                 </div>
 
-                {/* Duration */}
-                <p
-                  style={{
-                    color: "#64748b",
-                    fontSize: "14px",
-                    margin: "0 0 16px 0",
-                  }}
-                >
-                  {destination.duration}
-                </p>
+                {/* Content Section */}
+                <div className="card-body">
+                  {/* Title and Rating */}
+                  <div className="card-header">
+                    <h3 className="card-title">
+                      {destination.title}
+                    </h3>
+                    <div className="rating">
+                      <span className="rating-star">
+                        ★
+                      </span>
+                      <span className="rating-value">
+                        {destination.rating}
+                      </span>
+                    </div>
+                  </div>
 
-                {/* Icons Section */}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "15px",
-                    marginBottom: "16px",
-                    paddingBottom: "16px",
-                    borderBottom: "1px solid #e2e8f0",
-                  }}
-                >
-                  <div
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flex: 1,
-                    }}
-                  >
-                    <Plane
-                      size={24}
-                      style={{
-                        color: "#64748b",
-                        marginBottom: "8px",
-                      }}
-                    />
-                    <p
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "#64748b",
-                        margin: 0,
-                        fontWeight: "500",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {destination.flights}
-                    </p>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flex: 1,
-                    }}
-                  >
-                    <Building2
-                      size={24}
-                      style={{
-                        color: "#64748b",
-                        marginBottom: "8px",
-                      }}
-                    />
-                    <p
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "#64748b",
-                        margin: 0,
-                        fontWeight: "500",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {destination.hotels}
-                    </p>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flex: 1,
-                    }}
-                  >
-                    <Car
-                      size={24}
-                      style={{
-                        color: "#64748b",
-                        marginBottom: "8px",
-                      }}
-                    />
-                    <p
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "#64748b",
-                        margin: 0,
-                        fontWeight: "500",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {destination.transfers}
-                    </p>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flex: 1,
-                    }}
-                  >
-                    <Users
-                      size={24}
-                      style={{
-                        color: "#64748b",
-                        marginBottom: "8px",
-                      }}
-                    />
-                    <p
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "#64748b",
-                        margin: 0,
-                        fontWeight: "500",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {destination.activities}
-                    </p>
-                  </div>
-                </div>
+                  {/* Duration */}
+                  <p className="duration">
+                    {destination.duration}
+                  </p>
 
-                {/* Features List */}
-                <ul
-                  style={{
-                    listStyle: "none",
-                    padding: "0",
-                    height: "150px"
-                  }}
-                >
-                  {destination.features.map((feature, index) => (
-                    <li
-                      key={index}
-                      style={{
-                        fontSize: "14px",
-                        color: "#64748b",
-                        marginBottom: "6px",
-                        paddingLeft: "12px",
-                        position: "relative",
-                      }}
-                    >
-                      <span
-                        style={{
-                          position: "absolute",
-                          left: "0",
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          width: "4px",
-                          height: "4px",
-                          backgroundColor: "#64748b",
-                          borderRadius: "50%",
-                        }}
-                      ></span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                  {/* Icons Section */}
+                  <div className="icons-row">
+                    <div className="icon-item">
+                      <Plane
+                        size={24}
+                        style={{ color: "#64748b", marginBottom: "8px" }}
+                      />
+                      <p className="icon-label">
+                        {destination.flights}
+                      </p>
+                    </div>
+                    <div className="icon-item">
+                      <Building2
+                        size={24}
+                        style={{ color: "#64748b", marginBottom: "8px" }}
+                      />
+                      <p className="icon-label">
+                        {destination.hotels}
+                      </p>
+                    </div>
+                    <div className="icon-item">
+                      <Car
+                        size={24}
+                        style={{ color: "#64748b", marginBottom: "8px" }}
+                      />
+                      <p className="icon-label">
+                        {destination.transfers}
+                      </p>
+                    </div>
+                    <div className="icon-item">
+                      <Users
+                        size={24}
+                        style={{ color: "#64748b", marginBottom: "8px" }}
+                      />
+                      <p className="icon-label">
+                        {destination.activities}
+                      </p>
+                    </div>
+                  </div>
 
-                {/* Pricing */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "14px",
-                      color: "#94a3b8",
-                      textDecoration: "line-through",
-                    }}
-                  >
-                    {destination.originalPrice}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "700",
-                      color: "#1e293b",
-                    }}
-                  >
-                    {destination.discountedPrice}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "14px",
-                      color: "#64748b",
-                    }}
-                  >
-                    {destination.priceContent}
-                  </span>
+                  {/* Features List */}
+                  <ul className="features-list">
+                    {destination.features.map((feature, index) => (
+                      <li key={index}>
+                        <span className="bullet"></span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Pricing */}
+                  <div className="pricing">
+                    <span className="original-price">
+                      {destination.originalPrice}
+                    </span>
+                    <span className="discounted-price">
+                      {destination.discountedPrice}
+                    </span>
+                    <span className="price-content">
+                      {destination.priceContent}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           </Slider>
         </div>
       </div>

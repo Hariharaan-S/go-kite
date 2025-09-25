@@ -1,5 +1,5 @@
 import GlassmorphMenu from "./menu/menu";
-import '../styles/recommendation.css'
+import '../styles/holidays-section-1-styles.css'
 
 const HolidaysSection1 = () => {
 

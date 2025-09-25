@@ -1,6 +1,6 @@
 import HoneymoonFreebiesCards1 from "./honeymoon-freebies-cards-1";
 import HoneymoonFreebiesCards2 from "./honeymoon-freebies-cards-2";
-import '../styles/recommendation-section-2.styles.css'
+import '../styles/honeymoon-freebies-cards-styles.css'
 const HoneymoonFreebiesCards = () => {
 
     return (
