@@ -11,7 +11,7 @@ const ApplyVisaPage = () => {
   const [visaDetails, setVisaDetails] = useState(null);
   const [visaError, setVisaError] = useState(null);
 
-  // Authorization and claims headers (replicated from popularvisa-card.jsx)
+  // Authorization and claims headers
   const CLAIMS = {
     AUTHENTICATED: "true",
     org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
