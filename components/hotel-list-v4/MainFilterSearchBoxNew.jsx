@@ -1,4 +1,4 @@
-import GlassmorphMenu from '../holidayspage/recommendation-section/menu/menu';
+import GlassmorphMenu from '../holidayspage/holidays-section/menu/menu';
 import './styles/MainFilterSearchBox.styles.css'
 
 const MainFilterSearchBoxNew = () => {
