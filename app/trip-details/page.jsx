@@ -5,7 +5,7 @@ import BromoMountainBanner from "@/components/trip-details/banner";
 import AboutSection from "@/components/trip-details/about";
 import PlacesCarousel from "@/components/trip-details/place";
 import ItineraryAccordion from "@/components/trip-details/dropdown";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 // Authorization and claims headers (replicated from holidays-section-cards.jsx)
@@ -55,7 +55,7 @@ async function fetchSectionsData(holidayId) {
 //   description: "GoKite - Travel & Tour ",
 // };
 
-const Home_1 = () => {
+const TripDetailsPageInner = () => {
   const [holidaysDetails, setHolidaysDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -136,4 +136,10 @@ const Home_1 = () => {
   );
 };
 
-export default Home_1;
+export default function TripDetailsPage() {
+  return (
+    <Suspense fallback={null}>
+      <TripDetailsPageInner />
+    </Suspense>
+  );
+}
