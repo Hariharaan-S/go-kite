@@ -5,10 +5,23 @@ import { useRouter } from "next/navigation";
 import "./styles/ApplyVisa.css";
 import PopupForm from "./popup/popup";
 
-const ApplyVisa = () => {
+const ApplyVisa = ({ visaDetails, visaError }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [openFAQ, setOpenFAQ] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
+  // Compute total fee for a given card's companyPricing (supports array shape)
+  const getTotalFee = (companyPricing) => {
+    const cp = Array.isArray(companyPricing)
+      ? companyPricing[0]
+      : companyPricing;
+    const pricingItems = cp?.pricing || [];
+    const currency = cp?.currency || "";
+    const total = pricingItems.reduce((sum, item) => {
+      const numeric = Number(item?.value) || 0;
+      return sum + numeric;
+    }, 0);
+    return { currency, total };
+  };
   const router = useRouter();
 
   const toggleFAQ = (index) => {
@@ -80,100 +93,28 @@ const ApplyVisa = () => {
     },
   ];
 
-  const steps = [
-    {
-      number: 1,
-      title: "Today",
-      subtitle: "31 May 2025",
-      icon: (
-        <Image
-          src="/img/general/applyvisa/1.png"
-          alt="Book Documents"
-          width={50}
-          height={50}
-        />
-      ),
-      color: "#FFA500",
-      type: "date",
-    },
-    {
-      number: 2,
-      title: "Submit Information",
-      subtitle: "Share travel details and your information",
-      icon: (
-        <Image
-          src="/img/general/applyvisa/2.png"
-          alt="Submit Information"
-          width={50}
-          height={50}
-        />
-      ),
-      color: "#00BFFF",
-      type: "process",
-    },
-    {
-      number: 3,
-      title: "Completing Visa Process",
-      subtitle: "Relax as we deliver your Visa Stress Free",
-      icon: (
-        <Image
-          src="/img/general/applyvisa/3.png"
-          alt="Visa Process"
-          width={50}
-          height={50}
-        />
-      ),
-      color: "#9C27B0",
-      type: "process",
-    },
-    {
-      number: 4,
-      title: "8 June 2025",
-      subtitle: "Get Visa By",
-      icon: (
-        <Image
-          src="/img/general/applyvisa/4.png"
-          alt="Visa Approval"
-          width={50}
-          height={50}
-        />
-      ),
-      color: "#32CD32",
-      type: "date",
-    },
-  ];
+  const processData = visaDetails?.detailsJson?.visaProcess;
+  const steps = (processData?.steps || []).map((s, idx) => ({
+    number: idx + 1,
+    title: s.title,
+    subtitle: s.subtitle,
+    // Using existing static icons for consistency; backend provides icon ids
+    icon: (
+      <Image
+        src={`/img/general/applyvisa/${Math.min(idx + 1, 4)}.png`}
+        alt={s.title || "Step"}
+        width={50}
+        height={50}
+      />
+    ),
+    color: ["#FFA500", "#00BFFF", "#9C27B0", "#32CD32"][idx % 4],
+    type: idx === 0 || idx === 3 ? "date" : "process",
+  }));
 
-  const documents = [
-    "Passport Front Page",
-    "Passport Back Page",
-    "Flight Ticket",
-    "Pan Card",
-    "Hotel Booking",
-    "Passport size Photo",
-  ];
+  const eligibility = visaDetails?.detailsJson?.eligibility;
+  const documents = eligibility?.descriptions || [];
 
-  const faqData = [
-    {
-      question: "Common Reasons for UK Visa Rejection and How to Avoid Them",
-      answer:
-        "The most common reasons for UK visa rejection include insufficient financial documentation, incomplete application forms, lack of travel history, and inadequate proof of ties to home country. To avoid rejection, ensure all documents are complete, provide clear financial evidence, demonstrate strong ties to your home country, and submit accurate information.",
-    },
-    {
-      question: "Why Choose to Go Kite Tours for Your UK Visa Application?",
-      answer:
-        "Go Kite Tours offers expert visa consultation services with a high success rate. Our experienced team provides personalized guidance, document review, and application support. We have extensive knowledge of visa requirements and help streamline the application process for a smoother experience.",
-    },
-    {
-      question: "UK Family Visa",
-      answer:
-        "UK Family Visa allows you to join family members already living in the UK, such as a spouse, civil partner, unmarried partner, or other eligible family members. Key requirements include meeting English language requirements, demonstrating adequate financial support, and proving the genuine nature of your relationship. You must also meet health requirements and not have any criminal convictions that could affect your application. Processing times vary, and you may be permitted to apply for settlement (indefinite leave to remain, ILR). Some applicants may be able to apply while in the UK if they meet the requirements and are already on another type of visa.",
-    },
-    {
-      question: "Essential UK Visa Documents for Indian Citizens",
-      answer:
-        "Essential documents include a valid passport, completed visa application form, passport-sized photographs, financial documents (bank statements, salary slips, ITR), travel itinerary, accommodation proof, travel insurance, employment letter, and any additional documents specific to your visa category. All documents should be recent and properly translated if not in English.",
-    },
-  ];
+  // FAQ is consumed directly from visaDetails.detailsJson.faq in render
 
   const getCardStyle = (index) => {
     const baseStyle = {
@@ -201,9 +142,11 @@ const ApplyVisa = () => {
       {/* Banner Section */}
       <section className="apply-visa-hero">
         <div className="visa-hero-title">
-          <h1>Apply for UAE Visa Online</h1>
+          <h1>
+            {`Apply for ${visaDetails?.detailsJson?.country || "UAE"} Visa Online`}
+          </h1>
           <p>
-            Get your Visa by <b>7 June 2025</b>, if applied today
+            {processData?.subHeading || "Get your Visa fast, if applied today"}
           </p>
         </div>
         <div className="visa-hero-img">
@@ -236,7 +179,7 @@ const ApplyVisa = () => {
 
         {/* Cards */}
         <div className="visa-cards-container">
-          {visaCards.map((card, idx) => (
+          {visaDetails?.detailsJson?.visaTypes?.map((card, idx) => (
             <div
               key={idx}
               className="visa-card"
@@ -261,7 +204,7 @@ const ApplyVisa = () => {
               <div className="visa-card-content">
                 {/* Card Data */}
                 <div className="visa-card-data">
-                  {card.data.map((d) => (
+                  {card.fields.map((d) => (
                     <div key={d.label} className="visa-card-data-item">
                       <span className="visa-card-data-label">{d.label}</span>
                       <span className="visa-card-data-value">{d.value}</span>
@@ -271,23 +214,31 @@ const ApplyVisa = () => {
 
                 {/* Fees Section */}
                 <div className="visa-card-fees">
-                  {card.fees.slice(0, 2).map((fee) => (
+                  {(Array.isArray(card.companyPricing)
+                    ? card.companyPricing[0]?.pricing
+                    : card.companyPricing?.pricing
+                  )?.map((fee) => (
                     <div key={fee.label} className="visa-card-fees-column">
                       <div className="visa-card-fees-label">{fee.label}</div>
-                      <div className="visa-card-fees-value">{fee.value}</div>
+                      <div className="visa-card-fees-value">{`${(Array.isArray(card.companyPricing) ? card.companyPricing[0]?.currency : card.companyPricing?.currency) || ""} ${fee.value}`}</div>
                     </div>
                   ))}
 
-                  <div className="visa-card-total-fee">
-                    {card.fees[2].value}
-                  </div>
+                  {(() => {
+                    const { currency, total } = getTotalFee(card.companyPricing);
+                    return (
+                      <div className="visa-card-total-fee">
+                        {`${currency} ${total}`}
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
 
               {/* Footer Button */}
               <div className="visa-card-footer" onClick={handleEnquire}>
                 <span className="visa-card-footer-text">
-                  {card.buttonLabel}
+                  {card.buttonLabel || "Enquiry"}
                 </span>
                 <span className="visa-card-footer-chevron">&rsaquo;</span>
               </div>
@@ -299,10 +250,9 @@ const ApplyVisa = () => {
       {/* Steps Section */}
       <div className="visa-custom-container">
         <div className="customHeader">
-          <h1 className="title">Get Your UAE Visa in 4 Easy Steps</h1>
+          <h1 className="title">{processData?.mainHeading || "Get Your Visa in Easy Steps"}</h1>
           <p className="subtitle">
-            Our Visa expert review and process the Visa to the embassy on your
-            behalf
+            {processData?.subHeading || "Our Visa expert reviews and processes your application"}
           </p>
 
           <div className="customContainer">
@@ -317,16 +267,14 @@ const ApplyVisa = () => {
                   </div>
                   <div className="stepContent">
                     <h3
-                      className={`stepTitle ${
-                        step.type === "date" ? "date" : ""
-                      }`}
+                      className={`stepTitle ${step.type === "date" ? "date" : ""
+                        }`}
                     >
                       {step.title}
                     </h3>
                     <p
-                      className={`stepSubtitle ${
-                        step.type === "date" ? "date-subtitle" : ""
-                      }`}
+                      className={`stepSubtitle ${step.type === "date" ? "date-subtitle" : ""
+                        }`}
                     >
                       {step.subtitle}
                     </p>
@@ -338,12 +286,12 @@ const ApplyVisa = () => {
         </div>
 
         <div className="visaSection">
-          <h2 className="visaTitle">UAE Visa Requirement for Indian Citizen</h2>
+          <h2 className="visaTitle">{eligibility?.mainHeading || "Visa Requirement"}</h2>
 
           <div className="customDocumentGrid">
             <div className="customDocumentHeader">
-              <h3>Documents required for Indian citizen</h3>
-              <p className="mandatoryText">Mandatory Document</p>
+              <h3>{eligibility?.subHeading || "Documents required"}</h3>
+              <p className="mandatoryText">Mandatory Documents</p>
             </div>
 
             <div className="documentsGrid">
@@ -359,7 +307,7 @@ const ApplyVisa = () => {
         <div className="faqSection">
           <h2 className="faqTitle">FAQ</h2>
 
-          {faqData.map((faq, index) => (
+          {visaDetails?.detailsJson?.faq?.map((faq, index) => (
             <div key={index} className="faqItem">
               <div className="faqQuestion" onClick={() => toggleFAQ(index)}>
                 <div className="faqLeft">

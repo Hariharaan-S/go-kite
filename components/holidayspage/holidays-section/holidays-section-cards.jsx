@@ -520,20 +520,14 @@ export default function HolidaysSectionCards() {
               >
                 {/* Image Section */}
                 <div className="image-wrapper">
-                  <img
-                    src={destination.image}
-                    alt={destination.title}
-                    className="card-img"
-                  />
+                  <img src={destination.image} alt={destination.title} className="card-img" />
                   <button
                     className="wishlist-btn"
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor =
-                        "rgba(255, 255, 255, 1)";
+                      e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 1)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor =
-                        "rgba(255, 255, 255, 0.9)";
+                      e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
                     }}
                   >
                     <Heart size={20} style={{ color: "#64748b" }} />
@@ -544,61 +538,33 @@ export default function HolidaysSectionCards() {
                 <div className="card-body">
                   {/* Title and Rating */}
                   <div className="card-header">
-                    <h3 className="card-title">
-                      {destination.title}
-                    </h3>
+                    <h3 className="card-title">{destination.title}</h3>
                     <div className="rating">
-                      <span className="rating-star">
-                        ★
-                      </span>
-                      <span className="rating-value">
-                        {destination.rating}
-                      </span>
+                      <span className="rating-star">★</span>
+                      <span className="rating-value">{destination.rating}</span>
                     </div>
                   </div>
 
                   {/* Duration */}
-                  <p className="duration">
-                    {destination.duration}
-                  </p>
+                  <p className="duration">{destination.duration}</p>
 
                   {/* Icons Section */}
                   <div className="icons-row">
                     <div className="icon-item">
-                      <Plane
-                        size={24}
-                        style={{ color: "#64748b", marginBottom: "8px" }}
-                      />
-                      <p className="icon-label">
-                        {destination.flights}
-                      </p>
+                      <Plane size={24} style={{ color: "#64748b", marginBottom: "8px" }} />
+                      <p className="icon-label">{destination.flights}</p>
                     </div>
                     <div className="icon-item">
-                      <Building2
-                        size={24}
-                        style={{ color: "#64748b", marginBottom: "8px" }}
-                      />
-                      <p className="icon-label">
-                        {destination.hotels}
-                      </p>
+                      <Building2 size={24} style={{ color: "#64748b", marginBottom: "8px" }} />
+                      <p className="icon-label">{destination.hotels}</p>
                     </div>
                     <div className="icon-item">
-                      <Car
-                        size={24}
-                        style={{ color: "#64748b", marginBottom: "8px" }}
-                      />
-                      <p className="icon-label">
-                        {destination.transfers}
-                      </p>
+                      <Car size={24} style={{ color: "#64748b", marginBottom: "8px" }} />
+                      <p className="icon-label">{destination.transfers}</p>
                     </div>
                     <div className="icon-item">
-                      <Users
-                        size={24}
-                        style={{ color: "#64748b", marginBottom: "8px" }}
-                      />
-                      <p className="icon-label">
-                        {destination.activities}
-                      </p>
+                      <Users size={24} style={{ color: "#64748b", marginBottom: "8px" }} />
+                      <p className="icon-label">{destination.activities}</p>
                     </div>
                   </div>
 
@@ -614,22 +580,16 @@ export default function HolidaysSectionCards() {
 
                   {/* Pricing */}
                   <div className="pricing">
-                    <span className="original-price">
-                      {destination.originalPrice}
-                    </span>
-                    <span className="discounted-price">
-                      {destination.discountedPrice}
-                    </span>
-                    <span className="price-content">
-                      {destination.priceContent}
-                    </span>
+                    <span className="original-price">{destination.originalPrice}</span>
+                    <span className="discounted-price">{destination.discountedPrice}</span>
+                    <span className="price-content">{destination.priceContent}</span>
                   </div>
                 </div>
               </div>
             ))}
           </Slider>
         </div>
-      </div>
+      </div >
     </>
   );
 }

@@ -164,6 +164,7 @@ const VisaCards = () => {
         subtitle:
           item.subtitle || item.description || "Get your Visa by 24hours",
         hasVisaIcon: item.visaCardJson.eVisa || false,
+        countryId: item.visaCardCountryId,
       }));
   };
 
@@ -209,6 +210,7 @@ const VisaCards = () => {
             visaCardsData,
             popularVisaSection.pageSectionId
           );
+          console.log(popularVisaData);
           setPopularVisas(popularVisaData);
         }
 
@@ -412,7 +414,14 @@ const VisaCards = () => {
             <div key={index} style={{ padding: "0 12px" }}>
               <div
                 className="visa-card"
-                onClick={() => router.push("/apply_visa")}
+                onClick={() => {
+                  try {
+                    if (typeof window !== "undefined") {
+                      window.sessionStorage.setItem("applyVisaCountryId", String(visa.countryId || ""));
+                    }
+                  } catch (e) { }
+                  router.push("/apply_visa");
+                }}
               >
                 <div className="card-header">
                   <visa.Flag className="flag" />
@@ -442,7 +451,14 @@ const VisaCards = () => {
             <div key={index} style={{ padding: "0 12px" }}>
               <div
                 className="vaccination-card"
-                onClick={() => router.push("/apply_visa")}
+                onClick={() => {
+                  try {
+                    if (typeof window !== "undefined") {
+                      window.sessionStorage.setItem("applyVisaCountryId", String(country.countryId || ""));
+                    }
+                  } catch (e) { }
+                  router.push("/apply_visa");
+                }}
               >
                 {country.hasVisaIcon && <VisaIcon />}
                 <div className="card-header">
