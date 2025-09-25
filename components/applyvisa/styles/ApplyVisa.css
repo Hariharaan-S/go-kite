@@ -1,0 +1,978 @@
+/* Merged Styles for ApplyVisa Component */
+
+/* Banner Styles */
+.apply-visa-hero {
+  width: 100%;
+  background: #def2fd;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 0 3%;
+  box-sizing: border-box;
+}
+
+.visa-hero-title {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 120px;
+  height: 100%;
+}
+
+.visa-hero-title h1 {
+  font-size: 32px;
+  color: #111;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.visa-hero-title p {
+  font-size: 15px;
+  color: #374151;
+  margin: 10px 0 0 0;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.visa-hero-img {
+  flex: 1 1 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
+  height: 120px;
+}
+
+.visa-hero-img img {
+  max-height: 280px;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin-right: 3%;
+}
+
+/* Visa Custom Container Styles */
+.visa-custom-container {
+  width: 100%;
+  font-family: Arial, sans-serif;
+  background-color: white;
+}
+
+.customHeader {
+  position: relative;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-bottom: 40px;
+}
+
+.customContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.customStepContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background-color: #f4f4f4;
+  border-radius: 40px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.stepsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 100px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stepIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 20px;
+}
+
+.stepTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.stepSubtitle {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+/* Visa Section Styles */
+.visaSection {
+  width: 100%;
+  background-color: #f3f9fd;
+  padding: 40px;
+  margin-bottom: 40px;
+}
+
+.visaTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.customDocumentGrid {
+  background-color: #ffffff;
+  border-radius: 12px;
+}
+
+.customDocumentHeader {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #5fb6f1;
+}
+
+.documentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 20px;
+}
+
+.documentItem {
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+}
+
+.mandatoryText {
+  text-align: right;
+  font-size: 12px;
+  color: #696969;
+  font-style: italic;
+}
+
+/* FAQ Section Styles */
+.faqSection {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.faqTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.faqItem {
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 10px;
+}
+
+.faqQuestion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #2c3e50;
+  padding: 12px 0;
+}
+
+.faqLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #2c3e50;
+  font-size: 12px;
+  color: #2c3e50;
+}
+
+.faqAnswer {
+  padding: 10px 0 10px 30px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.icon {
+  transition: transform 0.3s ease;
+}
+
+/* Visa Enquiry Container Styles */
+.visa-enquiry-container {
+  background: #f7fcff;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+.visa-tabs-container {
+  width: 100%;
+  padding: 0 16rem;
+  background: #ededed;
+  display: flex;
+  border-bottom: 1px solid #d8d8d8;
+  font-family: inherit;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.visa-tab {
+  flex: 1 0 auto;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 16px 12px;
+  transition: border 0.16s;
+  min-width: 100px;
+  white-space: nowrap;
+}
+
+.visa-cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 16px;
+  justify-content: center;
+  align-items: center;
+  font-family: inherit;
+  padding: 2rem 12rem;
+}
+
+.visa-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px 0 rgba(32, 67, 114, 0.07);
+  overflow: hidden;
+}
+
+.visa-card-header {
+  background: #000;
+  color: #ffc700;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 14px 0 14px 22px;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+
+.visa-card-header-badge {
+  background: #ffcf32;
+  color: #222;
+  font-weight: 700;
+  font-size: 12px;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: 18px;
+  padding: 2px 9px;
+  letter-spacing: 1px;
+}
+
+.visa-card-content {
+  padding: 0;
+  font-size: 14px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.visa-card-data {
+  padding: 10px 22px;
+  flex-grow: 1;
+  max-height: 200px;
+}
+
+.visa-card-data-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.visa-card-data-label {
+  color: #555;
+  font-size: 12px;
+}
+
+.visa-card-data-value {
+  font-weight: 700;
+  color: #111;
+  font-size: 13px;
+}
+
+.visa-card-fees {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-top: 1.5px solid #ebebeb;
+  padding: 10px 22px;
+  margin-top: 14px;
+  gap: 10px;
+}
+
+.visa-card-fees-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visa-card-fees-label {
+  color: #757575;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.visa-card-fees-value {
+  font-weight: 700;
+  color: #222;
+  font-size: 16px;
+}
+
+.visa-card-total-fee {
+  font-weight: 900;
+  color: #111;
+  font-size: 20px;
+  margin-left: auto;
+}
+
+.visa-card-footer {
+  border-top: 1.5px solid #ebebeb;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  cursor: pointer;
+}
+
+.visa-card-footer-text {
+  color: #007f9b;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 0.2px;
+}
+
+.visa-card-footer-chevron {
+  margin-left: auto;
+  color: #f5be23;
+  font-weight: bold;
+  font-size: 20px;
+  vertical-align: middle;
+  transform: translateY(1px);
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 400px) {
+  /* Banner Section */
+  .apply-visa-hero {
+    flex-direction: column;
+    min-height: auto;
+    padding: 20px 10px;
+    text-align: center;
+  }
+
+  .visa-hero-title {
+    margin-top: 0 !important;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .visa-hero-title h1 {
+    font-size: 24px;
+    text-align: center;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .visa-hero-title p {
+    display: block !important;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .visa-hero-img {
+    display: flex !important;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .visa-hero-img img {
+    max-height: 200px;
+    margin-right: 0;
+  }
+
+  /* Tabs Section */
+  .visa-tabs-container {
+    padding: 0 10px !important;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .visa-tab {
+    padding: 12px 8px;
+    font-size: 14px;
+  }
+
+  /* Visa Cards Section */
+  .visa-cards-container {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+    padding: 10px !important;
+  }
+
+  .visa-card {
+    max-width: 100% !important;
+    margin: 0 !important;
+    border-radius: 12px !important;
+  }
+
+  /* Steps Section */
+  .customHeader {
+    margin-bottom: 30px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .customContainer {
+    flex-direction: column;
+  }
+
+  .customStepContainer {
+    flex-direction: row;
+    width: 100%;
+    padding: 10px;
+    justify-content: space-around;
+    min-width: auto;
+  }
+
+  .stepsContainer {
+    flex-direction: row;
+    padding: 0 10px;
+    justify-content: space-around;
+    margin: 10px 0;
+  }
+
+  .step {
+    margin-bottom: 0;
+    flex: 1;
+    text-align: center;
+  }
+
+  .stepIcon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .stepTitle {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .stepSubtitle {
+    font-size: 12px;
+  }
+
+  /* Visa Section */
+  .visaSection {
+    padding: 20px 10px;
+  }
+
+  .visaTitle {
+    font-size: 20px;
+  }
+
+  .customDocumentGrid {
+    margin: 0 5px;
+  }
+
+  .documentsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .documentItem {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  /* FAQ Section */
+  .faqSection {
+    padding: 15px;
+  }
+
+  .faqTitle {
+    font-size: 20px;
+  }
+
+  .faqQuestion {
+    font-size: 14px;
+    padding: 8px 0;
+  }
+
+  .faqAnswer {
+    padding: 8px 0 8px 20px;
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 401px) and (max-width: 768px) {
+  /* Banner Section */
+  .apply-visa-hero {
+    flex-direction: column;
+    padding: 20px 15px;
+    text-align: center;
+  }
+
+  .visa-hero-title {
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .visa-hero-title h1 {
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .visa-hero-title p {
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .visa-hero-img {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .visa-hero-img img {
+    max-height: 250px;
+  }
+
+  /* Tabs Section */
+  .visa-tabs-container {
+    padding: 0 10px;
+    overflow-x: auto;
+  }
+
+  .visa-tab {
+    padding: 14px 10px;
+    font-size: 15px;
+  }
+
+  /* Visa Cards Section */
+  .visa-cards-container {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    padding: 15px !important;
+  }
+
+  .visa-card {
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Steps Section */
+  .customHeader {
+    margin-bottom: 40px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    padding: 0 15px;
+  }
+
+  .customStepContainer {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 15px;
+  }
+
+  .stepsContainer {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0 15px;
+  }
+
+  .step {
+    flex: 1;
+    text-align: center;
+  }
+
+  .stepIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .stepTitle {
+    font-size: 16px;
+  }
+
+  .stepSubtitle {
+    font-size: 14px;
+  }
+
+  /* Visa Section */
+  .visaSection {
+    padding: 30px 15px;
+  }
+
+  .visaTitle {
+    font-size: 24px;
+  }
+
+  .documentsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .documentItem {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  /* FAQ Section */
+  .faqSection {
+    padding: 20px;
+  }
+
+  .faqTitle {
+    font-size: 22px;
+  }
+
+  .faqQuestion {
+    font-size: 15px;
+    padding: 10px 0;
+  }
+
+  .faqAnswer {
+    padding: 10px 0 10px 25px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .visa-tabs-container {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding: 0 10px !important;
+  }
+
+  .visa-tab {
+    padding: 12px 8px;
+    font-size: 14px;
+  }
+
+  .visa-cards-container {
+    gap: 15px !important;
+    padding: 10px !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .visa-card {
+    max-width: 100% !important;
+    margin: 0 10px !important;
+    transform: scale(1) !important;
+  }
+
+  .visa-card-header {
+    padding: 10px 15px !important;
+    font-size: 16px !important;
+  }
+
+  .visa-card-header-badge {
+    font-size: 10px !important;
+    padding: 1px 6px !important;
+    margin-right: 10px !important;
+  }
+
+  .visa-card-content {
+    padding: 12px 15px !important;
+    font-size: 13px !important;
+  }
+
+  .visa-card-fees {
+    gap: 10px !important;
+  }
+
+  .visa-card-footer {
+    padding: 10px 15px !important;
+  }
+
+  .visa-card-footer-text {
+    font-size: 16px !important;
+  }
+
+  /* Steps Section Improvements */
+  .customContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .customStepContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 20px;
+    margin: 0 10px;
+  }
+
+  .stepsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 15px;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .stepIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+  }
+
+  .stepIcon img {
+    max-width: 30px;
+    max-height: 30px;
+  }
+
+  .stepContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .stepTitle {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+  }
+
+  .stepSubtitle {
+    font-size: 14px;
+    color: #7f8c8d;
+    line-height: 1.4;
+  }
+
+  /* Date Specific Styles */
+  .stepTitle.date {
+    color: #007bff;
+    font-weight: 600;
+  }
+
+  .stepSubtitle.date-subtitle {
+    color: #555;
+    font-size: 13px;
+  }
+
+  /* Steps Section Vertical Alignment */
+  .customContainer {
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  .customStepContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 30px;
+    position: relative;
+    text-align: center;
+  }
+
+  /* Connecting Line Between Steps */
+  .step::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    width: 2px;
+    height: 50px;
+    background-color: #e0e0e0;
+    z-index: 1;
+  }
+
+  .step:first-child::before {
+    display: none;
+  }
+
+  .stepIcon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .stepIcon img {
+    max-width: 40px;
+    max-height: 40px;
+  }
+
+  .stepContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  .stepTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .stepSubtitle {
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 300px;
+  }
+
+  /* Date Specific Styles */
+  .stepTitle.date {
+    color: #007bff;
+    font-weight: 600;
+  }
+
+  .stepSubtitle.date-subtitle {
+    color: #495057;
+    font-weight: 500;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .customStepContainer {
+    width: 100%;
+    min-width: 800px;
+  }
+
+  .stepsContainer {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+  }
+
+  .visa-cards-container {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 30px !important;
+    padding: 20px !important;
+  }
+
+  .visa-card {
+    max-width: 100% !important;
+    margin: 0 !important;
+    transform: scale(1) !important;
+  }
+}

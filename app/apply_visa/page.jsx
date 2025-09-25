@@ -1,14 +1,12 @@
 "use client";
 import Navbar from "@/components/header/NewNav";
-import Banner from "@/components/applyvisa/banner";
-import VisaTypesComponent from "@/components/applyvisa/visa-enquiry";
-import VisaStepsAndFaq from "@/components/applyvisa/steps";
-import "./styles/apply-visa.styles.css";
-import { useEffect, useState } from "react";
-import Footer from "@/components/footer/footer-gokite"
+import ApplyVisa from "@/components/applyvisa/ApplyVisa";
+import Footer from "@/components/footer/footer-gokite";
 import CustomHeader from "@/components/apply-visa-custom-header/custom-header";
+import { useEffect, useState } from "react";
+import "./styles/apply-visa.styles.css";
 
-const Holidays = () => {
+const ApplyVisaPage = () => {
   const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {
@@ -34,12 +32,10 @@ const Holidays = () => {
     <>
       <Navbar />
       {isMobileView && <CustomHeader />}
-      <Banner />
-      <VisaTypesComponent />
-      <VisaStepsAndFaq />
+      <ApplyVisa />
       <Footer />
     </>
   );
 };
 
-export default Holidays;
+export default ApplyVisaPage;

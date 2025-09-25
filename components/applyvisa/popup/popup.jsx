@@ -774,7 +774,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 paddingBottom: "12px",
               }}
             >
-            Passenger Details
+              Passenger Details
             </h3>
           </div>
 
