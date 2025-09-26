@@ -12,7 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// Authorization and claims header
+// Authorization and claims headers
 const CLAIMS = {
   AUTHENTICATED: "true",
   org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
@@ -28,7 +28,18 @@ const CLAIMS = {
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
 };
 
-export default function HolidayDestinations() {
+// Fallback images if API does not provide an image
+const FALLBACK_IMAGES = [
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
+  "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop",
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
+  "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop",
+  "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
+  "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
+  "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
+];
+
+export default function HolidayDestinations({ packageCategoryId = 1 }) {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
@@ -67,7 +78,7 @@ export default function HolidayDestinations() {
 
   // Transform holiday card data
   const transformHolidayData = (apiData) => {
-    return apiData.map((item) => {
+    return apiData.map((item, index) => {
       // Convert prices
       const oldPrice = parseFloat(item.oldPrice);
       const newPrice = parseFloat(item.newPrice);
@@ -75,29 +86,29 @@ export default function HolidayDestinations() {
       return {
         id: item.holidayId,
         holidayId: item.holidayUniqueId,
-        image: `/img/general/${item.cardJson.heroImage}`, // Assuming images are stored in public/img/general/
+        image: FALLBACK_IMAGES[index % FALLBACK_IMAGES.length],
         title: item.title,
         rating: parseFloat(item.packageRating),
         duration: `${item.noOfDays} Days ${item.noOfNights} Nights`,
         flights:
-          item.cardJson.itineraryIcons.find((icon) =>
+          item?.cardJson?.itineraryIcons?.find((icon) =>
             icon.text.includes("Flight")
           )?.text || "2 Flights",
         hotels:
-          item.cardJson.itineraryIcons.find(
+          item?.cardJson?.itineraryIcons?.find(
             (icon) =>
               icon.text.includes("Hotel") || icon.text.includes("Accomodation")
           )?.text || "1 Hotel",
         transfers:
-          item.cardJson.itineraryIcons.find(
+          item?.cardJson?.itineraryIcons?.find(
             (icon) =>
               icon.text.includes("Transfer") || icon.text.includes("Cars")
           )?.text || "2 Transfers",
         activities:
-          item.cardJson.itineraryIcons.find((icon) =>
+          item?.cardJson?.itineraryIcons?.find((icon) =>
             icon.text.includes("Activities")
           )?.text || "4 Activities",
-        features: item.cardJson.inclusions || [],
+        features: item?.cardJson?.inclusions || [],
         originalPrice: convertAndFormatCurrency(oldPrice, item.currency),
         discountedPrice: convertAndFormatCurrency(newPrice, item.currency),
         currency: item.currency,
@@ -115,7 +126,7 @@ export default function HolidayDestinations() {
         {
           method: "POST",
           headers: getAuthHeaders(),
-          body: JSON.stringify({ packageCategoryId: 2 }), // Empty body as per the example
+          body: JSON.stringify({ packageCategoryId }),
         }
       );
 
@@ -176,7 +187,7 @@ export default function HolidayDestinations() {
     };
 
     loadData();
-  }, []);
+  }, [packageCategoryId]);
 
   // Existing responsive and UI logic
   useEffect(() => {
@@ -260,9 +271,8 @@ export default function HolidayDestinations() {
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
-        className={`holiday-header ${
-          windowWidth < 640 ? "holiday-header-mobile" : ""
-        }`}
+        className={`holiday-header ${windowWidth < 640 ? "holiday-header-mobile" : ""
+          }`}
       >
         <h1
           className="holiday-title"
@@ -290,9 +300,8 @@ export default function HolidayDestinations() {
       </div>
 
       <div
-        className={`destinations-wrapper ${
-          windowWidth < 640 ? "destinations-wrapper-mobile" : ""
-        }`}
+        className={`destinations-wrapper ${windowWidth < 640 ? "destinations-wrapper-mobile" : ""
+          }`}
       >
         {visibleDestinations.map((destination) => (
           <div
@@ -360,9 +369,8 @@ export default function HolidayDestinations() {
               </ul>
 
               <div
-                className={`pricing-section ${
-                  windowWidth < 640 ? "pricing-column" : "pricing-row"
-                }`}
+                className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
+                  }`}
               >
                 <span className="original-price">
                   {destination.originalPrice}

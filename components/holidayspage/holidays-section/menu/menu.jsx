@@ -2,7 +2,7 @@
 import { useState } from "react";
 import "./menu.css";
 
-const GlassmorphMenu = ({ styles }) => {
+const GlassmorphMenu = ({ styles, onSelect }) => {
     const [active, setActive] = useState(0);
 
     const menuItems = [
@@ -23,7 +23,12 @@ const GlassmorphMenu = ({ styles }) => {
                     <div
                         key={index}
                         className={`menu-item ${active === index ? "active" : ""}`}
-                        onClick={() => setActive(index)}
+                        onClick={() => {
+                            setActive(index);
+                            if (typeof onSelect === "function") {
+                                onSelect(index + 1, item.label);
+                            }
+                        }}
                     >
                         <img src={item.src} alt={item.label} />
                         <p>{item.label}</p>

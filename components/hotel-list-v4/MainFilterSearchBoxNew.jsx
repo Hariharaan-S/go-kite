@@ -1,7 +1,7 @@
 import GlassmorphMenu from '../holidayspage/holidays-section/menu/menu';
 import './styles/MainFilterSearchBox.styles.css'
 
-const MainFilterSearchBoxNew = () => {
+const MainFilterSearchBoxNew = ({ onCategoryChange, selectedLabel }) => {
     return (
         <>
             <div className="mainSearch  px-10 py-10 lg:px-20 lg:pt-5 lg:pb-20 rounded-4 mt-30">
@@ -16,8 +16,8 @@ const MainFilterSearchBoxNew = () => {
 
 
                 </div>
-                <div className="search-menu"><GlassmorphMenu /></div>
-                <h2 className="search-sub-heading">Beaches</h2>
+                <div className="search-menu"><GlassmorphMenu onSelect={onCategoryChange} /></div>
+                <h2 className="search-sub-heading">{selectedLabel || 'Beaches'}</h2>
 
                 {/* End Location */}
             </div>

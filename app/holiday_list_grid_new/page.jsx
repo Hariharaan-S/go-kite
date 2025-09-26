@@ -1,3 +1,4 @@
+"use client";
 import Header1 from "@/components/header/IconNav";
 import TopHeaderFilter from "@/components/hotel-list-v4/TopHeaderFilter";
 import Pagination from "@/components/hotel-list-v4/Pagination";
@@ -6,13 +7,22 @@ import HotelProperties from "@/components/hotel-list-v4/HotelProperties";
 import VacationCard from "@/components/hotel-list-v4/VacationCard";
 import MainFilterSearchBoxNew from "@/components/hotel-list-v4/MainFilterSearchBoxNew";
 import GoKiteFooter from "@/components/footer/footer-gokite";
+import { useState } from "react";
 
-export const metadata = {
-  title: "GoKite - Travel & Tour ",
-  description: "GoKite - Travel & Tour ",
-};
+// export const metadata = {
+//   title: "GoKite - Travel & Tour ",
+//   description: "GoKite - Travel & Tour ",
+// };
 
 const index = () => {
+  const [packageCategoryId, setPackageCategoryId] = useState(1);
+  const [selectedLabel, setSelectedLabel] = useState("Beaches");
+
+  const handleCategoryChange = (categoryId, label) => {
+    setPackageCategoryId(categoryId);
+    if (label) setSelectedLabel(label);
+  };
+
   return (
     <>
       {/* End Page Title */}
@@ -31,7 +41,7 @@ const index = () => {
                 <h1 className="text-30 fw-600">Find Your Dream Luxury Hotel</h1>
               </div> */}
               {/* End text-center */}
-              <MainFilterSearchBoxNew />
+              <MainFilterSearchBoxNew onCategoryChange={handleCategoryChange} selectedLabel={selectedLabel} />
             </div>
             {/* End col-12 */}
           </div>
@@ -51,7 +61,7 @@ const index = () => {
               <div className="mt-30"></div>
               {/* End mt--30 */}
               <div className="row y-gap-30">
-                <HotelProperties />
+                <HotelProperties packageCategoryId={packageCategoryId} />
               </div>
               {/* End .row */}
               <Pagination />
