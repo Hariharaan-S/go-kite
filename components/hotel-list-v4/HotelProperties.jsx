@@ -12,7 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// Authorization and claims headers
+// Authorization and claims header
 const CLAIMS = {
   AUTHENTICATED: "true",
   org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
