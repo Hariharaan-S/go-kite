@@ -1,7 +1,35 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
+// Replace this with your actual endpoint when ready
+const POST_URL = "https://gokite-sit-b2c.convergentechnologies.com/api/azp/api/auth/v1/guest-login?getTokenInCookie=true";
 
 const GoKiteSignup = () => {
+  const router = useRouter();
+  const [userName, setUserName] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setSubmitting(true);
+      const response = await fetch(POST_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userName }),
+      });
+      if (response.ok) {
+        router.push("/");
+      } else {
+        console.error("Request failed", response.status);
+      }
+    } catch (err) {
+      console.error("Network error", err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <div
       style={{
@@ -86,7 +114,7 @@ const GoKiteSignup = () => {
               lineHeight: "1.2",
             }}
           >
-           Sign in
+            Sign in
           </h1>
 
           <p
@@ -101,34 +129,39 @@ const GoKiteSignup = () => {
             Prices and points.
           </p>
 
-          {/* Email Input */}
-          <div
-            style={{
-              marginBottom: "24px",
-            }}
-          >
-            <input
-              type="email"
-              placeholder="Email address"
+          <form onSubmit={handleSubmit}>
+            {/* Email Input */}
+            <div
               style={{
-                width: "100%",
-                padding: "16px",
-                fontSize: "16px",
-                border: "2px solid #e0e0e0",
-                borderRadius: "8px",
-                outline: "none",
-                boxSizing: "border-box",
-                backgroundColor: "white",
-                transition: "border-color 0.3s ease",
+                marginBottom: "16px",
               }}
-              onFocus={(e) => {
-                e.target.style.borderColor = "#4a90e2";
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = "#e0e0e0";
-              }}
-            />
-          </div>
+            >
+              <input
+                type="email"
+                placeholder="Email address"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "16px",
+                  fontSize: "16px",
+                  border: "2px solid #e0e0e0",
+                  borderRadius: "8px",
+                  outline: "none",
+                  boxSizing: "border-box",
+                  backgroundColor: "white",
+                  transition: "border-color 0.3s ease",
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#4a90e2";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#e0e0e0";
+                }}
+              />
+            </div>
+          </form>
 
           {/* Sign In Link */}
           <p
