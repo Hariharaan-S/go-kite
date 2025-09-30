@@ -17,21 +17,15 @@ import "../styles/holidays-section-cards.styles.css";
 
 const VISIBLE_CARDS = 4;
 
-// Authorization and claims headers (similar to visa-destination.jsx)
-const CLAIMS = {
-  AUTHENTICATED: "true",
-  org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
-  OTP_VERFICATION_REQD: "false",
-  USER_ID: "0af402d1-98f0-18ae-8198-f493454d0001",
-  refreshtoken: "false",
-  client_ip: "14.99.174.62",
-  USER_ID_LONG: "563",
-  USER_NAME: "codetezteam@gmail.com",
-  "authorized-domains":
-    "b603f35d-9242-11f0-b493-fea20be86931, b603edb7-9242-11f0-b493-fea20be86931, b603e748-9242-11f0-b493-fea20be86931, b603d5d9-9242-11f0-b493-fea20be86931",
-  "user-agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
-};
+// Read cookie helper (not strictly required, proxies read cookie server-side)
+function getCookie(name) {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${name}=`));
+  return match ? decodeURIComponent(match.split("=")[1]) : "";
+}
 
 export default function HolidaysSectionCards() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -42,17 +36,17 @@ export default function HolidaysSectionCards() {
   const router = useRouter();
 
   const getAuthHeaders = () => {
-    return {
-      "Content-Type": "application/json",
-      claims: JSON.stringify(CLAIMS),
-    };
+    const token = getCookie("accesstoken");
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return headers;
   };
 
   // Fetch sections data
   const fetchSectionsData = async () => {
     try {
       const sectionsResponse = await fetch(
-        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/pages-sections",
+        "/api/cms/pages-sections",
         {
           method: "POST",
           headers: getAuthHeaders(),
@@ -78,7 +72,7 @@ export default function HolidaysSectionCards() {
   const fetchRecommendationCardsData = async (sectionId) => {
     try {
       const response = await fetch(
-        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/sections-holiday-cards",
+        "/api/cms/sections-holiday-cards",
         {
           method: "POST",
           headers: getAuthHeaders(),

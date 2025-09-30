@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import http from "http";
+import https from "https";
 
 export async function POST(request) {
     try {
@@ -13,17 +15,18 @@ export async function POST(request) {
             );
         }
 
-        const res = await fetch(
-            "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/pages-sections",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(body || {}),
-            }
-        );
+        const upstreamUrl = "http://gokite-sit-b2c.convergentechnologies.com:30839/api/cms/api/v2/list/custom/data/pages-sections";
+        const isHttps = upstreamUrl.startsWith("https:");
+        const res = await fetch(upstreamUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(body || {}),
+            // tolerate self-signed only if https
+            agent: isHttps ? new https.Agent({ rejectUnauthorized: false }) : new http.Agent(),
+        });
 
         const text = await res.text();
         const contentType = res.headers.get("content-type") || "application/json";

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import http from "http";
+import https from "https";
 
 export async function POST(request) {
     try {
@@ -7,17 +9,24 @@ export async function POST(request) {
         const cookieStore = await cookies();
         const token = cookieStore.get("accesstoken")?.value || "";
 
-        const res = await fetch(
-            "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/sections-visa-cards",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-                },
-                body: JSON.stringify(body || {}),
-            }
-        );
+        if (!token) {
+            return NextResponse.json(
+                { error: "Missing accesstoken cookie" },
+                { status: 401 }
+            );
+        }
+
+        const upstreamUrl = "http://gokite-sit-b2c.convergentechnologies.com:30839/api/cms/api/v2/list/custom/data/sections-visa-cards";
+        const isHttps = upstreamUrl.startsWith("https:");
+        const res = await fetch(upstreamUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(body || {}),
+            agent: isHttps ? new https.Agent({ rejectUnauthorized: false }) : new http.Agent(),
+        });
 
         const text = await res.text();
         const contentType = res.headers.get("content-type") || "application/json";
