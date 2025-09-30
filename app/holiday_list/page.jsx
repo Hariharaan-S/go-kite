@@ -1,11 +1,11 @@
 "use client";
 import Header1 from "@/components/header/IconNav";
-import TopHeaderFilter from "@/components/hotel-list-v4/TopHeaderFilter";
-import Pagination from "@/components/hotel-list-v4/Pagination";
-import Sidebar from "@/components/hotel-list-v4/Sidebar";
-import HotelProperties from "@/components/hotel-list-v4/HotelProperties";
-import VacationCard from "@/components/hotel-list-v4/VacationCard";
-import MainFilterSearchBoxNew from "@/components/hotel-list-v4/MainFilterSearchBoxNew";
+import TopHeaderFilter from "@/components/holiday-list/TopHeaderFilter";
+import Pagination from "@/components/holiday-list/Pagination";
+import Sidebar from "@/components/holiday-list/Sidebar";
+import HotelProperties from "@/components/holiday-list/HolidayLists";
+import VacationCard from "@/components/holiday-list/VacationCard";
+import MainFilterSearchBoxNew from "@/components/holiday-list/MainFilterSearchBoxNew";
 import GoKiteFooter from "@/components/footer/footer-gokite";
 import { useState } from "react";
 

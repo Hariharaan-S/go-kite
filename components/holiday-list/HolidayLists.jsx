@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import "./HotelProperties.css";
+import "./HolidayLists.css";
 import { useRouter } from "next/navigation";
 import {
   Heart,
