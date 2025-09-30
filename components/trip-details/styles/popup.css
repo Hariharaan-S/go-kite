@@ -1,0 +1,400 @@
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+  backdrop-filter: blur(8px);
+}
+
+/* Form Container */
+.popup-form {
+  background: #fff;
+  border-radius: 24px;
+  padding: 40px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.popup-form::-webkit-scrollbar {
+  display: none;
+}
+
+/* Close Button */
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #64748b;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+
+/* Header Styles */
+.form-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 140px;
+  margin-bottom: 24px;
+}
+
+.form-title {
+  margin: 0;
+  font-weight: 800;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.form-subtitle {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin: 12px 0 0 0;
+  font-weight: 500;
+}
+
+/* API Response/Error Banners */
+.api-response {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.response-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.response-content {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.api-error {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* Section Headers */
+.section-header {
+  grid-column: 1 / -1;
+  margin-bottom: 16px;
+}
+
+.section-spacing {
+  margin-top: 32px;
+}
+
+.section-title {
+  margin: 0 0 20px 0;
+  color: #1e293b;
+  font-size: 1.4rem;
+  font-weight: 700;
+  border-bottom: 3px solid #e2e8f0;
+  padding-bottom: 12px;
+}
+
+/* Form Field Labels */
+.field-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Form Inputs */
+.form-input,
+.form-textarea {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid #cbd5e1;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #3b82f6;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Input Error State */
+.input-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.input-error:focus {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Error Messages */
+.error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Radio Group */
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* Number Input Container */
+.number-input-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.number-button {
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  cursor: pointer;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.number-button:first-child {
+  border-right: 1px solid #e2e8f0;
+}
+
+.number-button:last-child {
+  border-left: 1px solid #e2e8f0;
+}
+
+.number-button.disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+  color: #cbd5e1;
+}
+
+.number-display {
+  flex: 1;
+  border: none;
+  text-align: center;
+  font-size: 16px;
+  background-color: transparent;
+  padding: 10px;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Description Container */
+.description-container {
+  margin-bottom: 24px;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid #f1f5f9;
+}
+
+.cancel-button {
+  padding: 16px 32px;
+  border-radius: 12px;
+  border: 2px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.cancel-button:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+.submit-button {
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .popup-form {
+    padding: 24px;
+    margin: 10px;
+    border-radius: 20px;
+  }
+
+  .form-title {
+    font-size: 2rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-form {
+    padding: 20px;
+  }
+
+  .form-title {
+    font-size: 1.75rem;
+  }
+
+  .number-input-container {
+    justify-content: center;
+  }
+}
+
+/* Remove hover and focus effects for specific input fields */
+.form-input[name="customerFirstName"],
+.form-input[name="customerLastName"],
+.form-input[name="customerEmail"],
+.form-input[name="nameOfTheCompany"],
+.form-input[name="residence"],
+.form-input[name="budget"],
+.form-input[name="destination"],
+.form-input[name="packageName"] {
+  border: 2px solid #cbd5e1;
+}
+
+.form-input[name="customerFirstName"]:focus,
+.form-input[name="customerLastName"]:focus,
+.form-input[name="customerEmail"]:focus,
+.form-input[name="nameOfTheCompany"]:focus,
+.form-input[name="residence"]:focus,
+.form-input[name="budget"]:focus,
+.form-input[name="destination"]:focus,
+.form-input[name="packageName"]:focus {
+  border: 2px solid #cbd5e1;
+  background-color: #fff;
+  box-shadow: none;
+}

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Country } from "country-state-city";
+import "../styles/popup.css";
 
 // Read cookie helper; backend may accept bearer auth similar to other calls
 function getCookie(name) {
@@ -49,8 +50,6 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
 
   if (!open) return null;
 
-  // Get all countries for dropdowns (already memoized above)
-
   const tripTypes = ["Solo", "Group", "Corporate", "Student", "Cruise", "Others"];
 
   // Get minimum date (today)
@@ -68,8 +67,6 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
       setErrors({ ...errors, [name]: "" });
     }
   };
-
-  // Removed phone input handler (customerPhone will be a select)
 
   const handleNumberChange = (field, increment) => {
     const currentValue = form[field];
@@ -135,200 +132,59 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
     }
   };
 
-  const inputStyle = {
-    padding: "14px 16px",
-    borderRadius: "12px",
-    border: "2px solid #e2e8f0",
-    fontSize: "16px",
-    outline: "none",
-    transition: "all 0.3s ease",
-    backgroundColor: "#fafafa",
-    width: "100%",
-    boxSizing: "border-box",
-  };
-
-  const focusStyle = {
-    borderColor: "#3b82f6",
-    backgroundColor: "#fff",
-    boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.1)",
-  };
-
-  const errorStyle = {
-    borderColor: "#ef4444",
-    backgroundColor: "#fef2f2",
-  };
-
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        background: "rgba(0, 0, 0, 0.6)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 9999,
-        fontFamily: "'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        padding: "20px",
-        boxSizing: "border-box",
-        backdropFilter: "blur(8px)",
-      }}
-    >
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          background: "#fff",
-          borderRadius: "24px",
-          padding: "40px",
-          width: "100%",
-          maxWidth: "800px",
-          maxHeight: "90vh",
-          overflow: "auto",
-          boxShadow: "0 25px 50px rgba(0, 0, 0, 0.25)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "32px",
-          position: "relative",
-        }}
-      >
+    <div className="popup-overlay">
+      <form onSubmit={handleSubmit} className="popup-form">
         {/* Close button */}
         <button
           type="button"
           onClick={onClose}
-          style={{
-            position: "absolute",
-            top: "20px",
-            right: "20px",
-            background: "none",
-            border: "none",
-            fontSize: "24px",
-            cursor: "pointer",
-            color: "#64748b",
-            width: "40px",
-            height: "40px",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = "#f1f5f9";
-            e.target.style.color = "#1e293b";
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = "transparent";
-            e.target.style.color = "#64748b";
-          }}
+          className="close-button"
         >
           ×
         </button>
 
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <div className="form-header">
           <img
             src="/img/general/logo.svg"
             alt="Logo"
-            style={{ width: "140px", marginBottom: "24px" }}
+            className="logo"
           />
-          <h2
-            style={{
-              margin: 0,
-              fontWeight: "800",
-              fontSize: "2.5rem",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              color: "transparent",
-              letterSpacing: "-0.025em",
-              lineHeight: "1.2",
-            }}
-          >
+          <h2 className="form-title">
             Holidays Enquiry Form
           </h2>
-          <p
-            style={{
-              color: "#64748b",
-              fontSize: "1.1rem",
-              margin: "12px 0 0 0",
-              fontWeight: "500",
-            }}
-          >
+          <p className="form-subtitle">
             Please fill in your details for holidays assistance
           </p>
         </div>
 
         {/* API response / error banner */}
         {apiResponse && (
-          <div
-            style={{
-              padding: "12px 16px",
-              borderRadius: "12px",
-              background: "#ecfdf5",
-              color: "#065f46",
-              border: "1px solid #a7f3d0",
-            }}
-          >
-            <div style={{ fontWeight: 700, marginBottom: 4 }}>Success</div>
-            <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+          <div className="api-response">
+            <div className="response-title">Success</div>
+            <pre className="response-content">
               {JSON.stringify(apiResponse, null, 2)}
             </pre>
           </div>
         )}
         {apiError && (
-          <div
-            style={{
-              padding: "12px 16px",
-              borderRadius: "12px",
-              background: "#fef2f2",
-              color: "#991b1b",
-              border: "1px solid #fecaca",
-            }}
-          >
+          <div className="api-error">
             {apiError}
           </div>
         )}
 
-        {/* Form Grid */
-        }
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "24px",
-            "@media (max-width: 640px)": {
-              gridTemplateColumns: "1fr",
-            },
-          }}
-        >
+        {/* Form Grid */}
+        <div className="form-grid">
           {/* Personal Information Section */}
-          <div style={{ gridColumn: "1 / -1", marginBottom: "16px" }}>
-            <h3
-              style={{
-                margin: "0 0 20px 0",
-                color: "#1e293b",
-                fontSize: "1.4rem",
-                fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
-              }}
-            >
+          <div className="section-header">
+            <h3 className="section-title">
               Personal Information
             </h3>
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
+            <label className="field-label">
               First Name *
             </label>
             <input
@@ -337,44 +193,17 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               value={form.customerFirstName}
               onChange={handleChange}
               required
-              style={{
-                ...inputStyle,
-                ...(errors.customerFirstName ? errorStyle : {}),
-              }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.customerFirstName
-                  ? "#ef4444"
-                  : "#e2e8f0";
-                e.target.style.backgroundColor = errors.customerFirstName
-                  ? "#fef2f2"
-                  : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className={`form-input ${errors.customerFirstName ? 'input-error' : ''}`}
             />
             {errors.customerFirstName && (
-              <span
-                style={{
-                  color: "#ef4444",
-                  fontSize: "0.875rem",
-                  marginTop: "4px",
-                  display: "block",
-                }}
-              >
+              <span className="error-message">
                 {errors.customerFirstName}
               </span>
             )}
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
+            <label className="field-label">
               Last Name *
             </label>
             <input
@@ -383,44 +212,17 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               value={form.customerLastName}
               onChange={handleChange}
               required
-              style={{
-                ...inputStyle,
-                ...(errors.customerLastName ? errorStyle : {}),
-              }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.customerLastName
-                  ? "#ef4444"
-                  : "#e2e8f0";
-                e.target.style.backgroundColor = errors.customerLastName
-                  ? "#fef2f2"
-                  : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className={`form-input ${errors.customerLastName ? 'input-error' : ''}`}
             />
             {errors.customerLastName && (
-              <span
-                style={{
-                  color: "#ef4444",
-                  fontSize: "0.875rem",
-                  marginTop: "4px",
-                  display: "block",
-                }}
-              >
+              <span className="error-message">
                 {errors.customerLastName}
               </span>
             )}
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
+            <label className="field-label">
               Country of Residence *
             </label>
             <select
@@ -428,20 +230,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               value={form.countryOfResidence}
               onChange={handleChange}
               required
-              style={{
-                ...inputStyle,
-                ...(errors.countryOfResidence ? errorStyle : {}),
-              }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.countryOfResidence
-                  ? "#ef4444"
-                  : "#e2e8f0";
-                e.target.style.backgroundColor = errors.countryOfResidence
-                  ? "#fef2f2"
-                  : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className={`form-input ${errors.countryOfResidence ? 'input-error' : ''}`}
             >
               <option value="">Select your country of residence</option>
               {countries.map((country) => (
@@ -451,28 +240,14 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               ))}
             </select>
             {errors.countryOfResidence && (
-              <span
-                style={{
-                  color: "#ef4444",
-                  fontSize: "0.875rem",
-                  marginTop: "4px",
-                  display: "block",
-                }}
-              >
+              <span className="error-message">
                 {errors.countryOfResidence}
               </span>
             )}
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
+            <label className="field-label">
               Nationality *
             </label>
             <select
@@ -480,20 +255,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               value={form.nationality}
               onChange={handleChange}
               required
-              style={{
-                ...inputStyle,
-                ...(errors.nationality ? errorStyle : {}),
-              }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.nationality
-                  ? "#ef4444"
-                  : "#e2e8f0";
-                e.target.style.backgroundColor = errors.nationality
-                  ? "#fef2f2"
-                  : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className={`form-input ${errors.nationality ? 'input-error' : ''}`}
             >
               <option value="">Select your nationality</option>
               {countries.map((country) => (
@@ -503,44 +265,21 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               ))}
             </select>
             {errors.nationality && (
-              <span
-                style={{
-                  color: "#ef4444",
-                  fontSize: "0.875rem",
-                  marginTop: "4px",
-                  display: "block",
-                }}
-              >
+              <span className="error-message">
                 {errors.nationality}
               </span>
             )}
           </div>
 
           {/* Contact and Trip Details */}
-          <div style={{ gridColumn: "1 / -1", marginTop: "32px", marginBottom: "16px" }}>
-            <h3
-              style={{
-                margin: "0 0 20px 0",
-                color: "#1e293b",
-                fontSize: "1.4rem",
-                fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
-              }}
-            >
+          <div className="section-header section-spacing">
+            <h3 className="section-title">
               Contact & Trip Details
             </h3>
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
+            <label className="field-label">
               Email Address *
             </label>
             <input
@@ -550,35 +289,17 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               value={form.customerEmail}
               onChange={handleChange}
               required
-              style={{
-                ...inputStyle,
-                ...(errors.customerEmail ? errorStyle : {}),
-              }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.customerEmail ? "#ef4444" : "#e2e8f0";
-                e.target.style.backgroundColor = errors.customerEmail ? "#fef2f2" : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className={`form-input ${errors.customerEmail ? 'input-error' : ''}`}
             />
             {errors.customerEmail && (
-              <span
-                style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}
-              >
+              <span className="error-message">
                 {errors.customerEmail}
               </span>
             )}
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
+            <label className="field-label">
               Phone Code *
             </label>
             <select
@@ -586,16 +307,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               value={form.customerPhone}
               onChange={handleChange}
               required
-              style={{
-                ...inputStyle,
-                ...(errors.customerPhone ? errorStyle : {}),
-              }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.customerPhone ? "#ef4444" : "#e2e8f0";
-                e.target.style.backgroundColor = errors.customerPhone ? "#fef2f2" : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className={`form-input ${errors.customerPhone ? 'input-error' : ''}`}
             >
               <option value="">Select phone code</option>
               {phoneCodes.map((code) => (
@@ -605,23 +317,17 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               ))}
             </select>
             {errors.customerPhone && (
-              <span
-                style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}
-              >
+              <span className="error-message">
                 {errors.customerPhone}
               </span>
             )}
           </div>
 
-          <div style={{ gridColumn: "1 / -1" }}>
-            <label
-              style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}
-            >
-              Type *
-            </label>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+          <div className="full-width">
+            <label className="field-label">Type *</label>
+            <div className="radio-group">
               {tripTypes.map((t) => (
-                <label key={t} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <label key={t} className="radio-label">
                   <input
                     type="radio"
                     name="type"
@@ -635,14 +341,12 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               ))}
             </div>
             {errors.type && (
-              <span style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}>
-                {errors.type}
-              </span>
+              <span className="error-message">{errors.type}</span>
             )}
           </div>
 
           <div>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
+            <label className="field-label">
               Name of the Company
             </label>
             <input
@@ -650,152 +354,70 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               placeholder="Enter company name"
               value={form.nameOfTheCompany}
               onChange={handleChange}
-              style={inputStyle}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = "#e2e8f0";
-                e.target.style.backgroundColor = "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className="form-input"
             />
           </div>
 
           <div>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
-              Residence
-            </label>
+            <label className="field-label">Residence</label>
             <input
               name="residence"
               placeholder="Enter your city / residence"
               value={form.residence}
               onChange={handleChange}
-              style={inputStyle}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = "#e2e8f0";
-                e.target.style.backgroundColor = "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className="form-input"
             />
           </div>
+
           {/* Date Range */}
           <div>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
-              From Date
-            </label>
+            <label className="field-label">From Date</label>
             <input
               name="fromDate"
               type="date"
               min={today}
               value={form.fromDate}
               onChange={handleChange}
-
-              style={{ ...inputStyle, ...(errors.fromDate ? errorStyle : {}) }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.fromDate ? "#ef4444" : "#e2e8f0";
-                e.target.style.backgroundColor = errors.fromDate ? "#fef2f2" : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className={`form-input ${errors.fromDate ? 'input-error' : ''}`}
             />
             {errors.fromDate && (
-              <span style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}>
-                {errors.fromDate}
-              </span>
+              <span className="error-message">{errors.fromDate}</span>
             )}
           </div>
 
           <div>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
-              To Date
-            </label>
+            <label className="field-label">To Date</label>
             <input
               name="toDate"
               type="date"
               min={today}
               value={form.toDate}
               onChange={handleChange}
-
-              style={{ ...inputStyle, ...(errors.toDate ? errorStyle : {}) }}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = errors.toDate ? "#ef4444" : "#e2e8f0";
-                e.target.style.backgroundColor = errors.toDate ? "#fef2f2" : "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className={`form-input ${errors.toDate ? 'input-error' : ''}`}
             />
             {errors.toDate && (
-              <span style={{ color: "#ef4444", fontSize: "0.875rem", marginTop: "4px", display: "block" }}>
-                {errors.toDate}
-              </span>
+              <span className="error-message">{errors.toDate}</span>
             )}
           </div>
 
           {/* Party & Budget */}
-          <div
-            style={{
-              gridColumn: "1 / -1",
-              marginTop: "32px",
-              marginBottom: "16px",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 20px 0",
-                color: "#1e293b",
-                fontSize: "1.4rem",
-                fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
-              }}
-            >
+          <div className="section-header section-spacing">
+            <h3 className="section-title">
               Passenger & Budget
             </h3>
           </div>
 
-          {/* Number of infants */}
+          {/* Number of Adults */}
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
+            <label className="field-label">
               Number of Adults *
             </label>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                width: "100%",
-                border: "2px solid #e2e8f0",
-                borderRadius: "12px",
-                overflow: "hidden",
-                backgroundColor: "#fafafa",
-              }}
-            >
+            <div className="number-input-container">
               <button
                 type="button"
                 onClick={() => handleNumberChange("numberOfAdults", false)}
                 disabled={form.numberOfAdults <= 1}
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  background: form.numberOfAdults <= 1 ? "#f8fafc" : "#fff",
-                  cursor: form.numberOfAdults <= 1 ? "not-allowed" : "pointer",
-                  border: "none",
-                  borderRight: "1px solid #e2e8f0",
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  color: form.numberOfAdults <= 1 ? "#cbd5e1" : "#374151",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  transition: "all 0.2s ease",
-                }}
+                className={`number-button ${form.numberOfAdults <= 1 ? 'disabled' : ''}`}
               >
                 −
               </button>
@@ -803,35 +425,12 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 type="number"
                 value={form.numberOfAdults}
                 readOnly
-                style={{
-                  flex: 1,
-                  border: "none",
-                  textAlign: "center",
-                  fontSize: "16px",
-                  backgroundColor: "transparent",
-                  padding: "10px",
-                  fontWeight: "600",
-                  color: "#374151",
-                }}
+                className="number-display"
               />
               <button
                 type="button"
                 onClick={() => handleNumberChange("numberOfAdults", true)}
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  background: "#fff",
-                  cursor: "pointer",
-                  border: "none",
-                  borderLeft: "1px solid #e2e8f0",
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  color: "#374151",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  transition: "all 0.2s ease",
-                }}
+                className="number-button"
               >
                 +
               </button>
@@ -839,48 +438,15 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
+            <label className="field-label">
               Number of Children *
             </label>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                width: "100%",
-                border: "2px solid #e2e8f0",
-                borderRadius: "12px",
-                overflow: "hidden",
-                backgroundColor: "#fafafa",
-              }}
-            >
+            <div className="number-input-container">
               <button
                 type="button"
                 onClick={() => handleNumberChange("numberOfChildren", false)}
                 disabled={form.numberOfChildren <= 0}
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  background: form.numberOfChildren <= 0 ? "#f8fafc" : "#fff",
-                  cursor:
-                    form.numberOfChildren <= 0 ? "not-allowed" : "pointer",
-                  border: "none",
-                  borderRight: "1px solid #e2e8f0",
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  color: form.numberOfChildren <= 0 ? "#cbd5e1" : "#374151",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  transition: "all 0.2s ease",
-                }}
+                className={`number-button ${form.numberOfChildren <= 0 ? 'disabled' : ''}`}
               >
                 −
               </button>
@@ -888,75 +454,26 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 type="number"
                 value={form.numberOfChildren}
                 readOnly
-                style={{
-                  flex: 1,
-                  border: "none",
-                  textAlign: "center",
-                  fontSize: "16px",
-                  backgroundColor: "transparent",
-                  padding: "10px",
-                  fontWeight: "600",
-                  color: "#374151",
-                }}
+                className="number-display"
               />
               <button
                 type="button"
                 onClick={() => handleNumberChange("numberOfChildren", true)}
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  background: "#fff",
-                  cursor: "pointer",
-                  border: "none",
-                  borderLeft: "1px solid #e2e8f0",
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  color: "#374151",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  transition: "all 0.2s ease",
-                }}
+                className="number-button"
               >
                 +
               </button>
             </div>
           </div>
+
           <div>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
-              Number of Infants *
-            </label>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                width: "100%",
-                border: "2px solid #e2e8f0",
-                borderRadius: "12px",
-                overflow: "hidden",
-                backgroundColor: "#fafafa",
-              }}
-            >
+            <label className="field-label">Number of Infants *</label>
+            <div className="number-input-container">
               <button
                 type="button"
                 onClick={() => handleNumberChange("numberOfInfants", false)}
                 disabled={form.numberOfInfants <= 0}
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  background: form.numberOfInfants <= 0 ? "#f8fafc" : "#fff",
-                  cursor: form.numberOfInfants <= 0 ? "not-allowed" : "pointer",
-                  border: "none",
-                  borderRight: "1px solid #e2e8f0",
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  color: form.numberOfInfants <= 0 ? "#cbd5e1" : "#374151",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  transition: "all 0.2s ease",
-                }}
+                className={`number-button ${form.numberOfInfants <= 0 ? 'disabled' : ''}`}
               >
                 −
               </button>
@@ -965,35 +482,12 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 value={form.numberOfInfants}
                 required
                 readOnly
-                style={{
-                  flex: 1,
-                  border: "none",
-                  textAlign: "center",
-                  fontSize: "16px",
-                  backgroundColor: "transparent",
-                  padding: "10px",
-                  fontWeight: "600",
-                  color: "#374151",
-                }}
+                className="number-display"
               />
               <button
                 type="button"
                 onClick={() => handleNumberChange("numberOfInfants", true)}
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  background: "#fff",
-                  cursor: "pointer",
-                  border: "none",
-                  borderLeft: "1px solid #e2e8f0",
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  color: "#374151",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  transition: "all 0.2s ease",
-                }}
+                className="number-button"
               >
                 +
               </button>
@@ -1001,109 +495,55 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           </div>
 
           <div>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
-              Budget
-            </label>
+            <label className="field-label">Budget</label>
             <input
               name="budget"
               type="number"
               placeholder="Enter budget"
               value={form.budget}
               onChange={handleChange}
-              style={inputStyle}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = "#e2e8f0";
-                e.target.style.backgroundColor = "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className="form-input"
             />
           </div>
 
           {/* Destination & Package */}
-          <div
-            style={{
-              gridColumn: "1 / -1",
-              marginTop: "32px",
-              marginBottom: "16px",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 20px 0",
-                color: "#1e293b",
-                fontSize: "1.4rem",
-                fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
-              }}
-            >
+          <div className="section-header section-spacing">
+            <h3 className="section-title">
               Destination & Package
             </h3>
           </div>
+
           <div>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
-              Destination
-            </label>
+            <label className="field-label">Destination</label>
             <input
               name="destination"
               placeholder="Enter destination"
               value={form.destination}
               onChange={handleChange}
-              style={inputStyle}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = "#e2e8f0";
-                e.target.style.backgroundColor = "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className="form-input"
             />
           </div>
 
           <div>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>
-              Package Name *
-            </label>
+            <label className="field-label">Package Name *</label>
             <input
               name="packageName"
               placeholder="Enter package name"
               required
               value={form.packageName}
               onChange={handleChange}
-              style={inputStyle}
-              onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-              onBlur={(e) => {
-                e.target.style.borderColor = "#e2e8f0";
-                e.target.style.backgroundColor = "#fafafa";
-                e.target.style.boxShadow = "none";
-              }}
+              className="form-input"
             />
           </div>
 
           {/* Additional Information Section */}
-          <div style={{ gridColumn: "1 / -1", marginTop: "32px" }}>
-            <h3
-              style={{
-                margin: "0 0 20px 0",
-                color: "#1e293b",
-                fontSize: "1.4rem",
-                fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
-              }}
-            >
+          <div className="section-header section-spacing">
+            <h3 className="section-title">
               Additional Information
             </h3>
 
-            <div style={{ marginBottom: "24px" }}>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "8px",
-                  fontWeight: "600",
-                  color: "#374151",
-                }}
-              >
+            <div className="description-container">
+              <label className="field-label">
                 Description (Optional)
               </label>
               <textarea
@@ -1112,130 +552,30 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 value={form.description}
                 onChange={handleChange}
                 rows={4}
-                style={{
-                  ...inputStyle,
-                  resize: "vertical",
-                  minHeight: "120px",
-                }}
-                onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.backgroundColor = "#fafafa";
-                  e.target.style.boxShadow = "none";
-                }}
+                className="form-textarea"
               />
             </div>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div
-          style={{
-            display: "flex",
-            gap: "16px",
-            justifyContent: "flex-end",
-            marginTop: "32px",
-            paddingTop: "24px",
-            borderTop: "2px solid #f1f5f9",
-          }}
-        >
+        <div className="action-buttons">
           <button
             type="button"
             onClick={onClose}
-            style={{
-              padding: "16px 32px",
-              borderRadius: "12px",
-              border: "2px solid #d1d5db",
-              background: "#fff",
-              cursor: "pointer",
-              fontWeight: "600",
-              color: "#6b7280",
-              transition: "all 0.3s ease",
-              fontSize: "16px",
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#f9fafb";
-              e.target.style.borderColor = "#9ca3af";
-              e.target.style.color = "#374151";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "#fff";
-              e.target.style.borderColor = "#d1d5db";
-              e.target.style.color = "#6b7280";
-            }}
+            className="cancel-button"
           >
             Cancel
           </button>
           <button
             type="submit"
-            style={{
-              padding: "16px 32px",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              boxShadow: "0 10px 25px rgba(102, 126, 234, 0.4)",
-              color: "#fff",
-              border: "none",
-              borderRadius: "12px",
-              cursor: "pointer",
-              fontWeight: "700",
-              fontSize: "16px",
-              transition: "all 0.3s ease",
-              position: "relative",
-              overflow: "hidden",
-            }}
+            className="submit-button"
             disabled={submitting}
-            onMouseEnter={(e) => {
-              e.target.style.transform = "translateY(-2px)";
-              e.target.style.boxShadow = "0 15px 35px rgba(102, 126, 234, 0.5)";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = "0 10px 25px rgba(102, 126, 234, 0.4)";
-            }}
           >
             {submitting ? "Submitting..." : "Submit Enquiry"}
           </button>
         </div>
       </form>
-
-      <style jsx>{`
-        @media (max-width: 768px) {
-          form {
-            padding: 24px !important;
-            margin: 10px !important;
-            borderradius: 20px !important;
-          }
-
-          h2 {
-            fontsize: 2rem !important;
-          }
-
-          .form-grid {
-            gridtemplatecolumns: 1fr !important;
-          }
-
-          .action-buttons {
-            flexdirection: column !important;
-          }
-
-          .action-buttons button {
-            width: 100% !important;
-          }
-        }
-
-        @media (max-width: 480px) {
-          form {
-            padding: 20px !important;
-          }
-
-          h2 {
-            fontsize: 1.75rem !important;
-          }
-
-          .number-input-container {
-            justifycontent: center !important;
-          }
-        }
-      `}</style>
     </div>
   );
 };
