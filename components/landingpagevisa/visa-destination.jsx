@@ -6,21 +6,15 @@ import { useRouter } from "next/navigation";
 
 const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds
 
-// Authorization and claims headers (similar to popularvisa-card.jsx)
-const CLAIMS = {
-  AUTHENTICATED: "true",
-  org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
-  OTP_VERFICATION_REQD: "false",
-  USER_ID: "0af402d1-98f0-18ae-8198-f493454d0001",
-  refreshtoken: "false",
-  client_ip: "14.99.174.62",
-  USER_ID_LONG: "563",
-  USER_NAME: "codetezteam@gmail.com",
-  "authorized-domains":
-    "b603f35d-9242-11f0-b493-fea20be86931, b603edb7-9242-11f0-b493-fea20be86931, b603e748-9242-11f0-b493-fea20be86931, b603d5d9-9242-11f0-b493-fea20be86931",
-  "user-agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
-};
+// Helper to read cookie on client
+function getCookie(name) {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${name}=`));
+  return match ? decodeURIComponent(match.split("=")[1]) : "";
+}
 
 const VisaDestinationCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -31,22 +25,51 @@ const VisaDestinationCards = () => {
   const [error, setError] = useState(null);
 
   const getAuthHeaders = () => {
-    return {
+    const token = getCookie("accesstoken");
+    const headers = {
       "Content-Type": "application/json",
-      claims: JSON.stringify(CLAIMS),
     };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return headers;
   };
 
-  // Fetch visa cards data for a specific section
-  const fetchVisaCardsData = async () => {
+  // Fetch sections data (replicating token-based sections flow)
+  const fetchSectionsData = async () => {
     try {
-      const response = await fetch(
-        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/cms-section-visa-country-all",
+      const sectionsResponse = await fetch(
+        "/api/cms/pages-sections",
         {
           method: "POST",
           headers: getAuthHeaders(),
           body: JSON.stringify({
-            // No specific body parameters needed based on the example
+            pageId: 9,
+          }),
+        }
+      );
+
+      if (!sectionsResponse.ok) {
+        throw new Error("Failed to fetch sections data");
+      }
+
+      const sectionsData = await sectionsResponse.json();
+      return sectionsData.data || [];
+    } catch (err) {
+      console.error("Error fetching sections:", err);
+      throw err;
+    }
+  };
+
+  // Fetch visa cards data for a specific section
+  const fetchVisaCardsData = async (sectionId) => {
+    try {
+      const response = await fetch(
+        "/api/cms/sections-visa-cards",
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            pageSectionId: sectionId,
+            limitValue: 10,
           }),
         }
       );
@@ -56,6 +79,8 @@ const VisaDestinationCards = () => {
       }
 
       const data = await response.json();
+      console.log("data");
+      console.log(data);
       return Array.isArray(data?.data) ? data.data : [];
     } catch (err) {
       console.error("Error fetching visa cards:", err);
@@ -134,9 +159,25 @@ const VisaDestinationCards = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch visa cards directly
-        const visaCardsData = await fetchVisaCardsData();
+        // Fetch sections first
+        const sections = await fetchSectionsData();
+        console.log(sections);
 
+        // Find a relevant VISA section (prefer "popular-visa", else first VISA section)
+        const preferredVisaSection =
+          sections.find(
+            (section) => section.title === "home-Visa-section" && section.contentType === "VISA"
+          ) || sections.find((section) => section.contentType === "VISA");
+
+        if (!preferredVisaSection) {
+          throw new Error("Visa destination section not found");
+        }
+        console.log("preferredVisaSection");
+        console.log(preferredVisaSection);
+
+        // Fetch visa cards for this section
+        const visaCardsData = await fetchVisaCardsData(preferredVisaSection.pageSectionId);
+        console.log(visaCardsData);
         // Transform and set destinations
         const transformedDestinations = transformVisaData(visaCardsData);
         setDestinations(transformedDestinations);

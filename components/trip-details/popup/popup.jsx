@@ -1,6 +1,23 @@
 import React, { useMemo, useState } from "react";
 import { Country } from "country-state-city";
 
+// Claims header payload required by backend
+const CLAIMS = {
+  AUTHENTICATED: "true",
+  org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
+  OTP_VERFICATION_REQD: "false",
+  USER_ID: "0af402d1-98f0-18ae-8198-f493454d0001",
+  refreshtoken: "false",
+  client_ip: "14.99.174.62",
+  USER_ID_LONG: "563",
+  USER_NAME: "codetezteam@gmail.com",
+  SESSION_ID: "88c31722-e2ef-4723-a2ce-20d797f7a1b8",
+  "authorized-domains":
+    "b603f35d-9242-11f0-b493-fea20be86931, b603edb7-9242-11f0-b493-fea20be86931, b603e748-9242-11f0-b493-fea20be86931, b603d5d9-9242-11f0-b493-fea20be86931",
+  "user-agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+};
+
 const PopupForm = ({ open, onClose, onSubmit }) => {
   const [form, setForm] = useState({
     customerFirstName: "",
@@ -24,6 +41,12 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
   });
 
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [apiResponse, setApiResponse] = useState(null);
+  const [apiError, setApiError] = useState("");
+
+  const ENQUIRY_ENDPOINT =
+    "http://gokite-sit-b2c.convergentechnologies.com:30839/api/cms/api/v1/enquiries/package";
 
   const countries = Country.getAllCountries();
   const phoneCodes = useMemo(() => {
@@ -80,11 +103,40 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      onSubmit(form);
-      onClose();
+    if (!validateForm()) return;
+
+    setSubmitting(true);
+    setApiResponse(null);
+    setApiError("");
+
+    try {
+      const res = await fetch(ENQUIRY_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          claims: JSON.stringify(CLAIMS),
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json().catch(() => ({ message: "Submitted" }));
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Failed to submit enquiry");
+      }
+
+      setApiResponse(data);
+      if (typeof onSubmit === "function") {
+        try {
+          onSubmit(form);
+        } catch (_) { }
+      }
+    } catch (err) {
+      setApiError(String(err.message || err));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -213,6 +265,37 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             Please fill in your details for holidays assistance
           </p>
         </div>
+
+        {/* API response / error banner */}
+        {apiResponse && (
+          <div
+            style={{
+              padding: "12px 16px",
+              borderRadius: "12px",
+              background: "#ecfdf5",
+              color: "#065f46",
+              border: "1px solid #a7f3d0",
+            }}
+          >
+            <div style={{ fontWeight: 700, marginBottom: 4 }}>Success</div>
+            <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+              {JSON.stringify(apiResponse, null, 2)}
+            </pre>
+          </div>
+        )}
+        {apiError && (
+          <div
+            style={{
+              padding: "12px 16px",
+              borderRadius: "12px",
+              background: "#fef2f2",
+              color: "#991b1b",
+              border: "1px solid #fecaca",
+            }}
+          >
+            {apiError}
+          </div>
+        )}
 
         {/* Form Grid */
         }
@@ -611,7 +694,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               min={today}
               value={form.fromDate}
               onChange={handleChange}
-              
+
               style={{ ...inputStyle, ...(errors.fromDate ? errorStyle : {}) }}
               onFocus={(e) => Object.assign(e.target.style, focusStyle)}
               onBlur={(e) => {
@@ -637,7 +720,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               min={today}
               value={form.toDate}
               onChange={handleChange}
-              
+
               style={{ ...inputStyle, ...(errors.toDate ? errorStyle : {}) }}
               onFocus={(e) => Object.assign(e.target.style, focusStyle)}
               onBlur={(e) => {
@@ -1104,6 +1187,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               position: "relative",
               overflow: "hidden",
             }}
+            disabled={submitting}
             onMouseEnter={(e) => {
               e.target.style.transform = "translateY(-2px)";
               e.target.style.boxShadow = "0 15px 35px rgba(102, 126, 234, 0.5)";
@@ -1113,7 +1197,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               e.target.style.boxShadow = "0 10px 25px rgba(102, 126, 234, 0.4)";
             }}
           >
-            Submit Enquiry
+            {submitting ? "Submitting..." : "Submit Enquiry"}
           </button>
         </div>
       </form>

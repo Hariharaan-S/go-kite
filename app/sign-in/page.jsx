@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// Replace this with your actual endpoint when ready
-const POST_URL = "https://gokite-sit-b2c.convergentechnologies.com/api/azp/api/auth/v1/guest-login?getTokenInCookie=true";
+// Use local proxy that forwards and stores cookies for localhost
+const POST_URL = "/api/auth/guest-login";
 
 const GoKiteSignup = () => {
   const router = useRouter();

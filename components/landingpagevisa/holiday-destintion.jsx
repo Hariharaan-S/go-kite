@@ -15,21 +15,17 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Authorization and claims headers
-const CLAIMS = {
-  AUTHENTICATED: "true",
-  org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
-  OTP_VERFICATION_REQD: "false",
-  USER_ID: "0af402d1-98f0-18ae-8198-f493454d0001",
-  refreshtoken: "false",
-  client_ip: "14.99.174.62",
-  USER_ID_LONG: "563",
-  USER_NAME: "codetezteam@gmail.com",
-  "authorized-domains":
-    "b603f35d-9242-11f0-b493-fea20be86931, b603edb7-9242-11f0-b493-fea20be86931, b603e748-9242-11f0-b493-fea20be86931, b603d5d9-9242-11f0-b493-fea20be86931",
-  "user-agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
-};
+// Helper to read cookie on client
+function getCookie(name) {
+  if (typeof document === "undefined") return "";
+  console.log("document.cookie");
+  console.log(document.cookie);
+  const match = document.cookie
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${name}=`));
+  return match ? decodeURIComponent(match.split("=")[1]) : "";
+}
 
 // Helper function to get slider settings
 function getSliderSettings(windowWidth) {
@@ -90,18 +86,23 @@ export default function HolidayDestinations() {
   );
   const router = useRouter();
 
+  useEffect(() => { }, []);
+
   const getAuthHeaders = () => {
-    return {
+    const token = getCookie("accesstoken");
+    const headers = {
       "Content-Type": "application/json",
-      claims: JSON.stringify(CLAIMS),
     };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    console.log(`Bearer ${token}`);
+    return headers;
   };
 
   // Fetch sections data
   const fetchSectionsData = async () => {
     try {
       const sectionsResponse = await fetch(
-        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/pages-sections",
+        "/api/cms/pages-sections",
         {
           method: "POST",
           headers: getAuthHeaders(),
@@ -127,13 +128,13 @@ export default function HolidayDestinations() {
   const fetchHolidayCardsData = async (sectionId) => {
     try {
       const response = await fetch(
-        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/sections-holiday-cards",
+        "/api/cms/sections-holiday-cards",
         {
           method: "POST",
           headers: getAuthHeaders(),
           body: JSON.stringify({
             pageSectionId: sectionId,
-            limitValue : 10
+            limitValue: 10,
           }),
         }
       );
@@ -317,9 +318,8 @@ export default function HolidayDestinations() {
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
-        className={`holiday-header ${
-          windowWidth < 640 ? "holiday-header-mobile" : ""
-        }`}
+        className={`holiday-header ${windowWidth < 640 ? "holiday-header-mobile" : ""
+          }`}
       >
         <h1
           className="holiday-title"
@@ -417,9 +417,8 @@ export default function HolidayDestinations() {
               </ul>
 
               <div
-                className={`pricing-section ${
-                  windowWidth < 640 ? "pricing-column" : "pricing-row"
-                }`}
+                className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
+                  }`}
               >
                 <span className="original-price">
                   {destination.originalPrice}
