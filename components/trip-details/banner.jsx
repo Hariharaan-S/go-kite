@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import PopupForm from "./popup/popup";
 import "./styles/banner.css";
 
@@ -7,12 +7,22 @@ const NavbarHeightMobile = 76; // px -- adjust based on your actual navbar
 
 const BannerPage = ({ holidaysDetails, loading, error }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const toastTimerRef = useRef(null);
 
   const handleOpenPopup = () => setIsPopupOpen(true);
   const handleClosePopup = () => setIsPopupOpen(false);
 
   const handleSubmitEnquiry = (formData) => {
-    console.log("Enquiry submitted:", formData);
+    setIsPopupOpen(false);
+    setSuccessMessage("Enquiry saved successfully");
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current);
+    }
+    toastTimerRef.current = setTimeout(() => {
+      setSuccessMessage("");
+      toastTimerRef.current = null;
+    }, 4000);
   };
 
   return (
@@ -111,6 +121,28 @@ const BannerPage = ({ holidaysDetails, loading, error }) => {
         onClose={handleClosePopup}
         onSubmit={handleSubmitEnquiry}
       />
+      {successMessage ? (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 24,
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "#10b981",
+            color: "#fff",
+            padding: "12px 16px",
+            borderRadius: 8,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+            zIndex: 1000,
+            fontSize: 14,
+            fontWeight: 600,
+          }}
+          role="status"
+          aria-live="polite"
+        >
+          {successMessage}
+        </div>
+      ) : null}
     </div>
   );
 };

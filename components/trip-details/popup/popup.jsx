@@ -40,7 +40,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
   const [apiError, setApiError] = useState("");
 
   const ENQUIRY_ENDPOINT =
-    "http://gokite-sit-b2c.convergentechnologies.com:30839/api/cms/api/v1/enquiries/package";
+    "/api/enquiry";
 
   const countries = Country.getAllCountries();
   const phoneCodes = useMemo(() => {
