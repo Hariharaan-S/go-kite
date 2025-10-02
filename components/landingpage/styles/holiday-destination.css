@@ -91,6 +91,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  /* Restored to column for vertical card layout */
   overflow: hidden;
   width: 100%;
   cursor: pointer;

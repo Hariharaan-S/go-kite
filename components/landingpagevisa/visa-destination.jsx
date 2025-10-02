@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "../landingpage/styles/visa-destination.css";
 import { useRouter } from "next/navigation";
+import { usePageContext } from "../common/PageContext";
 
 const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds
 
@@ -23,6 +24,7 @@ const VisaDestinationCards = () => {
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -42,7 +44,7 @@ const VisaDestinationCards = () => {
           method: "POST",
           headers: getAuthHeaders(),
           body: JSON.stringify({
-            pageId: 9,
+            pageId: getPageIdWithFallback('landing', 9), // Use dynamic page ID with fallback
           }),
         }
       );
@@ -154,6 +156,9 @@ const VisaDestinationCards = () => {
 
   // Load data on component mount
   useEffect(() => {
+    // Wait for page context to load before fetching data
+    if (pageLoading) return;
+
     const loadData = async () => {
       try {
         setLoading(true);
@@ -210,7 +215,7 @@ const VisaDestinationCards = () => {
     };
 
     loadData();
-  }, []);
+  }, [pageLoading, getPageIdWithFallback]); // Re-run when page context loads
 
   // Responsive window width update for style calculations
   useEffect(() => {

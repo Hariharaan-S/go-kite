@@ -14,6 +14,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../styles/holidays-section-cards.styles.css";
+import { usePageContext } from "../../common/PageContext";
 
 const VISIBLE_CARDS = 4;
 
@@ -34,6 +35,7 @@ export default function HolidaysSectionCards() {
   const [error, setError] = useState(null);
   const sliderRef = useRef(null);
   const router = useRouter();
+  const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -51,7 +53,7 @@ export default function HolidaysSectionCards() {
           method: "POST",
           headers: getAuthHeaders(),
           body: JSON.stringify({
-            pageId: 11, // Different page ID for holidays/recommendations
+            pageId: getPageIdWithFallback('holidays', 11), // Use dynamic page ID with fallback
           }),
         }
       );
@@ -144,6 +146,9 @@ export default function HolidaysSectionCards() {
 
   // Load data on component mount
   useEffect(() => {
+    // Wait for page context to load before fetching data
+    if (pageLoading) return;
+
     const loadData = async () => {
       try {
         setLoading(true);

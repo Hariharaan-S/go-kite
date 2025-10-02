@@ -13,6 +13,7 @@ import "../styles/index.scss";
 import "rc-slider/assets/index.css";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
+import { PageProvider } from "../components/common/PageContext";
 
 export default function RootLayout({ children }) {
   useEffect(() => {
@@ -44,8 +45,10 @@ export default function RootLayout({ children }) {
       <body>
         <main>
           <Provider store={store}>
-            {children}
-            <SrollTop />
+            <PageProvider>
+              {children}
+              <SrollTop />
+            </PageProvider>
           </Provider>
         </main>
       </body>

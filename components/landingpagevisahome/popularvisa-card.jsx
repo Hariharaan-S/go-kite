@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { usePageContext } from "../common/PageContext";
 
 const VISIBLE_CARDS = 5;
 const VISIBLE_VACCINATION_CARDS = 1; // Show one card at a time for mobile
@@ -46,6 +47,7 @@ const VisaCards = () => {
   const vaccinationContainerRef = useRef(null);
   const sliderRef = useRef(null);
   const router = useRouter();
+  const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
 
   // Read cookie helper; proxies attach token server-side, but keep header consistent
   function getCookie(name) {
@@ -66,8 +68,8 @@ const VisaCards = () => {
     return headers;
   };
 
-  // Example/static page id to include in API body
-  const PAGE_ID = 10;
+  // Dynamic page id from context with fallback
+  const PAGE_ID = getPageIdWithFallback('visa', 10);
 
   // Fetch sections data
   const fetchSectionsData = async () => {

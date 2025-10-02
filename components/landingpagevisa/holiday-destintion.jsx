@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { usePageContext } from "../common/PageContext";
 
 // Helper to read cookie on client
 function getCookie(name) {
@@ -85,6 +86,7 @@ export default function HolidayDestinations() {
     getSliderSettings(windowWidth)
   );
   const router = useRouter();
+  const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
 
   useEffect(() => { }, []);
 
@@ -107,7 +109,7 @@ export default function HolidayDestinations() {
           method: "POST",
           headers: getAuthHeaders(),
           body: JSON.stringify({
-            pageId: 9, // Hardcoded page ID from the example
+            pageId: getPageIdWithFallback('landing', 9), // Use dynamic page ID with fallback
           }),
         }
       );
@@ -216,6 +218,9 @@ export default function HolidayDestinations() {
 
   // Load data on component mount
   useEffect(() => {
+    // Wait for page context to load before fetching data
+    if (pageLoading) return;
+
     const loadData = async () => {
       try {
         setLoading(true);
@@ -223,11 +228,13 @@ export default function HolidayDestinations() {
 
         // Fetch sections first
         const sections = await fetchSectionsData();
+        console.log("holidays sections");
+        console.log(sections);
 
         // Find the holiday destinations section
         const holidaySection = sections.find(
           (section) =>
-            section.title === "home-holiday-section" &&
+            section.title === "Popular Holiday Destination" &&
             section.contentType === "HOLIDAY"
         );
 
@@ -239,6 +246,9 @@ export default function HolidayDestinations() {
         const holidayCardsData = await fetchHolidayCardsData(
           holidaySection.pageSectionId
         );
+
+        console.log("holidays cards data");
+        console.log(holidayCardsData);
 
         // Transform and set destinations
         const transformedDestinations = transformHolidayData(holidayCardsData);
@@ -275,7 +285,7 @@ export default function HolidayDestinations() {
     };
 
     loadData();
-  }, []);
+  }, [pageLoading, getPageIdWithFallback]); // Re-run when page context loads
 
   // Existing responsive and UI logic
   useEffect(() => {
