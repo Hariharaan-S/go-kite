@@ -158,7 +158,6 @@ export default function HolidaysSectionCards() {
         const sections = await fetchSectionsData();
         console.log(sections);
 
-
         // Find the beaches/recommendation section
         const holidaysSection = sections.find(
           (section) =>
@@ -167,7 +166,6 @@ export default function HolidaysSectionCards() {
         );
 
         console.log(holidaysSection);
-
 
         if (!holidaysSection) {
           throw new Error("Holidays-section-2 section not found");
@@ -188,15 +186,14 @@ export default function HolidaysSectionCards() {
         console.error("Error loading data:", err);
         setError(err.message);
 
-        // Fallback to default data if API fails
-        setDestinations([
+        // Enhanced fallback data if API fails (similar to popularvisa-card)
+        const fallbackDestinations = [
           {
             id: 1,
-            image:
-              "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
-            title: "Swiss Alps",
+            image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
+            title: "Swiss Alps Adventure",
             rating: 4.7,
-            duration: "3Days 4 Nights",
+            duration: "3 Days 4 Nights",
             flights: "2 Flights",
             hotels: "1 Hotel",
             transfers: "2 Transfers",
@@ -208,15 +205,119 @@ export default function HolidaysSectionCards() {
             ],
             originalPrice: "₹98,952",
             discountedPrice: "₹88,952",
+            priceContent: "per person",
+            holidayId: 1
           },
-        ]);
+          {
+            id: 2,
+            image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop",
+            title: "Tropical Paradise",
+            rating: 4.8,
+            duration: "5 Days 6 Nights",
+            flights: "2 Flights",
+            hotels: "2 Hotels",
+            transfers: "3 Transfers",
+            activities: "6 Activities",
+            features: [
+              "Beach resort with all meals",
+              "Water sports activities",
+              "Island hopping tour",
+            ],
+            originalPrice: "₹1,25,000",
+            discountedPrice: "₹1,10,000",
+            priceContent: "per person",
+            holidayId: 2
+          },
+          {
+            id: 3,
+            image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop",
+            title: "Mountain Retreat",
+            rating: 4.6,
+            duration: "4 Days 5 Nights",
+            flights: "2 Flights",
+            hotels: "1 Hotel",
+            transfers: "2 Transfers",
+            activities: "5 Activities",
+            features: [
+              "Mountain lodge accommodation",
+              "Trekking and hiking",
+              "Local cultural experience",
+            ],
+            originalPrice: "₹85,000",
+            discountedPrice: "₹75,000",
+            priceContent: "per person",
+            holidayId: 3
+          },
+          {
+            id: 4,
+            image: "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
+            title: "Desert Safari",
+            rating: 4.5,
+            duration: "3 Days 2 Nights",
+            flights: "2 Flights",
+            hotels: "1 Hotel",
+            transfers: "2 Transfers",
+            activities: "4 Activities",
+            features: [
+              "Desert camp experience",
+              "Camel safari adventure",
+              "Traditional dinner show",
+            ],
+            originalPrice: "₹65,000",
+            discountedPrice: "₹58,000",
+            priceContent: "per person",
+            holidayId: 4
+          },
+          {
+            id: 5,
+            image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
+            title: "City Explorer",
+            rating: 4.4,
+            duration: "2 Days 3 Nights",
+            flights: "2 Flights",
+            hotels: "1 Hotel",
+            transfers: "2 Transfers",
+            activities: "3 Activities",
+            features: [
+              "City center hotel",
+              "Guided city tours",
+              "Museum and gallery visits",
+            ],
+            originalPrice: "₹55,000",
+            discountedPrice: "₹48,000",
+            priceContent: "per person",
+            holidayId: 5
+          },
+          {
+            id: 6,
+            image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop",
+            title: "Coastal Getaway",
+            rating: 4.9,
+            duration: "6 Days 7 Nights",
+            flights: "2 Flights",
+            hotels: "2 Hotels",
+            transfers: "3 Transfers",
+            activities: "7 Activities",
+            features: [
+              "Beachfront resort stay",
+              "Snorkeling and diving",
+              "Sunset cruise included",
+            ],
+            originalPrice: "₹1,45,000",
+            discountedPrice: "₹1,25,000",
+            priceContent: "per person",
+            holidayId: 6
+          },
+        ];
+
+        setDestinations(fallbackDestinations);
       } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  }, []);
+  }, [pageLoading, getPageIdWithFallback]); // Re-run when page context loads
 
   const totalSlides = destinations.length;
 
@@ -249,20 +350,21 @@ export default function HolidaysSectionCards() {
 
   const visibleDestinations = getVisibleDestinations();
 
-  // Loading and error states
+  // Loading state only
   if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "2rem" }}>
-        <p>Loading recommendations...</p>
+        <p>Loading holiday destinations...</p>
       </div>
     );
   }
 
-  if (error) {
+  // If there's an error but we have fallback data, show the cards without error message
+  // Only show error if no data at all (similar to popularvisa-card pattern)
+  if (error && destinations.length === 0) {
     return (
       <div style={{ textAlign: "center", padding: "2rem" }}>
-        <p>Error loading recommendations: {error}</p>
-        <p>Showing default content...</p>
+        <p>Unable to load holiday destinations. Please try again later.</p>
       </div>
     );
   }
