@@ -3,11 +3,21 @@ import { cookies } from "next/headers";
 import http from "http";
 import https from "https";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(request) {
     try {
         const body = await request.json();
-        const cookieStore = await cookies();
-        const token = cookieStore.get("accesstoken")?.value || "";
+        const cookieStore = cookies();
+        // Prefer cookie token, fallback to Authorization header from client
+        let token = cookieStore.get("accesstoken")?.value || "";
+        if (!token) {
+            const authHeader = request.headers.get("authorization") || request.headers.get("Authorization");
+            if (authHeader && authHeader.toLowerCase().startsWith("bearer ")) {
+                token = authHeader.slice(7).trim();
+            }
+        }
         if (!token) {
             return NextResponse.json(
                 { error: "Missing accesstoken cookie" },

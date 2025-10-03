@@ -69,11 +69,16 @@ const VisaCards = () => {
   };
 
   // Dynamic page id from context with fallback
-  const PAGE_ID = getPageIdWithFallback('visa', 10);
+  const PAGE_ID = getPageIdWithFallback('visa-landing-page');
+  console.log("PAGE_ID");
+  console.log(PAGE_ID);
+
 
   // Fetch sections data
   const fetchSectionsData = async () => {
     try {
+      console.log(" in fetchSectionsData PAGE_ID");
+      console.log(PAGE_ID);
       const sectionsResponse = await fetch(
         "/api/cms/pages-sections",
         {
@@ -179,12 +184,12 @@ const VisaCards = () => {
         // Find relevant section IDs
         const popularVisaSection = sections.find(
           (section) =>
-            section.title === "popular-visa" && section.contentType === "VISA"
+            section.title === "Popular Countries" && section.contentType === "VISA"
         );
 
         const vacationSection = sections.find(
           (section) =>
-            section.title === "Vacation Trending countries" &&
+            section.title === "Vacation - Trending Countries" &&
             section.contentType === "VISA"
         );
 
