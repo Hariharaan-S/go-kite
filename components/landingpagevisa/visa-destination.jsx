@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 
 const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds
 
+const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
+
 // Helper to read cookie on client
 function getCookie(name) {
   if (typeof document === "undefined") return "";
@@ -116,7 +118,9 @@ const VisaDestinationCards = () => {
 
       return {
         id: item.visaCardId,
-        image: `/img/general/${item.visaCardJson.image}`, // Assuming images are stored in public/img/general/
+        image: item?.visaCardJson?.image
+          ? `/img/general/${item.visaCardJson.image}`
+          : FALLBACK_IMAGE, // Assuming images are stored in public/img/general/
         country: item.visaCardTitle,
         fastTrack: {
           originalPrice: `₹${Math.round(oldPrice)}`, // Remove decimal places
@@ -431,9 +435,18 @@ const VisaDestinationCards = () => {
               className="visa-card-image"
               style={{
                 height: getImageHeight(),
-                backgroundImage: `url(${destination.image})`,
+                overflow: "hidden",
               }}
             >
+              <img
+                src={destination.image}
+                alt={destination.country}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
+              />
               {/* Fast track overlay */}
               <div className="fast-track-overlay">
                 Fast track{" "}

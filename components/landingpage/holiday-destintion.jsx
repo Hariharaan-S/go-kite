@@ -15,6 +15,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
+
 // Helper function to get slider settings
 function getSliderSettings(windowWidth) {
   let slidesToShow = 4;
@@ -189,9 +191,8 @@ export default function HolidayDestinations() {
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
-        className={`holiday-header ${
-          windowWidth < 640 ? "holiday-header-mobile" : ""
-        }`}
+        className={`holiday-header ${windowWidth < 640 ? "holiday-header-mobile" : ""
+          }`}
       >
         <h1
           className="holiday-title"
@@ -217,6 +218,10 @@ export default function HolidayDestinations() {
                 alt={destination.title}
                 className="destination-image"
                 style={{ height: getImageHeight(windowWidth) }}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
               />
               <button className="heart-btn">
                 <Heart
@@ -270,9 +275,8 @@ export default function HolidayDestinations() {
               </ul>
 
               <div
-                className={`pricing-section ${
-                  windowWidth < 640 ? "pricing-column" : "pricing-row"
-                }`}
+                className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
+                  }`}
               >
                 <span className="original-price">
                   {destination.originalPrice}

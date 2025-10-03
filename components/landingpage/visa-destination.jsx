@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./styles/visa-destination.css";
 import { useRouter } from "next/navigation";
 
+const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
+
 const VisaDestinationCards = () => {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -274,9 +276,18 @@ const VisaDestinationCards = () => {
               className="visa-card-image"
               style={{
                 height: getImageHeight(),
-                backgroundImage: `url(${destination.image})`,
+                overflow: "hidden",
               }}
             >
+              <img
+                src={destination.image}
+                alt={destination.country}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
+              />
               {/* Fast track overlay */}
               <div className="fast-track-overlay">
                 Fast track{" "}

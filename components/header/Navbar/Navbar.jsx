@@ -9,22 +9,19 @@ const Navbar = () => {
   return (
     <header className="w-full bg-white">
       <nav
-        className="
-          mx-auto 
-          flex 
-          w-full 
-          max-w-7xl 
-          items-center 
-          justify-between   /* spreads logo left & button right */
-          px-4 
-          py-3
-        "
+        className="mx-auto w-full max-w-7xl"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 16px",
+        }}
       >
         {/* Logo */}
         <button
           onClick={handleLogoClick}
           className="flex items-center space-x-5 focus:outline-none"
-          style={{paddingLeft:"15px"}}
+          style={{ paddingLeft: "15px" }}
         >
           <img
             src="/img/general/logo.svg"
@@ -36,7 +33,7 @@ const Navbar = () => {
         </button>
 
         {/* Greeting button pinned to far right */}
-        <div className="ml-auto pr-5">
+        <div style={{ marginLeft: "auto", paddingRight: "20px" }}>
           <button
             type="button"
             className="
@@ -49,7 +46,7 @@ const Navbar = () => {
               transition-colors 
               duration-200
             "
-            style={{borderRadius:"8px", padding:"15px"}}
+            style={{ borderRadius: "8px", padding: "15px" }}
           >
             Hi, Usman
           </button>

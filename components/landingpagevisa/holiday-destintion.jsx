@@ -16,6 +16,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { usePageContext } from "../common/PageContext";
 
+const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
+
 // Helper to read cookie on client
 function getCookie(name) {
   if (typeof document === "undefined") return "";
@@ -184,7 +186,9 @@ export default function HolidayDestinations() {
       return {
         id: item.holidayCardId,
         holidayId: item.holidayCardId, // Add this line
-        image: `/img/general/${item.cardJson.heroImage}`, // Assuming images are stored in public/img/general/
+        image: item?.cardJson?.heroImage
+          ? `/img/general/${item.cardJson.heroImage}`
+          : FALLBACK_IMAGE, // Assuming images are stored in public/img/general/
         title: item.title,
         rating: parseFloat(item.packageRating),
         duration: `${item.noOfDays} Days ${item.noOfNights} Nights`,
@@ -374,6 +378,10 @@ export default function HolidayDestinations() {
                 alt={destination.title}
                 className="destination-image"
                 style={{ height: getImageHeight(windowWidth) }}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
               />
               <button className="heart-btn">
                 <Heart

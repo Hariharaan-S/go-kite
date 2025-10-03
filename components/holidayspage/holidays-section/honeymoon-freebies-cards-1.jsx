@@ -15,6 +15,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../styles/honeymoon-freebies-cards-1.css";
 
+const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
+
 // Read cookie helper; proxies read token server-side, but this keeps headers consistent
 function getCookie(name) {
   if (typeof document === "undefined") return "";
@@ -103,7 +105,9 @@ export default function HoneymoonFreebiesCards1() {
 
       return {
         id: item.sectionHolidayCardId,
-        image: item.heroImage || "",
+        image: item?.heroImage
+          ? `/img/general/${item.heroImage}`
+          : FALLBACK_IMAGE,
         title: item.cardJson.packageName || "",
         rating: parseFloat(item.cardJson.packageRating || 0),
         duration: `${item.cardJson.days} Days ${item.cardJson.nights} Nights` || "",
@@ -257,6 +261,10 @@ export default function HoneymoonFreebiesCards1() {
                     src={destination.image}
                     alt={destination.title}
                     className="image-2"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = FALLBACK_IMAGE;
+                    }}
                   />
                   <button className="wishlist-btn-2">
                     <Heart size={20} />

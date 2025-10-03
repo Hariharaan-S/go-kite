@@ -16,6 +16,8 @@ import "slick-carousel/slick/slick-theme.css";
 import "../styles/holidays-section-cards.styles.css";
 import { usePageContext } from "../../common/PageContext";
 
+const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
+
 const VISIBLE_CARDS = 4;
 
 // Read cookie helper (not strictly required, proxies read cookie server-side)
@@ -109,7 +111,9 @@ export default function HolidaysSectionCards() {
 
       return {
         id: item.sectionHolidayCardId,
-        image: item.heroImage || "",
+        image: item?.heroImage
+          ? `/img/general/${item.heroImage}`
+          : FALLBACK_IMAGE,
         title: item.cardJson.packageName || "",
         rating: parseFloat(item.cardJson.packageRating || 0),
         duration: `${item.cardJson.days} Days ${item.cardJson.nights} Nights` || "",
@@ -473,7 +477,7 @@ export default function HolidaysSectionCards() {
               >
                 {/* Image Section */}
                 <div className="image-wrapper">
-                  <img src={destination.image} alt={destination.title} className="card-img" />
+                  <img src={destination.image} alt={destination.title} className="card-img" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = FALLBACK_IMAGE; }} />
                   <button
                     className="wishlist-btn"
                     onMouseEnter={(e) => {
