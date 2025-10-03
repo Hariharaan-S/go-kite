@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { US, IN, SG, CH, ES, TR, LK, AU, BD, GB, FR, AE } from "country-flag-icons/react/3x2";
+import { US, IN, SG, CH, ES, TR, LK, AU, BD } from "country-flag-icons/react/3x2";
 import "./styles/popularvisa-card.css";
 import { useRouter } from "next/navigation";
 import Slider from "react-slick";
@@ -33,14 +33,6 @@ const countryFlagMap = {
   Australia: AU,
   BD: BD,
   Bangladesh: BD,
-  GB: GB,
-  UK: GB,
-  "United Kingdom": GB,
-  FR: FR,
-  France: FR,
-  AE: AE,
-  UAE: AE,
-  "United Arab Emirates": AE,
 };
 
 const VisaCards = () => {
@@ -230,59 +222,27 @@ const VisaCards = () => {
         console.error("Error loading data:", err);
         setError(err.message);
 
-        // Enhanced fallback data if API fails
-        const fallbackPopularVisas = [
-          {
-            Flag: GB,
-            country: "United Kingdom",
-            type: "Tourist visa",
-            price: "₹8,500",
-            priceText: "per adult",
-            subtitle: "Get your Visa by 24hours",
-          },
+        // Fallback to default data if API fails
+        setPopularVisas([
           {
             Flag: US,
-            country: "United States",
+            country: "US Visa",
             type: "Green card visa",
             price: "₹1,60,500",
             priceText: "per adult",
             subtitle: "Get your Visa by 24hours",
           },
           {
-            Flag: AE,
-            country: "United Arab Emirates",
+            Flag: IN,
+            country: "India",
             type: "Tourist visa",
-            price: "₹6,500",
+            price: "₹1,60,500",
             priceText: "per adult",
             subtitle: "Get your Visa by 24hours",
           },
-          {
-            Flag: FR,
-            country: "France",
-            type: "Schengen visa",
-            price: "₹9,500",
-            priceText: "per adult",
-            subtitle: "Get your Visa by 48hours",
-          },
-          {
-            Flag: AU,
-            country: "Australia",
-            type: "Tourist visa",
-            price: "₹12,500",
-            priceText: "per adult",
-            subtitle: "Get your Visa by 72hours",
-          },
-          {
-            Flag: SG,
-            country: "Singapore",
-            type: "Tourist visa",
-            price: "₹5,500",
-            priceText: "per adult",
-            subtitle: "Get your Visa by 24hours",
-          },
-        ];
+        ]);
 
-        const fallbackVacationCountries = [
+        setVaccinationCountries([
           {
             Flag: LK,
             country: "Sri Lanka",
@@ -291,34 +251,7 @@ const VisaCards = () => {
             priceText: "per adult",
             hasVisaIcon: true,
           },
-          {
-            Flag: TR,
-            country: "Turkey",
-            subtitle: "Get your Visa by 48hours",
-            price: "₹7,200",
-            priceText: "per adult",
-            hasVisaIcon: true,
-          },
-          {
-            Flag: IN,
-            country: "India",
-            subtitle: "Get your Visa by 24hours",
-            price: "₹4,500",
-            priceText: "per adult",
-            hasVisaIcon: true,
-          },
-          {
-            Flag: ES,
-            country: "Spain",
-            subtitle: "Get your Visa by 72hours",
-            price: "₹9,800",
-            priceText: "per adult",
-            hasVisaIcon: true,
-          },
-        ];
-
-        setPopularVisas(fallbackPopularVisas);
-        setVaccinationCountries(fallbackVacationCountries);
+        ]);
       } finally {
         setLoading(false);
       }
@@ -430,7 +363,6 @@ const VisaCards = () => {
 
   const VisaIcon = () => <div className="visa-icon">E-VISA</div>;
 
-  // Loading state only
   if (loading) {
     return (
       <div className="visa-container">
@@ -441,13 +373,12 @@ const VisaCards = () => {
     );
   }
 
-  // If there's an error but we have fallback data, show the cards without error message
-  // Only show error if no data at all
-  if (error && popularVisas.length === 0 && vaccinationCountries.length === 0) {
+  if (error) {
     return (
       <div className="visa-container">
         <div style={{ textAlign: "center", padding: "2rem" }}>
-          <p>Unable to load visa information. Please try again later.</p>
+          <p>Error loading data: {error}</p>
+          <p>Showing default content...</p>
         </div>
       </div>
     );
@@ -474,84 +405,78 @@ const VisaCards = () => {
       </div>
 
       {/* Popular Visa Cards */}
-      {popularVisas.length > 0 && (
-        <div className="visa-card-list">
-          <Slider ref={sliderRef} {...sliderSettings} style={{ width: "90%" }}>
-            {popularVisas.map((visa, index) => (
-              <div key={index} style={{ padding: "0 12px" }}>
-                <div
-                  className="visa-card"
-                  onClick={() => {
-                    try {
-                      if (typeof window !== "undefined") {
-                        window.sessionStorage.setItem("applyVisaCountryId", String(visa.countryId || ""));
-                      }
-                    } catch (e) { }
-                    router.push("/apply_visa");
-                  }}
-                >
-                  <div className="card-header">
-                    <visa.Flag className="flag" />
-                    <div className="card-content">
-                      <h3 className="visa-country">{visa.country}</h3>
-                      <p className="visa-type">{visa.type}</p>
-                    </div>
+      <div className="visa-card-list">
+        <Slider ref={sliderRef} {...sliderSettings} style={{ width: "90%" }}>
+          {popularVisas.map((visa, index) => (
+            <div key={index} style={{ padding: "0 12px" }}>
+              <div
+                className="visa-card"
+                onClick={() => {
+                  try {
+                    if (typeof window !== "undefined") {
+                      window.sessionStorage.setItem("applyVisaCountryId", String(visa.countryId || ""));
+                    }
+                  } catch (e) { }
+                  router.push("/apply_visa");
+                }}
+              >
+                <div className="card-header">
+                  <visa.Flag className="flag" />
+                  <div className="card-content">
+                    <h3 className="visa-country">{visa.country}</h3>
+                    <p className="visa-type">{visa.type}</p>
                   </div>
-                  <div className="visa-price-row">
-                    <div className="price-section">
-                      <span className="visa-price">{visa.price}</span>
-                      <span className="visa-price-text">{visa.priceText}</span>
-                    </div>
-                    <ChevronRight size={20} className="arrow-icon" />
+                </div>
+                <div className="visa-price-row">
+                  <div className="price-section">
+                    <span className="visa-price">{visa.price}</span>
+                    <span className="visa-price-text">{visa.priceText}</span>
                   </div>
+                  <ChevronRight size={20} className="arrow-icon" />
                 </div>
               </div>
-            ))}
-          </Slider>
-        </div>
-      )}
+            </div>
+          ))}
+        </Slider>
+      </div>
 
       {/* Vaccination Countries */}
-      {vaccinationCountries.length > 0 && (
-        <>
-          <h2 className="section-title">Vacation – Trending Countries</h2>
-          <div className="visa-card-list">
-            <Slider ref={sliderRef} {...sliderSettingsVacation} style={{ width: "90%" }}>
-              {vaccinationCountries.map((country, index) => (
-                <div key={index} style={{ padding: "0 12px" }}>
-                  <div
-                    className="vaccination-card"
-                    onClick={() => {
-                      try {
-                        if (typeof window !== "undefined") {
-                          window.sessionStorage.setItem("applyVisaCountryId", String(country.countryId || ""));
-                        }
-                      } catch (e) { }
-                      router.push("/apply_visa");
-                    }}
-                  >
-                    {country.hasVisaIcon && <VisaIcon />}
-                    <div className="card-header">
-                      <country.Flag className="flag" />
-                      <div className="card-content">
-                        <h3 className="visa-country">{country.country}</h3>
-                        <p className="visa-type">{country.subtitle}</p>
-                      </div>
-                    </div>
-                    <div className="visa-price-row">
-                      <div className="price-section">
-                        <span className="visa-price">{country.price}</span>
-                        <span className="visa-price-text">{country.priceText}</span>
-                      </div>
-                      <ChevronRight size={20} className="arrow-icon" />
-                    </div>
+      <h2 className="section-title">Vacation – Trending Countries</h2>
+      <div className="visa-card-list">
+        <Slider ref={sliderRef} {...sliderSettingsVacation} style={{ width: "90%" }}>
+          {vaccinationCountries.map((country, index) => (
+            <div key={index} style={{ padding: "0 12px" }}>
+              <div
+                className="vaccination-card"
+                onClick={() => {
+                  try {
+                    if (typeof window !== "undefined") {
+                      window.sessionStorage.setItem("applyVisaCountryId", String(country.countryId || ""));
+                    }
+                  } catch (e) { }
+                  router.push("/apply_visa");
+                }}
+              >
+                {country.hasVisaIcon && <VisaIcon />}
+                <div className="card-header">
+                  <country.Flag className="flag" />
+                  <div className="card-content">
+                    <h3 className="visa-country">{country.country}</h3>
+                    <p className="visa-type">{country.subtitle}</p>
                   </div>
                 </div>
-              ))}
-            </Slider>
-          </div>
-        </>
-      )}
+                <div className="visa-price-row">
+                  <div className="price-section">
+                    <span className="visa-price">{country.price}</span>
+                    <span className="visa-price-text">{country.priceText}</span>
+                  </div>
+                  <ChevronRight size={20} className="arrow-icon" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </Slider>
+      </div>
 
       {/* Visa Rules Image */}
       <div className="visa-rules">

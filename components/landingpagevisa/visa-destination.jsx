@@ -95,108 +95,6 @@ const VisaDestinationCards = () => {
     return Math.round(parseFloat(amount) * rate);
   };
 
-  // Fallback data function
-  const getFallbackData = () => {
-    return [
-      {
-        id: 1,
-        image:
-          "https://images.squarespace-cdn.com/content/v1/6397e1ebbb148c2e8ac0b037/28bd2e1a-71d4-4dbf-b8a9-b34bdee409a8/London_1_2019-4508.jpg",
-        country: "United Kingdom",
-        fastTrack: {
-          originalPrice: "₹8500",
-          extraCharges: "₹8500",
-          totalPrice: "₹17000",
-          date: "25 Mar, 11:02PM",
-        },
-        getOn: {
-          date: "25 Mar, 11:02PM",
-          price: "₹8,500",
-        },
-      },
-      {
-        id: 2,
-        image:
-          "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=300&fit=crop&crop=center",
-        country: "United Arab Emirates",
-        fastTrack: {
-          originalPrice: "₹6500",
-          extraCharges: "₹8500",
-          totalPrice: "₹15000",
-          date: "26 Mar, 10:00AM",
-        },
-        getOn: {
-          date: "26 Mar, 10:00AM",
-          price: "₹6,500",
-        },
-      },
-      {
-        id: 3,
-        image:
-          "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=300&fit=crop&crop=center",
-        country: "France",
-        fastTrack: {
-          originalPrice: "₹9500",
-          extraCharges: "₹8500",
-          totalPrice: "₹18000",
-          date: "27 Mar, 09:30AM",
-        },
-        getOn: {
-          date: "27 Mar, 09:30AM",
-          price: "₹9,500",
-        },
-      },
-      {
-        id: 4,
-        image:
-          "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=400&h=300&fit=crop&crop=center",
-        country: "Australia",
-        fastTrack: {
-          originalPrice: "₹12500",
-          extraCharges: "₹8500",
-          totalPrice: "₹21000",
-          date: "28 Mar, 08:00PM",
-        },
-        getOn: {
-          date: "28 Mar, 08:00PM",
-          price: "₹12,500",
-        },
-      },
-      {
-        id: 5,
-        image:
-          "https://images.unsplash.com/photo-1604999333679-b86d54738315?w=400&h=300&fit=crop&crop=center",
-        country: "Singapore",
-        fastTrack: {
-          originalPrice: "₹5500",
-          extraCharges: "₹8500",
-          totalPrice: "₹14000",
-          date: "29 Mar, 02:00PM",
-        },
-        getOn: {
-          date: "29 Mar, 02:00PM",
-          price: "₹5,500",
-        },
-      },
-      {
-        id: 6,
-        image:
-          "https://images.unsplash.com/photo-1551582045-6ec9c11d8697?w=400&h=300&fit=crop&crop=center",
-        country: "Canada",
-        fastTrack: {
-          originalPrice: "₹11000",
-          extraCharges: "₹8500",
-          totalPrice: "₹19500",
-          date: "30 Mar, 01:00PM",
-        },
-        getOn: {
-          date: "30 Mar, 01:00PM",
-          price: "₹11,000",
-        },
-      },
-    ];
-  };
-
   // Transform visa card data
   const transformVisaData = (apiData) => {
     const EXTRA_CHARGES = 8500; // Fixed extra charges
@@ -278,23 +176,32 @@ const VisaDestinationCards = () => {
           preferredVisaSection.pageSectionId
         );
         console.log(visaCardsData);
-        
         // Transform and set destinations
         const transformedDestinations = transformVisaData(visaCardsData);
-        
-        // If API returns empty data, use fallback
-        if (transformedDestinations.length === 0) {
-          console.log("API returned empty data, using fallback");
-          setDestinations(getFallbackData());
-        } else {
-          setDestinations(transformedDestinations);
-        }
+        setDestinations(transformedDestinations);
       } catch (err) {
         console.error("Error loading data:", err);
         setError(err.message);
 
-        // Use fallback data if API fails
-        setDestinations(getFallbackData());
+        // Fallback to default data if API fails
+        setDestinations([
+          {
+            id: 1,
+            image:
+              "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=300&fit=crop&crop=center",
+            country: "United Arab Emirates",
+            fastTrack: {
+              originalPrice: "₹6500",
+              extraCharges: "₹8500",
+              totalPrice: "₹15000",
+              date: "25 Mar, 11:02PM",
+            },
+            getOn: {
+              date: "25 Mar, 11:02PM",
+              price: "₹6,500",
+            },
+          },
+        ]);
       } finally {
         setLoading(false);
       }
@@ -416,7 +323,10 @@ const VisaDestinationCards = () => {
   const visibleDestinations = getVisibleDestinations();
   const router = useRouter();
 
-  // Loading state only
+  // Existing responsive style helpers remain the same...
+  // (getContainerPadding, getCardWidth, getImageHeight, etc.)
+
+  // Loading and error states
   if (loading) {
     return (
       <div className="visa-container">
@@ -427,13 +337,12 @@ const VisaDestinationCards = () => {
     );
   }
 
-  // If there's an error but we have fallback data, show the cards without error message
-  // If there's an error and no data at all, show error
-  if (error && destinations.length === 0) {
+  if (error) {
     return (
       <div className="visa-container">
         <div style={{ textAlign: "center", padding: "2rem" }}>
-          <p>Unable to load visa destinations. Please try again later.</p>
+          <p>Error loading destinations: {error}</p>
+          <p>Showing default content...</p>
         </div>
       </div>
     );
