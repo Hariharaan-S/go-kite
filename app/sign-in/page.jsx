@@ -31,27 +31,9 @@ const GoKiteSignup = () => {
     }
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      }}
-    >
+    <div className="signInContainer">
       {/* Left Side - Image with Logo */}
-      <div
-        style={{
-          flex: "1",
-          background:
-            "linear-gradient(135deg, #4a90e2 0%, #7bb3f0 50%, #a8d0f8 100%)",
-          position: "relative",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-        }}
-      >
+      <div className="leftPanel">
         {/* Earth Background Image */}
         <div
           style={{
@@ -88,16 +70,7 @@ const GoKiteSignup = () => {
       </div>
 
       {/* Right Side - Sign Up Form */}
-      <div
-        style={{
-          flex: "1",
-          backgroundColor: "#f8f9fa",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "40px",
-        }}
-      >
+      <div className="rightPanel">
         <div
           style={{
             width: "100%",
@@ -316,6 +289,43 @@ const GoKiteSignup = () => {
           </div>
         </div>
       </div>
+      <style jsx>{`
+        .signInContainer {
+          display: flex;
+          min-height: 100vh;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          background: #f3f4f6;
+        }
+        .leftPanel {
+          flex: 1;
+          background: linear-gradient(135deg, #4a90e2 0%, #7bb3f0 50%, #a8d0f8 100%);
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          min-height: 560px;
+        }
+        .rightPanel {
+          flex: 1;
+          background-color: #f8f9fa;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 40px;
+        }
+        @media (max-width: 1024px) {
+          .signInContainer {
+            flex-direction: column;
+          }
+          .leftPanel {
+            min-height: 320px;
+          }
+          .rightPanel {
+            padding: 24px;
+          }
+        }
+      `}</style>
     </div>
   );
 };

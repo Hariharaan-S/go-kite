@@ -4,7 +4,7 @@ import React from "react";
 const socialIcons = {
   facebook: (
     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 48 48">
-    <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"></path><path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"></path>
+      <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"></path><path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"></path>
     </svg>
   ),
   instagram: (
@@ -70,7 +70,7 @@ export default function GoKiteFooter() {
     <footer
       style={{
         backgroundColor: "#D7F7FF",
-        padding: "40px 0 40px 40px", // Less right padding, more left padding
+        padding: "24px 24px", // compact padding while keeping some breathing room
         fontFamily: "Arial, sans-serif",
         borderTopLeftRadius: "10px",
         borderTopRightRadius: "10px",
@@ -86,7 +86,7 @@ export default function GoKiteFooter() {
           maxWidth: "1200px",
           marginLeft: "0", // Left align container
           marginRight: "auto",
-          gap: "40px",
+          gap: "28px",
         }}
       >
         {/* Left Section - Logo Image and Contact Info */}
@@ -102,9 +102,9 @@ export default function GoKiteFooter() {
             src="/img/general/logo.svg"
             alt="Go Kite Logo"
             style={{
-              width: "120px",
+              width: "110px",
               height: "auto",
-              marginBottom: "20px",
+              marginBottom: "16px",
               maxWidth: "100%",
             }}
           />
@@ -158,7 +158,7 @@ export default function GoKiteFooter() {
               fontSize: "18px",
               fontWeight: "bold",
               color: "#222",
-              marginBottom: "20px",
+              marginBottom: "16px",
             }}
           >
             Our Services
@@ -172,7 +172,7 @@ export default function GoKiteFooter() {
           >
             {["Flight Booking", "Visa", "Activities", "Holidays", "Hotel"].map(
               (service, index) => (
-                <li key={index} style={{ marginBottom: "12px" }}>
+                <li key={index} style={{ marginBottom: "10px" }}>
                   <a
                     href="#"
                     style={{
@@ -203,7 +203,7 @@ export default function GoKiteFooter() {
               fontSize: "18px",
               fontWeight: "bold",
               color: "#222",
-              marginBottom: "20px",
+              marginBottom: "16px",
             }}
           >
             About
@@ -222,7 +222,7 @@ export default function GoKiteFooter() {
               "Help Desk",
               "Terms & Condition",
             ].map((item, index) => (
-              <li key={index} style={{ marginBottom: "12px" }}>
+              <li key={index} style={{ marginBottom: "10px" }}>
                 <a
                   href="#"
                   style={{
