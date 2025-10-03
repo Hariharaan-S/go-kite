@@ -55,7 +55,7 @@
 .visa-card-list {
   display: flex;
   flex-direction: row;
-  gap: 16px;
+  gap: 5px;
   margin-bottom: 32px;
   overflow-x: auto;
   width: 100%;
@@ -70,11 +70,13 @@
 
 /* Spacing between slides in slick carousel */
 .visa-card-list .slick-list {
-  margin: 0 -12px; /* balance inner slide padding */
+  margin: 0 -12px;
+  /* balance inner slide padding */
 }
 
 .visa-card-list .slick-slide {
-  padding: 0 12px; /* horizontal gap between cards */
+  padding: 0 12px;
+  /* horizontal gap between cards */
 }
 
 .visa-card,
@@ -89,8 +91,14 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 180px;
+  height: 160px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-width: 250px;
+  max-width: 260px;
+}
+
+.vaccination-card {
+  height: 160px !important;
 }
 
 .visa-card:hover,
@@ -137,7 +145,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 10px;
 }
 
 .price-section {
@@ -200,7 +209,7 @@
   display: none;
 }
 
-.vaccination-grid > .vaccination-card {
+.vaccination-grid>.vaccination-card {
   flex: 0 0 250px;
 }
 
@@ -286,6 +295,7 @@
 }
 
 @media (max-width: 767px) {
+
   .visa-card-list,
   .vaccination-grid {
     flex-direction: row;
@@ -334,7 +344,8 @@
 
 /* Update vaccination card styles */
 .vaccination-card {
-  flex: 0 0 260px; /* Increased from 220px to 300px */
+  flex: 0 0 260px;
+  /* Increased from 220px to 300px */
   background-color: white;
   border-radius: 12px;
   padding: 16px;
@@ -344,33 +355,40 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 180px; /* Keep consistent height */
+  height: 180px;
+  /* Keep consistent height */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-right: 12px; /* Add some spacing between cards */
+  margin-right: 12px;
+  /* Add some spacing between cards */
 }
 
 @media (max-width: 767px) {
   .vaccination-card {
-    flex: 0 0 260px; /* Increase mobile card width */
-    height: 180px; /* Consistent height */
+    flex: 0 0 260px;
+    /* Increase mobile card width */
+    height: 180px;
+    /* Consistent height */
     padding: 16px;
-    margin-right: 12px; /* Add spacing between mobile cards */
+    margin-right: 12px;
+    /* Add spacing between mobile cards */
   }
 }
 
 @media (min-width: 768px) {
   .vaccination-grid {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(220px, 1fr)
-    ); /* Adjust grid column sizing */
-    gap: 12px; /* Slightly reduce gap */
+    grid-template-columns: repeat(auto-fit,
+        minmax(220px, 1fr));
+    /* Adjust grid column sizing */
+    gap: 12px;
+    /* Slightly reduce gap */
   }
 
   .vaccination-card {
     flex: none;
     width: auto;
-    min-width: 220px; /* Increase minimum width */
-    max-width: 250px; /* Increase maximum width */
+    min-width: 220px;
+    /* Increase minimum width */
+    max-width: 250px;
+    /* Increase maximum width */
   }
 }
