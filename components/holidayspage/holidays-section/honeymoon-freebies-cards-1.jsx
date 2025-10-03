@@ -93,46 +93,28 @@ export default function HoneymoonFreebiesCards1() {
 
   // Transform holiday data
   const transformHolidayData = (apiData) => {
-    // Fallback images from the original destinations array
-    const fallbackImages = [
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
-      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop",
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
-      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop",
-      "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
-      "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
-      "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
-    ];
-
-    return apiData.map((item, index) => {
+    return apiData.map((item) => {
       // Extract itinerary icons text safely
       const itineraryIcons = item.itineraryIcons || [];
-      const flights = itineraryIcons[0]?.text || "2 Flights";
-      const hotels = itineraryIcons[1]?.text || "1 Hotel";
-      const transfers = itineraryIcons[2]?.text || "2 Transfers";
-      const activities = itineraryIcons[3]?.text || "4 Activities";
-
-      // Use fallback image based on index
-      const imageUrl = fallbackImages[index % fallbackImages.length];
+      const flights = itineraryIcons[0]?.text || "";
+      const hotels = itineraryIcons[1]?.text || "";
+      const transfers = itineraryIcons[2]?.text || "";
+      const activities = itineraryIcons[3]?.text || "";
 
       return {
         id: item.sectionHolidayCardId,
-        image: imageUrl,
-        title: item.cardJson.packageName,
-        rating: parseFloat(item.cardJson.packageRating || 4.5),
-        duration: `${item.cardJson.days} Days ${item.cardJson.nights} Nights` || "3Days 4 Nights",
+        image: item.heroImage || "",
+        title: item.cardJson.packageName || "",
+        rating: parseFloat(item.cardJson.packageRating || 0),
+        duration: `${item.cardJson.days} Days ${item.cardJson.nights} Nights` || "",
         flights: flights,
         hotels: hotels,
         transfers: transfers,
         activities: activities,
-        features: item.cardJson.inclusions || [
-          "Tour combo with return airport transfer",
-          "City Tour",
-          "Curious Corner",
-        ],
-        originalPrice: `${item.currency} ${parseFloat(item.oldPrice || 98952).toLocaleString()}`,
-        discountedPrice: `${item.currency} ${parseFloat(item.newPrice || 88952).toLocaleString()}`,
-        priceContent: item.cardJson.priceContent
+        features: item.cardJson.inclusions || [],
+        originalPrice: `${item.currency} ${parseFloat(item.oldPrice || 0).toLocaleString()}`,
+        discountedPrice: `${item.currency} ${parseFloat(item.newPrice || 0).toLocaleString()}`,
+        priceContent: item.cardJson.priceContent || ""
       };
     });
   };
@@ -174,29 +156,7 @@ export default function HoneymoonFreebiesCards1() {
       } catch (err) {
         console.error("Error loading data:", err);
         setError(err.message);
-
-        // Fallback to default data if API fails
-        setDestinations([
-          {
-            id: 1,
-            image:
-              "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
-            title: "Swiss Alps",
-            rating: 4.7,
-            duration: "3Days 4 Nights",
-            flights: "2 Flights",
-            hotels: "1 Hotel",
-            transfers: "2 Transfers",
-            activities: "4 Activities",
-            features: [
-              "Tour combo with return airport transfer",
-              "City Tour",
-              "Curious Corner",
-            ],
-            originalPrice: "₹98,952",
-            discountedPrice: "₹88,952",
-          },
-        ]);
+        setDestinations([]);
       } finally {
         setLoading(false);
       }
@@ -214,7 +174,7 @@ export default function HoneymoonFreebiesCards1() {
   };
   const router = useRouter();
 
-  // Loading and error states
+  // Loading state only
   if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "2rem" }}>
@@ -223,13 +183,9 @@ export default function HoneymoonFreebiesCards1() {
     );
   }
 
-  if (error) {
-    return (
-      <div style={{ textAlign: "center", padding: "2rem" }}>
-        <p>Error loading honeymoon destinations: {error}</p>
-        <p>Showing default content...</p>
-      </div>
-    );
+  // If there's an error or no data, don't display anything
+  if (error || destinations.length === 0) {
+    return null;
   }
 
 
