@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import Select from "react-select";
 import { Country } from "country-state-city";
 import "../styles/popup.css";
 
@@ -47,6 +48,29 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
     const codes = Array.from(new Set(countries.map((c) => c.phonecode))).filter(Boolean);
     return codes.sort((a, b) => Number(a) - Number(b));
   }, [countries]);
+
+  // Build react-select options
+  const countryOptions = useMemo(
+    () => countries.map((c) => ({ value: c.isoCode, label: c.name })),
+    [countries]
+  );
+  const phoneCodeOptions = useMemo(
+    () => phoneCodes.map((code) => ({ value: String(code), label: `+${code}` })),
+    [phoneCodes]
+  );
+
+  const selectStyles = {
+    control: (base, state) => ({
+      ...base,
+      borderRadius: 12,
+      borderColor: state.isFocused ? "#3b82f6" : "#cbd5e1",
+      boxShadow: state.isFocused ? "0 0 0 3px rgba(59, 130, 246, 0.1)" : "none",
+      minHeight: 44,
+      paddingLeft: 2,
+      height: 60,
+    }),
+    menu: (base) => ({ ...base, zIndex: 9999 }),
+  };
 
   if (!open) return null;
 
@@ -177,8 +201,8 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
         {/* Form Grid */}
         <div className="form-grid">
           {/* Personal Information Section */}
-          <div className="section-header">
-            <h3 className="section-title">
+          <div className="popup-section-header">
+            <h3 className="popup-section-title">
               Personal Information
             </h3>
           </div>
@@ -225,20 +249,14 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label className="field-label">
               Country of Residence *
             </label>
-            <select
-              name="countryOfResidence"
-              value={form.countryOfResidence}
-              onChange={handleChange}
-              required
-              className={`form-input ${errors.countryOfResidence ? 'input-error' : ''}`}
-            >
-              <option value="">Select your country of residence</option>
-              {countries.map((country) => (
-                <option key={country.isoCode} value={country.isoCode}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
+            <Select
+              inputId="countryOfResidence"
+              options={countryOptions}
+              styles={selectStyles}
+              placeholder="Select your country of residence"
+              value={countryOptions.find((o) => o.value === form.countryOfResidence) || null}
+              onChange={(opt) => setForm({ ...form, countryOfResidence: opt ? opt.value : "" })}
+            />
             {errors.countryOfResidence && (
               <span className="error-message">
                 {errors.countryOfResidence}
@@ -250,20 +268,14 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label className="field-label">
               Nationality *
             </label>
-            <select
-              name="nationality"
-              value={form.nationality}
-              onChange={handleChange}
-              required
-              className={`form-input ${errors.nationality ? 'input-error' : ''}`}
-            >
-              <option value="">Select your nationality</option>
-              {countries.map((country) => (
-                <option key={country.isoCode} value={country.isoCode}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
+            <Select
+              inputId="nationality"
+              options={countryOptions}
+              styles={selectStyles}
+              placeholder="Select your nationality"
+              value={countryOptions.find((o) => o.value === form.nationality) || null}
+              onChange={(opt) => setForm({ ...form, nationality: opt ? opt.value : "" })}
+            />
             {errors.nationality && (
               <span className="error-message">
                 {errors.nationality}
@@ -272,8 +284,8 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           </div>
 
           {/* Contact and Trip Details */}
-          <div className="section-header section-spacing">
-            <h3 className="section-title">
+          <div className="popup-section-header section-spacing">
+            <h3 className="popup-section-title">
               Contact & Trip Details
             </h3>
           </div>
@@ -302,20 +314,14 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label className="field-label">
               Phone Code *
             </label>
-            <select
-              name="customerPhone"
-              value={form.customerPhone}
-              onChange={handleChange}
-              required
-              className={`form-input ${errors.customerPhone ? 'input-error' : ''}`}
-            >
-              <option value="">Select phone code</option>
-              {phoneCodes.map((code) => (
-                <option key={code} value={code}>
-                  +{code}
-                </option>
-              ))}
-            </select>
+            <Select
+              inputId="customerPhone"
+              options={phoneCodeOptions}
+              styles={selectStyles}
+              placeholder="Select phone code"
+              value={phoneCodeOptions.find((o) => o.value === String(form.customerPhone)) || null}
+              onChange={(opt) => setForm({ ...form, customerPhone: opt ? opt.value : "" })}
+            />
             {errors.customerPhone && (
               <span className="error-message">
                 {errors.customerPhone}
@@ -401,8 +407,8 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           </div>
 
           {/* Party & Budget */}
-          <div className="section-header section-spacing">
-            <h3 className="section-title">
+          <div className="popup-section-header section-spacing">
+            <h3 className="popup-section-title">
               Passenger & Budget
             </h3>
           </div>
@@ -507,8 +513,8 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           </div>
 
           {/* Destination & Package */}
-          <div className="section-header section-spacing">
-            <h3 className="section-title">
+          <div className="popup-section-header section-spacing">
+            <h3 className="popup-section-title">
               Destination & Package
             </h3>
           </div>
@@ -537,12 +543,12 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           </div>
 
           {/* Additional Information Section */}
-          <div className="section-header section-spacing">
-            <h3 className="section-title">
+          <div className="popup-section-header section-spacing">
+            <h3 className="popup-section-title">
               Additional Information
             </h3>
 
-            <div className="description-container">
+            <div className="popup-description">
               <label className="field-label">
                 Description (Optional)
               </label>

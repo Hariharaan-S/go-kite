@@ -1,43 +1,10 @@
 "use client";
 import React, { useState, useRef } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 const styles = `
-.react-datepicker {
-  font-family: 'Inter', sans-serif;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.react-datepicker__header {
-  background-color: #2563eb; /* blue-600 */
-  color: white;
-  border-bottom: none;
-  padding: 12px 0;
-}
-
-.react-datepicker__day-name,
-.react-datepicker__day {
-  width: 2.5rem;
-  line-height: 2.5rem;
-  margin: 0.2rem;
-}
-
-.react-datepicker__day--selected,
-.react-datepicker__day--keyboard-selected {
-  background-color: #2563eb;
-  color: white;
-  border-radius: 50%;
-}
-
-.react-datepicker__day:hover {
-  background-color: #e5e7eb; /* gray-200 */
-  border-radius: 50%;
-}
-
-
 .masthead {
   margin: 7rem 2rem;
 }
@@ -305,16 +272,11 @@ const fieldIcons = {
 const BookFlightCard = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
-  const dateInputRef = useRef(null);
+  const datePickerRef = useRef(null);
 
   const handleIconClick = () => {
-    if (dateInputRef.current) {
-      if (typeof dateInputRef.current.showPicker === "function") {
-        dateInputRef.current.showPicker();
-      } else {
-        dateInputRef.current.focus();
-        dateInputRef.current.click();
-      }
+    if (datePickerRef.current && typeof datePickerRef.current.setOpen === "function") {
+      datePickerRef.current.setOpen(true);
     }
   };
 
@@ -358,32 +320,28 @@ const BookFlightCard = () => {
                 {day}–{weekday}, {year}
               </p>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "auto" }}>
-              {/* Hidden native date input (invisible but functional) */}
-              <input
-                ref={dateInputRef}
-                type="date"
-                value={selectedDate || ""}
-                min={new Date().toISOString().split("T")[0]}
-                onChange={(e) => {
-                  const value = e.target.value; // yyyy-mm-dd
-                  setSelectedDate(value);
-                  if (value) {
-                    const parsed = new Date(value + "T00:00:00");
-                    if (!isNaN(parsed.getTime())) {
-                      setDate(parsed);
-                    }
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "auto", position: "relative" }}>
+              {/* Hidden react-datepicker input (keeps layout unchanged) */}
+              <DatePicker
+                ref={datePickerRef}
+                selected={date}
+                onChange={(d) => {
+                  if (d) {
+                    setDate(d);
+                    setSelectedDate(d.toISOString().split("T")[0]);
                   }
                 }}
-                style={{
-                  position: "absolute",
-                  opacity: 0,
-                  width: 0,
-                  height: 0,
-                  pointerEvents: "none",
-                }}
-                aria-hidden="true"
-                tabIndex={-1}
+                minDate={new Date()}
+                popperPlacement="bottom-end"
+                popperModifiers={[{ name: "offset", options: { offset: [0, 8] } }]}
+                customInput={
+                  <input
+                    style={{ position: "absolute", opacity: 0, width: 24, height: 24, right: 0, top: 0, cursor: "pointer" }}
+                    aria-hidden="true"
+                    tabIndex={-1}
+                    readOnly
+                  />
+                }
               />
 
               {/* Your SVG icon */}

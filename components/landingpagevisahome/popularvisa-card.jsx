@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { US, IN, SG, CH, ES, TR, LK, AU, BD } from "country-flag-icons/react/3x2";
 import "./styles/popularvisa-card.css";
 import { useRouter } from "next/navigation";
@@ -320,10 +320,11 @@ const VisaCards = () => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -353,9 +354,10 @@ const VisaCards = () => {
   const sliderSettingsVacation = (() => {
     const count = vaccinationCountries.length || 1;
     const base = { ...sliderSettings };
-    base.slidesToShow = Math.min(4, count);
+    base.slidesToShow = Math.min(5, count);
     base.infinite = count > base.slidesToShow;
     base.autoplay = count > 1;
+    base.arrows = false;
     base.responsive = sliderSettings.responsive.map((r) => ({
       ...r,
       settings: {
@@ -391,6 +393,10 @@ const VisaCards = () => {
 
   return (
     <div className="visa-container">
+      <style>{`
+        .visa-card-list .slick-slide { padding: 0 4px; }
+        .visa-card-list .slick-list { margin: 0 -4px; }
+      `}</style>
       {/* Header */}
       <div className="visa-header">
         <h1 className="visa-title">Popular Visa</h1>
@@ -411,9 +417,9 @@ const VisaCards = () => {
 
       {/* Popular Visa Cards */}
       <div className="visa-card-list">
-        <Slider ref={sliderRef} {...sliderSettings} style={{ width: "90%" }}>
+        <Slider ref={sliderRef} {...sliderSettings} style={{ width: "100%" }}>
           {popularVisas.map((visa, index) => (
-            <div key={index} style={{ padding: "0 12px" }}>
+            <div key={index}>
               <div
                 className="visa-card"
                 onClick={() => {
@@ -446,11 +452,11 @@ const VisaCards = () => {
       </div>
 
       {/* Vaccination Countries */}
-      <h2 className="section-title">Vacation – Trending Countries</h2>
-      <div className="visa-card-list">
-        <Slider ref={sliderRef} {...sliderSettingsVacation} style={{ width: "90%" }}>
+      <h2 className="section-title" style={{ marginBottom: 12 }}>Vacation – Trending Countries</h2>
+      <div className="visa-card-list" style={{ marginBottom: 16 }}>
+        <Slider ref={sliderRef} {...sliderSettingsVacation} style={{ width: "100%" }}>
           {vaccinationCountries.map((country, index) => (
-            <div key={index} style={{ padding: "0 12px" }}>
+            <div key={index}>
               <div
                 className="vaccination-card"
                 onClick={() => {

@@ -358,6 +358,8 @@ const VisaDestinationCards = () => {
       className="visa-container"
       style={{
         padding: `32px ${getContainerPadding()}`,
+        paddingBottom: 8,
+        marginBottom: 8,
       }}
     >
       {/* Section header with navigation */}

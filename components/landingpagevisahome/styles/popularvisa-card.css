@@ -70,13 +70,20 @@
 
 /* Spacing between slides in slick carousel */
 .visa-card-list .slick-list {
-  margin: 0 -12px;
-  /* balance inner slide padding */
+  margin: 0 -6px;
+}
+
+.visa-card-list .slick-track {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 .visa-card-list .slick-slide {
-  padding: 0 12px;
-  /* horizontal gap between cards */
+  padding: 0 6px;
+}
+
+.visa-card-list .slick-slide>div {
+  width: 100% !important;
 }
 
 .visa-card,
@@ -358,7 +365,7 @@
   height: 180px;
   /* Keep consistent height */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-right: 12px;
+  margin-right: 0;
   /* Add some spacing between cards */
 }
 
@@ -369,7 +376,7 @@
     height: 180px;
     /* Consistent height */
     padding: 16px;
-    margin-right: 12px;
+    margin-right: 0;
     /* Add spacing between mobile cards */
   }
 }

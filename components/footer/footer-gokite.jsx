@@ -70,11 +70,12 @@ export default function GoKiteFooter() {
     <footer
       style={{
         backgroundColor: "#D7F7FF",
-        padding: "24px 24px", // compact padding while keeping some breathing room
+        padding: "18px 24px", // slightly tighter to minimize gap
         fontFamily: "Arial, sans-serif",
         borderTopLeftRadius: "10px",
         borderTopRightRadius: "10px",
         borderTop: "2px solid #A1CED7",
+        marginTop: 8,
       }}
     >
       <div

@@ -21,10 +21,10 @@ const StepVisa = () => {
       style={{
         width: "100%",
         maxWidth: "1400px",
-        minHeight: isMobile ? "auto" : "400px",
+        minHeight: isMobile ? "auto" : "360px",
         background: "#eaf5fb",
         borderRadius: "18px",
-        padding: isMobile ? "20px 20px 20px 20px" : "40px 60px 30px 40px",
+        padding: isMobile ? "16px 16px 16px 16px" : "32px 48px 26px 36px",
         position: "relative",
         fontFamily: "Arial, sans-serif",
         overflow: "hidden",
@@ -33,6 +33,7 @@ const StepVisa = () => {
         flexDirection: isMobile ? "column" : "row",
         justifyContent: "space-between",
         alignItems: isMobile ? "center" : "flex-start",
+        marginTop: isMobile ? 8 : 12,
       }}
     >
       {/* Left Content */}
@@ -207,7 +208,7 @@ const CenteredVisaSection = () => (
   <section
     style={{
       width: "100%",
-      minHeight: "100vh",
+      minHeight: "60vh",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",

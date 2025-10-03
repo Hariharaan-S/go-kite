@@ -176,7 +176,7 @@ const TravelVisaCards = () => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -266,7 +266,7 @@ const TravelVisaCards = () => {
           </div>
         )}
 
-                  {/* Bottom Left - Visa Date and Fees */}
+        {/* Bottom Left - Visa Date and Fees */}
         {destination.visaDate && (
           <div
             style={{
@@ -307,13 +307,13 @@ const TravelVisaCards = () => {
               + ₹13,500 (Fees + Tax)
             </span>
             {destination.visaLogo && (
-              <img style={{position: "absolute", top: "8px", right: "8px"}} src="/img/landingpage/visa-card-image.png" width={30} height={20} alt="" srcset="" />
-        )}
+              <img style={{ position: "absolute", top: "8px", right: "8px" }} src="/img/landingpage/visa-card-image.png" width={30} height={20} alt="" srcset="" />
+            )}
           </div>
         )}
 
         {/* Bottom Right - Express Visa Logo */}
-        </div>
+      </div>
 
 
 
@@ -375,7 +375,7 @@ const TravelVisaCards = () => {
             </span>
           </div>
         </div>
-        
+
         {/* Price Section */}
         <div style={{ marginBottom: "4px" }}>
           <span
@@ -391,7 +391,7 @@ const TravelVisaCards = () => {
             {destination.price}
           </span>
         </div>
-        
+
         {/* Additional Fee */}
         <div
           style={{
@@ -414,7 +414,8 @@ const TravelVisaCards = () => {
       style={{
         padding: isMobile ? "10px" : "20px",
         backgroundColor: "#f8f9fa",
-        minHeight: "100vh",
+        minHeight: "auto",
+        marginBottom: isMobile ? 8 : 12,
         fontFamily:
           "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       }}
