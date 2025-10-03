@@ -69,7 +69,7 @@ const VisaCards = () => {
   };
 
   // Dynamic page id from context with fallback
-  const PAGE_ID = getPageIdWithFallback('visa-landing-page');
+  const PAGE_ID = getPageIdWithFallback('visa');
   console.log("PAGE_ID");
   console.log(PAGE_ID);
 
