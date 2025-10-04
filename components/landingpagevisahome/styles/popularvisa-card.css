@@ -225,11 +225,334 @@
 }
 
 .rules-card {
-  width: 300px;
+  width: 100%;
+  max-width: 800px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.visa-rule-item {
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #1976d2;
+}
+
+.visa-rule-item:last-child {
+  margin-bottom: 0;
+}
+
+.rule-content {
+  width: 100%;
+}
+
+.rule-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.rule-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.rule-content-text {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.rule-content-text p {
+  margin: 0 0 8px 0;
+}
+
+.rule-content-text p:last-child {
+  margin-bottom: 0;
+}
+
+.rule-image {
+  margin: 12px 0;
+  text-align: center;
+}
+
+.rule-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rule-link {
+  display: inline-block;
+  background-color: #1976d2;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.rule-link:hover {
+  background-color: #1565c0;
+  color: white;
+  text-decoration: none;
+}
+
+.no-rules-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Visa Rules Cards - matching the image design exactly */
+.visa-rule-card {
+  height: 250px !important;
+  width: 320px !important;
+  min-width: 320px !important;
+  max-width: 320px !important;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
   cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.visa-rule-top-section {
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.visa-rule-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 12px;
+}
+
+.visa-rule-flag {
+  width: 24px;
+  height: 16px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.visa-rule-country {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.visa-rule-id-card {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.id-card-illustration {
+  width: 100px;
+  height: 70px;
+  border-radius: 12px;
+  padding: 6px;
+  position: relative;
+  margin-top: -60px;
+}
+
+.id-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.garuda-emblem {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.id-card-title {
+  font-size: 6px;
+  font-weight: 600;
+  color: #1976d2;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.id-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8px;
+}
+
+.id-card-chip {
+  font-size: 8px;
+}
+
+.id-card-photo {
+  font-size: 10px;
+}
+
+.id-card-barcode {
+  font-size: 6px;
+  letter-spacing: 1px;
+  color: #666;
+}
+
+.visa-rule-bottom-section {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  border-top: 3px solid #feeab6;
+  position: relative;
+}
+
+.visa-rule-announcement {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.5;
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+.visa-rule-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: auto;
+}
+
+.visa-rule-go-kite {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.visa-rule-go-kite img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.go-kite-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #1976d2;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.kite-icon {
+  font-size: 14px;
+}
+
+.go-kite-text {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Visa rules cards layout - updated for new design */
+.visa-rules .visa-card-list {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.visa-rules .visa-card-list::-webkit-scrollbar {
+  display: none;
+}
+
+.visa-rules .visa-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Mobile responsiveness for visa rules cards */
+@media (max-width: 767px) {
+  .visa-rule-card {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    height: 260px !important;
+  }
+
+  .visa-rule-country {
+    font-size: 20px;
+  }
+
+  .visa-rule-announcement {
+    font-size: 13px;
+  }
+
+  .id-card-illustration {
+    width: 70px;
+    height: 45px;
+  }
+
+  .visa-rule-go-kite {
+    bottom: 16px;
+    right: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .visa-rule-card {
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    height: 240px !important;
+  }
+
+  .visa-rule-top-section,
+  .visa-rule-bottom-section {
+    padding: 16px;
+  }
+
+  .visa-rule-country {
+    font-size: 18px;
+  }
+
+  .visa-rule-announcement {
+    font-size: 12px;
+  }
+
+  .visa-rule-go-kite {
+    bottom: 16px;
+    right: 16px;
+  }
 }
 
 .rules-img {

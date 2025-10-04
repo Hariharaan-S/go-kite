@@ -42,6 +42,7 @@ const VisaCards = () => {
   const [startX, setStartX] = useState(0);
   const [popularVisas, setPopularVisas] = useState([]);
   const [vaccinationCountries, setVaccinationCountries] = useState([]);
+  const [visaRulesData, setVisaRulesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const vaccinationContainerRef = useRef(null);
@@ -132,6 +133,32 @@ const VisaCards = () => {
     return aggregated;
   };
 
+  // Fetch visa rules data using proxy endpoint
+  const fetchVisaRulesData = async (sectionId) => {
+    try {
+      const response = await fetch(
+        "/api/cms/sections-visa-cards-rules",
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            pageSectionId: sectionId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch visa rules data");
+      }
+
+      const data = await response.json();
+      return Array.isArray(data?.data) ? data.data : [];
+    } catch (err) {
+      console.error("Error fetching visa rules data for section", sectionId, err);
+      return [];
+    }
+  };
+
   // Get country flag component
   const getCountryFlag = (countryName) => {
     // Try exact match first
@@ -170,6 +197,21 @@ const VisaCards = () => {
       }));
   };
 
+  // Transform visa rules data to component format
+  const transformVisaRulesData = (apiData) => {
+    return apiData.map((item) => ({
+      Flag: getCountryFlag(item.visaCardCountryId || "US"),
+      country: item.visaCardTitle || "Unknown Country",
+      type: item.visaCardJson.subTitle || "Visa Rules",
+      description: item.visaCardJson.description || "",
+      cardImage: item.visaCardJson.cardImage || "",
+      flagImage: item.visaCardJson.flagImage || "",
+      expiryDate: item.expiryDate || "",
+      countryId: item.visaCardCountryId,
+      uniqueId: item.sectionVisaCardUniqueId,
+    }));
+  };
+
   // Load data on component mount
   useEffect(() => {
     const loadData = async () => {
@@ -193,7 +235,12 @@ const VisaCards = () => {
             section.contentType === "VISA"
         );
 
-        if (!popularVisaSection && !vacationSection) {
+        const visaRulesSection = sections.find(
+          (section) =>
+            section.title === "Visa Rules Announcement" && section.contentType === "VISA"
+        );
+
+        if (!popularVisaSection && !vacationSection && !visaRulesSection) {
           throw new Error("Required sections not found");
         }
 
@@ -222,6 +269,13 @@ const VisaCards = () => {
             vacationSection.pageSectionId
           );
           setVaccinationCountries(vacationData);
+        }
+
+        // Fetch visa rules data if section exists
+        if (visaRulesSection) {
+          const visaRulesData = await fetchVisaRulesData(visaRulesSection.pageSectionId);
+          const transformedRulesData = transformVisaRulesData(visaRulesData);
+          setVisaRulesData(transformedRulesData);
         }
       } catch (err) {
         console.error("Error loading data:", err);
@@ -255,6 +309,15 @@ const VisaCards = () => {
             price: "₹6,500",
             priceText: "per adult",
             hasVisaIcon: true,
+          },
+        ]);
+
+        // Fallback visa rules data
+        setVisaRulesData([
+          {
+            title: "Important Visa Updates",
+            description: "Please check the latest visa requirements before traveling.",
+            content: "<p>Stay updated with the latest visa rules and regulations.</p>",
           },
         ]);
       } finally {
@@ -489,15 +552,42 @@ const VisaCards = () => {
         </Slider>
       </div>
 
-      {/* Visa Rules Image */}
+      {/* Visa Rules Cards */}
       <div className="visa-rules">
         <h2 className="section-title">Visa Rules Announcement</h2>
-        <div className="rules-card">
-          <img
-            src="/img/general/visa-card.png"
-            alt="Visa Rules"
-            className="rules-img"
-          />
+        <div className="visa-card-list">
+          {visaRulesData.length > 0 ? (
+            visaRulesData.map((rule, index) => (
+              <div key={rule.uniqueId || index} className="visa-card visa-rule-card">
+                {/* Top Section */}
+                <div className="visa-rule-top-section">
+                  <div className="visa-rule-header">
+                    <rule.Flag className="visa-rule-flag" />
+                    <h3 className="visa-rule-country">{rule.country}</h3>
+                  </div>
+                  <div className="visa-rule-id-card">
+                    <div className="id-card-illustration">
+                      <img src="/img/visa/visa-rules-id.png" alt="ID Card" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Section */}
+                <div className="visa-rule-bottom-section">
+                  <p className="visa-rule-announcement">{rule.description}</p>
+                  <div className="visa-rule-footer">
+                    <div className="visa-rule-go-kite">
+                      <img width={50} height={50} src="/img/general/logo.svg" alt="Go Kite" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="no-rules-message">
+              <p>No visa rules announcements available at the moment.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
