@@ -4,6 +4,13 @@ import PopupForm from "./popup/popup";
 import "./styles/banner.css";
 
 const NavbarHeightMobile = 76; // px -- adjust based on your actual navbar
+const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
+
+// Helper function to get image URL using the proxy endpoint
+const getImageUrl = (imageName) => {
+  if (!imageName) return FALLBACK_IMAGE;
+  return `/api/cms/file-download?image=${encodeURIComponent(imageName)}`;
+};
 
 const BannerPage = ({ holidaysDetails, loading, error }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -25,6 +32,25 @@ const BannerPage = ({ holidaysDetails, loading, error }) => {
     }, 4000);
   };
 
+  // Get images from holidayDetails data
+  const getImages = () => {
+    if (!holidaysDetails?.cardJson) {
+      return {
+        heroImage: FALLBACK_IMAGE,
+        subImage1: FALLBACK_IMAGE,
+        subImage2: FALLBACK_IMAGE
+      };
+    }
+
+    return {
+      heroImage: getImageUrl(holidaysDetails.cardJson.heroImage),
+      subImage1: getImageUrl(holidaysDetails.cardJson.subImage1),
+      subImage2: getImageUrl(holidaysDetails.cardJson.subImage2)
+    };
+  };
+
+  const images = getImages();
+
   return (
     <div className="banner-container">
       <section className="banner-section">
@@ -34,8 +60,15 @@ const BannerPage = ({ holidaysDetails, loading, error }) => {
             {/* Main large image */}
             <div className="main-image">
               <img
-                src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80"
-                alt="Main mountain"
+                src={images.heroImage}
+                alt={holidaysDetails?.title || "Main destination"}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
+                onLoad={(e) => {
+                  console.log(`Hero image loaded for ${holidaysDetails?.title}`);
+                }}
               />
               <span className="badge">RECOMMENDED</span>
             </div>
@@ -43,16 +76,30 @@ const BannerPage = ({ holidaysDetails, loading, error }) => {
             {/* Top right image */}
             <div className="small-image">
               <img
-                src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=300&q=80"
-                alt="Mountain view 1"
+                src={images.subImage1}
+                alt={`${holidaysDetails?.title || "Destination"} view 1`}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
+                onLoad={(e) => {
+                  console.log(`Sub image 1 loaded for ${holidaysDetails?.title}`);
+                }}
               />
             </div>
 
             {/* Bottom right image */}
             <div className="small-image">
               <img
-                src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=300&q=80"
-                alt="Mountain view 2"
+                src={images.subImage2}
+                alt={`${holidaysDetails?.title || "Destination"} view 2`}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
+                onLoad={(e) => {
+                  console.log(`Sub image 2 loaded for ${holidaysDetails?.title}`);
+                }}
               />
             </div>
           </div>
