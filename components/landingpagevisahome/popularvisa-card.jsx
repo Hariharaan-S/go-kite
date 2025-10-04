@@ -70,7 +70,7 @@ const VisaCards = () => {
   };
 
   // Dynamic page id from context with fallback
-  const PAGE_ID = getPageIdWithFallback('visa-landing-page');
+  const PAGE_ID = getPageIdWithFallback('visa-landing-page', '66'); // Fallback to default visa page ID
   console.log("PAGE_ID");
   console.log(PAGE_ID);
 
@@ -234,6 +234,9 @@ const VisaCards = () => {
 
   // Load data on component mount
   useEffect(() => {
+    // Wait for page context to load before fetching data
+    if (pageLoading || !PAGE_ID) return;
+
     const loadData = async () => {
       try {
         setLoading(true);
@@ -346,7 +349,7 @@ const VisaCards = () => {
     };
 
     loadData();
-  }, []);
+  }, [pageLoading, PAGE_ID]);
 
   const totalSlides = popularVisas.length;
   const totalVaccinationSlides = vaccinationCountries.length;
@@ -508,7 +511,7 @@ const VisaCards = () => {
                 onClick={() => {
                   try {
                     if (typeof window !== "undefined") {
-                      window.sessionStorage.setItem("applyVisaCountryId", String(visa.countryId || ""));
+                      window.sessionStorage.setItem("applyVisaCountryId", String(visa.countryId || "AE"));
                     }
                   } catch (e) { }
                   router.push("/apply_visa");
