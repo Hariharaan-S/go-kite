@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Slider from "react-slick";
@@ -9,8 +9,50 @@ import "slick-carousel/slick/slick-theme.css";
 const TravelVisaCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [countriesData, setCountriesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const sliderRefRow1 = useRef(null);
   const sliderRefRow2 = useRef(null);
+
+  // Fetch countries data from API
+  const fetchCountriesData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch('/api/cms/countries-dd');
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success && result.data) {
+        setCountriesData(result.data);
+      } else {
+        throw new Error(result.message || 'Failed to fetch countries data');
+      }
+    } catch (err) {
+      console.error('Error fetching countries data:', err);
+      setError(err.message);
+
+      // Fallback to default data if API fails
+      setCountriesData([
+        { id: "1", label: "United Arab Emirates" },
+        { id: "2", label: "Singapore" },
+        { id: "3", label: "Japan" },
+        { id: "4", label: "Srilanka" },
+        { id: "5", label: "Africa" },
+        { id: "6", label: "Australia" },
+        { id: "7", label: "Thailand" },
+        { id: "8", label: "Russia" }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Add responsive check
   React.useEffect(() => {
@@ -28,106 +70,51 @@ const TravelVisaCards = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Fetch countries data on component mount
+  useEffect(() => {
+    fetchCountriesData();
+  }, []);
+
   const VISIBLE_CARDS_PER_ROW = isMobile ? 1 : 4;
 
-  const destinations = [
-    {
-      id: 1,
-      country: "United Arab Emirates",
+  // Generate destinations from API data
+  const generateDestinations = () => {
+    if (!countriesData || countriesData.length === 0) {
+      return [];
+    }
+
+    // Sample images for different countries (you can expand this)
+    const sampleImages = [
+      "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=240&fit=crop",
+      "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=240&fit=crop",
+      "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=400&h=240&fit=crop",
+      "https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=400&h=240&fit=crop",
+      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=400&h=240&fit=crop",
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=240&fit=crop",
+      "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=400&h=240&fit=crop",
+      "https://images.unsplash.com/photo-1513326738677-b964603b136d?w=400&h=240&fit=crop",
+    ];
+
+    console.log("countriesData");
+    console.log(countriesData);
+
+    // Handle both direct array and nested data structure
+    const countriesArray = Array.isArray(countriesData) ? countriesData : countriesData.data || [];
+
+    return countriesArray.map((country, index) => ({
+      id: country.id,
+      country: country.label,
       price: "₹6,500",
       additionalFee: "+ ₹8,500 (Fees +Tax)",
       visaType: "Visa in 5 Days",
-      image:
-        "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=240&fit=crop",
-      badge: null,
-      visaDate: "Visa on 20 Mar, 11:03PM",
-      visaLogo: true,
-    },
-    {
-      id: 2,
-      country: "Singapore",
-      price: "₹6,500",
-      additionalFee: "+ ₹8,500 (Fees +Tax)",
-      visaType: "Visa in 5 Days",
-      image:
-        "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=240&fit=crop",
-      badge: null,
-      visaDate: null,
-      visaLogo: false,
-    },
-    {
-      id: 3,
-      country: "Japan",
-      price: "₹6,500",
-      additionalFee: "+ ₹8,500 (Fees +Tax)",
-      visaType: "Visa in 5 Days",
-      image:
-        "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=400&h=240&fit=crop",
-      badge: "Hurry! pricing ends in 47 Days",
-      visaDate: "Visa on 20 Mar, 11:03PM",
-      visaLogo: true,
-    },
-    {
-      id: 4,
-      country: "Srilanka",
-      price: "₹6,500",
-      additionalFee: "+ ₹8,500 (Fees +Tax)",
-      visaType: "Visa in 5 Days",
-      image:
-        "https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=400&h=240&fit=crop",
-      badge: null,
-      visaDate: null,
-      visaLogo: false,
-    },
-    {
-      id: 5,
-      country: "Africa",
-      price: "₹6,500",
-      additionalFee: "+ ₹8,500 (Fees +Tax)",
-      visaType: "Visa in 5 Days",
-      image:
-        "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=400&h=240&fit=crop",
-      badge: null,
-      visaDate: "Visa on 20 Mar, 11:03PM",
-      visaLogo: true,
-    },
-    {
-      id: 6,
-      country: "Australia",
-      price: "₹6,500",
-      additionalFee: "+ ₹8,500 (Fees +Tax)",
-      visaType: "Visa in 5 Days",
-      image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=240&fit=crop",
-      badge: null,
-      visaDate: null,
-      visaLogo: false,
-    },
-    {
-      id: 7,
-      country: "Thailand",
-      price: "₹6,500",
-      additionalFee: "+ ₹8,500 (Fees +Tax)",
-      visaType: "Visa in 5 Days",
-      image:
-        "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=400&h=240&fit=crop",
-      badge: null,
-      visaDate: null,
-      visaLogo: false,
-    },
-    {
-      id: 8,
-      country: "Russia",
-      price: "₹6,500",
-      additionalFee: "+ ₹8,500 (Fees +Tax)",
-      visaType: "Visa in 5 Days",
-      image:
-        "https://images.unsplash.com/photo-1513326738677-b964603b136d?w=400&h=240&fit=crop",
-      badge: null,
-      visaDate: null,
-      visaLogo: false,
-    },
-  ];
+      image: sampleImages[index % sampleImages.length], // Cycle through sample images
+      badge: index === 2 ? "Hurry! pricing ends in 47 Days" : null, // Add badge to 3rd item
+      visaDate: index % 3 === 0 ? "Visa on 20 Mar, 11:03PM" : null, // Add visa date to every 3rd item
+      visaLogo: index % 3 === 0, // Add visa logo to every 3rd item
+    }));
+  };
+
+  const destinations = generateDestinations();
 
   const categories = [
     "Popular",
@@ -138,7 +125,7 @@ const TravelVisaCards = () => {
     "Visa Free",
   ];
 
-  const totalSlides = destinations.length;
+  const totalSlides = destinations?.length || 0;
 
   const nextSlide = () => {
     if (sliderRefRow1.current) sliderRefRow1.current.slickNext();
@@ -409,6 +396,75 @@ const TravelVisaCards = () => {
     </div>
   );
 
+  // Loading state
+  if (loading) {
+    return (
+      <div
+        style={{
+          padding: isMobile ? "10px" : "20px",
+          backgroundColor: "#f8f9fa",
+          minHeight: "400px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily:
+            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: "18px", color: "#666", marginBottom: "10px" }}>
+            Loading countries...
+          </div>
+          <div style={{ fontSize: "14px", color: "#999" }}>
+            Please wait while we fetch the latest visa destinations
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error && (!destinations || destinations.length === 0)) {
+    return (
+      <div
+        style={{
+          padding: isMobile ? "10px" : "20px",
+          backgroundColor: "#f8f9fa",
+          minHeight: "400px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily:
+            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: "18px", color: "#e74c3c", marginBottom: "10px" }}>
+            Error loading countries
+          </div>
+          <div style={{ fontSize: "14px", color: "#666", marginBottom: "20px" }}>
+            {error}
+          </div>
+          <button
+            onClick={fetchCountriesData}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#f59e0b",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -553,30 +609,36 @@ const TravelVisaCards = () => {
         </div>
       </div>
 
-      {/* Two rows of carousels */}
-      <div style={{ maxWidth: "1600px", margin: "0 auto", marginBottom: "24px" }}>
-        <Slider ref={sliderRefRow1} {...sliderSettings} style={{ width: "100%" }}>
-          {destinations
-            .slice(0, Math.ceil(destinations.length / 2))
-            .map((destination) => (
-              <div key={`row1-${destination.id}`} style={{ padding: "0 12px" }}>
-                <CardComponent destination={destination} />
-              </div>
-            ))}
-        </Slider>
-      </div>
 
-      <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
-        <Slider ref={sliderRefRow2} {...sliderSettings} style={{ width: "100%" }}>
-          {destinations
-            .slice(Math.ceil(destinations.length / 2))
-            .map((destination) => (
-              <div key={`row2-${destination.id}`} style={{ padding: "0 12px" }}>
-                <CardComponent destination={destination} />
-              </div>
-            ))}
-        </Slider>
-      </div>
+
+      {/* Two rows of carousels */}
+      {destinations && destinations.length > 0 && (
+        <>
+          <div style={{ maxWidth: "1600px", margin: "0 auto", marginBottom: "24px" }}>
+            <Slider ref={sliderRefRow1} {...sliderSettings} style={{ width: "100%" }}>
+              {destinations
+                .slice(0, Math.ceil(destinations.length / 2))
+                .map((destination) => (
+                  <div key={`row1-${destination.id}`} style={{ padding: "0 12px" }}>
+                    <CardComponent destination={destination} />
+                  </div>
+                ))}
+            </Slider>
+          </div>
+
+          <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+            <Slider ref={sliderRefRow2} {...sliderSettings} style={{ width: "100%" }}>
+              {destinations
+                .slice(Math.ceil(destinations.length / 2))
+                .map((destination) => (
+                  <div key={`row2-${destination.id}`} style={{ padding: "0 12px" }}>
+                    <CardComponent destination={destination} />
+                  </div>
+                ))}
+            </Slider>
+          </div>
+        </>
+      )}
     </div>
   );
 };
