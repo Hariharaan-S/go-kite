@@ -387,5 +387,3 @@
 .destinations-wrapper .destination-card {
   margin: 0;
 }
-
-/* Let react-slick compute slide widths based on slidesToShow to avoid overflow */

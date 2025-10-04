@@ -311,7 +311,7 @@ export default function HolidayDestinations() {
   // Loading and error states
   if (loading) {
     return (
-      <div className="holiday-container">
+      <div className="holiday-container-wrapper holiday-container">
         <div style={{ textAlign: "center", padding: "2rem" }}>
           <p>Loading holiday destinations...</p>
         </div>
@@ -321,7 +321,7 @@ export default function HolidayDestinations() {
 
   if (error) {
     return (
-      <div className="holiday-container">
+      <div className="holiday-container-wrapper holiday-container">
         <div style={{ textAlign: "center", padding: "2rem" }}>
           <p>Error loading destinations: {error}</p>
           <p>Showing default content...</p>
@@ -332,7 +332,7 @@ export default function HolidayDestinations() {
 
   return (
     <div
-      className="holiday-container"
+      className="holiday-container-wrapper holiday-container"
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
@@ -340,23 +340,23 @@ export default function HolidayDestinations() {
           }`}
       >
         <h1
-          className="holiday-title"
+          className="holiday-title-text holiday-title"
           style={{ fontSize: getHeaderSize(windowWidth) }}
         >
           Popular Holiday Destinations
         </h1>
-        <div className="holiday-nav">
-          <span className="view-all" onClick={() => router.push("/holidays")}>
+        <div className="holiday-nav-wrapper holiday-nav">
+          <span className="holiday-view-all view-all" onClick={() => router.push("/holidays")}>
             View All
           </span>
         </div>
       </div>
 
-      <Slider {...sliderSettings} className="destinations-wrapper">
+      <Slider {...sliderSettings} className="holiday-destinations-wrapper destinations-wrapper">
         {destinations.map((destination) => (
           <div
             key={destination.id}
-            className="destination-card"
+            className="holiday-destination-card destination-card"
             onClick={() => {
               if (typeof window !== "undefined") {
                 try {
@@ -376,11 +376,11 @@ export default function HolidayDestinations() {
               router.push(`/trip-details/${slug}`);
             }}
           >
-            <div className="destination-image-wrapper">
+            <div className="holiday-destination-image-wrapper destination-image-wrapper">
               <img
                 src={destination.image}
                 alt={destination.title}
-                className="destination-image"
+                className="holiday-destination-image destination-image"
                 style={{ height: getImageHeight(windowWidth) }}
                 onError={(e) => {
                   e.currentTarget.onerror = null;
@@ -391,52 +391,52 @@ export default function HolidayDestinations() {
                   console.log(`Image loaded for ${destination.title}`);
                 }}
               />
-              <button className="heart-btn">
+              <button className="holiday-heart-btn heart-btn">
                 <Heart
                   size={windowWidth < 768 ? 18 : 20}
-                  className="heart-icon"
+                  className="holiday-heart-icon heart-icon"
                 />
               </button>
             </div>
 
-            <div className="destination-content">
-              <div className="title-rating">
+            <div className="holiday-destination-content destination-content">
+              <div className="holiday-title-rating title-rating">
                 <h3
-                  className="destination-title"
+                  className="holiday-destination-title destination-title"
                   style={{ fontSize: getTitleSize(windowWidth) }}
                 >
                   {destination.title}
                 </h3>
-                <div className="rating">
-                  <span className="star">★</span>
-                  <span className="rating-number">{destination.rating}</span>
+                <div className="holiday-rating rating">
+                  <span className="holiday-star star">★</span>
+                  <span className="holiday-rating-number rating-number">{destination.rating}</span>
                 </div>
               </div>
 
-              <p className="duration">{destination.duration}</p>
+              <p className="holiday-duration duration">{destination.duration}</p>
 
-              <div className="icons-section">
-                <div className="icon-item">
-                  <Plane size={getIconSize(windowWidth)} className="icon" />
+              <div className="holiday-icons-section icons-section">
+                <div className="holiday-icon-item icon-item">
+                  <Plane size={getIconSize(windowWidth)} className="holiday-icon icon" />
                   <p>{destination.flights}</p>
                 </div>
-                <div className="icon-item">
-                  <Building2 size={getIconSize(windowWidth)} className="icon" />
+                <div className="holiday-icon-item icon-item">
+                  <Building2 size={getIconSize(windowWidth)} className="holiday-icon icon" />
                   <p>{destination.hotels}</p>
                 </div>
-                <div className="icon-item">
-                  <Car size={getIconSize(windowWidth)} className="icon" />
+                <div className="holiday-icon-item icon-item">
+                  <Car size={getIconSize(windowWidth)} className="holiday-icon icon" />
                   <p>{destination.transfers}</p>
                 </div>
-                <div className="icon-item">
-                  <Users size={getIconSize(windowWidth)} className="icon" />
+                <div className="holiday-icon-item icon-item">
+                  <Users size={getIconSize(windowWidth)} className="holiday-icon icon" />
                   <p>{destination.activities}</p>
                 </div>
               </div>
 
-              <ul className="features-list">
+              <ul className="holiday-features-list features-list">
                 {destination.features.map((feature, index) => (
-                  <li key={index} className="feature-item">
+                  <li key={index} className="holiday-feature-item feature-item">
                     {feature}
                   </li>
                 ))}
@@ -446,14 +446,14 @@ export default function HolidayDestinations() {
                 className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
                   }`}
               >
-                <span className="original-price">
+                <span className="holiday-original-price original-price">
                   {destination.originalPrice}
                 </span>
-                <div className="discounted-price-wrapper">
-                  <span className="discounted-price">
+                <div className="holiday-discounted-price-wrapper discounted-price-wrapper">
+                  <span className="holiday-discounted-price discounted-price">
                     {destination.discountedPrice}
                   </span>
-                  <span className="per-person">Per person</span>
+                  <span className="holiday-per-person per-person">Per person</span>
                 </div>
               </div>
             </div>

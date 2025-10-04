@@ -8,7 +8,7 @@ import "../styles/hero.css";
 
 // Icon button component
 const IconButton = ({ imgSrc, label, isActive = false }) => (
-  <div className="text-center cursor-pointer">
+  <div className="hero-icon-button-container text-center cursor-pointer">
     <div
       className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
         ? "bg-orange-500 border-orange-500"
@@ -24,11 +24,11 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
       <img
         src={imgSrc}
         alt={label}
-        className="object-contain"
+        className="hero-icon-img object-contain"
         style={{ width: "45px", height: "45px", borderRadius: "50%" }}
       />
     </div>
-    <span className="text-12 fw-500 text-white d-block">{label}</span>
+    <span className="hero-icon-label text-12 fw-500 text-white d-block">{label}</span>
   </div>
 );
 
@@ -82,7 +82,7 @@ const IconRow = () => {
   ];
   return (
     <div
-      className="d-flex justify-center align-items-center mt-40 mb-20"
+      className="hero-icon-row d-flex justify-center align-items-center mt-40 mb-20"
       style={{
         display: "flex",
         flexDirection: "row",
@@ -142,24 +142,24 @@ const DateSelectionPopup = ({ onClose, onSelect }) => {
   };
 
   return (
-    <div className="date-selection-popup">
-      <div className="date-selection-content">
-        <div className="date-selection-header">
+    <div className="hero-date-selection-popup date-selection-popup">
+      <div className="hero-date-selection-content date-selection-content">
+        <div className="hero-date-selection-header date-selection-header">
           <h3>Select Date</h3>
-          <button className="date-selection-close" onClick={onClose}>
+          <button className="hero-date-selection-close date-selection-close" onClick={onClose}>
             &times;
           </button>
         </div>
-        <div className="date-selection-body">
+        <div className="hero-date-selection-body date-selection-body">
           <input
             type="date"
             value={selectedDate.toISOString().split("T")[0]}
             onChange={handleDateChange}
-            className="full-width-date-input"
+            className="hero-full-width-date-input full-width-date-input"
           />
         </div>
-        <div className="date-selection-footer">
-          <button className="date-select-btn" onClick={handleSelect}>
+        <div className="hero-date-selection-footer date-selection-footer">
+          <button className="hero-date-select-btn date-select-btn" onClick={handleSelect}>
             Select Date
           </button>
         </div>
@@ -194,29 +194,29 @@ const BookFlightCard = () => {
 
   return (
     <div
-      className="book-flight-wrapper"
+      className="hero-book-flight-wrapper book-flight-wrapper"
       data-aos="fade-up"
       data-aos-delay="200"
     >
-      <h2 className="book-flight-title">Get Visa</h2>
-      <div className="flight-search-container">
+      <h2 className="hero-book-flight-title book-flight-title">Get Visa</h2>
+      <div className="hero-flight-search-container flight-search-container">
         {/* DESTINATION */}
-        <div className="flight-field">
-          <span className="flight-label">Where are you going?</span>
+        <div className="hero-flight-field flight-field">
+          <span className="hero-flight-label flight-label">Where are you going?</span>
           <input
-            className="flight-input"
+            className="hero-flight-input flight-input"
             type="text"
             placeholder="Select Destination"
             defaultValue="United Arab Emirates"
           />
         </div>
         {/* ARRIVAL DATE */}
-        <div className="flight-field">
+        <div className="hero-flight-field flight-field">
           {/* formatted display */}
-          <div className="date-display">
-            <div className="date-content">
-              <h3 className="date-month">{month}</h3>
-              <p className="date-detail">
+          <div className="hero-date-display date-display">
+            <div className="hero-date-content date-content">
+              <h3 className="hero-date-month date-month">{month}</h3>
+              <p className="hero-date-detail date-detail">
                 {day}–{weekday}, {year}
               </p>
             </div>
@@ -246,7 +246,7 @@ const BookFlightCard = () => {
 
               {/* Your SVG icon */}
               <div
-                className="date-icon-wrapper"
+                className="hero-date-icon-wrapper date-icon-wrapper"
                 style={{ cursor: "pointer" }}
                 onClick={handleIconClick}
               >
@@ -260,7 +260,7 @@ const BookFlightCard = () => {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="date-icon"
+                  className="hero-date-icon date-icon"
                 >
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                   <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -272,7 +272,7 @@ const BookFlightCard = () => {
           </div>
         </div>
         {/* BUTTON */}
-        <button className="flight-btn">
+        <button className="hero-flight-btn flight-btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -306,12 +306,12 @@ const BookFlightCard = () => {
         </button>
       </div>
       {/* Visa Type Options Row */}
-      <div className="trip-options-container">
-        <div className="trip-options-left"></div>
+      <div className="hero-trip-options-container trip-options-container">
+        <div className="hero-trip-options-left trip-options-left"></div>
         {/* Google Powered */}
-        <div className="google-powered">
+        <div className="hero-google-powered google-powered">
           <span>Powered by</span>
-          <svg className="google-logo" viewBox="0 0 272 92" fill="none">
+          <svg className="hero-google-logo google-logo" viewBox="0 0 272 92" fill="none">
             <path
               d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"
               fill="#EA4335"
@@ -344,22 +344,22 @@ const BookFlightCard = () => {
 // Hero Section Component
 const HeroSection = () => {
   return (
-    <section className="masthead -type-1 z-5">
-      <div className="masthead__bg">
-        <img alt="image" src="/img/landingpage/hero.png" className="js-lazy" />
+    <section className="hero-masthead masthead -type-1 z-5">
+      <div className="hero-masthead-bg masthead__bg">
+        <img alt="image" src="/img/landingpage/hero.png" className="hero-masthead-img js-lazy" />
       </div>
-      <div className="container px-4 sm:px-6 lg:px-8">
-        <div className="row justify-center">
-          <div className="col-auto">
-            <div className="text-center" style={{ marginTop: "-140px" }}>
+      <div className="hero-container container px-4 sm:px-6 lg:px-8">
+        <div className="hero-row row justify-center">
+          <div className="hero-col col-auto">
+            <div className="hero-text-center text-center" style={{ marginTop: "-140px" }}>
               <h1
-                className="text-60 lg:text-40 md:text-30 text-black"
+                className="hero-title text-60 lg:text-40 md:text-30 text-black"
                 data-aos="fade-up"
               >
                 Travel to your Dream Destination!
               </h1>
               <p
-                className="text-black mt-6 md:mt-10"
+                className="hero-subtitle text-black mt-6 md:mt-10"
                 data-aos="fade-up"
                 data-aos-delay="100"
               >
@@ -374,7 +374,7 @@ const HeroSection = () => {
             </div>
             {/* Travel Agent Meeting Link */}
             <div
-              className="travel-agent-meeting"
+              className="hero-travel-agent-meeting travel-agent-meeting"
               style={{ marginTop: "-50px" }} // adjust this value as needed
             >
               <a href="#">Book a meeting with our Travel Agent →</a>

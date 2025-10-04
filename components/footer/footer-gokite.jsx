@@ -68,6 +68,7 @@ const socialIcons = {
 export default function GoKiteFooter() {
   return (
     <footer
+      className="gokite-footer"
       style={{
         backgroundColor: "#D7F7FF",
         padding: "18px 24px", // slightly tighter to minimize gap
@@ -79,6 +80,7 @@ export default function GoKiteFooter() {
       }}
     >
       <div
+        className="gokite-footer-container"
         style={{
           display: "flex",
           flexWrap: "wrap",
@@ -92,6 +94,7 @@ export default function GoKiteFooter() {
       >
         {/* Left Section - Logo Image and Contact Info */}
         <div
+          className="gokite-footer-left-section"
           style={{
             flex: "1 1 280px",
             minWidth: "280px",
@@ -100,6 +103,7 @@ export default function GoKiteFooter() {
         >
           {/* Logo Image */}
           <img
+            className="gokite-footer-logo"
             src="/img/general/logo.svg"
             alt="Go Kite Logo"
             style={{
@@ -111,7 +115,7 @@ export default function GoKiteFooter() {
           />
 
           {/* Contact Info */}
-          <div style={{ color: "#222", fontSize: "14px", lineHeight: "1.6" }}>
+          <div className="gokite-footer-contact-info" style={{ color: "#222", fontSize: "14px", lineHeight: "1.6" }}>
             <p style={{ margin: "0 0 8px 0", fontWeight: "500" }}>
               Contact our Travel agent
             </p>
@@ -121,11 +125,12 @@ export default function GoKiteFooter() {
           </div>
 
           {/* Social Media Icons */}
-          <div style={{ display: "flex", gap: "15px" }}>
+          <div className="gokite-footer-social-icons" style={{ display: "flex", gap: "15px" }}>
             {["facebook", "instagram", "whatsapp", "twitter"].map(
               (platform, index) => (
                 <div
                   key={index}
+                  className={`gokite-footer-social-icon gokite-footer-social-icon-${platform}`}
                   style={{
                     width: "35px",
                     height: "35px",
@@ -148,6 +153,7 @@ export default function GoKiteFooter() {
 
         {/* Middle Section - Our Services */}
         <div
+          className="gokite-footer-services-section"
           style={{
             flex: "1 1 180px",
             minWidth: "180px",
@@ -155,6 +161,7 @@ export default function GoKiteFooter() {
           }}
         >
           <h3
+            className="gokite-footer-services-title"
             style={{
               fontSize: "18px",
               fontWeight: "bold",
@@ -165,6 +172,7 @@ export default function GoKiteFooter() {
             Our Services
           </h3>
           <ul
+            className="gokite-footer-services-list"
             style={{
               listStyle: "none",
               padding: "0",
@@ -173,9 +181,10 @@ export default function GoKiteFooter() {
           >
             {["Flight Booking", "Visa", "Activities", "Holidays", "Hotel"].map(
               (service, index) => (
-                <li key={index} style={{ marginBottom: "10px" }}>
+                <li key={index} className="gokite-footer-services-item" style={{ marginBottom: "10px" }}>
                   <a
                     href="#"
+                    className="gokite-footer-services-link"
                     style={{
                       color: "#222",
                       textDecoration: "none",
@@ -193,6 +202,7 @@ export default function GoKiteFooter() {
 
         {/* Right Section - About */}
         <div
+          className="gokite-footer-about-section"
           style={{
             flex: "1 1 180px",
             minWidth: "180px",
@@ -200,6 +210,7 @@ export default function GoKiteFooter() {
           }}
         >
           <h3
+            className="gokite-footer-about-title"
             style={{
               fontSize: "18px",
               fontWeight: "bold",
@@ -210,6 +221,7 @@ export default function GoKiteFooter() {
             About
           </h3>
           <ul
+            className="gokite-footer-about-list"
             style={{
               listStyle: "none",
               padding: "0",
@@ -223,9 +235,10 @@ export default function GoKiteFooter() {
               "Help Desk",
               "Terms & Condition",
             ].map((item, index) => (
-              <li key={index} style={{ marginBottom: "10px" }}>
+              <li key={index} className="gokite-footer-about-item" style={{ marginBottom: "10px" }}>
                 <a
                   href="#"
+                  className="gokite-footer-about-link"
                   style={{
                     color: "#222",
                     textDecoration: "none",

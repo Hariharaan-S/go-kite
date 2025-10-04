@@ -337,7 +337,7 @@ const VisaDestinationCards = () => {
   // Loading and error states
   if (loading) {
     return (
-      <div className="visa-container">
+      <div className="visa-dest-container visa-container">
         <div style={{ textAlign: "center", padding: "2rem" }}>
           <p>Loading visa destinations...</p>
         </div>
@@ -347,7 +347,7 @@ const VisaDestinationCards = () => {
 
   if (error) {
     return (
-      <div className="visa-container">
+      <div className="visa-dest-container visa-container">
         <div style={{ textAlign: "center", padding: "2rem" }}>
           <p>Error loading destinations: {error}</p>
           <p>Showing default content...</p>
@@ -359,7 +359,7 @@ const VisaDestinationCards = () => {
   // Render method remains mostly the same, with minor adjustments to use transformed data
   return (
     <div
-      className="visa-container"
+      className="visa-dest-container visa-container"
       style={{
         padding: `32px ${getContainerPadding()}`,
         paddingBottom: 8,
@@ -368,7 +368,7 @@ const VisaDestinationCards = () => {
     >
       {/* Section header with navigation */}
       <div
-        className="visa-header"
+        className="visa-dest-header visa-header"
         style={{
           flexDirection: windowWidth < 640 ? "column" : "row",
           marginBottom: windowWidth < 640 ? "16px" : "32px",
@@ -377,22 +377,22 @@ const VisaDestinationCards = () => {
         }}
       >
         <h1
-          className="visa-header-title"
+          className="visa-dest-header-title visa-header-title"
           style={{
             fontSize: getHeaderSize(),
           }}
         >
           Top Visa Destination
         </h1>
-        <div className="visa-nav">
+        <div className="visa-dest-nav visa-nav">
           <span
-            className="visa-view-all"
+            className="visa-dest-view-all visa-view-all"
             onClick={() => router.push("/visa-destinations")}
           >
             View All
           </span>
           <button
-            className="visa-nav-button"
+            className="visa-dest-nav-button visa-nav-button"
             style={{
               width: windowWidth < 768 ? "36px" : "40px",
               height: windowWidth < 768 ? "36px" : "40px",
@@ -402,7 +402,7 @@ const VisaDestinationCards = () => {
             <ChevronLeft size={windowWidth < 768 ? 16 : 18} />
           </button>
           <button
-            className="visa-nav-button"
+            className="visa-dest-nav-button visa-nav-button"
             style={{
               width: windowWidth < 768 ? "36px" : "40px",
               height: windowWidth < 768 ? "36px" : "40px",
@@ -416,7 +416,7 @@ const VisaDestinationCards = () => {
 
       {/* Destinations Container */}
       <div
-        className="visa-destinations-container"
+        className="visa-dest-destinations-container visa-destinations-container"
         style={{
           gap: windowWidth < 640 ? "16px" : "24px",
           justifyContent: windowWidth < 640 ? "center" : "flex-start",
@@ -426,7 +426,7 @@ const VisaDestinationCards = () => {
         {visibleDestinations.map((destination) => (
           <div
             key={destination.id}
-            className="visa-card"
+            className="visa-dest-card visa-card"
             style={{
               width: getCardWidth(),
               minWidth: windowWidth < 640 ? "280px" : "250px",
@@ -438,7 +438,7 @@ const VisaDestinationCards = () => {
           >
             {/* Image Container */}
             <div
-              className="visa-card-image"
+              className="visa-dest-card-image visa-card-image"
               style={{
                 height: getImageHeight(),
                 overflow: "hidden",
@@ -458,34 +458,34 @@ const VisaDestinationCards = () => {
                 }}
               />
               {/* Fast track overlay */}
-              <div className="fast-track-overlay">
+              <div className="visa-dest-fast-track-overlay fast-track-overlay">
                 Fast track{" "}
                 {windowWidth < 640
                   ? destination.fastTrack.date.split(",")[0]
                   : destination.fastTrack.date}
                 {windowWidth < 640 ? (
-                  <div className="price-overlay">
+                  <div className="visa-dest-price-overlay price-overlay">
                     <div>
-                      <span className="extra-charges">
+                      <span className="visa-dest-extra-charges extra-charges">
                         {destination.fastTrack.originalPrice}
                       </span>
-                      <span className="extra-charges">
+                      <span className="visa-dest-extra-charges extra-charges">
                         + {destination.fastTrack.extraCharges}
                       </span>
                     </div>
-                    <span className="total-price">
+                    <span className="visa-dest-total-price total-price">
                       = {destination.fastTrack.totalPrice}
                     </span>
                   </div>
                 ) : (
-                  <div className="price-overlay">
-                    <span className="extra-charges">
+                  <div className="visa-dest-price-overlay price-overlay">
+                    <span className="visa-dest-extra-charges extra-charges">
                       {destination.fastTrack.originalPrice}
                     </span>
-                    <span className="extra-charges">
+                    <span className="visa-dest-extra-charges extra-charges">
                       + {destination.fastTrack.extraCharges}
                     </span>
-                    <span className="total-price">
+                    <span className="visa-dest-total-price total-price">
                       = {destination.fastTrack.totalPrice}
                     </span>
                   </div>
@@ -495,31 +495,31 @@ const VisaDestinationCards = () => {
             </div>
 
             {/* Card Content */}
-            <div className="visa-card-content">
+            <div className="visa-dest-card-content visa-card-content">
               {/* Country Name */}
               <h3
-                className="visa-card-title"
+                className="visa-dest-card-title visa-card-title"
                 style={{ fontSize: getTitleSize(), marginBottom: "8px" }}
               >
                 {destination.country}
               </h3>
 
               {/* Get On Info */}
-              <div className="get-on-info">
-                <div className="get-on-date">
+              <div className="visa-dest-get-on-info get-on-info">
+                <div className="visa-dest-get-on-date get-on-date">
                   Get on{" "}
-                  <span className="get-on-date-highlight">
+                  <span className="visa-dest-get-on-date-highlight get-on-date-highlight">
                     {windowWidth < 640
                       ? destination.getOn.date.split(",")[0]
                       : destination.getOn.date}
                   </span>
                 </div>
-                <div className="get-on-price">{destination.getOn.price}</div>
+                <div className="visa-dest-get-on-price get-on-price">{destination.getOn.price}</div>
               </div>
 
               {/* Flight Info (only for some cards) */}
               {destination.flightInfo && (
-                <div className="flight-info">
+                <div className="visa-dest-flight-info flight-info">
                   {windowWidth < 640
                     ? "30 Flights available"
                     : destination.flightInfo}
