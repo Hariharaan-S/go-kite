@@ -183,12 +183,16 @@ export default function HolidayDestinations() {
       const oldPrice = parseFloat(item.oldPrice);
       const newPrice = parseFloat(item.newPrice);
 
+      // Generate image URL using the proxy endpoint
+      const getImageUrl = (imageName) => {
+        if (!imageName) return FALLBACK_IMAGE;
+        return `/api/cms/file-download?image=${encodeURIComponent(imageName)}`;
+      };
+
       return {
         id: item.holidayCardId,
         holidayId: item.holidayCardId, // Add this line
-        image: item?.cardJson?.heroImage
-          ? `/img/general/${item.cardJson.heroImage}`
-          : FALLBACK_IMAGE, // Assuming images are stored in public/img/general/
+        image: getImageUrl(item?.cardJson?.heroImage),
         title: item.title,
         rating: parseFloat(item.packageRating),
         duration: `${item.noOfDays} Days ${item.noOfNights} Nights`,
@@ -381,6 +385,10 @@ export default function HolidayDestinations() {
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = FALLBACK_IMAGE;
+                }}
+                onLoad={(e) => {
+                  // Image loaded successfully
+                  console.log(`Image loaded for ${destination.title}`);
                 }}
               />
               <button className="heart-btn">

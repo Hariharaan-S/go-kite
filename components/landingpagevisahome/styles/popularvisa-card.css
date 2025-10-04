@@ -6,6 +6,15 @@
   min-height: 100vh;
 }
 
+.visa-card-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  background: none !important;
+}
+
+
 .visa-header {
   display: flex;
   justify-content: space-between;

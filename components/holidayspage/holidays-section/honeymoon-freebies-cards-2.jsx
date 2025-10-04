@@ -103,11 +103,15 @@ export default function HoneymoonFreebiesCards2({ customStyle }) {
       const transfers = itineraryIcons[2]?.text || "";
       const activities = itineraryIcons[3]?.text || "";
 
+      // Generate image URL using the proxy endpoint
+      const getImageUrl = (imageName) => {
+        if (!imageName) return FALLBACK_IMAGE;
+        return `/api/cms/file-download?image=${encodeURIComponent(imageName)}`;
+      };
+
       return {
         id: item.sectionHolidayCardId,
-        image: item?.heroImage
-          ? `/img/general/${item.heroImage}`
-          : FALLBACK_IMAGE,
+        image: getImageUrl(item?.cardJson?.heroImage),
         title: item.cardJson.packageName || "",
         rating: parseFloat(item.cardJson.packageRating || 0),
         duration: `${item.cardJson.days} Days ${item.cardJson.nights} Nights` || "",
@@ -241,6 +245,10 @@ export default function HoneymoonFreebiesCards2({ customStyle }) {
                     onError={(e) => {
                       e.currentTarget.onerror = null;
                       e.currentTarget.src = FALLBACK_IMAGE;
+                    }}
+                    onLoad={(e) => {
+                      // Image loaded successfully
+                      console.log(`Image loaded for ${destination.title}`);
                     }}
                   />
                   <button className="wishlist-btn-3">

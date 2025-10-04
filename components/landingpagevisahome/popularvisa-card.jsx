@@ -159,7 +159,7 @@ const VisaCards = () => {
     }
   };
 
-  // Get country flag component
+  // Get country flag component or image URL
   const getCountryFlag = (countryName) => {
     // Try exact match first
     if (countryFlagMap[countryName]) {
@@ -180,27 +180,47 @@ const VisaCards = () => {
     return US;
   };
 
+  // Generate flag image URL using the proxy endpoint
+  const getFlagImageUrl = (imageName) => {
+    if (!imageName) {
+      console.log("No flag image name provided");
+      return null;
+    }
+    const url = `/api/cms/file-download?image=${encodeURIComponent(imageName)}`;
+    console.log(`Generated flag image URL: ${url}`);
+    return url;
+  };
+
   // Transform API data to component format
   const transformVisaData = (apiData, sectionId) => {
     return apiData
       .filter((item) => item.pageSectionId === sectionId)
-      .map((item) => ({
-        Flag: getCountryFlag(item.visaCardJson.flagImage || "US"),
-        country: item.visaCardTitle || "Unknown Country",
-        type: item.visaCardJson.subTitle || "Tourist visa",
-        price: `${item.currency} ${item.newPrice}` || "₹1,60,500",
-        priceText: item.visaCardJson.priceContent || "per adult",
-        subtitle:
-          item.subtitle || item.description || "Get your Visa by 24hours",
-        hasVisaIcon: item.visaCardJson.eVisa || false,
-        countryId: item.visaCardCountryId,
-      }));
+      .map((item) => {
+        console.log(`Processing visa card for ${item.visaCardTitle}:`, {
+          flagImage: item.visaCardJson?.flagImage,
+          countryId: item.visaCardCountryId
+        });
+
+        return {
+          Flag: getCountryFlag(item.visaCardJson.flagImage || "US"),
+          flagImageUrl: getFlagImageUrl(item.visaCardJson.flagImage),
+          country: item.visaCardTitle || "Unknown Country",
+          type: item.visaCardJson.subTitle || "Tourist visa",
+          price: `${item.currency} ${item.newPrice}` || "₹1,60,500",
+          priceText: item.visaCardJson.priceContent || "per adult",
+          subtitle:
+            item.subtitle || item.description || "Get your Visa by 24hours",
+          hasVisaIcon: item.visaCardJson.eVisa || false,
+          countryId: item.visaCardCountryId,
+        };
+      });
   };
 
   // Transform visa rules data to component format
   const transformVisaRulesData = (apiData) => {
     return apiData.map((item) => ({
       Flag: getCountryFlag(item.visaCardCountryId || "US"),
+      flagImageUrl: getFlagImageUrl(item.visaCardJson.flagImage),
       country: item.visaCardTitle || "Unknown Country",
       type: item.visaCardJson.subTitle || "Visa Rules",
       description: item.visaCardJson.description || "",
@@ -494,8 +514,27 @@ const VisaCards = () => {
                   router.push("/apply_visa");
                 }}
               >
-                <div className="card-header">
-                  <visa.Flag className="flag" />
+                <div className="visa-card-header">
+                  {visa.flagImageUrl ? (
+                    <img
+                      src={visa.flagImageUrl}
+                      alt={`${visa.country} flag`}
+                      className="flag"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        // Fallback to component flag
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextSibling.style.display = 'block';
+                      }}
+                      onLoad={(e) => {
+                        console.log(`Flag image loaded for ${visa.country}`);
+                      }}
+                    />
+                  ) : null}
+                  <visa.Flag
+                    className="flag"
+                    style={{ display: visa.flagImageUrl ? 'none' : 'block' }}
+                  />
                   <div className="card-content">
                     <h3 className="visa-country">{visa.country}</h3>
                     <p className="visa-type">{visa.type}</p>
@@ -533,7 +572,26 @@ const VisaCards = () => {
               >
                 {country.hasVisaIcon && <VisaIcon />}
                 <div className="card-header">
-                  <country.Flag className="flag" />
+                  {country.flagImageUrl ? (
+                    <img
+                      src={country.flagImageUrl}
+                      alt={`${country.country} flag`}
+                      className="flag"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        // Fallback to component flag
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextSibling.style.display = 'block';
+                      }}
+                      onLoad={(e) => {
+                        console.log(`Flag image loaded for ${country.country}`);
+                      }}
+                    />
+                  ) : null}
+                  <country.Flag
+                    className="flag"
+                    style={{ display: country.flagImageUrl ? 'none' : 'block' }}
+                  />
                   <div className="card-content">
                     <h3 className="visa-country">{country.country}</h3>
                     <p className="visa-type">{country.subtitle}</p>
@@ -562,7 +620,26 @@ const VisaCards = () => {
                 {/* Top Section */}
                 <div className="visa-rule-top-section">
                   <div className="visa-rule-header">
-                    <rule.Flag className="visa-rule-flag" />
+                    {rule.flagImageUrl ? (
+                      <img
+                        src={rule.flagImageUrl}
+                        alt={`${rule.country} flag`}
+                        className="visa-rule-flag"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          // Fallback to component flag
+                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.nextSibling.style.display = 'block';
+                        }}
+                        onLoad={(e) => {
+                          console.log(`Flag image loaded for ${rule.country}`);
+                        }}
+                      />
+                    ) : null}
+                    <rule.Flag
+                      className="visa-rule-flag"
+                      style={{ display: rule.flagImageUrl ? 'none' : 'block' }}
+                    />
                     <h3 className="visa-rule-country">{rule.country}</h3>
                   </div>
                   <div className="visa-rule-id-card">

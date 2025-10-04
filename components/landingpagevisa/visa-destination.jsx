@@ -116,11 +116,15 @@ const VisaDestinationCards = () => {
       // Convert currency
       const convertedPrice = convertCurrency(totalPrice, item.currency);
 
+      // Generate image URL using the proxy endpoint
+      const getImageUrl = (imageName) => {
+        if (!imageName) return FALLBACK_IMAGE;
+        return `/api/cms/file-download?image=${encodeURIComponent(imageName)}`;
+      };
+
       return {
         id: item.visaCardId,
-        image: item?.visaCardJson?.image
-          ? `/img/general/${item.visaCardJson.image}`
-          : FALLBACK_IMAGE, // Assuming images are stored in public/img/general/
+        image: getImageUrl(item?.visaCardJson?.image),
         country: item.visaCardTitle,
         fastTrack: {
           originalPrice: `₹${Math.round(oldPrice)}`, // Remove decimal places
@@ -447,6 +451,10 @@ const VisaDestinationCards = () => {
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = FALLBACK_IMAGE;
+                }}
+                onLoad={(e) => {
+                  // Image loaded successfully
+                  console.log(`Image loaded for ${destination.country}`);
                 }}
               />
               {/* Fast track overlay */}
