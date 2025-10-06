@@ -1,27 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  tabs: [
-    { id: 1, name: "Hotel", icon: "icon-bed" },
-    { id: 2, name: "Tour", icon: "icon-destination" },
-    { id: 3, name: "Activity", icon: "icon-ski" },
-    { id: 4, name: "Holyday Rentals", icon: "icon-home" },
-    { id: 5, name: "Car", icon: "icon-car" },
-    { id: 6, name: "Cruise", icon: "icon-yatch" },
-    { id: 7, name: "Flights", icon: "icon-tickets" },
-  ],
-  currentTab: "Hotel",
+  searchQuery: "",
+  selectedPlace: null,
+  isLoading: false,
+  error: null,
 };
 
-export const findPlaceSlice = createSlice({
-  name: "find-place",
+const findPlaceSlice = createSlice({
+  name: "findPlace",
   initialState,
   reducers: {
-    addCurrentTab: (state, { payload }) => {
-      state.currentTab = payload;
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
+    },
+    setSelectedPlace: (state, action) => {
+      state.selectedPlace = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
+    clearError: (state) => {
+      state.error = null;
+    },
+    reset: (state) => {
+      return initialState;
     },
   },
 });
 
-export const { addCurrentTab } = findPlaceSlice.actions;
+export const {
+  setSearchQuery,
+  setSelectedPlace,
+  setLoading,
+  setError,
+  clearError,
+  reset,
+} = findPlaceSlice.actions;
+
 export default findPlaceSlice.reducer;

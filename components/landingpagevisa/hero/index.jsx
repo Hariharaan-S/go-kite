@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { addCurrentTab } from "../../../features/hero/findPlaceSlice";
 import "../styles/hero.css"; // import CSS file
 
 // Flight search/book card with trip options
