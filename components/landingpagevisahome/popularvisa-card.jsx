@@ -1,7 +1,17 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
-import { US, IN, SG, CH, ES, TR, LK, AU, BD } from "country-flag-icons/react/3x2";
+import {
+  US,
+  IN,
+  SG,
+  CH,
+  ES,
+  TR,
+  LK,
+  AU,
+  BD,
+} from "country-flag-icons/react/3x2";
 import "./styles/popularvisa-card.css";
 import { useRouter } from "next/navigation";
 import Slider from "react-slick";
@@ -10,7 +20,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { usePageContext } from "../common/PageContext";
 
 const VISIBLE_CARDS = 5;
-const VISIBLE_VACCINATION_CARDS = 1; // Show one card at a time for mobile
+const VISIBLE_VACATION_CARDS = 1; // Show one card at a time for mobile
 
 // Country flag mapping
 const countryFlagMap = {
@@ -37,15 +47,15 @@ const countryFlagMap = {
 
 const VisaCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [currentVaccinationSlide, setCurrentVaccinationSlide] = useState(0);
+  const [currentVacationSlide, setCurrentVacationSlide] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [popularVisas, setPopularVisas] = useState([]);
-  const [vaccinationCountries, setVaccinationCountries] = useState([]);
+  const [vacationCountries, setVacationCountries] = useState([]);
   const [visaRulesData, setVisaRulesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const vaccinationContainerRef = useRef(null);
+  const vacationContainerRef = useRef(null);
   const sliderRef = useRef(null);
   const router = useRouter();
   const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
@@ -70,26 +80,22 @@ const VisaCards = () => {
   };
 
   // Dynamic page id from context with fallback
-  const PAGE_ID = getPageIdWithFallback('visa-landing-page', '66'); // Fallback to default visa page ID
+  const PAGE_ID = getPageIdWithFallback("visa-landing-page", "66"); // Fallback to default visa page ID
   console.log("PAGE_ID");
   console.log(PAGE_ID);
-
 
   // Fetch sections data
   const fetchSectionsData = async () => {
     try {
       console.log(" in fetchSectionsData PAGE_ID");
       console.log(PAGE_ID);
-      const sectionsResponse = await fetch(
-        "/api/cms/pages-sections",
-        {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            pageId: PAGE_ID,
-          }),
-        }
-      );
+      const sectionsResponse = await fetch("/api/cms/pages-sections", {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          pageId: PAGE_ID,
+        }),
+      });
 
       if (!sectionsResponse.ok) {
         throw new Error("Failed to fetch sections data");
@@ -108,16 +114,13 @@ const VisaCards = () => {
     const aggregated = [];
     for (const sectionId of sectionIds) {
       try {
-        const response = await fetch(
-          "/api/cms/sections-visa-cards",
-          {
-            method: "POST",
-            headers: getAuthHeaders(),
-            body: JSON.stringify({
-              pageSectionId: sectionId,
-            }),
-          }
-        );
+        const response = await fetch("/api/cms/sections-visa-cards", {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            pageSectionId: sectionId,
+          }),
+        });
 
         if (!response.ok) {
           throw new Error("Failed to fetch visa cards data");
@@ -136,16 +139,13 @@ const VisaCards = () => {
   // Fetch visa rules data using proxy endpoint
   const fetchVisaRulesData = async (sectionId) => {
     try {
-      const response = await fetch(
-        "/api/cms/sections-visa-cards-rules",
-        {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            pageSectionId: sectionId,
-          }),
-        }
-      );
+      const response = await fetch("/api/cms/sections-visa-cards-rules", {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          pageSectionId: sectionId,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch visa rules data");
@@ -154,7 +154,11 @@ const VisaCards = () => {
       const data = await response.json();
       return Array.isArray(data?.data) ? data.data : [];
     } catch (err) {
-      console.error("Error fetching visa rules data for section", sectionId, err);
+      console.error(
+        "Error fetching visa rules data for section",
+        sectionId,
+        err
+      );
       return [];
     }
   };
@@ -198,7 +202,7 @@ const VisaCards = () => {
       .map((item) => {
         console.log(`Processing visa card for ${item.visaCardTitle}:`, {
           flagImage: item.visaCardJson?.flagImage,
-          countryId: item.visaCardCountryId
+          countryId: item.visaCardCountryId,
         });
 
         return {
@@ -249,7 +253,8 @@ const VisaCards = () => {
         // Find relevant section IDs
         const popularVisaSection = sections.find(
           (section) =>
-            section.title === "Popular Countries" && section.contentType === "VISA"
+            section.title === "Popular Countries" &&
+            section.contentType === "VISA"
         );
 
         const vacationSection = sections.find(
@@ -260,7 +265,8 @@ const VisaCards = () => {
 
         const visaRulesSection = sections.find(
           (section) =>
-            section.title === "Visa Rules Announcement" && section.contentType === "VISA"
+            section.title === "Visa Rules Announcement" &&
+            section.contentType === "VISA"
         );
 
         if (!popularVisaSection && !vacationSection && !visaRulesSection) {
@@ -291,12 +297,14 @@ const VisaCards = () => {
             visaCardsData,
             vacationSection.pageSectionId
           );
-          setVaccinationCountries(vacationData);
+          setVacationCountries(vacationData);
         }
 
         // Fetch visa rules data if section exists
         if (visaRulesSection) {
-          const visaRulesData = await fetchVisaRulesData(visaRulesSection.pageSectionId);
+          const visaRulesData = await fetchVisaRulesData(
+            visaRulesSection.pageSectionId
+          );
           const transformedRulesData = transformVisaRulesData(visaRulesData);
           setVisaRulesData(transformedRulesData);
         }
@@ -324,7 +332,7 @@ const VisaCards = () => {
           },
         ]);
 
-        setVaccinationCountries([
+        setVacationCountries([
           {
             Flag: LK,
             country: "Sri Lanka",
@@ -339,8 +347,10 @@ const VisaCards = () => {
         setVisaRulesData([
           {
             title: "Important Visa Updates",
-            description: "Please check the latest visa requirements before traveling.",
-            content: "<p>Stay updated with the latest visa rules and regulations.</p>",
+            description:
+              "Please check the latest visa requirements before traveling.",
+            content:
+              "<p>Stay updated with the latest visa rules and regulations.</p>",
           },
         ]);
       } finally {
@@ -352,7 +362,7 @@ const VisaCards = () => {
   }, [pageLoading, PAGE_ID]);
 
   const totalSlides = popularVisas.length;
-  const totalVaccinationSlides = vaccinationCountries.length;
+  const totalVacationSlides = vacationCountries.length;
 
   const nextSlide = () => {
     if (sliderRef.current) sliderRef.current.slickNext();
@@ -362,34 +372,34 @@ const VisaCards = () => {
     if (sliderRef.current) sliderRef.current.slickPrev();
   };
 
-  const nextVaccinationSlide = () => {
-    setCurrentVaccinationSlide((prev) =>
-      prev + 1 >= totalVaccinationSlides ? 0 : prev + 1
+  const nextVacationSlide = () => {
+    setCurrentVacationSlide((prev) =>
+      prev + 1 >= totalVacationSlides ? 0 : prev + 1
     );
   };
 
-  const prevVaccinationSlide = () => {
-    setCurrentVaccinationSlide((prev) =>
-      prev - 1 < 0 ? totalVaccinationSlides - 1 : prev - 1
+  const prevVacationSlide = () => {
+    setCurrentVacationSlide((prev) =>
+      prev - 1 < 0 ? totalVacationSlides - 1 : prev - 1
     );
   };
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
-    setStartX(e.pageX - vaccinationContainerRef.current.offsetLeft);
+    setStartX(e.pageX - vacationContainerRef.current.offsetLeft);
   };
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     e.preventDefault();
-    const x = e.pageX - vaccinationContainerRef.current.offsetLeft;
+    const x = e.pageX - vacationContainerRef.current.offsetLeft;
     const walk = (x - startX) * 2;
 
     if (walk > 100) {
-      prevVaccinationSlide();
+      prevVacationSlide();
       setIsDragging(false);
     } else if (walk < -100) {
-      nextVaccinationSlide();
+      nextVacationSlide();
       setIsDragging(false);
     }
   };
@@ -438,7 +448,7 @@ const VisaCards = () => {
 
   // Adjusted settings for Vacation slider based on data length
   const sliderSettingsVacation = (() => {
-    const count = vaccinationCountries.length || 1;
+    const count = vacationCountries.length || 1;
     const base = { ...sliderSettings };
     base.slidesToShow = Math.min(5, count);
     base.infinite = count > base.slidesToShow;
@@ -511,9 +521,12 @@ const VisaCards = () => {
                 onClick={() => {
                   try {
                     if (typeof window !== "undefined") {
-                      window.sessionStorage.setItem("applyVisaCountryId", String(visa.countryId || "AE"));
+                      window.sessionStorage.setItem(
+                        "applyVisaCountryId",
+                        String(visa.countryId || "AE")
+                      );
                     }
-                  } catch (e) { }
+                  } catch (e) {}
                   router.push("/apply_visa");
                 }}
               >
@@ -526,8 +539,8 @@ const VisaCards = () => {
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         // Fallback to component flag
-                        e.currentTarget.style.display = 'none';
-                        e.currentTarget.nextSibling.style.display = 'block';
+                        e.currentTarget.style.display = "none";
+                        e.currentTarget.nextSibling.style.display = "block";
                       }}
                       onLoad={(e) => {
                         console.log(`Flag image loaded for ${visa.country}`);
@@ -536,7 +549,7 @@ const VisaCards = () => {
                   ) : null}
                   <visa.Flag
                     className="flag"
-                    style={{ display: visa.flagImageUrl ? 'none' : 'block' }}
+                    style={{ display: visa.flagImageUrl ? "none" : "block" }}
                   />
                   <div className="card-content">
                     <h3 className="visa-country">{visa.country}</h3>
@@ -556,20 +569,29 @@ const VisaCards = () => {
         </Slider>
       </div>
 
-      {/* Vaccination Countries */}
-      <h2 className="section-title" style={{ marginBottom: 12 }}>Vacation – Trending Countries</h2>
+      {/* Vacation Countries */}
+      <h2 className="section-title" style={{ marginBottom: 12 }}>
+        Vacation – Trending Countries
+      </h2>
       <div className="visa-card-list" style={{ marginBottom: 16 }}>
-        <Slider ref={sliderRef} {...sliderSettingsVacation} style={{ width: "100%" }}>
-          {vaccinationCountries.map((country, index) => (
+        <Slider
+          ref={sliderRef}
+          {...sliderSettingsVacation}
+          style={{ width: "100%" }}
+        >
+          {vacationCountries.map((country, index) => (
             <div key={index}>
               <div
-                className="vaccination-card"
+                className="vacation-card"
                 onClick={() => {
                   try {
                     if (typeof window !== "undefined") {
-                      window.sessionStorage.setItem("applyVisaCountryId", String(country.countryId || ""));
+                      window.sessionStorage.setItem(
+                        "applyVisaCountryId",
+                        String(country.countryId || "")
+                      );
                     }
-                  } catch (e) { }
+                  } catch (e) {}
                   router.push("/apply_visa");
                 }}
               >
@@ -583,8 +605,8 @@ const VisaCards = () => {
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         // Fallback to component flag
-                        e.currentTarget.style.display = 'none';
-                        e.currentTarget.nextSibling.style.display = 'block';
+                        e.currentTarget.style.display = "none";
+                        e.currentTarget.nextSibling.style.display = "block";
                       }}
                       onLoad={(e) => {
                         console.log(`Flag image loaded for ${country.country}`);
@@ -593,7 +615,7 @@ const VisaCards = () => {
                   ) : null}
                   <country.Flag
                     className="flag"
-                    style={{ display: country.flagImageUrl ? 'none' : 'block' }}
+                    style={{ display: country.flagImageUrl ? "none" : "block" }}
                   />
                   <div className="card-content">
                     <h3 className="visa-country">{country.country}</h3>
@@ -619,7 +641,10 @@ const VisaCards = () => {
         <div className="visa-card-list">
           {visaRulesData.length > 0 ? (
             visaRulesData.map((rule, index) => (
-              <div key={rule.uniqueId || index} className="visa-card visa-rule-card">
+              <div
+                key={rule.uniqueId || index}
+                className="visa-card visa-rule-card"
+              >
                 {/* Top Section */}
                 <div className="visa-rule-top-section">
                   <div className="visa-rule-header">
@@ -631,8 +656,8 @@ const VisaCards = () => {
                         onError={(e) => {
                           e.currentTarget.onerror = null;
                           // Fallback to component flag
-                          e.currentTarget.style.display = 'none';
-                          e.currentTarget.nextSibling.style.display = 'block';
+                          e.currentTarget.style.display = "none";
+                          e.currentTarget.nextSibling.style.display = "block";
                         }}
                         onLoad={(e) => {
                           console.log(`Flag image loaded for ${rule.country}`);
@@ -641,7 +666,7 @@ const VisaCards = () => {
                     ) : null}
                     <rule.Flag
                       className="visa-rule-flag"
-                      style={{ display: rule.flagImageUrl ? 'none' : 'block' }}
+                      style={{ display: rule.flagImageUrl ? "none" : "block" }}
                     />
                     <h3 className="visa-rule-country">{rule.country}</h3>
                   </div>
@@ -657,7 +682,12 @@ const VisaCards = () => {
                   <p className="visa-rule-announcement">{rule.description}</p>
                   <div className="visa-rule-footer">
                     <div className="visa-rule-go-kite">
-                      <img width={50} height={50} src="/img/general/logo.svg" alt="Go Kite" />
+                      <img
+                        width={50}
+                        height={50}
+                        src="/img/general/logo.svg"
+                        alt="Go Kite"
+                      />
                     </div>
                   </div>
                 </div>
