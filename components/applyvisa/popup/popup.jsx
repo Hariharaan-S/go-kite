@@ -101,10 +101,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
   };
 
   const inputStyle = {
-    padding: "14px 16px",
-    borderRadius: "12px",
-    border: "2px solid #e2e8f0",
-    fontSize: "16px",
+    padding: "6px 8px",
+    borderRadius: "4px",
+    border: "1px solid #e2e8f0",
+    fontSize: "12px",
     outline: "none",
     transition: "all 0.3s ease",
     backgroundColor: "#fafafa",
@@ -146,16 +146,16 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
         onSubmit={handleSubmit}
         style={{
           background: "#fff",
-          borderRadius: "24px",
-          padding: "40px",
+          borderRadius: "20px",
+          padding: "20px",
           width: "100%",
-          maxWidth: "800px",
-          maxHeight: "90vh",
-          overflow: "auto",
+          maxWidth: "1600px",
+          maxHeight: "95vh",
+          overflow: "hidden",
           boxShadow: "0 25px 50px rgba(0, 0, 0, 0.25)",
           display: "flex",
           flexDirection: "column",
-          gap: "32px",
+          gap: "8px",
           position: "relative",
         }}
       >
@@ -192,61 +192,27 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           ×
         </button>
 
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>
-          <img
-            src="/img/general/logo.svg"
-            alt="Logo"
-            style={{ width: "140px", marginBottom: "24px" }}
-          />
-          <h2
-            style={{
-              margin: 0,
-              fontWeight: "800",
-              fontSize: "2.5rem",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              color: "transparent",
-              letterSpacing: "-0.025em",
-              lineHeight: "1.2",
-            }}
-          >
-            Visa Enquiry Form
-          </h2>
-          <p
-            style={{
-              color: "#64748b",
-              fontSize: "1.1rem",
-              margin: "12px 0 0 0",
-              fontWeight: "500",
-            }}
-          >
-            Please fill in your details for visa assistance
-          </p>
-        </div>
-
         {/* Form Grid */}
         <div
+          className="form-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "24px",
-            "@media (max-width: 640px)": {
-              gridTemplateColumns: "1fr",
-            },
+            gridTemplateColumns: "repeat(5, 1fr)",
+            gap: "8px",
+            flex: 1,
+            overflow: "hidden",
           }}
         >
           {/* Personal Information Section */}
-          <div style={{ gridColumn: "1 / -1", marginBottom: "16px" }}>
+          <div style={{ gridColumn: "1 / -1", marginBottom: "2px" }}>
             <h3
               style={{
-                margin: "0 0 20px 0",
+                margin: "0 0 4px 0",
                 color: "#1e293b",
-                fontSize: "1.4rem",
+                fontSize: "0.9rem",
                 fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
+                borderBottom: "1px solid #e2e8f0",
+                paddingBottom: "2px",
               }}
             >
               Personal Information
@@ -257,9 +223,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               First Name *
@@ -303,9 +270,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Last Name *
@@ -349,9 +317,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Country of Residence *
@@ -401,9 +370,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Nationality *
@@ -453,18 +423,18 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           <div
             style={{
               gridColumn: "1 / -1",
-              marginTop: "32px",
-              marginBottom: "16px",
+              marginTop: "4px",
+              marginBottom: "2px",
             }}
           >
             <h3
               style={{
-                margin: "0 0 20px 0",
+                margin: "0 0 4px 0",
                 color: "#1e293b",
-                fontSize: "1.4rem",
+                fontSize: "0.9rem",
                 fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
+                borderBottom: "1px solid #e2e8f0",
+                paddingBottom: "2px",
               }}
             >
               Travel Information
@@ -475,9 +445,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Destination Country *
@@ -527,9 +498,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Type of Visa *
@@ -579,9 +551,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Tentative Travel Date *
@@ -626,18 +599,18 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           <div
             style={{
               gridColumn: "1 / -1",
-              marginTop: "32px",
-              marginBottom: "16px",
+              marginTop: "4px",
+              marginBottom: "2px",
             }}
           >
             <h3
               style={{
-                margin: "0 0 20px 0",
+                margin: "0 0 4px 0",
                 color: "#1e293b",
-                fontSize: "1.4rem",
+                fontSize: "0.9rem",
                 fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
+                borderBottom: "1px solid #e2e8f0",
+                paddingBottom: "2px",
               }}
             >
               Contact Information
@@ -648,9 +621,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Contact Number *
@@ -682,8 +656,8 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                   width: "100%",
                   border: "none",
                   backgroundColor: "transparent",
-                  padding: "14px 16px",
-                  fontSize: "16px",
+                  padding: "6px 8px",
+                  fontSize: "12px",
                   fontWeight: "400",
                   color: "#374151",
                   outline: "none",
@@ -713,9 +687,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Email Address *
@@ -760,18 +735,18 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           <div
             style={{
               gridColumn: "1 / -1",
-              marginTop: "32px",
-              marginBottom: "16px",
+              marginTop: "4px",
+              marginBottom: "2px",
             }}
           >
             <h3
               style={{
-                margin: "0 0 20px 0",
+                margin: "0 0 4px 0",
                 color: "#1e293b",
-                fontSize: "1.4rem",
+                fontSize: "0.9rem",
                 fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
+                borderBottom: "1px solid #e2e8f0",
+                paddingBottom: "2px",
               }}
             >
               Passenger Details
@@ -782,9 +757,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Number of Adults *
@@ -806,13 +782,13 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 onClick={() => handleNumberChange("numberOfAdults", false)}
                 disabled={form.numberOfAdults <= 1}
                 style={{
-                  width: "44px",
-                  height: "44px",
+                  width: "24px",
+                  height: "24px",
                   background: form.numberOfAdults <= 1 ? "#f8fafc" : "#fff",
                   cursor: form.numberOfAdults <= 1 ? "not-allowed" : "pointer",
                   border: "none",
                   borderRight: "1px solid #e2e8f0",
-                  fontSize: "20px",
+                  fontSize: "12px",
                   fontWeight: "600",
                   color: form.numberOfAdults <= 1 ? "#cbd5e1" : "#374151",
                   display: "flex",
@@ -831,9 +807,9 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                   flex: 1,
                   border: "none",
                   textAlign: "center",
-                  fontSize: "16px",
+                  fontSize: "12px",
                   backgroundColor: "transparent",
-                  padding: "10px",
+                  padding: "4px",
                   fontWeight: "600",
                   color: "#374151",
                 }}
@@ -842,13 +818,13 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 type="button"
                 onClick={() => handleNumberChange("numberOfAdults", true)}
                 style={{
-                  width: "44px",
-                  height: "44px",
+                  width: "24px",
+                  height: "24px",
                   background: "#fff",
                   cursor: "pointer",
                   border: "none",
                   borderLeft: "1px solid #e2e8f0",
-                  fontSize: "20px",
+                  fontSize: "12px",
                   fontWeight: "600",
                   color: "#374151",
                   display: "flex",
@@ -866,9 +842,10 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             <label
               style={{
                 display: "block",
-                marginBottom: "8px",
+                marginBottom: "2px",
                 fontWeight: "600",
                 color: "#374151",
+                fontSize: "11px",
               }}
             >
               Number of Children *
@@ -890,14 +867,14 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 onClick={() => handleNumberChange("numberOfChildren", false)}
                 disabled={form.numberOfChildren <= 0}
                 style={{
-                  width: "44px",
-                  height: "44px",
+                  width: "24px",
+                  height: "24px",
                   background: form.numberOfChildren <= 0 ? "#f8fafc" : "#fff",
                   cursor:
                     form.numberOfChildren <= 0 ? "not-allowed" : "pointer",
                   border: "none",
                   borderRight: "1px solid #e2e8f0",
-                  fontSize: "20px",
+                  fontSize: "12px",
                   fontWeight: "600",
                   color: form.numberOfChildren <= 0 ? "#cbd5e1" : "#374151",
                   display: "flex",
@@ -916,9 +893,9 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                   flex: 1,
                   border: "none",
                   textAlign: "center",
-                  fontSize: "16px",
+                  fontSize: "12px",
                   backgroundColor: "transparent",
-                  padding: "10px",
+                  padding: "4px",
                   fontWeight: "600",
                   color: "#374151",
                 }}
@@ -927,13 +904,13 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
                 type="button"
                 onClick={() => handleNumberChange("numberOfChildren", true)}
                 style={{
-                  width: "44px",
-                  height: "44px",
+                  width: "24px",
+                  height: "24px",
                   background: "#fff",
                   cursor: "pointer",
                   border: "none",
                   borderLeft: "1px solid #e2e8f0",
-                  fontSize: "20px",
+                  fontSize: "12px",
                   fontWeight: "600",
                   color: "#374151",
                   display: "flex",
@@ -948,106 +925,111 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           </div>
 
           {/* Additional Information Section */}
-          <div style={{ gridColumn: "1 / -1", marginTop: "32px" }}>
+          <div style={{ gridColumn: "1 / -1", marginTop: "4px" }}>
             <h3
               style={{
-                margin: "0 0 20px 0",
+                margin: "0 0 4px 0",
                 color: "#1e293b",
-                fontSize: "1.4rem",
+                fontSize: "0.9rem",
                 fontWeight: "700",
-                borderBottom: "3px solid #e2e8f0",
-                paddingBottom: "12px",
+                borderBottom: "1px solid #e2e8f0",
+                paddingBottom: "2px",
               }}
             >
               Additional Information
             </h3>
 
-            <div style={{ marginBottom: "24px" }}>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "8px",
-                  fontWeight: "600",
-                  color: "#374151",
-                }}
-              >
-                Description (Optional)
-              </label>
-              <textarea
-                name="description"
-                placeholder="Provide any additional details or specific requests..."
-                value={form.description}
-                onChange={handleChange}
-                rows={4}
-                style={{
-                  ...inputStyle,
-                  resize: "vertical",
-                  minHeight: "120px",
-                }}
-                onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.backgroundColor = "#fafafa";
-                  e.target.style.boxShadow = "none";
-                }}
-              />
-            </div>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <div style={{ flex: 2 }}>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "2px",
+                    fontWeight: "600",
+                    color: "#374151",
+                    fontSize: "11px",
+                  }}
+                >
+                  Description (Optional)
+                </label>
+                <textarea
+                  name="description"
+                  placeholder="Provide any additional details or specific requests..."
+                  value={form.description}
+                  onChange={handleChange}
+                  rows={1}
+                  style={{
+                    ...inputStyle,
+                    resize: "vertical",
+                    minHeight: "30px",
+                  }}
+                  onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "#e2e8f0";
+                    e.target.style.backgroundColor = "#fafafa";
+                    e.target.style.boxShadow = "none";
+                  }}
+                />
+              </div>
 
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "8px",
-                  fontWeight: "600",
-                  color: "#374151",
-                }}
-              >
-                File Attachment (Optional)
-              </label>
-              <input
-                name="fileAttachment"
-                type="file"
-                onChange={handleChange}
-                style={{
-                  ...inputStyle,
-                  paddingTop: "12px",
-                  paddingBottom: "12px",
-                }}
-                onFocus={(e) => Object.assign(e.target.style, focusStyle)}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.backgroundColor = "#fafafa";
-                  e.target.style.boxShadow = "none";
-                }}
-              />
+              <div style={{ flex: 1 }}>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "2px",
+                    fontWeight: "600",
+                    color: "#374151",
+                    fontSize: "11px",
+                  }}
+                >
+                  File Attachment (Optional)
+                </label>
+                <input
+                  name="fileAttachment"
+                  type="file"
+                  onChange={handleChange}
+                  style={{
+                    ...inputStyle,
+                    paddingTop: "6px",
+                    paddingBottom: "6px",
+                  }}
+                  onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "#e2e8f0";
+                    e.target.style.backgroundColor = "#fafafa";
+                    e.target.style.boxShadow = "none";
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Action Buttons */}
         <div
+          className="action-buttons"
           style={{
             display: "flex",
-            gap: "16px",
+            gap: "8px",
             justifyContent: "flex-end",
-            marginTop: "32px",
-            paddingTop: "24px",
-            borderTop: "2px solid #f1f5f9",
+            marginTop: "8px",
+            paddingTop: "8px",
+            borderTop: "1px solid #f1f5f9",
           }}
         >
           <button
             type="button"
             onClick={onClose}
             style={{
-              padding: "16px 32px",
-              borderRadius: "12px",
-              border: "2px solid #d1d5db",
+              padding: "6px 12px",
+              borderRadius: "4px",
+              border: "1px solid #d1d5db",
               background: "#fff",
               cursor: "pointer",
               fontWeight: "600",
               color: "#6b7280",
               transition: "all 0.3s ease",
-              fontSize: "16px",
+              fontSize: "12px",
             }}
             onMouseEnter={(e) => {
               e.target.style.backgroundColor = "#f9fafb";
@@ -1065,15 +1047,15 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           <button
             type="submit"
             style={{
-              padding: "16px 32px",
+              padding: "6px 12px",
               background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              boxShadow: "0 10px 25px rgba(102, 126, 234, 0.4)",
+              boxShadow: "0 6px 16px rgba(102, 126, 234, 0.4)",
               color: "#fff",
               border: "none",
-              borderRadius: "12px",
+              borderRadius: "4px",
               cursor: "pointer",
               fontWeight: "700",
-              fontSize: "16px",
+              fontSize: "12px",
               transition: "all 0.3s ease",
               position: "relative",
               overflow: "hidden",
@@ -1096,8 +1078,8 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
         .phone-input .PhoneInputInput {
           border: none !important;
           background: transparent !important;
-          padding: 14px 16px !important;
-          font-size: 16px !important;
+          padding: 6px 8px !important;
+          font-size: 12px !important;
           outline: none !important;
           width: 100% !important;
           color: #374151 !important;
@@ -1118,19 +1100,31 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           form {
             padding: 24px !important;
             margin: 10px !important;
-            borderradius: 20px !important;
+            border-radius: 20px !important;
+            max-width: 95vw !important;
+            max-height: 90vh !important;
+            overflow: auto !important;
           }
 
           h2 {
-            fontsize: 2rem !important;
+            font-size: 2rem !important;
           }
 
           .form-grid {
-            gridtemplatecolumns: 1fr !important;
+            grid-template-columns: 1fr !important;
+            overflow: visible !important;
+          }
+
+          .form-grid > div[style*="display: flex"] {
+            flex-direction: column !important;
+          }
+
+          .form-grid > div[style*="display: flex"] > div {
+            flex: none !important;
           }
 
           .action-buttons {
-            flexdirection: column !important;
+            flex-direction: column !important;
           }
 
           .action-buttons button {
@@ -1144,11 +1138,11 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
           }
 
           h2 {
-            fontsize: 1.75rem !important;
+            font-size: 1.75rem !important;
           }
 
           .number-input-container {
-            justifycontent: center !important;
+            justify-content: center !important;
           }
         }
       `}</style>
