@@ -546,16 +546,83 @@ const IconRow = () => {
   );
 };
 
+const FALLBACK_IMAGE = "/img/landingpage/hero1.png";
+
+function getCookie(name) {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${name}=`));
+  return match ? decodeURIComponent(match.split("=")[1]) : "";
+}
+
 const HeroSection = () => {
   // Redux and router hooks are present if needed for navigation/interactivity
   const { tabs, currentTab } = useSelector((state) => state.hero) || {};
   const dispatch = useDispatch();
   const Router = useRouter();
+
+  const [bannerImages, setBannerImages] = React.useState([FALLBACK_IMAGE]);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+
+  const getAuthHeaders = () => {
+    const token = getCookie("accesstoken");
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return headers;
+  };
+
+  React.useEffect(() => {
+    const loadBanner = async () => {
+      try {
+        const sectionsRes = await fetch("/api/cms/pages-sections", {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ pageId: 63 }),
+        });
+        if (!sectionsRes.ok) throw new Error("Failed to load sections");
+        const sectionsJson = await sectionsRes.json();
+        const sections = Array.isArray(sectionsJson?.data) ? sectionsJson.data : [];
+        const bannerSection = sections.find((s) => s.contentType === "BANNER");
+        if (!bannerSection?.pageSectionId) throw new Error("Banner section not found");
+
+        const bannerRes = await fetch("/api/cms/section-banners", {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ pageSectionId: bannerSection.pageSectionId }),
+        });
+        if (!bannerRes.ok) throw new Error("Failed to load banner");
+        const bannerJson = await bannerRes.json();
+        const bannersArr = Array.isArray(bannerJson?.data) ? bannerJson.data : [];
+        const imgs = bannersArr
+          .map((b) => b?.bannerImageUrl)
+          .filter(Boolean)
+          .map((name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`);
+        setBannerImages(imgs.length ? imgs : [FALLBACK_IMAGE]);
+      } catch (_) {
+        setBannerImages([FALLBACK_IMAGE]);
+      }
+    };
+    loadBanner();
+  }, []);
+
+  React.useEffect(() => {
+    if (!bannerImages || bannerImages.length <= 1) return;
+    const id = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % bannerImages.length);
+    }, 6000);
+    return () => clearInterval(id);
+  }, [bannerImages]);
+
+  React.useEffect(() => {
+    setCurrentIndex(0);
+  }, [bannerImages?.length]);
   return (
     <section className="masthead -type-1 z-5">
       <style>{styles}</style>
       <div className="masthead__bg">
-        <img alt="image" src="/img/landingpage/hero1.png" className="js-lazy" />
+        <img alt="image" src={bannerImages[currentIndex] || FALLBACK_IMAGE} className="js-lazy" />
       </div>
       <div className="container">
         <div className="visa-row row justify-center">

@@ -5,6 +5,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import "../styles/hero.css";
+const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
+
+function getCookie(name) {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${name}=`));
+  return match ? decodeURIComponent(match.split("=")[1]) : "";
+}
 
 // Icon button component
 const IconButton = ({ imgSrc, label, isActive = false }) => (
@@ -343,11 +353,86 @@ const BookFlightCard = () => {
 
 // Hero Section Component
 const HeroSection = () => {
+  const [bannerImages, setBannerImages] = React.useState([FALLBACK_IMAGE]);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState("");
+
+  const getAuthHeaders = () => {
+    const token = getCookie("accesstoken");
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return headers;
+  };
+
+  React.useEffect(() => {
+    const loadBanner = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        // 1) Fetch sections to find BANNER section for the page
+        const sectionsRes = await fetch("/api/cms/pages-sections", {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ pageId: 63 }),
+        });
+        if (!sectionsRes.ok) throw new Error("Failed to load sections");
+        const sectionsJson = await sectionsRes.json();
+        const sections = Array.isArray(sectionsJson?.data) ? sectionsJson.data : [];
+        const bannerSection = sections.find((s) => s.contentType === "BANNER");
+        if (!bannerSection?.pageSectionId) throw new Error("Banner section not found");
+
+        // 2) Fetch banner details for that section to get bannerImageUrl
+        const bannerRes = await fetch("/api/cms/section-banners", {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ pageSectionId: bannerSection.pageSectionId }),
+        });
+        if (!bannerRes.ok) throw new Error("Failed to load banner");
+        const bannerJson = await bannerRes.json();
+        const bannersArr = Array.isArray(bannerJson?.data) ? bannerJson.data : [];
+        const imgs = bannersArr
+          .map((b) => b?.bannerImageUrl)
+          .filter(Boolean)
+          .map((name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`);
+        setBannerImages(imgs.length ? imgs : [FALLBACK_IMAGE]);
+      } catch (e) {
+        setError(String(e?.message || e));
+        setBannerImages([FALLBACK_IMAGE]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadBanner();
+  }, []);
+
+  React.useEffect(() => {
+    if (!bannerImages || bannerImages.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % bannerImages.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [bannerImages]);
+
+  React.useEffect(() => {
+    setCurrentIndex(0);
+  }, [bannerImages?.length]);
   return (
     <section className="hero-masthead masthead -type-1 z-5">
-      <div className="hero-masthead-bg masthead__bg">
-        <img alt="image" src="/img/landingpage/hero.png" className="hero-masthead-img js-lazy" />
+      <div style={{ overflow: "hidden" }}>
+              <div className="hero-masthead-bg masthead__bg">
+        <img
+          alt="image"
+          src={bannerImages[currentIndex] || FALLBACK_IMAGE}
+          className="hero-masthead-img js-lazy"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = FALLBACK_IMAGE;
+          }}
+        />
       </div>
+      </div>
+
       <div className="hero-container container px-4 sm:px-6 lg:px-8">
         <div className="hero-row row justify-center">
           <div className="hero-col col-auto">
