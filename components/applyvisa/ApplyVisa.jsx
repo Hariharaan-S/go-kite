@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import "./styles/ApplyVisa.css";
@@ -9,6 +9,14 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [openFAQ, setOpenFAQ] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
+
+  // Refs for each section
+  const sectionRefs = useRef({
+    visaTypes: useRef(null),
+    visaProcess: useRef(null),
+    visaEligibility: useRef(null),
+    faq: useRef(null),
+  });
   // Compute total fee for a given card's companyPricing (supports array shape)
   const getTotalFee = (companyPricing) => {
     const cp = Array.isArray(companyPricing)
@@ -40,7 +48,80 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
     setPopupOpen(false);
   };
 
+  // Scroll to section function
+  const scrollToSection = (tabIndex) => {
+    const sectionKey = sectionMap[tabIndex];
+    const sectionRef = sectionRefs.current[sectionKey];
+
+    if (sectionRef?.current) {
+      sectionRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
+  // Handle tab click
+  const handleTabClick = (index) => {
+    setActiveTab(index);
+    scrollToSection(index);
+  };
+
+  // Scrollspy effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100; // Offset for better detection
+
+      // Check each section
+      Object.entries(sectionRefs.current).forEach(([key, ref]) => {
+        if (ref.current) {
+          const sectionTop = ref.current.offsetTop;
+          const sectionHeight = ref.current.offsetHeight;
+          const sectionBottom = sectionTop + sectionHeight;
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            const tabIndex = Object.keys(sectionMap).find(
+              (tabKey) => sectionMap[tabKey] === key
+            );
+            if (tabIndex !== null) {
+              const newActiveTab = parseInt(tabIndex);
+              if (newActiveTab !== activeTab) {
+                setActiveTab(newActiveTab);
+              }
+            }
+          }
+        }
+      });
+    };
+
+    // Throttle scroll events for better performance
+    let ticking = false;
+    const throttledHandleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", throttledHandleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", throttledHandleScroll);
+    };
+  }, [activeTab]);
+
   const tabList = ["Types Of visa", "Visa Process", "Visa Eligibility", "FAQ"];
+
+  // Section mapping for scrollspy
+  const sectionMap = {
+    0: "visaTypes",
+    1: "visaProcess",
+    2: "visaEligibility",
+    3: "faq",
+  };
 
   const visaCards = [
     {
@@ -143,7 +224,9 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
       <section className="apply-visa-hero">
         <div className="visa-hero-title">
           <h1>
-            {`Apply for ${visaDetails?.detailsJson?.country || "UAE"} Visa Online`}
+            {`Apply for ${
+              visaDetails?.detailsJson?.country || "UAE"
+            } Visa Online`}
           </h1>
           <p>
             {processData?.subHeading || "Get your Visa fast, if applied today"}
@@ -161,7 +244,7 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
           {tabList.map((tab, idx) => (
             <div
               key={tab}
-              onClick={() => setActiveTab(idx)}
+              onClick={() => handleTabClick(idx)}
               className="visa-tab"
               style={{
                 fontWeight: idx === activeTab ? 700 : 500,
@@ -170,6 +253,8 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
                   idx === activeTab
                     ? "3px solid #FFC700"
                     : "3px solid transparent",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
               }}
             >
               {tab}
@@ -178,7 +263,10 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
         </div>
 
         {/* Cards */}
-        <div className="visa-cards-container">
+        <div
+          className="visa-cards-container"
+          ref={sectionRefs.current.visaTypes}
+        >
           {visaDetails?.detailsJson?.visaTypes?.map((card, idx) => (
             <div
               key={idx}
@@ -220,12 +308,18 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
                   )?.map((fee) => (
                     <div key={fee.label} className="visa-card-fees-column">
                       <div className="visa-card-fees-label">{fee.label}</div>
-                      <div className="visa-card-fees-value">{`${(Array.isArray(card.companyPricing) ? card.companyPricing[0]?.currency : card.companyPricing?.currency) || ""} ${fee.value}`}</div>
+                      <div className="visa-card-fees-value">{`${
+                        (Array.isArray(card.companyPricing)
+                          ? card.companyPricing[0]?.currency
+                          : card.companyPricing?.currency) || ""
+                      } ${fee.value}`}</div>
                     </div>
                   ))}
 
                   {(() => {
-                    const { currency, total } = getTotalFee(card.companyPricing);
+                    const { currency, total } = getTotalFee(
+                      card.companyPricing
+                    );
                     return (
                       <div className="visa-card-total-fee">
                         {`${currency} ${total}`}
@@ -248,11 +342,17 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
       </div>
 
       {/* Steps Section */}
-      <div className="visa-custom-container">
+      <div
+        className="visa-custom-container"
+        ref={sectionRefs.current.visaProcess}
+      >
         <div className="customHeader">
-          <h1 className="title">{processData?.mainHeading || "Get Your Visa in Easy Steps"}</h1>
+          <h1 className="title">
+            {processData?.mainHeading || "Get Your Visa in Easy Steps"}
+          </h1>
           <p className="subtitle">
-            {processData?.subHeading || "Our Visa expert reviews and processes your application"}
+            {processData?.subHeading ||
+              "Our Visa expert reviews and processes your application"}
           </p>
 
           <div className="customContainer">
@@ -267,14 +367,16 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
                   </div>
                   <div className="stepContent">
                     <h3
-                      className={`stepTitle ${step.type === "date" ? "date" : ""
-                        }`}
+                      className={`stepTitle ${
+                        step.type === "date" ? "date" : ""
+                      }`}
                     >
                       {step.title}
                     </h3>
                     <p
-                      className={`stepSubtitle ${step.type === "date" ? "date-subtitle" : ""
-                        }`}
+                      className={`stepSubtitle ${
+                        step.type === "date" ? "date-subtitle" : ""
+                      }`}
                     >
                       {step.subtitle}
                     </p>
@@ -285,8 +387,10 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
           </div>
         </div>
 
-        <div className="visaSection">
-          <h2 className="visaTitle">{eligibility?.mainHeading || "Visa Requirement"}</h2>
+        <div className="visaSection" ref={sectionRefs.current.visaEligibility}>
+          <h2 className="visaTitle">
+            {eligibility?.mainHeading || "Visa Requirement"}
+          </h2>
 
           <div className="customDocumentGrid">
             <div className="customDocumentHeader">
@@ -304,7 +408,7 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
           </div>
         </div>
 
-        <div className="faqSection">
+        <div className="faqSection" ref={sectionRefs.current.faq}>
           <h2 className="faqTitle">FAQ</h2>
 
           {visaDetails?.detailsJson?.faq?.map((faq, index) => (
