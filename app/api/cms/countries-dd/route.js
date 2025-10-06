@@ -17,7 +17,7 @@ export async function GET() {
         };
 
         const response = await fetch(
-            'http://gokite-sit-b2c.convergentechnologies.com:30839/api/cms/api/v2/list/custom/data/cms-countries-dd',
+            'http://gokite-sit-b2c.convergentechnologies.com:30839/api/cms/api/v2/list/custom/data/cms-section-visa-country-all',
             {
                 method: 'GET',
                 headers: {

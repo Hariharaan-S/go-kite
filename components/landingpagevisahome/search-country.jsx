@@ -13,7 +13,6 @@ const TravelVisaCards = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const sliderRefRow1 = useRef(null);
-  const sliderRefRow2 = useRef(null);
 
   // Fetch countries data from API
   const fetchCountriesData = async () => {
@@ -29,8 +28,11 @@ const TravelVisaCards = () => {
 
       const result = await response.json();
 
-      if (result.success && result.data) {
-        setCountriesData(result.data);
+      // API returns { success, data: { success, data: [...] } }
+      if (result?.success && result?.data) {
+        const upstream = result.data;
+        const itemsArray = Array.isArray(upstream?.data) ? upstream.data : [];
+        setCountriesData(itemsArray);
       } else {
         throw new Error(result.message || 'Failed to fetch countries data');
       }
@@ -83,35 +85,29 @@ const TravelVisaCards = () => {
       return [];
     }
 
-    // Sample images for different countries (you can expand this)
-    const sampleImages = [
-      "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=240&fit=crop",
-      "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=240&fit=crop",
-      "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=400&h=240&fit=crop",
-      "https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=400&h=240&fit=crop",
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=400&h=240&fit=crop",
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=240&fit=crop",
-      "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=400&h=240&fit=crop",
-      "https://images.unsplash.com/photo-1513326738677-b964603b136d?w=400&h=240&fit=crop",
-    ];
+    const formatPrice = (currency, amount) => {
+      if (!amount) return '';
+      const numeric = Number(amount);
+      if (Number.isNaN(numeric)) return `${currency || ''} ${amount}`.trim();
+      return `${currency || ''} ${numeric.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`.trim();
+    };
 
-    console.log("countriesData");
-    console.log(countriesData);
-
-    // Handle both direct array and nested data structure
-    const countriesArray = Array.isArray(countriesData) ? countriesData : countriesData.data || [];
-
-    return countriesArray.map((country, index) => ({
-      id: country.id,
-      country: country.label,
-      price: "₹6,500",
-      additionalFee: "+ ₹8,500 (Fees +Tax)",
-      visaType: "Visa in 5 Days",
-      image: sampleImages[index % sampleImages.length], // Cycle through sample images
-      badge: index === 2 ? "Hurry! pricing ends in 47 Days" : null, // Add badge to 3rd item
-      visaDate: index % 3 === 0 ? "Visa on 20 Mar, 11:03PM" : null, // Add visa date to every 3rd item
-      visaLogo: index % 3 === 0, // Add visa logo to every 3rd item
-    }));
+    // countriesData is already the upstream array
+    return countriesData.map((item, index) => {
+      const title = item?.visaCardJson?.title || item?.visaCardTitle || '';
+      const imageName = item?.visaCardJson?.image || '';
+      return {
+        id: item?.visaCardId || index,
+        country: title,
+        price: formatPrice(item?.currency, item?.newPrice),
+        additionalFee: "+ ₹8,500 (Fees + Tax)",
+        visaType: "Visa in 5 Days",
+        image: imageName ? `/api/cms/file-download?image=${encodeURIComponent(imageName)}` : '',
+        badge: null,
+        visaDate: null,
+        visaLogo: index % 3 === 0,
+      };
+    });
   };
 
   const destinations = generateDestinations();
@@ -129,12 +125,10 @@ const TravelVisaCards = () => {
 
   const nextSlide = () => {
     if (sliderRefRow1.current) sliderRefRow1.current.slickNext();
-    if (sliderRefRow2.current) sliderRefRow2.current.slickNext();
   };
 
   const prevSlide = () => {
     if (sliderRefRow1.current) sliderRefRow1.current.slickPrev();
-    if (sliderRefRow2.current) sliderRefRow2.current.slickPrev();
   };
 
   // Compute the visible cards window with wrapping for first row
@@ -611,33 +605,17 @@ const TravelVisaCards = () => {
 
 
 
-      {/* Two rows of carousels */}
+      {/* Single carousel rendering all destinations */}
       {destinations && destinations.length > 0 && (
-        <>
-          <div style={{ maxWidth: "1600px", margin: "0 auto", marginBottom: "24px" }}>
-            <Slider ref={sliderRefRow1} {...sliderSettings} style={{ width: "100%" }}>
-              {destinations
-                .slice(0, Math.ceil(destinations.length / 2))
-                .map((destination) => (
-                  <div key={`row1-${destination.id}`} style={{ padding: "0 12px" }}>
-                    <CardComponent destination={destination} />
-                  </div>
-                ))}
-            </Slider>
-          </div>
-
-          <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
-            <Slider ref={sliderRefRow2} {...sliderSettings} style={{ width: "100%" }}>
-              {destinations
-                .slice(Math.ceil(destinations.length / 2))
-                .map((destination) => (
-                  <div key={`row2-${destination.id}`} style={{ padding: "0 12px" }}>
-                    <CardComponent destination={destination} />
-                  </div>
-                ))}
-            </Slider>
-          </div>
-        </>
+        <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+          <Slider ref={sliderRefRow1} {...sliderSettings} style={{ width: "100%" }}>
+            {destinations.map((destination) => (
+              <div key={`row-${destination.id}`} style={{ padding: "0 12px" }}>
+                <CardComponent destination={destination} />
+              </div>
+            ))}
+          </Slider>
+        </div>
       )}
     </div>
   );
