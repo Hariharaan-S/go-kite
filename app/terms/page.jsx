@@ -1,6 +1,6 @@
 // import CallToActions from "@/components/common/CallToActions";
 import Header1 from "@/components/header/Navbar";
-import DefaultFooter from "@/components/footer/default";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 import TermsConent from "@/components/terms/TermsConent";
 import GoKiteFooter from "@/components/footer/footer-gokite";
 

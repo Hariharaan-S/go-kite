@@ -1,4 +1,3 @@
-import DefaultFooter from "@/components/footer/default";
 import Header1 from "@/components/header/IconNav";
 import Hero1 from "@/components/landingpageflight/hero";
 import Hotels from "@/components/landingpageflight/Hotels";

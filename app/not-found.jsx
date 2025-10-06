@@ -1,6 +1,6 @@
-import CallToActions from "@/components/common/CallToActions";
+// import CallToActions from "@/components/common/CallToActions";
 import Header1 from "@/components/header/Navbar";
-import DefaultFooter from "@/components/footer/default";
+import GoKiteFooter from "@/components/footer/footer-gokite";
 import NotFound from "@/components/common/NotFound";
 
 export const metadata = {
@@ -26,7 +26,7 @@ const index = () => {
       {/* <CallToActions /> */}
       {/* End Call To Actions Section */}
 
-      <DefaultFooter />
+      <GoKiteFooter />
       {/* End Call To Actions Section */}
     </>
   );

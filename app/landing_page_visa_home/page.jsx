@@ -1,4 +1,3 @@
-import DefaultFooter from "@/components/footer/default";
 import GoKiteFooter from "@/components/footer/footer-gokite";
 import Header1 from "@/components/header/IconNav";
 import Hero1 from "@/components/landingpagevisahome/hero";
