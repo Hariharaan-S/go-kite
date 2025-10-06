@@ -21,6 +21,21 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
   });
 
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [apiResponse, setApiResponse] = useState(null);
+  const [apiError, setApiError] = useState("");
+
+  const ENQUIRY_ENDPOINT = "/api/visa-enquiry";
+
+  // Read cookie helper
+  function getCookie(name) {
+    if (typeof document === "undefined") return "";
+    const match = document.cookie
+      .split(";")
+      .map((c) => c.trim())
+      .find((c) => c.startsWith(`${name}=`));
+    return match ? decodeURIComponent(match.split("=")[1]) : "";
+  }
 
   if (!open) return null;
 
@@ -92,11 +107,41 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      onSubmit(form);
+    if (!validateForm()) return;
+
+    setSubmitting(true);
+    setApiResponse(null);
+    setApiError("");
+
+    try {
+      const res = await fetch(ENQUIRY_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(getCookie("accesstoken")
+            ? { Authorization: `Bearer ${getCookie("accesstoken")}` }
+            : {}),
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json().catch(() => ({ message: "Submitted" }));
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Failed to submit enquiry");
+      }
+
+      setApiResponse(data);
+      if (typeof onSubmit === "function") {
+        try { onSubmit(form); } catch (_) {}
+      }
       onClose();
+    } catch (err) {
+      setApiError(String(err.message || err));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -203,6 +248,18 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
             overflow: "hidden",
           }}
         >
+          {/* API response / error banner */}
+          {apiResponse && (
+            <div style={{ gridColumn: "1 / -1", margin: "4px 0", padding: "6px 8px", background: "#ecfdf5", color: "#065f46", border: "1px solid #34d399", borderRadius: 8 }}>
+              Enquiry Saved Successfully
+            </div>
+          )}
+          {apiError && (
+            <div style={{ gridColumn: "1 / -1", margin: "4px 0", padding: "6px 8px", background: "#fef2f2", color: "#991b1b", border: "1px solid #fecaca", borderRadius: 8 }}>
+              {apiError}
+            </div>
+          )}
+
           {/* Personal Information Section */}
           <div style={{ gridColumn: "1 / -1", marginBottom: "2px" }}>
             <h3
@@ -1060,6 +1117,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               position: "relative",
               overflow: "hidden",
             }}
+            disabled={submitting}
             onMouseEnter={(e) => {
               e.target.style.transform = "translateY(-2px)";
               e.target.style.boxShadow = "0 15px 35px rgba(102, 126, 234, 0.5)";
@@ -1069,7 +1127,7 @@ const PopupForm = ({ open, onClose, onSubmit }) => {
               e.target.style.boxShadow = "0 10px 25px rgba(102, 126, 234, 0.4)";
             }}
           >
-            Submit Enquiry
+            {submitting ? "Submitting..." : "Submit Enquiry"}
           </button>
         </div>
       </form>

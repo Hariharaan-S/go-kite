@@ -9,6 +9,8 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [openFAQ, setOpenFAQ] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const toastTimerRef = useRef(null);
 
   // Refs for each section
   const sectionRefs = useRef({
@@ -41,11 +43,15 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
   const handlePopupClose = () => setPopupOpen(false);
 
   const handleFormSubmit = (formData) => {
-    console.log("Form submitted:", formData);
-    // TODO: Implement actual form submission logic
-    // You might want to send this data to a backend API
-    // For now, we'll just log it and close the popup
     setPopupOpen(false);
+    setSuccessMessage("Enquiry Saved Successfully");
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current);
+    }
+    toastTimerRef.current = setTimeout(() => {
+      setSuccessMessage("");
+      toastTimerRef.current = null;
+    }, 4000);
   };
 
   // Scroll to section function
@@ -449,6 +455,28 @@ const ApplyVisa = ({ visaDetails, visaError }) => {
         onClose={handlePopupClose}
         onSubmit={handleFormSubmit}
       />
+      {successMessage ? (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 24,
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "#10b981",
+            color: "#fff",
+            padding: "12px 16px",
+            borderRadius: 8,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+            zIndex: 1000,
+            fontSize: 14,
+            fontWeight: 600,
+          }}
+          role="status"
+          aria-live="polite"
+        >
+          {successMessage}
+        </div>
+      ) : null}
     </div>
   );
 };
