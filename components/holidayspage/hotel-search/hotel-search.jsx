@@ -29,31 +29,35 @@ const styles = `
   }
 
   .search-type-toggle {
-    display: flex;
-    gap: 1rem;
+    display: inline-flex;
+    background: #E5E5E5;
+    border-radius: 50px;
+    padding: 4px;
     margin-bottom: 1rem;
     margin-left: 0.5rem;
+    width: fit-content;
   }
 
   .toggle-button {
-    padding: 0.5rem 1.5rem;
-    border: 1px solid #EAEBEE;
-    background: #FFFFFF;
-    border-radius: 8px;
+    padding: 0.6rem 2rem;
+    border: none;
+    background: transparent;
+    border-radius: 50px;
     cursor: pointer;
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 600;
     transition: all 0.3s ease;
+    color: #000000;
+    white-space: nowrap;
   }
 
   .toggle-button:hover {
-    background: #f5f5f5;
+    opacity: 0.8;
   }
 
   .toggle-button.active {
     background: #000000;
     color: #FFFFFF;
-    border-color: #000000;
   }
 
   .book-holiday .search-hotel {
@@ -340,6 +344,11 @@ const styles = `
       font-size: 0.9rem !important;
       bottom: 9.8rem;
       left: 2rem;
+    }
+
+    .toggle-button {
+      padding: 0.5rem 1.5rem;
+      font-size: 0.85rem;
     }
 `;
 
