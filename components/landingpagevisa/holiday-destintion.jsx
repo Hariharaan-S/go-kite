@@ -55,7 +55,6 @@ function getSliderSettings(windowWidth, itemCount = 1) {
     slidesToScroll: 1,
     autoplay: shouldAutoplay,
     autoplaySpeed: 3000,
-    centerMode: isSingle ? true : false,
     centerPadding: isSingle ? "0px" : "0px",
     variableWidth: isSingle ? true : false,
     responsive: [

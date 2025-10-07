@@ -373,10 +373,6 @@
   margin-left: 0 !important;
 }
 
-/* Single-slide tweaks: center and keep natural width */
-.destinations-wrapper.single-slide .slick-track {
-  justify-content: center;
-}
 .destinations-wrapper.single-slide .slick-slide {
   padding: 0 0; /* no side gap when single */
 }
