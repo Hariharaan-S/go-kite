@@ -25,6 +25,8 @@ const HolidaysHero = () => {
   const [showDropdown, setShowDropdown] = React.useState(false);
   const [selectedCountry, setSelectedCountry] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [imagesLoaded, setImagesLoaded] = React.useState(false);
+  const sliderRef = React.useRef(null);
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -67,11 +69,37 @@ const HolidaysHero = () => {
             (name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`
           );
         setImages(imgs.length ? imgs : [FALLBACK_IMAGE]);
+        setImagesLoaded(false); // Reset loaded state when new images arrive
       } catch (_) {
         setImages([FALLBACK_IMAGE]);
+        setImagesLoaded(false);
       }
     };
     loadBanner();
+  }, []);
+
+  // Recalculate slider dimensions after images load and on resize
+  React.useEffect(() => {
+    if (!imagesLoaded && sliderRef.current) {
+      const timer = setTimeout(() => {
+        sliderRef.current?.slickGoTo(0);
+        setImagesLoaded(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [images, imagesLoaded]);
+
+  // Handle window resize to recalculate slider
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (sliderRef.current) {
+        sliderRef.current.slickGoTo(
+          sliderRef.current.innerSlider.state.currentSlide
+        );
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Slider settings for banner carousel
@@ -87,12 +115,15 @@ const HolidaysHero = () => {
     cssEase: "linear",
     pauseOnHover: false,
     arrows: false,
+    initialSlide: 0,
+    waitForAnimate: false,
+    lazyLoad: "ondemand",
   };
 
   return (
     <>
       <div className="hero-carousel-container">
-        <Slider {...sliderSettings}>
+        <Slider ref={sliderRef} {...sliderSettings} key={images.join(",")}>
           {images.map((image, index) => (
             <div key={index}>
               <div
@@ -131,6 +162,7 @@ const HolidaysHero = () => {
                     src="img/holidays/arrow.svg"
                     width="20px"
                     height="20px"
+                    alt="Arrow"
                   />
                 </p>
               </div>

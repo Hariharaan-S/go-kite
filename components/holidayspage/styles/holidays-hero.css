@@ -4,6 +4,20 @@
 
 .hero-carousel-container .slick-slider {
   position: relative;
+  min-height: 600px;
+}
+
+.hero-carousel-container .slick-list,
+.hero-carousel-container .slick-track {
+  height: 100%;
+}
+
+.hero-carousel-container .slick-slide {
+  height: auto;
+}
+
+.hero-carousel-container .slick-slide > div {
+  height: 100%;
 }
 
 .hero-carousel-container .slick-dots {
