@@ -12,21 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// Authorization and claims headers
-const CLAIMS = {
-  AUTHENTICATED: "true",
-  org_id: "0631f265-d8de-4608-9622-6b4e148793c4",
-  OTP_VERFICATION_REQD: "false",
-  USER_ID: "0af402d1-98f0-18ae-8198-f493454d0001",
-  refreshtoken: "false",
-  client_ip: "14.99.174.62",
-  USER_ID_LONG: "563",
-  USER_NAME: "codetezteam@gmail.com",
-  "authorized-domains":
-    "b603f35d-9242-11f0-b493-fea20be86931, b603edb7-9242-11f0-b493-fea20be86931, b603e748-9242-11f0-b493-fea20be86931, b603d5d9-9242-11f0-b493-fea20be86931",
-  "user-agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
-};
+// Using proxy route. No client-side claims.
 
 // Fallback images if API does not provide an image
 const FALLBACK_IMAGES = [
@@ -48,12 +34,7 @@ export default function HolidayDestinations({ packageCategoryId = 1 }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const getAuthHeaders = () => {
-    return {
-      "Content-Type": "application/json",
-      claims: JSON.stringify(CLAIMS),
-    };
-  };
+  const getAuthHeaders = () => ({ "Content-Type": "application/json" });
 
   // Currency conversion and formatting
   const convertAndFormatCurrency = (amount, currency) => {
@@ -122,7 +103,7 @@ export default function HolidayDestinations({ packageCategoryId = 1 }) {
   const fetchHolidayCardsData = async () => {
     try {
       const response = await fetch(
-        "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/cms-holiday-categories",
+        "/api/cms/holiday-categories",
         {
           method: "POST",
           headers: getAuthHeaders(),
@@ -135,7 +116,10 @@ export default function HolidayDestinations({ packageCategoryId = 1 }) {
       }
 
       const data = await response.json();
-      return Array.isArray(data?.data) ? data.data : [];
+      // Proxy returns { success, data, message } where data is upstream response
+      const upstream = data?.data;
+      const list = Array.isArray(upstream?.data) ? upstream.data : Array.isArray(upstream) ? upstream : [];
+      return list;
     } catch (err) {
       console.error("Error fetching holiday cards:", err);
       throw err;
