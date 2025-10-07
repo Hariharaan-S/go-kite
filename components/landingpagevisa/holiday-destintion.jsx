@@ -49,12 +49,15 @@ function getSliderSettings(windowWidth) {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    centerMode: false,
+    variableWidth: false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
+          centerMode: false,
         },
       },
       {
@@ -62,6 +65,7 @@ function getSliderSettings(windowWidth) {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          centerMode: false,
         },
       },
       {
@@ -69,6 +73,7 @@ function getSliderSettings(windowWidth) {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          centerMode: false,
         },
       },
     ],
@@ -90,7 +95,7 @@ export default function HolidayDestinations() {
   const router = useRouter();
   const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -105,16 +110,13 @@ export default function HolidayDestinations() {
   // Fetch sections data
   const fetchSectionsData = async () => {
     try {
-      const sectionsResponse = await fetch(
-        "/api/cms/pages-sections",
-        {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            pageId: getPageIdWithFallback('landing', 9), // Use dynamic page ID with fallback
-          }),
-        }
-      );
+      const sectionsResponse = await fetch("/api/cms/pages-sections", {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          pageId: getPageIdWithFallback("landing", 9), // Use dynamic page ID with fallback
+        }),
+      });
 
       if (!sectionsResponse.ok) {
         throw new Error("Failed to fetch sections data");
@@ -131,17 +133,14 @@ export default function HolidayDestinations() {
   // Fetch holiday cards data for a specific section
   const fetchHolidayCardsData = async (sectionId) => {
     try {
-      const response = await fetch(
-        "/api/cms/sections-holiday-cards",
-        {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            pageSectionId: sectionId,
-            limitValue: 10,
-          }),
-        }
-      );
+      const response = await fetch("/api/cms/sections-holiday-cards", {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          pageSectionId: sectionId,
+          limitValue: 10,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch holiday cards data");
@@ -264,29 +263,7 @@ export default function HolidayDestinations() {
       } catch (err) {
         console.error("Error loading data:", err);
         setError(err.message);
-
-        // Fallback to default data if API fails
-        setDestinations([
-          {
-            id: 1,
-            image:
-              "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop",
-            title: "Swiss Alps",
-            rating: 4.7,
-            duration: "3 Days 4 Nights",
-            flights: "2 Flights",
-            hotels: "1 Hotel",
-            transfers: "2 Transfers",
-            activities: "4 Activities",
-            features: [
-              "Tour combo with return airport transfer",
-              "City Tour",
-              "Curious Corner",
-            ],
-            originalPrice: "₹98,952",
-            discountedPrice: "₹88,952",
-          },
-        ]);
+        setDestinations([]); // Set empty array on error
       } finally {
         setLoading(false);
       }
@@ -308,26 +285,9 @@ export default function HolidayDestinations() {
     return () => window.removeEventListener("resize", updateSliderSettings);
   }, []);
 
-  // Loading and error states
-  if (loading) {
-    return (
-      <div className="holiday-container-wrapper holiday-container">
-        <div style={{ textAlign: "center", padding: "2rem" }}>
-          <p>Loading holiday destinations...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="holiday-container-wrapper holiday-container">
-        <div style={{ textAlign: "center", padding: "2rem" }}>
-          <p>Error loading destinations: {error}</p>
-          <p>Showing default content...</p>
-        </div>
-      </div>
-    );
+  // Don't render the component if loading, has error, or no data
+  if (loading || error || destinations.length === 0) {
+    return null;
   }
 
   return (
@@ -336,8 +296,9 @@ export default function HolidayDestinations() {
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
-        className={`holiday-header ${windowWidth < 640 ? "holiday-header-mobile" : ""
-          }`}
+        className={`holiday-header ${
+          windowWidth < 640 ? "holiday-header-mobile" : ""
+        }`}
       >
         <h1
           className="holiday-title-text holiday-title"
@@ -346,13 +307,19 @@ export default function HolidayDestinations() {
           Popular Holiday Destinations
         </h1>
         <div className="holiday-nav-wrapper holiday-nav">
-          <span className="holiday-view-all view-all" onClick={() => router.push("/holidays")}>
+          <span
+            className="holiday-view-all view-all"
+            onClick={() => router.push("/holidays")}
+          >
             View All
           </span>
         </div>
       </div>
 
-      <Slider {...sliderSettings} className="holiday-destinations-wrapper destinations-wrapper">
+      <Slider
+        {...sliderSettings}
+        className="holiday-destinations-wrapper destinations-wrapper"
+      >
         {destinations.map((destination) => (
           <div
             key={destination.id}
@@ -409,27 +376,43 @@ export default function HolidayDestinations() {
                 </h3>
                 <div className="holiday-rating rating">
                   <span className="holiday-star star">★</span>
-                  <span className="holiday-rating-number rating-number">{destination.rating}</span>
+                  <span className="holiday-rating-number rating-number">
+                    {destination.rating}
+                  </span>
                 </div>
               </div>
 
-              <p className="holiday-duration duration">{destination.duration}</p>
+              <p className="holiday-duration duration">
+                {destination.duration}
+              </p>
 
               <div className="holiday-icons-section icons-section">
                 <div className="holiday-icon-item icon-item">
-                  <Plane size={getIconSize(windowWidth)} className="holiday-icon icon" />
+                  <Plane
+                    size={getIconSize(windowWidth)}
+                    className="holiday-icon icon"
+                  />
                   <p>{destination.flights}</p>
                 </div>
                 <div className="holiday-icon-item icon-item">
-                  <Building2 size={getIconSize(windowWidth)} className="holiday-icon icon" />
+                  <Building2
+                    size={getIconSize(windowWidth)}
+                    className="holiday-icon icon"
+                  />
                   <p>{destination.hotels}</p>
                 </div>
                 <div className="holiday-icon-item icon-item">
-                  <Car size={getIconSize(windowWidth)} className="holiday-icon icon" />
+                  <Car
+                    size={getIconSize(windowWidth)}
+                    className="holiday-icon icon"
+                  />
                   <p>{destination.transfers}</p>
                 </div>
                 <div className="holiday-icon-item icon-item">
-                  <Users size={getIconSize(windowWidth)} className="holiday-icon icon" />
+                  <Users
+                    size={getIconSize(windowWidth)}
+                    className="holiday-icon icon"
+                  />
                   <p>{destination.activities}</p>
                 </div>
               </div>
@@ -443,8 +426,9 @@ export default function HolidayDestinations() {
               </ul>
 
               <div
-                className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
-                  }`}
+                className={`pricing-section ${
+                  windowWidth < 640 ? "pricing-column" : "pricing-row"
+                }`}
               >
                 <span className="holiday-original-price original-price">
                   {destination.originalPrice}
@@ -453,7 +437,9 @@ export default function HolidayDestinations() {
                   <span className="holiday-discounted-price discounted-price">
                     {destination.discountedPrice}
                   </span>
-                  <span className="holiday-per-person per-person">Per person</span>
+                  <span className="holiday-per-person per-person">
+                    Per person
+                  </span>
                 </div>
               </div>
             </div>

@@ -67,18 +67,13 @@
 }
 
 .destinations-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  justify-content: flex-start;
-  align-items: stretch;
+  display: block;
   padding-bottom: 10px;
   max-width: 100%;
+  text-align: left;
 }
 
 .destinations-wrapper-mobile {
-  gap: 16px;
-  justify-content: center;
   padding-bottom: 0;
 }
 
@@ -356,10 +351,6 @@
     align-items: start;
   }
 
-  .destinations-wrapper {
-    flex-wrap: nowrap;
-  }
-
   .discounted-price {
     font-size: 14px;
   }
@@ -375,15 +366,32 @@
   overflow: hidden;
 }
 
+.slick-track {
+  display: flex !important;
+  align-items: stretch;
+  justify-content: flex-start;
+  margin-left: 0 !important;
+}
+
 .slick-slide {
   padding: 0 10px;
   box-sizing: border-box;
+  height: auto;
+  display: flex !important;
+  align-items: stretch;
 }
 
-.slick-slide>div {
+.slick-slide:first-child {
+  padding-left: 0;
+}
+
+.slick-slide > div {
   height: 100%;
+  width: 100%;
+  display: flex;
 }
 
 .destinations-wrapper .destination-card {
   margin: 0;
+  height: 100%;
 }
