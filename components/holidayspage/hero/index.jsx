@@ -1,9 +1,6 @@
 "use client";
 import React from "react";
 import HotelSearch from "../hotel-search/hotel-search";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import "../styles/holidays-hero.css";
 
 const FALLBACK_IMAGE = "/img/holidays/holidayHeroBG.jpg";
@@ -25,8 +22,8 @@ const HolidaysHero = () => {
   const [showDropdown, setShowDropdown] = React.useState(false);
   const [selectedCountry, setSelectedCountry] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [imagesLoaded, setImagesLoaded] = React.useState(false);
-  const sliderRef = React.useRef(null);
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [isTransitioning, setIsTransitioning] = React.useState(false);
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -69,63 +66,55 @@ const HolidaysHero = () => {
             (name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`
           );
         setImages(imgs.length ? imgs : [FALLBACK_IMAGE]);
-        setImagesLoaded(false); // Reset loaded state when new images arrive
       } catch (_) {
         setImages([FALLBACK_IMAGE]);
-        setImagesLoaded(false);
       }
     };
     loadBanner();
   }, []);
 
-  // Recalculate slider dimensions after images load and on resize
+  // Auto-play carousel
   React.useEffect(() => {
-    if (!imagesLoaded && sliderRef.current) {
-      const timer = setTimeout(() => {
-        sliderRef.current?.slickGoTo(0);
-        setImagesLoaded(true);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [images, imagesLoaded]);
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [currentSlide, images.length]);
 
-  // Handle window resize to recalculate slider
-  React.useEffect(() => {
-    const handleResize = () => {
-      if (sliderRef.current) {
-        sliderRef.current.slickGoTo(
-          sliderRef.current.innerSlider.state.currentSlide
-        );
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const nextSlide = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentSlide((prev) => (prev + 1) % images.length);
+    setTimeout(() => setIsTransitioning(false), 1000);
+  };
 
-  // Slider settings for banner carousel
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    fade: true,
-    cssEase: "linear",
-    pauseOnHover: false,
-    arrows: false,
-    initialSlide: 0,
-    waitForAnimate: false,
-    lazyLoad: "ondemand",
+  const goToSlide = (index) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentSlide(index);
+    setTimeout(() => setIsTransitioning(false), 1000);
   };
 
   return (
     <>
       <div className="hero-carousel-container">
-        <Slider ref={sliderRef} {...sliderSettings} key={images.join(",")}>
+        <div className="carousel-wrapper">
           {images.map((image, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              className={`carousel-slide ${
+                index === currentSlide ? "active" : ""
+              }`}
+              style={{
+                opacity: index === currentSlide ? 1 : 0,
+                transition: "opacity 1s ease-in-out",
+                position: index === currentSlide ? "relative" : "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+              }}
+            >
               <div
                 className="hero"
                 style={{
@@ -168,7 +157,21 @@ const HolidaysHero = () => {
               </div>
             </div>
           ))}
-        </Slider>
+        </div>
+
+        {/* Dots Navigation */}
+        <div className="carousel-dots">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              className={`carousel-dot ${
+                index === currentSlide ? "active" : ""
+              }`}
+              onClick={() => goToSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </>
   );
