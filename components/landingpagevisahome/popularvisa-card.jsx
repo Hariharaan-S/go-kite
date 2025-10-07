@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 import {
   US,
   IN,
@@ -57,6 +57,8 @@ const VisaCards = () => {
   const [error, setError] = useState(null);
   const vacationContainerRef = useRef(null);
   const sliderRef = useRef(null);
+  const vacationSliderRef = useRef(null);
+  const visaRulesSliderRef = useRef(null);
   const router = useRouter();
   const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
 
@@ -373,15 +375,19 @@ const VisaCards = () => {
   };
 
   const nextVacationSlide = () => {
-    setCurrentVacationSlide((prev) =>
-      prev + 1 >= totalVacationSlides ? 0 : prev + 1
-    );
+    if (vacationSliderRef.current) vacationSliderRef.current.slickNext();
   };
 
   const prevVacationSlide = () => {
-    setCurrentVacationSlide((prev) =>
-      prev - 1 < 0 ? totalVacationSlides - 1 : prev - 1
-    );
+    if (vacationSliderRef.current) vacationSliderRef.current.slickPrev();
+  };
+
+  const nextVisaRulesSlide = () => {
+    if (visaRulesSliderRef.current) visaRulesSliderRef.current.slickNext();
+  };
+
+  const prevVisaRulesSlide = () => {
+    if (visaRulesSliderRef.current) visaRulesSliderRef.current.slickPrev();
   };
 
   const handleMouseDown = (e) => {
@@ -464,6 +470,40 @@ const VisaCards = () => {
     return base;
   })();
 
+  // Adjusted settings for Visa Rules slider based on data length
+  const sliderSettingsVisaRules = (() => {
+    const count = visaRulesData.length || 1;
+    const base = { ...sliderSettings };
+    base.slidesToShow = Math.min(3, count);
+    base.infinite = count > base.slidesToShow;
+    base.autoplay = count > 1;
+    base.arrows = false;
+    base.responsive = [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: Math.min(2, count),
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: Math.min(1, count),
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ];
+    return base;
+  })();
+
   const VisaIcon = () => <div className="visa-icon">E-VISA</div>;
 
   if (loading) {
@@ -492,17 +532,76 @@ const VisaCards = () => {
       <style>{`
         .visa-card-list .slick-slide { padding: 0 4px; }
         .visa-card-list .slick-list { margin: 0 -4px; }
+        
+        .nav-button {
+          transition: all 0.3s ease;
+        }
+        
+        .nav-button:hover {
+          background: #4b5563 !important;
+          transform: scale(1.05);
+        }
+        
+        .nav-button:active {
+          transform: scale(0.95);
+        }
+        
+        .visa-controls {
+          display: flex;
+          align-items: center;
+        }
       `}</style>
       {/* Header */}
       <div className="visa-header">
         <h1 className="visa-title">Popular Visa</h1>
         <div className="visa-controls">
+          <button
+            className="nav-button"
+            onClick={prevSlide}
+            aria-label="Previous"
+            style={{
+              backgroundColor: "#374151",
+              color: "white",
+              border: "none",
+              borderRadius: "50%",
+              width: "40px",
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              marginRight: "8px",
+            }}
+          >
+            <ChevronLeft size={20} color="white" />
+          </button>
+          <button
+            className="nav-button"
+            onClick={nextSlide}
+            aria-label="Next"
+            style={{
+              backgroundColor: "#374151",
+              color: "white",
+              border: "none",
+              borderRadius: "50%",
+              width: "40px",
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              marginRight: "12px",
+            }}
+          >
+            <ChevronRight size={20} color="white" />
+          </button>
           <span
             className="view-all"
             style={{
               background: "#f2f0f0",
               padding: "10px 20px",
               borderRadius: "12px",
+              cursor: "pointer",
             }}
             onClick={() => router.push("/apply_visa")}
           >
@@ -570,12 +669,55 @@ const VisaCards = () => {
       </div>
 
       {/* Vacation Countries */}
-      <h2 className="section-title" style={{ marginBottom: 12 }}>
-        Vacation – Trending Countries
-      </h2>
+      <div className="visa-header" style={{ marginTop: "2rem" }}>
+        <h2 className="section-title" style={{ marginBottom: 0 }}>
+          Vacation – Trending Countries
+        </h2>
+        <div className="visa-controls">
+          <button
+            className="nav-button"
+            onClick={prevVacationSlide}
+            aria-label="Previous"
+            style={{
+              backgroundColor: "#374151",
+              color: "white",
+              border: "none",
+              borderRadius: "50%",
+              width: "40px",
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              marginRight: "8px",
+            }}
+          >
+            <ChevronLeft size={20} color="white" />
+          </button>
+          <button
+            className="nav-button"
+            onClick={nextVacationSlide}
+            aria-label="Next"
+            style={{
+              backgroundColor: "#374151",
+              color: "white",
+              border: "none",
+              borderRadius: "50%",
+              width: "40px",
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
+          >
+            <ChevronRight size={20} color="white" />
+          </button>
+        </div>
+      </div>
       <div className="visa-card-list" style={{ marginBottom: 16 }}>
         <Slider
-          ref={sliderRef}
+          ref={vacationSliderRef}
           {...sliderSettingsVacation}
           style={{ width: "100%" }}
         >
@@ -637,62 +779,122 @@ const VisaCards = () => {
 
       {/* Visa Rules Cards */}
       <div className="visa-rules">
-        <h2 className="section-title">Visa Rules Announcement</h2>
+        <div className="visa-header" style={{ marginTop: "2rem" }}>
+          <h2 className="section-title" style={{ marginBottom: 0 }}>
+            Visa Rules Announcement
+          </h2>
+          <div className="visa-controls">
+            <button
+              className="nav-button"
+              onClick={prevVisaRulesSlide}
+              aria-label="Previous"
+              style={{
+                backgroundColor: "#374151",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                marginRight: "8px",
+              }}
+            >
+              <ChevronLeft size={20} color="white" />
+            </button>
+            <button
+              className="nav-button"
+              onClick={nextVisaRulesSlide}
+              aria-label="Next"
+              style={{
+                backgroundColor: "#374151",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <ChevronRight size={20} color="white" />
+            </button>
+          </div>
+        </div>
         <div className="visa-card-list">
           {visaRulesData.length > 0 ? (
-            visaRulesData.map((rule, index) => (
-              <div
-                key={rule.uniqueId || index}
-                className="visa-card visa-rule-card"
-              >
-                {/* Top Section */}
-                <div className="visa-rule-top-section">
-                  <div className="visa-rule-header">
-                    {rule.flagImageUrl ? (
-                      <img
-                        src={rule.flagImageUrl}
-                        alt={`${rule.country} flag`}
-                        className="visa-rule-flag"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          // Fallback to component flag
-                          e.currentTarget.style.display = "none";
-                          e.currentTarget.nextSibling.style.display = "block";
-                        }}
-                        onLoad={(e) => {
-                          console.log(`Flag image loaded for ${rule.country}`);
-                        }}
-                      />
-                    ) : null}
-                    <rule.Flag
-                      className="visa-rule-flag"
-                      style={{ display: rule.flagImageUrl ? "none" : "block" }}
-                    />
-                    <h3 className="visa-rule-country">{rule.country}</h3>
-                  </div>
-                  <div className="visa-rule-id-card">
-                    <div className="id-card-illustration">
-                      <img src="/img/visa/visa-rules-id.png" alt="ID Card" />
+            <Slider
+              ref={visaRulesSliderRef}
+              {...sliderSettingsVisaRules}
+              style={{ width: "100%" }}
+            >
+              {visaRulesData.map((rule, index) => (
+                <div key={rule.uniqueId || index}>
+                  <div className="visa-card visa-rule-card">
+                    {/* Top Section */}
+                    <div className="visa-rule-top-section">
+                      <div className="visa-rule-header">
+                        {rule.flagImageUrl ? (
+                          <img
+                            src={rule.flagImageUrl}
+                            alt={`${rule.country} flag`}
+                            className="visa-rule-flag"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              // Fallback to component flag
+                              e.currentTarget.style.display = "none";
+                              e.currentTarget.nextSibling.style.display =
+                                "block";
+                            }}
+                            onLoad={(e) => {
+                              console.log(
+                                `Flag image loaded for ${rule.country}`
+                              );
+                            }}
+                          />
+                        ) : null}
+                        <rule.Flag
+                          className="visa-rule-flag"
+                          style={{
+                            display: rule.flagImageUrl ? "none" : "block",
+                          }}
+                        />
+                        <h3 className="visa-rule-country">{rule.country}</h3>
+                      </div>
+                      <div className="visa-rule-id-card">
+                        <div className="id-card-illustration">
+                          <img
+                            src="/img/visa/visa-rules-id.png"
+                            alt="ID Card"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* Bottom Section */}
-                <div className="visa-rule-bottom-section">
-                  <p className="visa-rule-announcement">{rule.description}</p>
-                  <div className="visa-rule-footer">
-                    <div className="visa-rule-go-kite">
-                      <img
-                        width={50}
-                        height={50}
-                        src="/img/general/logo.svg"
-                        alt="Go Kite"
-                      />
+                    {/* Bottom Section */}
+                    <div className="visa-rule-bottom-section">
+                      <p className="visa-rule-announcement">
+                        {rule.description}
+                      </p>
+                      <div className="visa-rule-footer">
+                        <div className="visa-rule-go-kite">
+                          <img
+                            width={50}
+                            height={50}
+                            src="/img/general/logo.svg"
+                            alt="Go Kite"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
+              ))}
+            </Slider>
           ) : (
             <div className="no-rules-message">
               <p>No visa rules announcements available at the moment.</p>
