@@ -362,7 +362,7 @@
 /* 1024px */
 @media screen and (max-width: 1024px) {
     .recommendation-slider-section-2 {
-        margin-top: -37rem;
+        margin-top: -7rem;
     }
 
     .rec-slide-subsec-2 {
@@ -373,7 +373,7 @@
 
     .heading1 {
         font-size: 1.7rem;
-        margin-left: 5rem;
+        margin-left: -4rem;
     }
 
     .button-group1 {

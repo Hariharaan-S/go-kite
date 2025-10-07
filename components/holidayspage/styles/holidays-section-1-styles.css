@@ -142,6 +142,7 @@
     .recommendation-section {
         display: flex;
         height: 70vh;
+        margin-top: -7rem;
     }
 
     .section-header {

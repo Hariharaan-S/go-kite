@@ -246,7 +246,7 @@ const styles = `
     }
 
     .search-info {
-      top: 4.7rem;
+      top: 9.7rem;
       left: 2rem;
     }
 }

@@ -285,12 +285,16 @@
 
 /* 1024px */
 @media screen and (max-width: 1024px) {
+
     .dest2 {
         flex-direction: row !important;
         flex-wrap: wrap !important;
         gap: 1rem !important;
-        margin: 2rem 4rem !important;
+        margin-left: 1rem !important;
         align-items: center !important;
+    }
+    .button-group2 {
+        margin-left: 37rem !important;
     }
 }
 
