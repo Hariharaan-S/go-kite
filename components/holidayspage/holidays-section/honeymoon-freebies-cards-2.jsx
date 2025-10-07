@@ -173,6 +173,14 @@ export default function HoneymoonFreebiesCards2({ customStyle }) {
     loadData();
   }, []);
 
+  const nextSlide = () => {
+    if (sliderRef.current) sliderRef.current.slickNext();
+  };
+
+  const prevSlide = () => {
+    if (sliderRef.current) sliderRef.current.slickPrev();
+  };
+
   const baseSlidesToShow = Math.max(1, Math.min(4, destinations.length || 1));
   const threeOrLess = Math.max(1, Math.min(3, destinations.length || 1));
   const twoOrLess = Math.max(1, Math.min(2, destinations.length || 1));
@@ -247,6 +255,16 @@ export default function HoneymoonFreebiesCards2({ customStyle }) {
     <>
       {/* Section header with navigation */}
       <div className="recommendation-slider-section-3">
+        <div className="rec-slide-subsec-3">
+          <div className="button-group2">
+            <button className="prev-btn2" onClick={prevSlide}>
+              <ChevronLeft size={18} />
+            </button>
+            <button className="next-btn2" onClick={nextSlide}>
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
         {/* Destinations Container */}
         <div className="dest2">
           <Slider ref={sliderRef} {...sliderSettings} className="slider-wrapper-3">
