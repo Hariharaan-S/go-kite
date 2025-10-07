@@ -396,7 +396,58 @@
   text-decoration: underline;
 }
 
-
 .travel-agent-meeting a:hover::after {
   transform: translateX(3px);
+}
+
+/* Autocomplete Dropdown Styles */
+.hero-autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 12px;
+  right: 12px;
+  background: #ffffff;
+  border: 1px solid #eaebee;
+  border-radius: 10px;
+  margin-top: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.hero-autocomplete-item {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.hero-autocomplete-item:hover {
+  background: #f8f9fa;
+}
+
+.hero-autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.hero-item-label {
+  font-weight: 500;
+  color: #071516;
+}
+
+.hero-no-results {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  color: #8b95a1;
+  font-size: 0.9rem;
+}
+
+/* Mobile responsive for autocomplete */
+@media (max-width: 900px) {
+  .hero-autocomplete-dropdown {
+    left: 8px;
+    right: 8px;
+  }
 }

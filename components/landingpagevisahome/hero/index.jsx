@@ -203,6 +203,55 @@ const styles = `
     width: 36px;
   }
 }
+.book-flight-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #252b36;
+  margin-bottom: 16px;
+  text-align: left;
+}
+@media (max-width: 600px) {
+  .book-flight-title {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+}
+.date-month {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+.date-detail {
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  margin: 0;
+}
+.date-content {
+  flex-grow: 1;
+}
+.date-icon-wrapper {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+.date-icon-wrapper:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.date-icon {
+  width: 24px;
+  height: 24px;
+  stroke: #666;
+  transition: stroke 0.2s ease;
+}
+.date-icon-wrapper:hover .date-icon {
+  stroke: #000;
+}
 .text-60 { font-size: 60px; line-height: 1.1; font-weight: 700;}
 .text-40 { font-size: 40px;}
 .text-30 { font-size: 30px;}
@@ -259,6 +308,58 @@ const styles = `
     flex: 0 0 auto;
   }
 }
+
+/* Autocomplete Dropdown Styles */
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 12px;
+  right: 12px;
+  background: #ffffff;
+  border: 1px solid #eaebee;
+  border-radius: 10px;
+  margin-top: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.autocomplete-item {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.autocomplete-item:hover {
+  background: #f8f9fa;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.item-label {
+  font-weight: 500;
+  color: #071516;
+}
+
+.no-results {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  color: #8b95a1;
+  font-size: 0.9rem;
+}
+
+/* Mobile responsive for autocomplete */
+@media (max-width: 900px) {
+  .autocomplete-dropdown {
+    left: 8px;
+    right: 8px;
+  }
+}
 `;
 
 const fieldIcons = {
@@ -274,8 +375,19 @@ const BookFlightCard = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const datePickerRef = useRef(null);
 
+  // Country autocomplete states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const debounceTimer = useRef(null);
+
   const handleIconClick = () => {
-    if (datePickerRef.current && typeof datePickerRef.current.setOpen === "function") {
+    if (
+      datePickerRef.current &&
+      typeof datePickerRef.current.setOpen === "function"
+    ) {
       datePickerRef.current.setOpen(true);
     }
   };
@@ -292,6 +404,67 @@ const BookFlightCard = () => {
 
   const [visaType, setVisaType] = React.useState("Tourist");
 
+  // Handle country search input change
+  const handleCountryInputChange = async (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    // Clear previous timer
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    if (value.trim().length < 1) {
+      setSuggestions([]);
+      setShowDropdown(false);
+      return;
+    }
+
+    // Show loading immediately
+    setIsLoading(true);
+    setShowDropdown(true);
+
+    // Debounce API call with reduced delay
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const endpoint = "/api/holiday-country-autocomplete";
+        const params = new URLSearchParams({ query: value });
+
+        const response = await fetch(`${endpoint}?${params}`);
+        const data = await response.json();
+
+        if (data.success && data.data) {
+          setSuggestions(data.data);
+          setShowDropdown(true);
+        } else {
+          setSuggestions([]);
+        }
+      } catch (error) {
+        console.error("Error fetching country suggestions:", error);
+        setSuggestions([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 150);
+  };
+
+  // Handle country suggestion selection
+  const handleSelectCountry = (item) => {
+    setSearchQuery(item.label);
+    setSelectedCountry(item.value);
+    setShowDropdown(false);
+  };
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = () => {
+      setShowDropdown(false);
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   return (
     <div
       className="book-flight-wrapper"
@@ -301,14 +474,41 @@ const BookFlightCard = () => {
       <h2 className="book-flight-title">Get Visa</h2>
       <div className="flight-search-container">
         {/* DESTINATION */}
-        <div className="flight-field">
+        <div
+          className="flight-field"
+          style={{ position: "relative" }}
+          onClick={(e) => e.stopPropagation()}
+        >
           <span className="flight-label">Where are you going?</span>
           <input
             className="flight-input"
             type="text"
             placeholder="Select Destination"
-            defaultValue="United Arab Emirates"
+            value={searchQuery}
+            onChange={handleCountryInputChange}
+            onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
           />
+
+          {/* Autocomplete Dropdown */}
+          {showDropdown && (
+            <div className="autocomplete-dropdown">
+              {isLoading ? (
+                <div className="no-results">Loading...</div>
+              ) : suggestions.length > 0 ? (
+                suggestions.map((item) => (
+                  <div
+                    key={item.id}
+                    className="autocomplete-item"
+                    onClick={() => handleSelectCountry(item)}
+                  >
+                    <span className="item-label">{item.label}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="no-results">No results found</div>
+              )}
+            </div>
+          )}
         </div>
         {/* ARRIVAL DATE */}
         <div className="flight-field">
@@ -320,7 +520,15 @@ const BookFlightCard = () => {
                 {day}–{weekday}, {year}
               </p>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "auto", position: "relative" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                marginLeft: "auto",
+                position: "relative",
+              }}
+            >
               {/* Hidden react-datepicker input (keeps layout unchanged) */}
               <DatePicker
                 ref={datePickerRef}
@@ -333,10 +541,20 @@ const BookFlightCard = () => {
                 }}
                 minDate={new Date()}
                 popperPlacement="bottom-end"
-                popperModifiers={[{ name: "offset", options: { offset: [0, 8] } }]}
+                popperModifiers={[
+                  { name: "offset", options: { offset: [0, 8] } },
+                ]}
                 customInput={
                   <input
-                    style={{ position: "absolute", opacity: 0, width: 24, height: 24, right: 0, top: 0, cursor: "pointer" }}
+                    style={{
+                      position: "absolute",
+                      opacity: 0,
+                      width: 24,
+                      height: 24,
+                      right: 0,
+                      top: 0,
+                      cursor: "pointer",
+                    }}
                     aria-hidden="true"
                     tabIndex={-1}
                     readOnly
@@ -443,10 +661,11 @@ const BookFlightCard = () => {
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="text-center cursor-pointer">
     <div
-      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
-        ? "bg-orange-500 border-orange-500"
-        : "bg-white border-white hover:bg-gray-50"
-        }`}
+      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${
+        isActive
+          ? "bg-orange-500 border-orange-500"
+          : "bg-white border-white hover:bg-gray-50"
+      }`}
       style={{
         width: "64px",
         height: "64px",
@@ -583,9 +802,12 @@ const HeroSection = () => {
         });
         if (!sectionsRes.ok) throw new Error("Failed to load sections");
         const sectionsJson = await sectionsRes.json();
-        const sections = Array.isArray(sectionsJson?.data) ? sectionsJson.data : [];
+        const sections = Array.isArray(sectionsJson?.data)
+          ? sectionsJson.data
+          : [];
         const bannerSection = sections.find((s) => s.contentType === "BANNER");
-        if (!bannerSection?.pageSectionId) throw new Error("Banner section not found");
+        if (!bannerSection?.pageSectionId)
+          throw new Error("Banner section not found");
 
         const bannerRes = await fetch("/api/cms/section-banners", {
           method: "POST",
@@ -594,11 +816,15 @@ const HeroSection = () => {
         });
         if (!bannerRes.ok) throw new Error("Failed to load banner");
         const bannerJson = await bannerRes.json();
-        const bannersArr = Array.isArray(bannerJson?.data) ? bannerJson.data : [];
+        const bannersArr = Array.isArray(bannerJson?.data)
+          ? bannerJson.data
+          : [];
         const imgs = bannersArr
           .map((b) => b?.bannerImageUrl)
           .filter(Boolean)
-          .map((name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`);
+          .map(
+            (name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`
+          );
         setBannerImages(imgs.length ? imgs : [FALLBACK_IMAGE]);
       } catch (_) {
         setBannerImages([FALLBACK_IMAGE]);
@@ -622,7 +848,11 @@ const HeroSection = () => {
     <section className="masthead -type-1 z-5">
       <style>{styles}</style>
       <div className="masthead__bg">
-        <img alt="image" src={bannerImages[currentIndex] || FALLBACK_IMAGE} className="js-lazy" />
+        <img
+          alt="image"
+          src={bannerImages[currentIndex] || FALLBACK_IMAGE}
+          className="js-lazy"
+        />
       </div>
       <div className="container">
         <div className="visa-row row justify-center">
@@ -659,7 +889,7 @@ const HeroSection = () => {
                 marginTop: "10px",
                 paddingLeft: "15px",
                 paddingRight: "15px",
-                textAlign: 'center'
+                textAlign: "center",
               }}
             >
               Book a meeting with our travel Agent →

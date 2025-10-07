@@ -12,6 +12,7 @@ const TravelVisaCards = () => {
   const [countriesData, setCountriesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("Popular");
   const sliderRefRow1 = useRef(null);
 
   // Fetch countries data from API
@@ -20,7 +21,7 @@ const TravelVisaCards = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/cms/countries-dd');
+      const response = await fetch("/api/cms/countries-dd");
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -34,10 +35,10 @@ const TravelVisaCards = () => {
         const itemsArray = Array.isArray(upstream?.data) ? upstream.data : [];
         setCountriesData(itemsArray);
       } else {
-        throw new Error(result.message || 'Failed to fetch countries data');
+        throw new Error(result.message || "Failed to fetch countries data");
       }
     } catch (err) {
-      console.error('Error fetching countries data:', err);
+      console.error("Error fetching countries data:", err);
       setError(err.message);
 
       // Fallback to default data if API fails
@@ -49,7 +50,7 @@ const TravelVisaCards = () => {
         { id: "5", label: "Africa" },
         { id: "6", label: "Australia" },
         { id: "7", label: "Thailand" },
-        { id: "8", label: "Russia" }
+        { id: "8", label: "Russia" },
       ]);
     } finally {
       setLoading(false);
@@ -77,6 +78,14 @@ const TravelVisaCards = () => {
     fetchCountriesData();
   }, []);
 
+  // Reset slider when category changes
+  useEffect(() => {
+    if (sliderRefRow1.current) {
+      sliderRefRow1.current.slickGoTo(0);
+    }
+    setCurrentSlide(0);
+  }, [selectedCategory]);
+
   const VISIBLE_CARDS_PER_ROW = isMobile ? 1 : 4;
 
   // Generate destinations from API data
@@ -86,31 +95,44 @@ const TravelVisaCards = () => {
     }
 
     const formatPrice = (currency, amount) => {
-      if (!amount) return '';
+      if (!amount) return "";
       const numeric = Number(amount);
-      if (Number.isNaN(numeric)) return `${currency || ''} ${amount}`.trim();
-      return `${currency || ''} ${numeric.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`.trim();
+      if (Number.isNaN(numeric)) return `${currency || ""} ${amount}`.trim();
+      return `${currency || ""} ${numeric.toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`.trim();
     };
 
     // countriesData is already the upstream array
     return countriesData.map((item, index) => {
-      const title = item?.visaCardJson?.title || item?.visaCardTitle || '';
-      const imageName = item?.visaCardJson?.image || '';
+      const title = item?.visaCardJson?.title || item?.visaCardTitle || "";
+      const imageName = item?.visaCardJson?.image || "";
+      const tagNames = item?.visaCardJson?.tagNames || [];
+      const processingDays =
+        item?.visaCardJson?.processing_days ||
+        item?.visaCardJson?.processing_time ||
+        "5";
+
       return {
         id: item?.visaCardId || index,
         country: title,
         price: formatPrice(item?.currency, item?.newPrice),
         additionalFee: "+ ₹8,500 (Fees + Tax)",
-        visaType: "Visa in 5 Days",
-        image: imageName ? `/api/cms/file-download?image=${encodeURIComponent(imageName)}` : '',
+        visaType: `Visa in ${processingDays} Days`,
+        processingDays: processingDays,
+        image: imageName
+          ? `/api/cms/file-download?image=${encodeURIComponent(imageName)}`
+          : "",
         badge: null,
         visaDate: null,
         visaLogo: index % 3 === 0,
+        tagNames: tagNames,
       };
     });
   };
 
-  const destinations = generateDestinations();
+  const allDestinations = generateDestinations();
 
   const categories = [
     "Popular",
@@ -120,6 +142,19 @@ const TravelVisaCards = () => {
     "Business Visa",
     "Visa Free",
   ];
+
+  // Filter destinations based on selected category
+  const destinations = allDestinations.filter((destination) => {
+    if (!destination.tagNames || destination.tagNames.length === 0) {
+      return false; // Don't show cards without tags
+    }
+    // Check if the destination's tagNames include the selected category
+    // Trim whitespace from tagNames for comparison
+    return destination.tagNames.some(
+      (tag) =>
+        tag.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
+    );
+  });
 
   const totalSlides = destinations?.length || 0;
 
@@ -288,15 +323,20 @@ const TravelVisaCards = () => {
               + ₹13,500 (Fees + Tax)
             </span>
             {destination.visaLogo && (
-              <img style={{ position: "absolute", top: "8px", right: "8px" }} src="/img/landingpage/visa-card-image.png" width={30} height={20} alt="" srcset="" />
+              <img
+                style={{ position: "absolute", top: "8px", right: "8px" }}
+                src="/img/landingpage/visa-card-image.png"
+                width={30}
+                height={20}
+                alt=""
+                srcset=""
+              />
             )}
           </div>
         )}
 
         {/* Bottom Right - Express Visa Logo */}
       </div>
-
-
 
       {/* Content */}
       <div style={{ padding: "12px 12px 0px 12px" }}>
@@ -352,7 +392,7 @@ const TravelVisaCards = () => {
                 lineHeight: "1",
               }}
             >
-              5 Days
+              {destination.processingDays} Days
             </span>
           </div>
         </div>
@@ -406,7 +446,9 @@ const TravelVisaCards = () => {
         }}
       >
         <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: "18px", color: "#666", marginBottom: "10px" }}>
+          <div
+            style={{ fontSize: "18px", color: "#666", marginBottom: "10px" }}
+          >
             Loading countries...
           </div>
           <div style={{ fontSize: "14px", color: "#999" }}>
@@ -433,10 +475,14 @@ const TravelVisaCards = () => {
         }}
       >
         <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: "18px", color: "#e74c3c", marginBottom: "10px" }}>
+          <div
+            style={{ fontSize: "18px", color: "#e74c3c", marginBottom: "10px" }}
+          >
             Error loading countries
           </div>
-          <div style={{ fontSize: "14px", color: "#666", marginBottom: "20px" }}>
+          <div
+            style={{ fontSize: "14px", color: "#666", marginBottom: "20px" }}
+          >
             {error}
           </div>
           <button
@@ -538,18 +584,31 @@ const TravelVisaCards = () => {
             {categories.map((category, index) => (
               <button
                 key={index}
+                onClick={() => setSelectedCategory(category)}
                 style={{
                   padding: "8px 16px",
-                  backgroundColor: index === 0 ? "#f59e0b" : "transparent",
-                  color: index === 0 ? "white" : "#6b7280",
+                  backgroundColor:
+                    selectedCategory === category ? "#f59e0b" : "transparent",
+                  color: selectedCategory === category ? "white" : "#6b7280",
                   border: "none",
                   borderRadius: "20px",
                   fontSize: "14px",
                   cursor: "pointer",
-                  fontWeight: index === 0 ? "500" : "400",
+                  fontWeight: selectedCategory === category ? "500" : "400",
                   margin: isMobile ? "5px" : "0",
                   fontFamily:
                     "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedCategory !== category) {
+                    e.currentTarget.style.backgroundColor = "#f3f4f6";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedCategory !== category) {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                  }
                 }}
               >
                 {category}
@@ -603,18 +662,54 @@ const TravelVisaCards = () => {
         </div>
       </div>
 
-
-
       {/* Single carousel rendering all destinations */}
-      {destinations && destinations.length > 0 && (
+      {destinations && destinations.length > 0 ? (
         <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
-          <Slider ref={sliderRefRow1} {...sliderSettings} style={{ width: "100%" }}>
+          <Slider
+            ref={sliderRefRow1}
+            {...sliderSettings}
+            style={{ width: "100%" }}
+          >
             {destinations.map((destination) => (
               <div key={`row-${destination.id}`} style={{ padding: "0 12px" }}>
                 <CardComponent destination={destination} />
               </div>
             ))}
           </Slider>
+        </div>
+      ) : (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "60px 20px",
+            backgroundColor: "white",
+            borderRadius: "12px",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+          }}
+        >
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>✈️</div>
+          <h3
+            style={{
+              fontSize: "20px",
+              fontWeight: "600",
+              color: "#1a1a1a",
+              marginBottom: "8px",
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            }}
+          >
+            No Destinations Found
+          </h3>
+          <p
+            style={{
+              fontSize: "16px",
+              color: "#666666",
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            }}
+          >
+            No visa destinations available for "{selectedCategory}" category.
+          </p>
         </div>
       )}
     </div>

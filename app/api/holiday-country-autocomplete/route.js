@@ -1,9 +1,20 @@
 import { NextResponse } from "next/server";
 
+// Simple in-memory cache (optional - can also use Redis for production)
+const cache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("query") || "";
+
+    // Check cache first
+    const cacheKey = `country_${query.toLowerCase()}`;
+    const cached = cache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      return NextResponse.json(cached.data);
+    }
 
     const claims = {
       AUTHENTICATED: "true",
@@ -24,6 +35,10 @@ export async function GET(request) {
     const apiUrl =
       "http://gokite-sit-b2c.convergentechnologies.com:30839/api/cms/api/v2/list/custom/data/holiday-country-autocomplete";
 
+    // Add timeout to prevent hanging requests
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -33,7 +48,10 @@ export async function GET(request) {
       body: JSON.stringify({
         q: query,
       }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch country data: ${response.status}`);
@@ -42,19 +60,42 @@ export async function GET(request) {
     const data = await response.json();
 
     // Filter results based on query if provided
+    let result;
     if (query && data.data) {
       const filteredData = data.data.filter((item) =>
         item.label.toLowerCase().includes(query.toLowerCase())
       );
-      return NextResponse.json({
+      result = {
         ...data,
         data: filteredData,
-      });
+      };
+    } else {
+      result = data;
     }
 
-    return NextResponse.json(data);
+    // Store in cache
+    cache.set(cacheKey, {
+      data: result,
+      timestamp: Date.now(),
+    });
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Error fetching country autocomplete:", error);
+
+    // Handle timeout errors
+    if (error.name === "AbortError") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Request timeout - please try again",
+          data: [],
+          error: "Timeout",
+        },
+        { status: 504 }
+      );
+    }
+
     return NextResponse.json(
       {
         success: false,

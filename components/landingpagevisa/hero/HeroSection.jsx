@@ -20,10 +20,11 @@ function getCookie(name) {
 const IconButton = ({ imgSrc, label, isActive = false }) => (
   <div className="hero-icon-button-container text-center cursor-pointer">
     <div
-      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${isActive
-        ? "bg-orange-500 border-orange-500"
-        : "bg-white border-white hover:bg-gray-50"
-        }`}
+      className={`mx-auto mb-2 d-flex align-items-center justify-center rounded-circle transition-all shadow-sm ${
+        isActive
+          ? "bg-orange-500 border-orange-500"
+          : "bg-white border-white hover:bg-gray-50"
+      }`}
       style={{
         width: "64px",
         height: "64px",
@@ -38,7 +39,9 @@ const IconButton = ({ imgSrc, label, isActive = false }) => (
         style={{ width: "45px", height: "45px", borderRadius: "50%" }}
       />
     </div>
-    <span className="hero-icon-label text-12 fw-500 text-white d-block">{label}</span>
+    <span className="hero-icon-label text-12 fw-500 text-white d-block">
+      {label}
+    </span>
   </div>
 );
 
@@ -156,7 +159,10 @@ const DateSelectionPopup = ({ onClose, onSelect }) => {
       <div className="hero-date-selection-content date-selection-content">
         <div className="hero-date-selection-header date-selection-header">
           <h3>Select Date</h3>
-          <button className="hero-date-selection-close date-selection-close" onClick={onClose}>
+          <button
+            className="hero-date-selection-close date-selection-close"
+            onClick={onClose}
+          >
             &times;
           </button>
         </div>
@@ -169,7 +175,10 @@ const DateSelectionPopup = ({ onClose, onSelect }) => {
           />
         </div>
         <div className="hero-date-selection-footer date-selection-footer">
-          <button className="hero-date-select-btn date-select-btn" onClick={handleSelect}>
+          <button
+            className="hero-date-select-btn date-select-btn"
+            onClick={handleSelect}
+          >
             Select Date
           </button>
         </div>
@@ -184,8 +193,19 @@ const BookFlightCard = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const datePickerRef = useRef(null);
 
+  // Country autocomplete states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const debounceTimer = useRef(null);
+
   const handleIconClick = () => {
-    if (datePickerRef.current && typeof datePickerRef.current.setOpen === "function") {
+    if (
+      datePickerRef.current &&
+      typeof datePickerRef.current.setOpen === "function"
+    ) {
       datePickerRef.current.setOpen(true);
     }
   };
@@ -202,6 +222,67 @@ const BookFlightCard = () => {
 
   const [visaType, setVisaType] = React.useState("Tourist");
 
+  // Handle country search input change
+  const handleCountryInputChange = async (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    // Clear previous timer
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    if (value.trim().length < 1) {
+      setSuggestions([]);
+      setShowDropdown(false);
+      return;
+    }
+
+    // Show loading immediately
+    setIsLoading(true);
+    setShowDropdown(true);
+
+    // Debounce API call with reduced delay
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const endpoint = "/api/holiday-country-autocomplete";
+        const params = new URLSearchParams({ query: value });
+
+        const response = await fetch(`${endpoint}?${params}`);
+        const data = await response.json();
+
+        if (data.success && data.data) {
+          setSuggestions(data.data);
+          setShowDropdown(true);
+        } else {
+          setSuggestions([]);
+        }
+      } catch (error) {
+        console.error("Error fetching country suggestions:", error);
+        setSuggestions([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 150);
+  };
+
+  // Handle country suggestion selection
+  const handleSelectCountry = (item) => {
+    setSearchQuery(item.label);
+    setSelectedCountry(item.value);
+    setShowDropdown(false);
+  };
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = () => {
+      setShowDropdown(false);
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   return (
     <div
       className="hero-book-flight-wrapper book-flight-wrapper"
@@ -211,14 +292,43 @@ const BookFlightCard = () => {
       <h2 className="hero-book-flight-title book-flight-title">Get Visa</h2>
       <div className="hero-flight-search-container flight-search-container">
         {/* DESTINATION */}
-        <div className="hero-flight-field flight-field">
-          <span className="hero-flight-label flight-label">Where are you going?</span>
+        <div
+          className="hero-flight-field flight-field"
+          style={{ position: "relative" }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <span className="hero-flight-label flight-label">
+            Where are you going?
+          </span>
           <input
             className="hero-flight-input flight-input"
             type="text"
             placeholder="Select Destination"
-            defaultValue="United Arab Emirates"
+            value={searchQuery}
+            onChange={handleCountryInputChange}
+            onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
           />
+
+          {/* Autocomplete Dropdown */}
+          {showDropdown && (
+            <div className="hero-autocomplete-dropdown">
+              {isLoading ? (
+                <div className="hero-no-results">Loading...</div>
+              ) : suggestions.length > 0 ? (
+                suggestions.map((item) => (
+                  <div
+                    key={item.id}
+                    className="hero-autocomplete-item"
+                    onClick={() => handleSelectCountry(item)}
+                  >
+                    <span className="hero-item-label">{item.label}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="hero-no-results">No results found</div>
+              )}
+            </div>
+          )}
         </div>
         {/* ARRIVAL DATE */}
         <div className="hero-flight-field flight-field">
@@ -230,7 +340,15 @@ const BookFlightCard = () => {
                 {day}–{weekday}, {year}
               </p>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "auto", position: "relative" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                marginLeft: "auto",
+                position: "relative",
+              }}
+            >
               {/* Hidden react-datepicker input (keeps layout unchanged) */}
               <DatePicker
                 ref={datePickerRef}
@@ -243,10 +361,20 @@ const BookFlightCard = () => {
                 }}
                 minDate={new Date()}
                 popperPlacement="bottom-end"
-                popperModifiers={[{ name: "offset", options: { offset: [0, 8] } }]}
+                popperModifiers={[
+                  { name: "offset", options: { offset: [0, 8] } },
+                ]}
                 customInput={
                   <input
-                    style={{ position: "absolute", opacity: 0, width: 24, height: 24, right: 0, top: 0, cursor: "pointer" }}
+                    style={{
+                      position: "absolute",
+                      opacity: 0,
+                      width: 24,
+                      height: 24,
+                      right: 0,
+                      top: 0,
+                      cursor: "pointer",
+                    }}
                     aria-hidden="true"
                     tabIndex={-1}
                     readOnly
@@ -321,7 +449,11 @@ const BookFlightCard = () => {
         {/* Google Powered */}
         <div className="hero-google-powered google-powered">
           <span>Powered by</span>
-          <svg className="hero-google-logo google-logo" viewBox="0 0 272 92" fill="none">
+          <svg
+            className="hero-google-logo google-logo"
+            viewBox="0 0 272 92"
+            fill="none"
+          >
             <path
               d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"
               fill="#EA4335"
@@ -350,7 +482,6 @@ const BookFlightCard = () => {
   );
 };
 
-
 // Hero Section Component
 const HeroSection = () => {
   const [bannerImages, setBannerImages] = React.useState([FALLBACK_IMAGE]);
@@ -378,9 +509,12 @@ const HeroSection = () => {
         });
         if (!sectionsRes.ok) throw new Error("Failed to load sections");
         const sectionsJson = await sectionsRes.json();
-        const sections = Array.isArray(sectionsJson?.data) ? sectionsJson.data : [];
+        const sections = Array.isArray(sectionsJson?.data)
+          ? sectionsJson.data
+          : [];
         const bannerSection = sections.find((s) => s.contentType === "BANNER");
-        if (!bannerSection?.pageSectionId) throw new Error("Banner section not found");
+        if (!bannerSection?.pageSectionId)
+          throw new Error("Banner section not found");
 
         // 2) Fetch banner details for that section to get bannerImageUrl
         const bannerRes = await fetch("/api/cms/section-banners", {
@@ -390,11 +524,15 @@ const HeroSection = () => {
         });
         if (!bannerRes.ok) throw new Error("Failed to load banner");
         const bannerJson = await bannerRes.json();
-        const bannersArr = Array.isArray(bannerJson?.data) ? bannerJson.data : [];
+        const bannersArr = Array.isArray(bannerJson?.data)
+          ? bannerJson.data
+          : [];
         const imgs = bannersArr
           .map((b) => b?.bannerImageUrl)
           .filter(Boolean)
-          .map((name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`);
+          .map(
+            (name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`
+          );
         setBannerImages(imgs.length ? imgs : [FALLBACK_IMAGE]);
       } catch (e) {
         setError(String(e?.message || e));
@@ -420,23 +558,26 @@ const HeroSection = () => {
   return (
     <section className="hero-masthead masthead -type-1 z-5">
       <div style={{ overflow: "hidden" }}>
-              <div className="hero-masthead-bg masthead__bg">
-        <img
-          alt="image"
-          src={bannerImages[currentIndex] || FALLBACK_IMAGE}
-          className="hero-masthead-img js-lazy"
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = FALLBACK_IMAGE;
-          }}
-        />
-      </div>
+        <div className="hero-masthead-bg masthead__bg">
+          <img
+            alt="image"
+            src={bannerImages[currentIndex] || FALLBACK_IMAGE}
+            className="hero-masthead-img js-lazy"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = FALLBACK_IMAGE;
+            }}
+          />
+        </div>
       </div>
 
       <div className="hero-container container px-4 sm:px-6 lg:px-8">
         <div className="hero-row row justify-center">
           <div className="hero-col col-auto">
-            <div className="hero-text-center text-center" style={{ marginTop: "-140px" }}>
+            <div
+              className="hero-text-center text-center"
+              style={{ marginTop: "-140px" }}
+            >
               <h1
                 className="hero-title text-60 lg:text-40 md:text-30 text-black"
                 data-aos="fade-up"
