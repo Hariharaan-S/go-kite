@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import "./menu.css";
 import HolidaysSectionCards from "../holidays-section-cards";
 
-const GlassmorphMenu = ({ styles, onSelect }) => {
+const GlassmorphMenu = ({ customStyles, onSelect }) => {
     const pathname = usePathname();
     const [active, setActive] = useState(0);
     const [selectedLabel, setSelectedLabel] = useState("Beaches");
@@ -32,13 +32,13 @@ const GlassmorphMenu = ({ styles, onSelect }) => {
         setActive(index);
         setSelectedLabel(label);
         if (typeof onSelect === "function") {
-            try { onSelect(label); } catch (_) {}
+            try { onSelect(label); } catch (_) { }
         }
     };
 
     return (
         <div>
-            <div className="glassmorph-menu" style={styles}>
+            <div className="glassmorph-menu" style={customStyles}>
                 <div className="menu-items">
                     {menuItems.map((item, index) => (
                         <div

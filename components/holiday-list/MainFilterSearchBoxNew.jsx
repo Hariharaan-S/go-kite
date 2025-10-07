@@ -1,16 +1,35 @@
 import GlassmorphMenu from '../holidayspage/holidays-section/menu/menu';
 import './styles/MainFilterSearchBox.styles.css'
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 const MainFilterSearchBoxNew = ({ onCategoryChange, selectedLabel }) => {
     const [localLabel, setLocalLabel] = useState(selectedLabel || 'Beaches');
+    const [menuTop, setMenuTop] = useState('20rem');
+
+    const computeTop = (width) => {
+        if (width <= 400) return '27rem';      // mobile
+        if (width <= 768) return '23rem';      // large mobile / small tablet
+        if (width <= 1024) return '20rem';     // tablet
+        if (width <= 1286) return '10rem'; 
+        if (width <= 1440) return '15rem';     // small desktop
+        if (width < 1600) return '22rem';     // medium desktop
+        if (width < 1920) return '24rem';     // large desktop
+    };
+
+    useEffect(() => {
+        const update = () => setMenuTop(computeTop(window.innerWidth));
+        update();
+        window.addEventListener('resize', update);
+        return () => window.removeEventListener('resize', update);
+    }, []);
 
     const handleSelect = useCallback((label) => {
         setLocalLabel(label || 'Beaches');
         if (typeof onCategoryChange === 'function') {
-            try { onCategoryChange(label); } catch (_) {}
+            try { onCategoryChange(label); } catch (_) { }
         }
     }, [onCategoryChange]);
+
     return (
         <>
             <div className="mainSearch  px-10 py-10 lg:px-20 lg:pt-5 lg:pb-20 rounded-4 mt-30">
@@ -25,7 +44,7 @@ const MainFilterSearchBoxNew = ({ onCategoryChange, selectedLabel }) => {
 
 
                 </div>
-                <div className="search-menu"><GlassmorphMenu onSelect={handleSelect} /></div>
+                <div className="search-menu"><GlassmorphMenu onSelect={handleSelect} customStyles={{ top: menuTop }} /></div>
                 <h2 className="search-sub-heading">{localLabel}</h2>
 
                 {/* End Location */}
