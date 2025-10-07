@@ -1,7 +1,16 @@
 import GlassmorphMenu from '../holidayspage/holidays-section/menu/menu';
 import './styles/MainFilterSearchBox.styles.css'
+import { useState, useCallback } from 'react';
 
 const MainFilterSearchBoxNew = ({ onCategoryChange, selectedLabel }) => {
+    const [localLabel, setLocalLabel] = useState(selectedLabel || 'Beaches');
+
+    const handleSelect = useCallback((label) => {
+        setLocalLabel(label || 'Beaches');
+        if (typeof onCategoryChange === 'function') {
+            try { onCategoryChange(label); } catch (_) {}
+        }
+    }, [onCategoryChange]);
     return (
         <>
             <div className="mainSearch  px-10 py-10 lg:px-20 lg:pt-5 lg:pb-20 rounded-4 mt-30">
@@ -16,8 +25,8 @@ const MainFilterSearchBoxNew = ({ onCategoryChange, selectedLabel }) => {
 
 
                 </div>
-                <div className="search-menu"><GlassmorphMenu onSelect={onCategoryChange} /></div>
-                <h2 className="search-sub-heading">{selectedLabel || 'Beaches'}</h2>
+                <div className="search-menu"><GlassmorphMenu onSelect={handleSelect} /></div>
+                <h2 className="search-sub-heading">{localLabel}</h2>
 
                 {/* End Location */}
             </div>

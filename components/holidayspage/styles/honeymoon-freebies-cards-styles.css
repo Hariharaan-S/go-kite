@@ -3,14 +3,14 @@
 .recom-sec-2 {
     min-height: 80vh;
     /* or whatever you need */
-    margin-top: 20rem;
+    margin-top: -4rem;
 }
 
 @media screen and (max-width: 1441px) {
     .recom-sec-2 {
         min-height: 70vh;
         /* or whatever you need */
-        margin-top: 18rem;
+        margin-top: -17rem;
     }
 }
 

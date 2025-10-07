@@ -58,7 +58,6 @@ export default function HolidaysSectionCards({ selectedCategory: selectedCategor
     display: flex;
     flex-direction: column;
     position: relative;
-    margin-top: -15rem;
   }
 
   .dest {
@@ -77,146 +76,100 @@ export default function HolidaysSectionCards({ selectedCategory: selectedCategor
     max-width: 300px;
   }
 
-  @media screen and (max-width: 1500px) {
-      .recom-slid-section-1 {
-        margin-top: 2rem !important;
-        margin-left: 0 !important;
-        column-gap: 60rem !important;
-    }
-
-  }
-
   /* 1440px */
   @media screen and (max-width: 1440px) {
     .recommendation-slider-section-1 {
-      margin-top: 13rem;
+      margin-top: 3rem;
     }
     .dest {
+    margin-top: 3rem;
       gap: 18px;
-      margin-left: 0 !important;
     }
     .card {
       width: calc(25% - 12px);
       min-width: 220px;
-      max-width: 260px;
+      max-width: 320px;
+      height: 100%;
     }
+      .card-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .features-list {
+      max-height: 100px;
+}
   }
 
   /* 1280px */
   @media screen and (max-width: 1280px) {
     .recommendation-slider-section-1 {
-      margin-top: -20rem;
+      margin-top: -3rem;
     }
-
-    .recom-slid-section-1 {
-      margin-top: 5rem !important;
-      margin-left: 0 !important;
-      column-gap: 50rem !important;
-    }
-
     .dest {
       gap: 14px;
       max-width: 90% !important;
+      margin-left: 6rem;
     }
     .card {
       width: calc(33.33% - 10px);
       min-width: 200px;
-      max-width: 240px;
     }
   }
 
   /* 1024px */
   @media screen and (max-width: 1024px) {
     .recommendation-slider-section-1 {
-      margin-top: -15rem;
+      margin-top: -2rem;
     }
-
-    .recom-slid-section-1 {
-      margin-top: 5rem !important;
-      margin-left: 0 !important;
-      column-gap: 40rem !important;
-    }
-
     .dest {
       flex-wrap: wrap;
       gap: 8px;
-      margin-left: 0;
-      justify-content: center;
+      margin-left: 5rem;
     }
     .card {
       width: 90vw;
       min-width: 150px;
-      max-width: 98vw;
     }
   }
 
   /* 768px */
   @media screen and (max-width: 768px) {
     .recommendation-slider-section-1 {
-      margin-top: -18rem;
+      margin-top: -4rem;
     }
-
-    .recom-slid-section-1 {
-    margin-top: 5rem !important;
-      margin-left: 0 !important;
-      column-gap: 27rem !important;
-    }
+      .recom-slid-section-1 {
+       column-gap: 25rem !important;
+      }
     .dest {
       flex-wrap: wrap;
       gap: 8px;
-      margin-left: 0;
-      justify-content: center;
+      margin-left: 5rem;
     }
     .card {
       width: 90vw;
       min-width: 150px;
-      max-width: 98vw;
-    }
-    .heading {
-      font-size: 1.6rem;
-    }
-    .prev-btn, .next-btn {
-      width: 35px !important;
-      height: 30px !important;
     }
   }
 
   /* 400px */
   @media screen and (max-width: 400px) {
     .recommendation-slider-section-1 {
-      margin-top: -16rem;
-      height: auto;
+      margin-top: -1rem;
     }
-
       .recom-slid-section-1 {
-    margin-top: 7rem !important;
-      margin-left: 0 !important;
-      column-gap: 12rem !important;
-    }
+       column-gap: 15rem !important;
+      }
     .dest {
       display: grid !important;
       grid-template-columns: 1fr !important;
       gap: 6px !important;
-      margin-left: 3rem !important;
+      margin-left: 2.5rem !important;
     }
     .card {
       width: 98vw !important;
       min-width: 120px;
-      max-width: 99vw;
-      padding: 0;
-    }
-    .heading {
-      font-size: 1.5rem;
-    }
-    .button-group {
-      gap: 1px;
-    }
-    .view-all-btn {
-      display: none !important;
-    }
-    .prev-btn, .next-btn {
-      width: 32px !important;
-      height: 32px !important;
     }
   }
 `;
@@ -511,7 +464,7 @@ export default function HolidaysSectionCards({ selectedCategory: selectedCategor
           >
             <button
               className="view-all-btn"
-              onClick={() => router.push("/holiday_list_grid_new")}
+              onClick={() => router.push("/holiday_list")}
             >
               View All
             </button>

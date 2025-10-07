@@ -198,26 +198,46 @@ export default function HoneymoonFreebiesCards1() {
 
 
 
+  const baseSlidesToShow = Math.max(1, Math.min(4, destinations.length || 1));
+  const threeOrLess = Math.max(1, Math.min(3, destinations.length || 1));
+  const twoOrLess = Math.max(1, Math.min(2, destinations.length || 1));
+
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: destinations.length > baseSlidesToShow,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: baseSlidesToShow,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: destinations.length > baseSlidesToShow,
     autoplaySpeed: 3000,
     responsive: [
       {
+        breakpoint: 1440,
+        settings: {
+          slidesToShow: baseSlidesToShow,
+          slidesToScroll: 1,
+          infinite: destinations.length > baseSlidesToShow,
+        },
+      },
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: threeOrLess,
+          slidesToScroll: 1,
+          infinite: destinations.length > threeOrLess,
+        },
+      },
+      {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: threeOrLess,
           slidesToScroll: 1,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: twoOrLess,
           slidesToScroll: 1,
         },
       },

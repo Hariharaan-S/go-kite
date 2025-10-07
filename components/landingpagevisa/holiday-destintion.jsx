@@ -317,7 +317,7 @@ export default function HolidayDestinations() {
         <div className="holiday-nav-wrapper holiday-nav">
           <span
             className="holiday-view-all view-all"
-            onClick={() => router.push("/holidays")}
+            onClick={() => router.push("/holiday_list")}
           >
             View All
           </span>

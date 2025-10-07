@@ -1,9 +1,11 @@
 "use client"
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import "./menu.css";
 import HolidaysSectionCards from "../holidays-section-cards";
 
-const GlassmorphMenu = ({ styles }) => {
+const GlassmorphMenu = ({ styles, onSelect }) => {
+    const pathname = usePathname();
     const [active, setActive] = useState(0);
     const [selectedLabel, setSelectedLabel] = useState("Beaches");
 
@@ -29,6 +31,9 @@ const GlassmorphMenu = ({ styles }) => {
     const handleItemClick = (index, label) => {
         setActive(index);
         setSelectedLabel(label);
+        if (typeof onSelect === "function") {
+            try { onSelect(label); } catch (_) {}
+        }
     };
 
     return (
@@ -53,7 +58,9 @@ const GlassmorphMenu = ({ styles }) => {
                     />
                 </div>
             </div>
-            <HolidaysSectionCards selectedCategory={selectedLabel} />
+            {pathname !== "/holiday_list" && (
+                <HolidaysSectionCards selectedCategory={selectedLabel} />
+            )}
         </div>
     );
 };

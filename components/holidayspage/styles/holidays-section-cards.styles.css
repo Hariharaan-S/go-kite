@@ -5,15 +5,13 @@
     align-items: center;
     position: relative;
     margin-left: 2rem;
-    margin-top: 3rem;
-    column-gap: 67rem;
-    margin-bottom: 2rem;
+    column-gap: 60rem;
+
 }
 
 .heading {
     color: #FFFFFF;
     position: relative;
-    margin-left: 1.2rem;
 }
 
 .button-group {
@@ -50,6 +48,7 @@
     width: calc(25% - 16px);
     min-width: 330px;
     max-width: 300px;
+    height: 100%;
     background-color: white;
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -212,4 +211,55 @@
 .price-content {
     font-size: 14px;
     color: #64748b;
+}
+
+/* 1280px */
+@media screen and (max-width: 1280px) {
+    .recom-slid-section-1 {
+        margin-top: 5rem !important;
+        margin-left: 0 !important;
+        column-gap: 50rem !important;
+    }
+}
+
+/* 1024px */
+@media screen and (max-width: 1024px) {
+    .recom-slid-section-1 {
+        margin-top: 5rem !important;
+        margin-left: 0 !important;
+        column-gap: 40rem !important;
+    }
+}
+
+/* 768px */
+@media screen and (max-width: 768px) {
+    .heading {
+        font-size: 1.6rem;
+    }
+    .prev-btn, .next-btn {
+        width: 35px !important;
+        height: 30px !important;
+    }
+}
+
+/* 400px */
+@media screen and (max-width: 400px) {
+    .recom-slid-section-1 {
+        margin-top: 7rem !important;
+        margin-left: 0 !important;
+        column-gap: 12rem !important;
+    }
+    .heading {
+        font-size: 1.5rem;
+    }
+    .button-group {
+        gap: 1px;
+    }
+    .view-all-btn {
+        display: none !important;
+    }
+    .prev-btn, .next-btn {
+        width: 32px !important;
+        height: 32px !important;
+    }
 }

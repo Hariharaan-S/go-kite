@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    margin-top: -27rem;
 }
 
 .rec-slide-subsec-2 {
@@ -12,7 +11,7 @@
     position: relative;
     margin-left: -8rem;
     margin-top: 10rem !important;
-    column-gap: 42rem;
+    column-gap: 48rem;
     margin-bottom: 2rem;
 }
 
@@ -246,6 +245,11 @@
     justify-content: center;
 }
 
+.dest1 .slick-slider .slick-list .slick-track .slick-slide {
+    margin-left: 1rem !important;
+    width: auto !important;
+}
+
 @media screen and (max-width: 1500px) {
     .recommendation-slider-section-2 {
         margin-top: -27rem;
@@ -255,28 +259,28 @@
 /* 1440px */
 @media screen and (max-width: 1440px) {
     .recommendation-slider-section-2 {
-        margin-top: 5rem;
+        margin-top: 3rem;
     }
 
     .rec-slide-subsec-2 {
-        margin-left: -4rem;
-        column-gap: 18rem;
-        margin-top: 10rem;
+        margin-left: -2rem;
+        column-gap: 40rem;
+        margin-top: 8rem;
     }
 
     .dest1 {
-        gap: 18px;
+        gap: 16px;
         margin-left: 0;
     }
 
     .card {
         width: calc(25% - 12px);
         min-width: 220px;
-        max-width: 260px;
+        max-width: 280px;
     }
 
     .heading1 {
-        font-size: 2rem;
+        font-size: 1.9rem;
     }
 }
 
@@ -318,19 +322,30 @@
 
     .rec-slide-subsec-2 {
         margin-left: 0;
-        column-gap: 39rem !important;
+        column-gap: 36rem !important;
     }
 
     .dest1 {
-        column-gap: 14px;
+        column-gap: 12px;
         flex-wrap: wrap;
-        margin-left: .5rem !important;
+        margin-left: 0 !important;
+        justify-content: flex-start;
+        margin-left: 4rem !important;
+    }
+    
+    /* Let slick determine slide width; avoid fixed 300px forcing awkward gaps */
+    .dest1 .slick-slider .slick-list .slick-track .slick-slide {
+        width: auto !important;
+    }
+    
+    .slider-wrapper-2 {
+        width: 100%;
     }
 
-    .card {
-        width: calc(33.33% - 10px);
-        min-width: 200px;
-        max-width: 220px;
+    .dest1 .card {
+        width: calc(33.33% - 16px);
+        min-width: 220px;
+        max-width: 320px !important;
     }
 
     .heading1 {
@@ -413,7 +428,6 @@
 /* 480px */
 @media screen and (max-width: 400px) {
     .recommendation-slider-section-2 {
-        display: none;
         margin-top: 1rem;
     }
 
