@@ -31,7 +31,7 @@ function getCookie(name) {
 }
 
 // Helper function to get slider settings
-function getSliderSettings(windowWidth) {
+function getSliderSettings(windowWidth, itemCount = 1) {
   let slidesToShow = 4;
   if (windowWidth < 640) {
     slidesToShow = 1;
@@ -41,21 +41,28 @@ function getSliderSettings(windowWidth) {
     slidesToShow = 3;
   }
 
+  const count = Math.max(1, itemCount);
+  const normalizedSlidesToShow = Math.min(slidesToShow, count);
+  const shouldLoop = count > normalizedSlidesToShow;
+  const shouldAutoplay = count > 1;
+  const isSingle = count === 1;
+
   const settings = {
     dots: false,
-    infinite: true,
+    infinite: shouldLoop,
     speed: 500,
-    slidesToShow: slidesToShow,
+    slidesToShow: normalizedSlidesToShow,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: shouldAutoplay,
     autoplaySpeed: 3000,
-    centerMode: false,
-    variableWidth: false,
+    centerMode: isSingle ? true : false,
+    centerPadding: isSingle ? "0px" : "0px",
+    variableWidth: isSingle ? true : false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: Math.min(3, count),
           slidesToScroll: 1,
           centerMode: false,
         },
@@ -63,7 +70,7 @@ function getSliderSettings(windowWidth) {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: Math.min(2, count),
           slidesToScroll: 1,
           centerMode: false,
         },
@@ -71,7 +78,7 @@ function getSliderSettings(windowWidth) {
       {
         breakpoint: 640,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: Math.min(1, count),
           slidesToScroll: 1,
           centerMode: false,
         },
@@ -90,12 +97,12 @@ export default function HolidayDestinations() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sliderSettings, setSliderSettings] = useState(
-    getSliderSettings(windowWidth)
+    getSliderSettings(windowWidth, 1)
   );
   const router = useRouter();
   const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
 
-  useEffect(() => {}, []);
+  
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -277,18 +284,20 @@ export default function HolidayDestinations() {
     const updateSliderSettings = () => {
       const width = window.innerWidth;
       setWindowWidth(width);
-      setSliderSettings(getSliderSettings(width));
+      setSliderSettings(getSliderSettings(width, destinations.length));
     };
 
     updateSliderSettings();
     window.addEventListener("resize", updateSliderSettings);
     return () => window.removeEventListener("resize", updateSliderSettings);
-  }, []);
+  }, [destinations.length]);
 
   // Don't render the component if loading, has error, or no data
   if (loading || error || destinations.length === 0) {
     return null;
   }
+
+  const isSingle = destinations.length === 1;
 
   return (
     <div
@@ -318,7 +327,9 @@ export default function HolidayDestinations() {
 
       <Slider
         {...sliderSettings}
-        className="holiday-destinations-wrapper destinations-wrapper"
+        className={`holiday-destinations-wrapper destinations-wrapper ${
+          isSingle ? "single-slide" : ""
+        }`}
       >
         {destinations.map((destination) => (
           <div

@@ -373,6 +373,24 @@
   margin-left: 0 !important;
 }
 
+/* Single-slide tweaks: center and keep natural width */
+.destinations-wrapper.single-slide .slick-track {
+  justify-content: center;
+}
+.destinations-wrapper.single-slide .slick-slide {
+  padding: 0 0; /* no side gap when single */
+}
+.destinations-wrapper.single-slide .slick-slide > div {
+  width: auto; /* let card define its width */
+}
+/* Slightly reduce card width for single item and keep it centered */
+.destinations-wrapper.single-slide .destination-card {
+  width: 90% !important;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .slick-slide {
   padding: 0 10px;
   box-sizing: border-box;
