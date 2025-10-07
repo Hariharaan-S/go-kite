@@ -40,6 +40,15 @@
     overflow: hidden;
 }
 
+@media screen and (max-width: 1500px) {
+    .recom-slid-section-1 {
+        transform: translateY(3rem);
+    }
+    .dest {
+        transform: translateY(1rem);
+    }
+}
+
 .slider-wrapper {
     width: 90%;
 }

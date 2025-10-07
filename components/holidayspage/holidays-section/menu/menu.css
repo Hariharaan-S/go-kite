@@ -4,8 +4,10 @@
     width: 100%;
     margin-top: -23rem;
     border-radius: 20px;
-    margin-left: 5rem;
+    margin-left: auto;
+    margin-right: auto;
     z-index: 10;
+    transform: translate(5rem, 1rem);   
 }
 
 .glassmorph-menu .menu-items {
@@ -83,13 +85,20 @@
 }
 
 /* 1500px breakpoint removed as per requirements */
+@media screen and (max-width: 1500px) {
+    .glassmorph-menu {
+        transform: translate(5rem, 5rem); 
+    }
+}
 
 /* 1280px */
 @media screen and (max-width: 1280px) {
     .glassmorph-menu {
         width: 98%;
-        margin-left: 5rem;
+        margin-left: auto;
+        margin-right: auto;
         margin-top: -27rem;
+        transform: translateX(6px);
     }
 
     .glassmorph-menu .menu-item {
@@ -110,13 +119,16 @@
 @media screen and (max-width: 1024px) {
     .glassmorph-menu {
         width: 99%;
-        margin-left: 2.7rem;
+        margin-left: auto;
+        margin-right: auto;
         margin-top: -21rem;
+        transform: translateX(4px);
     }
 
     .glassmorph-menu .menu-items {
         grid-template-columns: repeat(8, 1fr);
-        margin-left: 1rem;
+        margin-left: auto;
+        margin-right: auto;
         max-width: 95%;
         gap: 0.4rem;
     }
@@ -139,6 +151,7 @@
 @media screen and (max-width: 768px) {
     .glassmorph-menu {
         width: 97%;
+        transform: translateX(2px);
         min-width: 0;
     }
 
@@ -165,14 +178,16 @@
 @media screen and (max-width: 400px) {
     .glassmorph-menu {
         width: 100%;
-        margin-left: .4rem;
+        margin-left: auto;
+        margin-right: auto;
+        transform: none;
     }
 
     .glassmorph-menu .menu-items {
         grid-template-columns: repeat(4, 1fr);
         overflow-x: auto;
-        margin-left: 0.7rem;
-        margin-right: 0;
+        margin-left: auto;
+        margin-right: auto;
         max-width: 95%;
         gap: 0.35rem;
     }
