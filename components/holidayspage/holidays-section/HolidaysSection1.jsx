@@ -1,4 +1,3 @@
-import GlassmorphMenu from "./menu/menu";
 import '../styles/holidays-section-1-styles.css'
 
 const HolidaysSection1 = () => {
@@ -15,7 +14,6 @@ const HolidaysSection1 = () => {
                         lasting memories</p>
                     </div>
                 </div>
-                <GlassmorphMenu />
             </div>
         </>
 

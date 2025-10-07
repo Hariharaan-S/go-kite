@@ -1,9 +1,11 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./menu.css";
+import HolidaysSectionCards from "../holidays-section-cards";
 
-const GlassmorphMenu = ({ styles, onSelect }) => {
+const GlassmorphMenu = ({ styles }) => {
     const [active, setActive] = useState(0);
+    const [selectedLabel, setSelectedLabel] = useState("Beaches");
 
     const menuItems = [
         { src: "img/holidays/beach.png", label: "Beaches" },
@@ -16,31 +18,42 @@ const GlassmorphMenu = ({ styles, onSelect }) => {
         { src: "img/holidays/wildlife.png", label: "Wildlife" },
     ];
 
-    return (
-        <div className="glassmorph-menu" style={styles}>
-            <div className="menu-items">
-                {menuItems.map((item, index) => (
-                    <div
-                        key={index}
-                        className={`menu-item ${active === index ? "active" : ""}`}
-                        onClick={() => {
-                            setActive(index);
-                            if (typeof onSelect === "function") {
-                                onSelect(index + 1, item.label);
-                            }
-                        }}
-                    >
-                        <img src={item.src} alt={item.label} />
-                        <p>{item.label}</p>
-                    </div>
-                ))}
+    useEffect(() => {
+        if (!selectedLabel) return;
+        const idx = menuItems.findIndex((item) => item.label === selectedLabel);
+        if (idx !== -1 && idx !== active) {
+            setActive(idx);
+        }
+    }, [selectedLabel]);
 
-                {/* Underline that slides */}
-                <div
-                    className="underline"
-                    style={{ transform: `translateX(${active * 1.6 * 100}%)` }}
-                />
+    const handleItemClick = (index, label) => {
+        setActive(index);
+        setSelectedLabel(label);
+    };
+
+    return (
+        <div>
+            <div className="glassmorph-menu" style={styles}>
+                <div className="menu-items">
+                    {menuItems.map((item, index) => (
+                        <div
+                            key={index}
+                            className={`menu-item ${active === index ? "active" : ""}`}
+                            onClick={() => handleItemClick(index, item.label)}
+                        >
+                            <img src={item.src} alt={item.label} />
+                            <p>{item.label}</p>
+                        </div>
+                    ))}
+
+                    {/* Underline that slides */}
+                    <div
+                        className="underline"
+                        style={{ transform: `translateX(${active * 1.6 * 100}%)` }}
+                    />
+                </div>
             </div>
+            <HolidaysSectionCards selectedCategory={selectedLabel} />
         </div>
     );
 };

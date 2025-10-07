@@ -1,7 +1,7 @@
 import Header1 from "@/components/header/IconNav";
 import HolidaysHero from "@/components/holidayspage/hero";
 import HolidaysSection1 from "@/components/holidayspage/holidays-section/HolidaysSection1";
-import HolidaysSectionCards from "@/components/holidayspage/holidays-section/holidays-section-cards";
+import GlassmorphMenu from "@/components/holidayspage/holidays-section/menu/menu";
 import Footer from "@/components/footer/footer-gokite"
 import HoneymoonFreebiesCards from "@/components/holidayspage/holidays-section/honeymoon-freebies-cards";
 
@@ -17,7 +17,7 @@ const Holidays = () => {
             <Header1 />
             <HolidaysHero />
             <HolidaysSection1 />
-            <HolidaysSectionCards />
+            <GlassmorphMenu />
             <HoneymoonFreebiesCards />
             <Footer />
         </>
