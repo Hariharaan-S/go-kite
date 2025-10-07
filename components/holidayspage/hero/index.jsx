@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
 import HotelSearch from "../hotel-search/hotel-search";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "../styles/holidays-hero.css";
 
 const FALLBACK_IMAGE = "/img/holidays/holidayHeroBG.jpg";
@@ -16,7 +19,6 @@ function getCookie(name) {
 
 const HolidaysHero = () => {
   const [images, setImages] = React.useState([FALLBACK_IMAGE]);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -35,9 +37,12 @@ const HolidaysHero = () => {
         });
         if (!sectionsRes.ok) throw new Error("Failed to load sections");
         const sectionsJson = await sectionsRes.json();
-        const sections = Array.isArray(sectionsJson?.data) ? sectionsJson.data : [];
+        const sections = Array.isArray(sectionsJson?.data)
+          ? sectionsJson.data
+          : [];
         const bannerSection = sections.find((s) => s.contentType === "BANNER");
-        if (!bannerSection?.pageSectionId) throw new Error("Banner section not found");
+        if (!bannerSection?.pageSectionId)
+          throw new Error("Banner section not found");
 
         const bannerRes = await fetch("/api/cms/section-banners", {
           method: "POST",
@@ -46,11 +51,15 @@ const HolidaysHero = () => {
         });
         if (!bannerRes.ok) throw new Error("Failed to load banner");
         const bannerJson = await bannerRes.json();
-        const bannersArr = Array.isArray(bannerJson?.data) ? bannerJson.data : [];
+        const bannersArr = Array.isArray(bannerJson?.data)
+          ? bannerJson.data
+          : [];
         const imgs = bannersArr
           .map((b) => b?.bannerImageUrl)
           .filter(Boolean)
-          .map((name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`);
+          .map(
+            (name) => `/api/cms/file-download?image=${encodeURIComponent(name)}`
+          );
         setImages(imgs.length ? imgs : [FALLBACK_IMAGE]);
       } catch (_) {
         setImages([FALLBACK_IMAGE]);
@@ -59,37 +68,56 @@ const HolidaysHero = () => {
     loadBanner();
   }, []);
 
-  React.useEffect(() => {
-    if (!images || images.length <= 1) return;
-    const id = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 6000);
-    return () => clearInterval(id);
-  }, [images]);
-
-  React.useEffect(() => {
-    setCurrentIndex(0);
-  }, [images?.length]);
-
-  const backgroundStyle = {
-    backgroundImage: `url(${images[currentIndex] || FALLBACK_IMAGE})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+  // Slider settings for banner carousel
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 1000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    fade: true,
+    cssEase: "linear",
+    pauseOnHover: false,
+    arrows: false,
   };
 
   return (
     <>
-      <div className="hero" style={backgroundStyle}>
-        <h1>A Lifetime Memory of Holidays</h1>
-        <p className="hero-subtopic">
-          Plan your holiday with our Tailored Packages for your Solo Trip, Honeymoon, Family Trip, Corporate Workstation
-        </p>
+      <div className="hero-carousel-container">
+        <Slider {...sliderSettings}>
+          {images.map((image, index) => (
+            <div key={index}>
+              <div
+                className="hero"
+                style={{
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
+              >
+                <h1>A Lifetime Memory of Holidays</h1>
+                <p className="hero-subtopic">
+                  Plan your holiday with our Tailored Packages for your Solo
+                  Trip, Honeymoon, Family Trip, Corporate Workstation
+                </p>
 
-        <HotelSearch />
+                <HotelSearch />
 
-        <p className="book-agent">
-          Book a Meeting with our Travel Agent <img src="img/holidays/arrow.svg" width="20px" height="20px" />
-        </p>
+                <p className="book-agent">
+                  Book a Meeting with our Travel Agent{" "}
+                  <img
+                    src="img/holidays/arrow.svg"
+                    width="20px"
+                    height="20px"
+                  />
+                </p>
+              </div>
+            </div>
+          ))}
+        </Slider>
       </div>
     </>
   );
