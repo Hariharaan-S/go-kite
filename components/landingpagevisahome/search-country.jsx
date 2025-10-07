@@ -13,6 +13,7 @@ const TravelVisaCards = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("Popular");
+  const [searchTerm, setSearchTerm] = useState("");
   const sliderRefRow1 = useRef(null);
 
   // Fetch countries data from API
@@ -20,15 +21,11 @@ const TravelVisaCards = () => {
     try {
       setLoading(true);
       setError(null);
-
       const response = await fetch("/api/cms/countries-dd");
-
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       const result = await response.json();
-
       // API returns { success, data: { success, data: [...] } }
       if (result?.success && result?.data) {
         const upstream = result.data;
@@ -40,7 +37,6 @@ const TravelVisaCards = () => {
     } catch (err) {
       console.error("Error fetching countries data:", err);
       setError(err.message);
-
       // Fallback to default data if API fails
       setCountriesData([
         { id: "1", label: "United Arab Emirates" },
@@ -58,18 +54,12 @@ const TravelVisaCards = () => {
   };
 
   // Add responsive check
-  React.useEffect(() => {
+  useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-
-    // Check on initial load
     checkMobile();
-
-    // Add event listener for window resize
     window.addEventListener("resize", checkMobile);
-
-    // Cleanup listener
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
@@ -78,22 +68,19 @@ const TravelVisaCards = () => {
     fetchCountriesData();
   }, []);
 
-  // Reset slider when category changes
+  // Reset slider when category or search term changes
   useEffect(() => {
     if (sliderRefRow1.current) {
       sliderRefRow1.current.slickGoTo(0);
     }
     setCurrentSlide(0);
-  }, [selectedCategory]);
-
-  const VISIBLE_CARDS_PER_ROW = isMobile ? 1 : 4;
+  }, [selectedCategory, searchTerm]);
 
   // Generate destinations from API data
   const generateDestinations = () => {
     if (!countriesData || countriesData.length === 0) {
       return [];
     }
-
     const formatPrice = (currency, amount) => {
       if (!amount) return "";
       const numeric = Number(amount);
@@ -103,8 +90,6 @@ const TravelVisaCards = () => {
         maximumFractionDigits: 2,
       })}`.trim();
     };
-
-    // countriesData is already the upstream array
     return countriesData.map((item, index) => {
       const title = item?.visaCardJson?.title || item?.visaCardTitle || "";
       const imageName = item?.visaCardJson?.image || "";
@@ -113,7 +98,6 @@ const TravelVisaCards = () => {
         item?.visaCardJson?.processing_days ||
         item?.visaCardJson?.processing_time ||
         "5";
-
       return {
         id: item?.visaCardId || index,
         country: title,
@@ -143,20 +127,34 @@ const TravelVisaCards = () => {
     "Visa Free",
   ];
 
-  // Filter destinations based on selected category
+  // Filter destinations based on selected category and search term
   const destinations = allDestinations.filter((destination) => {
+    // First check if it matches the category
     if (!destination.tagNames || destination.tagNames.length === 0) {
-      return false; // Don't show cards without tags
+      return false;
     }
-    // Check if the destination's tagNames include the selected category
-    // Trim whitespace from tagNames for comparison
-    return destination.tagNames.some(
+    const matchesCategory = destination.tagNames.some(
       (tag) =>
         tag.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
     );
+
+    if (!matchesCategory) {
+      return false;
+    }
+
+    // Then check if it matches the search term (if any)
+    if (searchTerm.trim() === "") {
+      return true; // No search term, show all matching category
+    }
+
+    const searchLower = searchTerm.toLowerCase().trim();
+    const countryLower = destination.country.toLowerCase();
+
+    // Match if country contains the search term
+    return countryLower.includes(searchLower);
   });
 
-  const totalSlides = destinations?.length || 0;
+  const VISIBLE_CARDS_PER_ROW = isMobile ? 1 : 4;
 
   const nextSlide = () => {
     if (sliderRefRow1.current) sliderRefRow1.current.slickNext();
@@ -166,48 +164,32 @@ const TravelVisaCards = () => {
     if (sliderRefRow1.current) sliderRefRow1.current.slickPrev();
   };
 
-  // Compute the visible cards window with wrapping for first row
-  const getVisibleDestinations = () => {
-    if (totalSlides <= VISIBLE_CARDS_PER_ROW) return destinations;
-    if (currentSlide + VISIBLE_CARDS_PER_ROW <= totalSlides) {
-      return destinations.slice(
-        currentSlide,
-        currentSlide + VISIBLE_CARDS_PER_ROW
-      );
-    } else {
-      return [
-        ...destinations.slice(currentSlide),
-        ...destinations.slice(
-          0,
-          (currentSlide + VISIBLE_CARDS_PER_ROW) % totalSlides
-        ),
-      ];
-    }
-  };
-
-  const visibleDestinations = getVisibleDestinations();
   const router = useRouter();
+
+  // Always show as many as possible, no vertical stack
+  const slidesToShow = isMobile ? 1 : Math.min(4, destinations.length);
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: destinations.length > slidesToShow,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: slidesToShow,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: destinations.length > slidesToShow, // optional: only autoplay if multiple
     autoplaySpeed: 3000,
+    variableWidth: false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: Math.min(3, destinations.length),
           slidesToScroll: 1,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: Math.min(2, destinations.length),
           slidesToScroll: 1,
         },
       },
@@ -247,7 +229,6 @@ const TravelVisaCards = () => {
       }}
       onClick={() => router.push("/apply_visa")}
     >
-      {/* Image Container */}
       <div
         style={{
           position: "relative",
@@ -259,7 +240,6 @@ const TravelVisaCards = () => {
           borderTopRightRadius: "12px",
         }}
       >
-        {/* Top Right Badge - Special offers */}
         {destination.badge && (
           <div
             style={{
@@ -281,8 +261,6 @@ const TravelVisaCards = () => {
             {destination.badge}
           </div>
         )}
-
-        {/* Bottom Left - Visa Date and Fees */}
         {destination.visaDate && (
           <div
             style={{
@@ -329,18 +307,13 @@ const TravelVisaCards = () => {
                 width={30}
                 height={20}
                 alt=""
-                srcset=""
+                srcSet=""
               />
             )}
           </div>
         )}
-
-        {/* Bottom Right - Express Visa Logo */}
       </div>
-
-      {/* Content */}
       <div style={{ padding: "12px 12px 0px 12px" }}>
-        {/* Country Name and Visa Type Row */}
         <div
           style={{
             display: "flex",
@@ -396,8 +369,6 @@ const TravelVisaCards = () => {
             </span>
           </div>
         </div>
-
-        {/* Price Section */}
         <div style={{ marginBottom: "4px" }}>
           <span
             style={{
@@ -412,8 +383,6 @@ const TravelVisaCards = () => {
             {destination.price}
           </span>
         </div>
-
-        {/* Additional Fee */}
         <div
           style={{
             fontSize: "12px",
@@ -558,11 +527,13 @@ const TravelVisaCards = () => {
             <input
               type="text"
               placeholder="Search Country"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               style={{
                 border: "none",
                 outline: "none",
                 fontSize: "16px",
-                color: "#9ca3af",
+                color: "#1a1a1a",
                 backgroundColor: "transparent",
                 width: "100%",
                 fontFamily:
@@ -570,7 +541,6 @@ const TravelVisaCards = () => {
               }}
             />
           </div>
-
           {/* Category Buttons */}
           <div
             style={{
@@ -616,7 +586,6 @@ const TravelVisaCards = () => {
             ))}
           </div>
         </div>
-
         {/* Navigation Buttons */}
         <div
           style={{
@@ -661,8 +630,7 @@ const TravelVisaCards = () => {
           </button>
         </div>
       </div>
-
-      {/* Single carousel rendering all destinations */}
+      {/* Always render the carousel if we have destinations */}
       {destinations && destinations.length > 0 ? (
         <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
           <Slider
@@ -671,7 +639,7 @@ const TravelVisaCards = () => {
             style={{ width: "100%" }}
           >
             {destinations.map((destination) => (
-              <div key={`row-${destination.id}`} style={{ padding: "0 12px" }}>
+              <div key={`row-${destination.id}`} style={{ padding: "0 4px" }}>
                 <CardComponent destination={destination} />
               </div>
             ))}
@@ -708,7 +676,9 @@ const TravelVisaCards = () => {
                 "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
             }}
           >
-            No visa destinations available for "{selectedCategory}" category.
+            {searchTerm.trim() !== ""
+              ? `No visa destinations found matching "${searchTerm}" in "${selectedCategory}" category.`
+              : `No visa destinations available for "${selectedCategory}" category.`}
           </p>
         </div>
       )}
