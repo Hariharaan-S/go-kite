@@ -364,15 +364,18 @@ const HotelSearch = () => {
       clearTimeout(debounceTimer.current);
     }
 
-    if (value.trim().length < 2) {
+    if (value.trim().length < 1) {
       setSuggestions([]);
       setShowDropdown(false);
       return;
     }
 
-    // Debounce API call
+    // Show loading immediately
+    setIsLoading(true);
+    setShowDropdown(true);
+
+    // Debounce API call with reduced delay
     debounceTimer.current = setTimeout(async () => {
-      setIsLoading(true);
       try {
         const endpoint =
           searchType === "country"
@@ -392,6 +395,8 @@ const HotelSearch = () => {
         if (data.success && data.data) {
           setSuggestions(data.data);
           setShowDropdown(true);
+        } else {
+          setSuggestions([]);
         }
       } catch (error) {
         console.error("Error fetching suggestions:", error);
@@ -399,7 +404,7 @@ const HotelSearch = () => {
       } finally {
         setIsLoading(false);
       }
-    }, 300);
+    }, 150);
   };
 
   // Handle suggestion selection
