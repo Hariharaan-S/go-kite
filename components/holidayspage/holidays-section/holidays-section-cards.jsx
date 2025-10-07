@@ -58,12 +58,14 @@ export default function HolidaysSectionCards({ selectedCategory: selectedCategor
     display: flex;
     flex-direction: column;
     position: relative;
+    margin-top: 3rem;
   }
 
   .dest {
     display: flex;
     gap: 24px;
     margin-left: 6rem;
+    margin-top: 3rem;
     align-items: stretch;
     padding-bottom: 10px;
     max-width: 100%;
