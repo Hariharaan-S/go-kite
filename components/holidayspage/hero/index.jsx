@@ -20,6 +20,11 @@ function getCookie(name) {
 const HolidaysHero = () => {
   const [images, setImages] = React.useState([FALLBACK_IMAGE]);
   const [searchType, setSearchType] = React.useState("city");
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [suggestions, setSuggestions] = React.useState([]);
+  const [showDropdown, setShowDropdown] = React.useState(false);
+  const [selectedCountry, setSelectedCountry] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -108,6 +113,16 @@ const HolidaysHero = () => {
                 <HotelSearch
                   searchType={searchType}
                   setSearchType={setSearchType}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  suggestions={suggestions}
+                  setSuggestions={setSuggestions}
+                  showDropdown={showDropdown}
+                  setShowDropdown={setShowDropdown}
+                  selectedCountry={selectedCountry}
+                  setSelectedCountry={setSelectedCountry}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
                 />
 
                 <p className="book-agent">

@@ -352,13 +352,20 @@ const styles = `
     }
 `;
 
-const HotelSearch = ({ searchType, setSearchType }) => {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [suggestions, setSuggestions] = React.useState([]);
-  const [showDropdown, setShowDropdown] = React.useState(false);
-  const [selectedCountry, setSelectedCountry] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(false);
-
+const HotelSearch = ({
+  searchType,
+  setSearchType,
+  searchQuery,
+  setSearchQuery,
+  suggestions,
+  setSuggestions,
+  showDropdown,
+  setShowDropdown,
+  selectedCountry,
+  setSelectedCountry,
+  isLoading,
+  setIsLoading,
+}) => {
   // Debounce timer
   const debounceTimer = React.useRef(null);
 
