@@ -19,6 +19,7 @@ function getCookie(name) {
 
 const HolidaysHero = () => {
   const [images, setImages] = React.useState([FALLBACK_IMAGE]);
+  const [searchType, setSearchType] = React.useState("city");
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -104,7 +105,10 @@ const HolidaysHero = () => {
                   Trip, Honeymoon, Family Trip, Corporate Workstation
                 </p>
 
-                <HotelSearch />
+                <HotelSearch
+                  searchType={searchType}
+                  setSearchType={setSearchType}
+                />
 
                 <p className="book-agent">
                   Book a Meeting with our Travel Agent{" "}

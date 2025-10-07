@@ -352,8 +352,7 @@ const styles = `
     }
 `;
 
-const HotelSearch = () => {
-  const [searchType, setSearchType] = React.useState("city"); // 'country' or 'city'
+const HotelSearch = ({ searchType, setSearchType }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [suggestions, setSuggestions] = React.useState([]);
   const [showDropdown, setShowDropdown] = React.useState(false);
