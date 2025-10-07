@@ -529,28 +529,6 @@ const VisaCards = () => {
 
   return (
     <div className="visa-container">
-      <style>{`
-        .visa-card-list .slick-slide { padding: 0 4px; }
-        .visa-card-list .slick-list { margin: 0 -4px; }
-        
-        .nav-button {
-          transition: all 0.3s ease;
-        }
-        
-        .nav-button:hover {
-          background: #4b5563 !important;
-          transform: scale(1.05);
-        }
-        
-        .nav-button:active {
-          transform: scale(0.95);
-        }
-        
-        .visa-controls {
-          display: flex;
-          align-items: center;
-        }
-      `}</style>
       {/* Header */}
       <div className="visa-header">
         <h1 className="visa-title">Popular Visa</h1>

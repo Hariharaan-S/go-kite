@@ -192,6 +192,7 @@ const BookFlightCard = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const datePickerRef = useRef(null);
+  const router = useRouter();
 
   // Country autocomplete states
   const [searchQuery, setSearchQuery] = useState("");
@@ -200,6 +201,30 @@ const BookFlightCard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const debounceTimer = useRef(null);
+
+  const fetchAndLogSelectedCountryId = async (countryLabel) => {
+    try {
+      const res = await fetch("/api/cms/countries-dd-proxy", { cache: "no-store" });
+      const payload = await res.json();
+
+      const rows = Array.isArray(payload?.data?.data) ? payload.data.data : [];
+
+      const norm = (v) => (typeof v === "string" ? v.trim().toLowerCase() : "");
+      const match = rows.find((r) => norm(r?.label) === norm(countryLabel));
+      if (match?.id) {
+        console.log("Selected country id:", match.id);
+        try {
+          if (typeof window !== "undefined") {
+            window.sessionStorage.setItem("applyVisaCountryId", String(match.id));
+          }
+        } catch (_) {}
+      } else {
+        console.log("Country id not found for label:", countryLabel);
+      }
+    } catch (e) {
+      console.error("Failed to fetch country id:", e);
+    }
+  };
 
   const handleIconClick = () => {
     if (
@@ -271,6 +296,7 @@ const BookFlightCard = () => {
     setSearchQuery(item.label);
     setSelectedCountry(item.value);
     setShowDropdown(false);
+    fetchAndLogSelectedCountryId(item.label);
   };
 
   // Close dropdown when clicking outside
@@ -410,7 +436,12 @@ const BookFlightCard = () => {
           </div>
         </div>
         {/* BUTTON */}
-        <button className="hero-flight-btn flight-btn">
+        <button
+          className="hero-flight-btn flight-btn"
+          onClick={() => {
+            router.push("/apply_visa");
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"

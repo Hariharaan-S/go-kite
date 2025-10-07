@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "./styles/search-country.styles.css";
 
 const TravelVisaCards = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -632,7 +633,7 @@ const TravelVisaCards = () => {
       </div>
       {/* Always render the carousel if we have destinations */}
       {destinations && destinations.length > 0 ? (
-        <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+        <div className="search-country-slider" style={{ maxWidth: "1600px", margin: "0 auto" }}>
           <Slider
             ref={sliderRefRow1}
             {...sliderSettings}
