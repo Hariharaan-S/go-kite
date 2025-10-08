@@ -8,6 +8,7 @@ import VacationCard from "@/components/holiday-list/VacationCard";
 import MainFilterSearchBoxNew from "@/components/holiday-list/MainFilterSearchBoxNew";
 import GoKiteFooter from "@/components/footer/footer-gokite";
 import { useState } from "react";
+import React from "react";
 
 // export const metadata = {
 //   title: "GoKite - Travel & Tour ",
@@ -17,11 +18,29 @@ import { useState } from "react";
 const index = () => {
   const [packageCategoryId, setPackageCategoryId] = useState(1);
   const [selectedLabel, setSelectedLabel] = useState("Beaches");
+  const [countryId, setCountryId] = useState(null);
 
   const handleCategoryChange = (categoryId, label) => {
     setPackageCategoryId(categoryId);
     if (label) setSelectedLabel(label);
   };
+
+  // Read countryId from sessionStorage if present
+  React.useEffect(() => {
+    try {
+      const stored = typeof window !== 'undefined' ? sessionStorage.getItem('holidayCountryId') : null;
+      // Always log what we read (including null/empty)
+      console.log('Holiday redirection countryId (raw):', stored);
+      if (stored) setCountryId(stored);
+    } catch (_) {}
+  }, []);
+
+  // After using the countryId (passed to list component), clear it from sessionStorage
+  React.useEffect(() => {
+    if (countryId) {
+      try { sessionStorage.removeItem('holidayCountryId'); } catch (_) {}
+    }
+  }, [countryId]);
 
   return (
     <>
@@ -61,7 +80,7 @@ const index = () => {
               <div className="mt-30"></div>
               {/* End mt--30 */}
               <div className="row y-gap-30">
-                <HotelProperties packageCategoryId={packageCategoryId} />
+                <HotelProperties packageCategoryId={packageCategoryId} countryId={countryId} />
               </div>
               {/* End .row */}
               <Pagination />

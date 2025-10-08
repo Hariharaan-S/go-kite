@@ -25,7 +25,7 @@ const FALLBACK_IMAGES = [
   "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
 ];
 
-export default function HolidayDestinations({ packageCategoryId = 1 }) {
+export default function HolidayDestinations({ packageCategoryId = 1, countryId = null }) {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
@@ -99,8 +99,8 @@ export default function HolidayDestinations({ packageCategoryId = 1 }) {
     });
   };
 
-  // Fetch holiday cards data
-  const fetchHolidayCardsData = async () => {
+  // Fetch holiday cards data by category
+  const fetchHolidayCardsByCategory = async () => {
     try {
       const response = await fetch(
         "/api/cms/holiday-categories",
@@ -126,6 +126,32 @@ export default function HolidayDestinations({ packageCategoryId = 1 }) {
     }
   };
 
+  // Fetch holiday cards data by countryId
+  const fetchHolidayCardsByCountry = async (countryIdParam) => {
+    try {
+      const response = await fetch(
+        "/api/cms/holiday-country-search",
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ countryId: String(countryIdParam) }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch holiday cards by country");
+      }
+
+      const data = await response.json();
+      const upstream = data?.data;
+      const list = Array.isArray(upstream?.data) ? upstream.data : Array.isArray(upstream) ? upstream : [];
+      return list;
+    } catch (err) {
+      console.error("Error fetching holiday cards by country:", err);
+      throw err;
+    }
+  };
+
   // Load data on component mount
   useEffect(() => {
     const loadData = async () => {
@@ -133,8 +159,11 @@ export default function HolidayDestinations({ packageCategoryId = 1 }) {
         setLoading(true);
         setError(null);
 
-        // Fetch holiday cards
-        const holidayCardsData = await fetchHolidayCardsData();
+        // If countryId is present, fetch by country, else by category
+        const hasCountry = countryId && String(countryId).trim().length > 0;
+        const holidayCardsData = hasCountry
+          ? await fetchHolidayCardsByCountry(countryId)
+          : await fetchHolidayCardsByCategory();
 
         // Transform and set destinations
         const transformedDestinations = transformHolidayData(holidayCardsData);
@@ -171,7 +200,7 @@ export default function HolidayDestinations({ packageCategoryId = 1 }) {
     };
 
     loadData();
-  }, [packageCategoryId]);
+  }, [packageCategoryId, countryId]);
 
   // Existing responsive and UI logic
   useEffect(() => {

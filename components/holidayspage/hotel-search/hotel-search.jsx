@@ -448,10 +448,43 @@ const HotelSearch = ({
   };
 
   // Handle search submission
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      console.log("Searching for:", searchQuery, "Type:", searchType);
-      // Add your search logic here
+  const handleSearch = async () => {
+    const query = (searchQuery || "").trim();
+    if (!query) return;
+
+    try {
+      let countryId = null;
+
+      if (searchType === "country") {
+        // Prefer selectedCountry (from suggestion)
+        if (selectedCountry) {
+          countryId = selectedCountry;
+        } else {
+          // Fallback: lookup by typed query via proxy autocomplete
+          const res = await fetch(`/api/holiday-country-autocomplete?query=${encodeURIComponent(query)}`);
+          const data = await res.json();
+          const match = Array.isArray(data?.data)
+            ? data.data.find((item) =>
+                String(item?.label || "").toLowerCase() === query.toLowerCase()
+              ) || data.data[0]
+            : null;
+          if (match?.value) countryId = match.value;
+        }
+      }
+
+      if (countryId) {
+        try { sessionStorage.setItem("holidayCountryId", String(countryId)); } catch (_) {}
+      }
+
+      // Navigate to holiday list page
+      if (typeof window !== "undefined") {
+        window.location.href = "/holiday_list";
+      }
+    } catch (_) {
+      // no-op on failure; still navigate to listing
+      if (typeof window !== "undefined") {
+        window.location.href = "/holiday_list";
+      }
     }
   };
 
