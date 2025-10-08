@@ -17,6 +17,7 @@ const styles = `
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    z-index: 10;
   }
 
   .book-holiday h2 {
