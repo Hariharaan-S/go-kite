@@ -10,7 +10,7 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
-} from "lucide-react";
+} from "lucide-react"; 
 
 // Using proxy route. No client-side claims.
 
@@ -25,7 +25,7 @@ const FALLBACK_IMAGES = [
   "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=250&fit=crop",
 ];
 
-export default function HolidayDestinations({ packageCategoryId = 1, countryId = null }) {
+export default function HolidayDestinations({ packageCategoryId = 1, countryId = null, cityId = null }) {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCards, setVisibleCards] = useState(4);
@@ -152,6 +152,32 @@ export default function HolidayDestinations({ packageCategoryId = 1, countryId =
     }
   };
 
+  // Fetch holiday cards data by cityId
+  const fetchHolidayCardsByCity = async (cityIdParam) => {
+    try {
+      const response = await fetch(
+        "/api/cms/holiday-city-search",
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ cityId: Number(cityIdParam) }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch holiday cards by city");
+      }
+
+      const data = await response.json();
+      const upstream = data?.data;
+      const list = Array.isArray(upstream?.data) ? upstream.data : Array.isArray(upstream) ? upstream : [];
+      return list;
+    } catch (err) {
+      console.error("Error fetching holiday cards by city:", err);
+      throw err;
+    }
+  };
+
   // Load data on component mount
   useEffect(() => {
     const loadData = async () => {
@@ -159,9 +185,12 @@ export default function HolidayDestinations({ packageCategoryId = 1, countryId =
         setLoading(true);
         setError(null);
 
-        // If countryId is present, fetch by country, else by category
+        // Priority: cityId > countryId > category
+        const hasCity = cityId && String(cityId).trim().length > 0;
         const hasCountry = countryId && String(countryId).trim().length > 0;
-        const holidayCardsData = hasCountry
+        const holidayCardsData = hasCity
+          ? await fetchHolidayCardsByCity(cityId)
+          : hasCountry
           ? await fetchHolidayCardsByCountry(countryId)
           : await fetchHolidayCardsByCategory();
 
@@ -200,7 +229,7 @@ export default function HolidayDestinations({ packageCategoryId = 1, countryId =
     };
 
     loadData();
-  }, [packageCategoryId, countryId]);
+  }, [packageCategoryId, countryId, cityId]);
 
   // Existing responsive and UI logic
   useEffect(() => {

@@ -130,7 +130,7 @@ const HolidaysHero = () => {
                   Trip, Honeymoon, Family Trip, Corporate Workstation
                 </p>
 
-                <HotelSearch
+                <HotelSearch 
                   searchType={searchType}
                   setSearchType={setSearchType}
                   searchQuery={searchQuery}

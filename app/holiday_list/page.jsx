@@ -13,12 +13,13 @@ import React from "react";
 // export const metadata = {
 //   title: "GoKite - Travel & Tour ",
 //   description: "GoKite - Travel & Tour ",
-// };
+// }; 
 
 const index = () => {
   const [packageCategoryId, setPackageCategoryId] = useState(1);
   const [selectedLabel, setSelectedLabel] = useState("Beaches");
   const [countryId, setCountryId] = useState(null);
+  const [cityId, setCityId] = useState(null);
 
   const handleCategoryChange = (categoryId, label) => {
     setPackageCategoryId(categoryId);
@@ -35,12 +36,28 @@ const index = () => {
     } catch (_) {}
   }, []);
 
+  // Read cityId from sessionStorage if present
+  React.useEffect(() => {
+    try {
+      const storedCity = typeof window !== 'undefined' ? sessionStorage.getItem('holidayCityId') : null;
+      console.log('Holiday redirection cityId (raw):', storedCity);
+      if (storedCity) setCityId(storedCity);
+    } catch (_) {}
+  }, []);
+
   // After using the countryId (passed to list component), clear it from sessionStorage
   React.useEffect(() => {
     if (countryId) {
       try { sessionStorage.removeItem('holidayCountryId'); } catch (_) {}
     }
   }, [countryId]);
+
+  // After using the cityId (passed to list component), clear it from sessionStorage
+  React.useEffect(() => {
+    if (cityId) {
+      try { sessionStorage.removeItem('holidayCityId'); } catch (_) {}
+    }
+  }, [cityId]);
 
   return (
     <>
@@ -80,7 +97,7 @@ const index = () => {
               <div className="mt-30"></div>
               {/* End mt--30 */}
               <div className="row y-gap-30">
-                <HotelProperties packageCategoryId={packageCategoryId} countryId={countryId} />
+                <HotelProperties packageCategoryId={packageCategoryId} countryId={countryId} cityId={cityId} />
               </div>
               {/* End .row */}
               <Pagination />

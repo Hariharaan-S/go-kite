@@ -12,7 +12,7 @@ const styles = `
     padding-bottom: 3rem;
     border-radius: 10px;
     margin-top: 1.25rem;
-    margin-left: 3rem;
+    margin-left: 3rem; 
     box-shadow: 0 2px 14px 0 rgba(40,80,120,.07);
     display: flex;
     flex-direction: column;
@@ -370,6 +370,41 @@ const HotelSearch = ({
   // Debounce timer
   const debounceTimer = React.useRef(null);
 
+  // Helper to fetch suggestions immediately (used on focus)
+  const fetchSuggestionsNow = React.useCallback(async (value) => {
+    if (!value || !value.trim()) return;
+    try {
+      setIsLoading(true);
+      setShowDropdown(true);
+
+      const endpoint =
+        searchType === "country"
+          ? "/api/holiday-country-autocomplete"
+          : "/api/holiday-city-autocomplete";
+
+      const params = new URLSearchParams({ query: value });
+
+      if (searchType === "city" && selectedCountry) {
+        params.append("country", selectedCountry);
+      }
+
+      const response = await fetch(`${endpoint}?${params}`);
+      const data = await response.json();
+
+      if (data.success && data.data) {
+        setSuggestions(data.data);
+        setShowDropdown(true);
+      } else {
+        setSuggestions([]);
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      setSuggestions([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchType, selectedCountry, setIsLoading, setShowDropdown, setSuggestions]);
+
   // Handle search input change
   const handleInputChange = async (e) => {
     const value = e.target.value;
@@ -423,6 +458,14 @@ const HotelSearch = ({
     }, 150);
   };
 
+  // Show suggestions consistently on focus after refresh
+  const handleInputFocus = async () => {
+    setShowDropdown(true);
+    if (searchQuery && (!suggestions || suggestions.length === 0)) {
+      await fetchSuggestionsNow(searchQuery);
+    }
+  };
+
   // Handle suggestion selection
   const handleSelectSuggestion = (item) => {
     setSearchQuery(item.label);
@@ -431,6 +474,11 @@ const HotelSearch = ({
     // If a country is selected, store it to filter cities
     if (searchType === "country") {
       setSelectedCountry(item.value);
+    }
+
+    // If a city is selected, persist city id for listing page
+    if (searchType === "city" && item?.id) {
+      try { sessionStorage.setItem("holidayCityId", String(item.id)); } catch (_) {}
     }
   };
 
@@ -536,7 +584,7 @@ const HotelSearch = ({
               }
               value={searchQuery}
               onChange={handleInputChange}
-              onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
+              onFocus={handleInputFocus}
             />
 
             {showDropdown && (
