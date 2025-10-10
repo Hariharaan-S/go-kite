@@ -25,7 +25,7 @@ const GoKiteSignup = () => {
         console.error("Request failed", response.status);
       }
     } catch (err) {
-      console.error("Network error", err);
+      console.log("Network error", err);
     } finally {
       setSubmitting(false);
     }
