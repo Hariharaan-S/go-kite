@@ -11,20 +11,27 @@ function extractCookieValue(setCookieHeader, name) {
 
 export async function POST(request) {
     try {
+        const isProd = process.env.NODE_ENV === "production";
+        const isHttpsUpstream = (() => {
+            try {
+                return new URL(UPSTREAM_URL).protocol === "https:";
+            } catch {
+                return false;
+            }
+        })();
+        const insecureHttpsAgent = !isProd && isHttpsUpstream ? new https.Agent({ rejectUnauthorized: false }) : undefined;
+
         const body = await request.json().catch(() => ({}));
 
         const upstream = await fetch(UPSTREAM_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json, text/plain, */*",
-                "User-Agent":
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             },
             body: JSON.stringify(body || {}),
             cache: "no-store",
-            // DEV ONLY: bypass self-signed/invalid certs for upstream
-            agent: new https.Agent({ rejectUnauthorized: false }),
+            // Use insecure HTTPS agent only in non-production when upstream is HTTPS
+            ...(insecureHttpsAgent ? { agent: insecureHttpsAgent } : {}),
         });
 
         const text = await upstream.text();
@@ -44,7 +51,7 @@ export async function POST(request) {
             response.cookies.set("accesstoken", access, {
                 httpOnly: true,
                 sameSite: "lax",
-                secure: false,
+                secure: isProd,
                 path: "/",
             });
         }
@@ -52,7 +59,7 @@ export async function POST(request) {
             response.cookies.set("refreshtoken", refresh, {
                 httpOnly: true,
                 sameSite: "lax",
-                secure: false,
+                secure: isProd,
                 path: "/",
             });
         }
