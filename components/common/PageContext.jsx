@@ -80,17 +80,6 @@ export const PageProvider = ({ children }) => {
         } catch (err) {
             console.error('Error fetching pages:', err);
             setError(err.message);
-
-            // Set fallback page IDs if API fails
-            const fallbackPageIds = {
-                landing: '63',    // Default fallback based on your API response
-                visa: '66',       // Default fallback
-                holidays: '65',   // Default fallback
-                dubai: '19'       // Default fallback
-            };
-
-            console.log('Using fallback page IDs:', fallbackPageIds);
-            setPageIds(fallbackPageIds);
         } finally {
             setLoading(false);
         }

@@ -38,6 +38,13 @@ export async function POST(request) {
             headers: { "content-type": contentType },
         });
     } catch (err) {
+        console.error("API endpoint not working - visa-country-search:", err);
+        console.error("Error details:", {
+            name: err.name,
+            message: err.message,
+            stack: err.stack
+        });
+        
         return NextResponse.json(
             { error: "Failed to proxy visa-country-search", details: String(err) },
             { status: 500 }

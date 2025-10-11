@@ -33,6 +33,12 @@ export async function GET() {
 
         const data = await response.json();
 
+        // Check if data is missing or empty
+        if (!data || !data.data || data.data.length === 0) {
+            console.log("Data is missing or empty for countries-dd API");
+            console.log("Response data:", data);
+        }
+
         return NextResponse.json({
             success: true,
             data: data,
@@ -40,12 +46,16 @@ export async function GET() {
         });
 
     } catch (error) {
-        console.error('Error fetching countries data:', error);
+        console.error('API endpoint not working - countries-dd:', error);
+        console.error('Error details:', {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+        });
 
         return NextResponse.json(
             {
                 success: false,
-                data: null,
                 message: 'Failed to fetch countries data',
                 error: error.message
             },

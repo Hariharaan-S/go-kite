@@ -59,6 +59,12 @@ export async function GET(request) {
 
     const data = await response.json();
 
+    // Check if data is missing or empty
+    if (!data || !data.data || data.data.length === 0) {
+      console.log("Data is missing or empty for holiday-country-autocomplete API");
+      console.log("Response data:", data);
+    }
+
     // Filter results based on query if provided
     let result;
     if (query && data.data) {
@@ -70,6 +76,9 @@ export async function GET(request) {
         data: filteredData,
       };
     } else {
+      if (!data.data) {
+        console.log("No data field found in holiday-country-autocomplete response");
+      }
       result = data;
     }
 
@@ -81,26 +90,31 @@ export async function GET(request) {
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error("Error fetching country autocomplete:", error);
+    console.error("API endpoint not working - holiday-country-autocomplete:", error);
+    console.error("Error details:", {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
 
     // Handle timeout errors
     if (error.name === "AbortError") {
+      console.error("Request timeout for holiday-country-autocomplete API");
       return NextResponse.json(
         {
           success: false,
           message: "Request timeout - please try again",
-          data: [],
           error: "Timeout",
         },
         { status: 504 }
       );
     }
 
+    console.error("Failed to fetch countries from holiday-country-autocomplete API");
     return NextResponse.json(
       {
         success: false,
         message: "Failed to fetch countries",
-        data: [],
         error: error.message,
       },
       { status: 500 }

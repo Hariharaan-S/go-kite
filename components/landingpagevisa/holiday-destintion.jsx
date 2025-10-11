@@ -120,7 +120,7 @@ export default function HolidayDestinations() {
         method: "POST",
         headers: getAuthHeaders(),
         body: JSON.stringify({
-          pageId: getPageIdWithFallback("landing", 9), // Use dynamic page ID with fallback
+          pageId: getPageIdWithFallback("landing"), // Use dynamic page ID with fallback
         }),
       });
 

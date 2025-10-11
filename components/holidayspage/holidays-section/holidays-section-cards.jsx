@@ -192,7 +192,7 @@ export default function HolidaysSectionCards({ selectedCategory: selectedCategor
           method: "POST",
           headers: getAuthHeaders(),
           body: JSON.stringify({
-            pageId: getPageIdWithFallback('holidays', 11), // Use dynamic page ID with fallback
+            pageId: getPageIdWithFallback('holidays'), // Use dynamic page ID with fallback
           }),
         }
       );
@@ -210,7 +210,7 @@ export default function HolidaysSectionCards({ selectedCategory: selectedCategor
   };
 
   // Fetch holiday categories data
-  const fetchHolidayCategoriesData = async (packageCategoryId = 1) => {
+  const fetchHolidayCategoriesData = async (packageCategoryId) => {
     try {
       const response = await fetch(
         "/api/cms/holiday-categories",
@@ -350,7 +350,7 @@ export default function HolidaysSectionCards({ selectedCategory: selectedCategor
       setError(null);
       setSelectedCategory(categoryName);
 
-      const packageCategoryId = CATEGORY_MAPPING[categoryName] || 1; // Default to 1 if category not found
+      const packageCategoryId = CATEGORY_MAPPING[categoryName]; // Default to 1 if category not found
       console.log(`Fetching data for ${categoryName} with packageCategoryId: ${packageCategoryId}`);
 
       // Fetch holiday categories data

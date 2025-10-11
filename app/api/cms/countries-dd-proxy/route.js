@@ -39,6 +39,13 @@ export async function GET() {
         const data = await resp.json();
         return NextResponse.json({ success: true, data });
     } catch (error) {
+        console.error("API endpoint not working - countries-dd-proxy:", error);
+        console.error("Error details:", {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+        });
+        
         return NextResponse.json(
             { success: false, message: 'Proxy failed', error: String(error) },
             { status: 500 }

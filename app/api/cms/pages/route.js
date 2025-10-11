@@ -43,73 +43,21 @@ export async function GET(request) {
             });
 
         } catch (fetchError) {
-            console.error('[Pages API] Fetch failed:', fetchError.message);
+            console.error('[Pages API] API endpoint not working:', fetchError.message);
+            console.error('[Pages API] Error details:', {
+                name: fetchError.name,
+                message: fetchError.message,
+                stack: fetchError.stack
+            });
 
-            // Return mock data based on your API response structure for development
-            console.log('[Pages API] Returning mock data for development');
-
-            const mockResponse = {
-                "data": [
-                    {
-                        "id": "63",
-                        "uniqueId": "0af4010f-997b-1b9a-8199-8583d41a0002",
-                        "companyId": "151",
-                        "title": "Landing page",
-                        "slug": "master-landing-page",
-                        "seoMeta": {
-                            "metaTitle": "Visa and Holiday Package Booking Solution",
-                            "metaKeywords": ["package", "holiday package", "visa"],
-                            "metaDescription": "meta description"
-                        },
-                        "expiryDate": "2030-02-04"
-                    },
-                    {
-                        "id": "19",
-                        "uniqueId": "0af402c7-9958-1ee2-8199-5b8287180005",
-                        "companyId": "151",
-                        "title": "Discover Dubai Holiday Packages 12",
-                        "slug": "discover-dubai-holiday-packages-16",
-                        "seoMeta": {
-                            "metaTitle": "Dubai Holiday Packages 2025 | Best Deals one",
-                            "metaKeywords": ["Dubai holidays", "Dubai packages", "Dubai tours", "Dubai packages"],
-                            "metaDescription": "Book Dubai packages with flights, hotels, and attractions."
-                        },
-                        "expiryDate": "2026-01-01"
-                    },
-                    {
-                        "id": "65",
-                        "uniqueId": "0af4010f-997b-1b9a-8199-85f8f4c80007",
-                        "companyId": "151",
-                        "title": "Holiday Home Page",
-                        "slug": "holiday-home-page",
-                        "seoMeta": {
-                            "metaTitle": "meta-title",
-                            "metaKeywords": ["package", "holiday package"],
-                            "metaDescription": "meta description"
-                        },
-                        "expiryDate": "2034-06-05"
-                    },
-                    {
-                        "id": "66",
-                        "uniqueId": "0af4010f-997b-1b9a-8199-85fba0e50008",
-                        "companyId": "151",
-                        "title": "Visa Landing page",
-                        "slug": "visa-landing-page",
-                        "seoMeta": {
-                            "metaTitle": "meta-title",
-                            "metaKeywords": ["package", "holiday package"],
-                            "metaDescription": "meta description"
-                        },
-                        "expiryDate": "2034-06-06"
-                    }
-                ],
-                "message": " Success",
-                "messageCode": null,
-                "messageType": null,
-                "success": true
-            };
-
-            return NextResponse.json(mockResponse, { status: 200 });
+            return NextResponse.json(
+                {
+                    error: "API endpoint not working - pages",
+                    details: fetchError.message,
+                    errorType: fetchError.name
+                },
+                { status: 500 }
+            );
         }
 
     } catch (err) {

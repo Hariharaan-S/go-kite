@@ -39,6 +39,12 @@ export async function POST(request) {
 
         const data = await response.json();
 
+        // Check if data is missing or empty
+        if (!data || !data.data || data.data.length === 0) {
+            console.log("Data is missing or empty for holiday-categories API");
+            console.log("Response data:", data);
+        }
+
         return NextResponse.json({
             success: true,
             data: data,
@@ -46,12 +52,16 @@ export async function POST(request) {
         });
 
     } catch (error) {
-        console.error('Error fetching holiday categories data:', error);
+        console.error('API endpoint not working - holiday-categories:', error);
+        console.error('Error details:', {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+        });
 
         return NextResponse.json(
             {
                 success: false,
-                data: null,
                 message: 'Failed to fetch holiday categories data',
                 error: error.message
             },

@@ -35,6 +35,13 @@ export async function POST(request) {
             headers: { "content-type": contentType },
         });
     } catch (err) {
+        console.error("API endpoint not working - enquiry:", err);
+        console.error("Error details:", {
+            name: err.name,
+            message: err.message,
+            stack: err.stack
+        });
+        
         return NextResponse.json(
             { error: "Failed to proxy enquiries/package", details: String(err) },
             { status: 500 }

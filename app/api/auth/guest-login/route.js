@@ -66,6 +66,13 @@ export async function POST(request) {
 
         return response;
     } catch (err) {
+        console.error("API endpoint not working - guest-login:", err);
+        console.error("Error details:", {
+            name: err.name,
+            message: err.message,
+            stack: err.stack
+        });
+        
         const details = {
             error: "Failed to proxy guest-login",
             message: String(err?.message || err),

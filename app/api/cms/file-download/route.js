@@ -59,7 +59,13 @@ export async function GET(request) {
             },
         });
     } catch (err) {
-        console.error("Error in file-download proxy:", err);
+        console.error("API endpoint not working - file-download:", err);
+        console.error("Error details:", {
+            name: err.name,
+            message: err.message,
+            stack: err.stack
+        });
+        
         return NextResponse.json(
             { error: "Failed to proxy file download", details: String(err) },
             { status: 500 }

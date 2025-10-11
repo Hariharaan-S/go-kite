@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "../landingpage/styles/visa-destination.css";
 import { useRouter } from "next/navigation";
+import { usePageContext } from "../common/PageContext";
 
 const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds
 
@@ -25,7 +26,7 @@ const VisaDestinationCards = () => {
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const { getPageIdWithFallback } = usePageContext();
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
     const headers = {
@@ -42,7 +43,7 @@ const VisaDestinationCards = () => {
         method: "POST",
         headers: getAuthHeaders(),
         body: JSON.stringify({
-          pageId: 9,
+          pageId: getPageIdWithFallback("landing"),
         }),
       });
 
@@ -191,25 +192,7 @@ const VisaDestinationCards = () => {
         console.error("Error loading data:", err);
         setError(err.message);
 
-        // Fallback to default data if API fails
-        setDestinations([
-          {
-            id: 1,
-            image:
-              "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=300&fit=crop&crop=center",
-            country: "United Arab Emirates",
-            fastTrack: {
-              originalPrice: "₹6500",
-              extraCharges: "₹8500",
-              totalPrice: "₹15000",
-              date: "25 Mar, 11:02PM",
-            },
-            getOn: {
-              date: "25 Mar, 11:02PM",
-              price: "₹6,500",
-            },
-          },
-        ]);
+      
       } finally {
         setLoading(false);
       }
