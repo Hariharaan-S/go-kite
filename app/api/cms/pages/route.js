@@ -6,6 +6,9 @@ export async function GET(request) {
         const cookieStore = await cookies();
         const token = cookieStore.get("accesstoken")?.value || "";
 
+        console.log("Access token from pages route", token);
+
+
         if (!token) {
             return NextResponse.json(
                 { error: "Missing accesstoken cookie" },
@@ -13,7 +16,7 @@ export async function GET(request) {
             );
         }
 
-        const upstreamUrl = "https://gokite-sit-b2c.convergentechnologies.com/api/cms/api/v2/list/custom/data/pages";
+        const upstreamUrl = "http://gokite-sit-b2c.convergentechnologies.com:30839/api/cms/api/v2/list/custom/data/pages";
 
         console.log(`[Pages API] Fetching from: ${upstreamUrl}`);
         console.log(`[Pages API] Using token: ${token ? 'Present' : 'Missing'}`);

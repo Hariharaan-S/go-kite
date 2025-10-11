@@ -101,7 +101,7 @@ export default function HolidayDestinations() {
   const router = useRouter();
   const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
 
-  
+
 
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
@@ -115,10 +115,11 @@ export default function HolidayDestinations() {
 
   // Fetch sections data
   const fetchSectionsData = async () => {
+    console.log("Landing Page ID: ", getPageIdWithFallback("landing"));
     try {
       const sectionsResponse = await fetch("/api/cms/pages-sections", {
         method: "POST",
-        headers: getAuthHeaders(),
+        // headers: getAuthHeaders(),
         body: JSON.stringify({
           pageId: getPageIdWithFallback("landing"), // Use dynamic page ID with fallback
         }),
@@ -129,6 +130,8 @@ export default function HolidayDestinations() {
       }
 
       const sectionsData = await sectionsResponse.json();
+      console.log("Landing page Section data ", sectionsData);
+
       return sectionsData.data || [];
     } catch (err) {
       console.error("Error fetching sections:", err);
@@ -304,9 +307,8 @@ export default function HolidayDestinations() {
       style={{ padding: `32px ${getContainerPadding(windowWidth)}` }}
     >
       <div
-        className={`holiday-header ${
-          windowWidth < 640 ? "holiday-header-mobile" : ""
-        }`}
+        className={`holiday-header ${windowWidth < 640 ? "holiday-header-mobile" : ""
+          }`}
       >
         <h1
           className="holiday-title-text holiday-title"
@@ -326,9 +328,8 @@ export default function HolidayDestinations() {
 
       <Slider
         {...sliderSettings}
-        className={`holiday-destinations-wrapper destinations-wrapper ${
-          isSingle ? "single-slide" : ""
-        }`}
+        className={`holiday-destinations-wrapper destinations-wrapper ${isSingle ? "single-slide" : ""
+          }`}
       >
         {destinations.map((destination) => (
           <div
@@ -436,9 +437,8 @@ export default function HolidayDestinations() {
               </ul>
 
               <div
-                className={`pricing-section ${
-                  windowWidth < 640 ? "pricing-column" : "pricing-row"
-                }`}
+                className={`pricing-section ${windowWidth < 640 ? "pricing-column" : "pricing-row"
+                  }`}
               >
                 <span className="holiday-original-price original-price">
                   {destination.originalPrice}

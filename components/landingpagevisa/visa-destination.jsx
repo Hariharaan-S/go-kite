@@ -26,7 +26,7 @@ const VisaDestinationCards = () => {
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { getPageIdWithFallback } = usePageContext();
+  const { getPageIdWithFallback, loading: pageLoading } = usePageContext();
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
     const headers = {
@@ -38,10 +38,12 @@ const VisaDestinationCards = () => {
 
   // Fetch sections data (replicating token-based sections flow)
   const fetchSectionsData = async () => {
+    console.log("VISA destination page landing page id", getPageIdWithFallback("landing"));
+
     try {
       const sectionsResponse = await fetch("/api/cms/pages-sections", {
         method: "POST",
-        headers: getAuthHeaders(),
+        // headers: getAuthHeaders(),
         body: JSON.stringify({
           pageId: getPageIdWithFallback("landing"),
         }),
@@ -52,6 +54,8 @@ const VisaDestinationCards = () => {
       }
 
       const sectionsData = await sectionsResponse.json();
+      console.log("VISA Destination section data", sectionsData);
+
       return sectionsData.data || [];
     } catch (err) {
       console.error("Error fetching sections:", err);
@@ -61,6 +65,8 @@ const VisaDestinationCards = () => {
 
   // Fetch visa cards data for a specific section
   const fetchVisaCardsData = async (sectionId) => {
+    console.log("VISA Section id", sectionId);
+
     try {
       const response = await fetch("/api/cms/sections-visa-cards", {
         method: "POST",
@@ -157,6 +163,9 @@ const VisaDestinationCards = () => {
 
   // Load data on component mount
   useEffect(() => {
+    // Wait for page context to load before fetching data
+    if (pageLoading) return;
+
     const loadData = async () => {
       try {
         setLoading(true);
@@ -192,14 +201,14 @@ const VisaDestinationCards = () => {
         console.error("Error loading data:", err);
         setError(err.message);
 
-      
+
       } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  }, []);
+  }, [pageLoading, getPageIdWithFallback]); // Re-run when page context loads
 
   // Responsive window width update for style calculations
   useEffect(() => {
