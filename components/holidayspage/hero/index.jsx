@@ -2,6 +2,7 @@
 import React from "react";
 import HotelSearch from "../hotel-search/hotel-search";
 import "../styles/holidays-hero.css";
+import { usePageContext } from "../../common/PageContext";
 
 const FALLBACK_IMAGE = "/img/holidays/holidayHeroBG.jpg";
 
@@ -24,7 +25,7 @@ const HolidaysHero = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [isTransitioning, setIsTransitioning] = React.useState(false);
-
+  const { getPageIdWithFallback } = usePageContext();
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
     const headers = { "Content-Type": "application/json" };
@@ -38,7 +39,7 @@ const HolidaysHero = () => {
         const sectionsRes = await fetch("/api/cms/pages-sections", {
           method: "POST",
           headers: getAuthHeaders(),
-          body: JSON.stringify({ pageId: 63 }),
+          body: JSON.stringify({ pageId: getPageIdWithFallback("holidays") }),
         });
         if (!sectionsRes.ok) throw new Error("Failed to load sections");
         const sectionsJson = await sectionsRes.json();

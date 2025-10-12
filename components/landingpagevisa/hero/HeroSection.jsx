@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import "../styles/hero.css";
+import { usePageContext } from "../../common/PageContext";
 const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
 
 function getCookie(name) {
@@ -519,7 +520,7 @@ const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
-
+  const { getPageIdWithFallback } = usePageContext();
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
     const headers = { "Content-Type": "application/json" };
@@ -536,7 +537,7 @@ const HeroSection = () => {
         const sectionsRes = await fetch("/api/cms/pages-sections", {
           method: "POST",
           headers: getAuthHeaders(),
-          body: JSON.stringify({ pageId: 63 }),
+          body: JSON.stringify({ pageId: getPageIdWithFallback("landing") }),
         });
         if (!sectionsRes.ok) throw new Error("Failed to load sections");
         const sectionsJson = await sectionsRes.json();

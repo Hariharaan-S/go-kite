@@ -3,6 +3,7 @@ import React, { useState, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSelector, useDispatch } from "react-redux";
+import { usePageContext } from "../../common/PageContext";
 import { useRouter } from "next/navigation";
 const styles = `
 .masthead {
@@ -371,6 +372,7 @@ const fieldIcons = {
 };
 
 const BookFlightCard = () => {
+  const { getPageIdWithFallback } = usePageContext();
   const router = useRouter();
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
@@ -811,7 +813,7 @@ const HeroSection = () => {
   const { tabs, currentTab } = useSelector((state) => state.hero) || {};
   const dispatch = useDispatch();
   const Router = useRouter();
-
+  const { getPageIdWithFallback } = usePageContext();
   const [bannerImages, setBannerImages] = React.useState([FALLBACK_IMAGE]);
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
@@ -828,7 +830,7 @@ const HeroSection = () => {
         const sectionsRes = await fetch("/api/cms/pages-sections", {
           method: "POST",
           headers: getAuthHeaders(),
-          body: JSON.stringify({ pageId: 63 }),
+          body: JSON.stringify({ pageId: getPageIdWithFallback("visaLanding") }),
         });
         if (!sectionsRes.ok) throw new Error("Failed to load sections");
         const sectionsJson = await sectionsRes.json();

@@ -14,6 +14,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../styles/honeymoon-freebies-cards-1.css";
+import { usePageContext } from "../../common/PageContext";
 
 const FALLBACK_IMAGE = "/img/general/fallback-image.jpg";
 
@@ -32,7 +33,7 @@ export default function HoneymoonFreebiesCards1() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const sliderRef = useRef(null);
-
+  const { getPageIdWithFallback } = usePageContext();
   const getAuthHeaders = () => {
     const token = getCookie("accesstoken");
     const headers = { "Content-Type": "application/json" };
@@ -42,6 +43,8 @@ export default function HoneymoonFreebiesCards1() {
 
   // Fetch sections data
   const fetchSectionsData = async () => {
+    console.log("getPageIdWithFallback from holidays page honeymoon freebies cards 1");
+    console.log(getPageIdWithFallback("holidays"));
     try {
       const sectionsResponse = await fetch(
         "/api/cms/pages-sections",
@@ -49,7 +52,7 @@ export default function HoneymoonFreebiesCards1() {
           method: "POST",
           headers: getAuthHeaders(),
           body: JSON.stringify({
-            pageId: 11, // Same page ID as recommendation-slider.jsx
+            pageId: getPageIdWithFallback("holidays"), // Same page ID as recommendation-slider.jsx
           }),
         }
       );
@@ -136,6 +139,7 @@ export default function HoneymoonFreebiesCards1() {
 
         // Fetch sections first
         const sections = await fetchSectionsData();
+        console.log("sections from holidays page honeymoon freebies cards 1");
         console.log(sections);
 
         // Find the honeymoon section
