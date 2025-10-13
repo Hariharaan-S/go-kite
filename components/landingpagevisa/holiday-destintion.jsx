@@ -328,8 +328,7 @@ export default function HolidayDestinations() {
 
       <Slider
         {...sliderSettings}
-        className={`holiday-destinations-wrapper destinations-wrapper ${isSingle ? "single-slide" : ""
-          }`}
+        className={`holiday-destinations-wrapper destinations-wrapper ${isSingle ? "single-slide" : ""}`}
       >
         {destinations.map((destination) => (
           <div

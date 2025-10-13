@@ -1,7 +1,8 @@
 .holiday-container {
   background-color: #f8fafc;
-  min-height: 70vh;
+  min-height: 100vh;
   box-sizing: border-box;
+  padding: 50px 20px !important;
 }
 
 .holiday-header {
@@ -36,12 +37,8 @@
 
 .view-all {
   font-size: 14px;
-  color: black;
-  font-weight: bold;
+  color: #666666;
   cursor: pointer;
-  background: #f2f0f0;
-  padding: 5px 10px;
-  border-radius: 15px;
   transition: color 0.2s ease;
 }
 
@@ -67,13 +64,19 @@
 }
 
 .destinations-wrapper {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  align-items: start;
   padding-bottom: 10px;
   max-width: 100%;
-  text-align: left;
+  width: 100%;
 }
 
 .destinations-wrapper-mobile {
+  gap: 16px;
+  justify-content: center;
   padding-bottom: 0;
 }
 
@@ -85,26 +88,21 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   display: flex;
-  flex-direction: row;
-  gap: 20px;
-  /* Restored to column for vertical card layout */
+  flex-direction: column;
   overflow: hidden;
-  
-  max-width: 320px;
-  /* Limit card width */
+  min-width: 381px;
+  max-width: 450px;
+  width: 100%;
   cursor: pointer;
-  padding: 14px;
-  /* Reduced padding */
-  margin: 0 auto;
-  /* Center the card */
+  padding: 10px;
+  min-height: 90vh;
+  height: auto;
 }
 
 @media (max-width: 640px) {
   .destination-card {
-    min-width: 260px;
-    max-width: 320px;
-    padding: 12px;
-    /* Smaller padding on mobile */
+    min-width: 280px;
+    max-width: 400px;
   }
 }
 
@@ -116,26 +114,20 @@
 .destination-image-wrapper {
   position: relative;
   border-radius: 12px;
-  /* Add border radius to image wrapper */
-  overflow: hidden;
-  /* Ensure image respects border radius */
-  margin-bottom: 12px;
-  /* Reduced space between image and content */
 }
 
 .destination-image {
   width: 100%;
+  height: 250px;
+  border-radius: 12px;
   object-fit: cover;
   display: block;
-  border-radius: 12px;
-  /* Match the wrapper border radius */
 }
 
 .heart-btn {
   position: absolute;
-  top: 12px;
-  /* Adjust position since we now have card padding */
-  right: 12px;
+  top: 16px;
+  right: 16px;
   background-color: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
@@ -146,16 +138,12 @@
   transition: background-color 0.2s ease;
   width: 40px;
   height: 40px;
-  backdrop-filter: blur(10px);
-  /* Add subtle blur effect */
 }
 
 @media (max-width: 768px) {
   .heart-btn {
     width: 36px;
     height: 36px;
-    top: 8px;
-    right: 8px;
   }
 }
 
@@ -168,20 +156,26 @@
 }
 
 .destination-content {
-  padding: 0;
-  /* Remove padding since card now has padding */
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
+  gap: 5px;
+}
+
+@media (max-width: 640px) {
+  .destination-content {
+    padding: 16px;
+  }
 }
 
 .title-rating {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 6px;
-  gap: 8px;
+  margin-bottom: 8px;
+  gap: 12px;
 }
 
 .destination-title {
@@ -230,30 +224,19 @@
 
 .duration {
   color: #64748b;
-  font-size: 13px;
-  margin: 0 0 12px 0;
+  font-size: 14px;
+  margin: 0 0 16px 0;
 }
 
 .icons-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
   border-bottom: 1px solid #e2e8f0;
-}
-
-@media (max-width: 1024px) {
-  .icons-section {
-    gap: 10px;
-  }
-}
-
-@media (max-width: 640px) {
-  .icons-section {
-    gap: 8px;
-  }
+  width: 100%;
 }
 
 .icon-item {
@@ -263,10 +246,11 @@
   align-items: center;
   justify-content: center;
   flex: 1;
+  min-width: 0;
 }
 
 .icon-item p {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #64748b;
   margin-top: 6px;
   font-weight: 500;
@@ -274,45 +258,53 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 @media (max-width: 1024px) {
+  .icons-section {
+    gap: 8px;
+  }
   .icon-item p {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
   }
 }
 
 @media (max-width: 640px) {
+  .icons-section {
+    gap: 6px;
+  }
   .icon-item p {
-    font-size: 11px;
+    font-size: 0.55rem;
   }
 }
 
 .features-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 14px 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 120px;
+  overflow: hidden;
 }
 
 .feature-item {
-  font-size: 13px;
+  font-size: 14px;
   color: #64748b;
-  margin-bottom: 5px;
-  padding-left: 10px;
+  padding-left: 20px;
   position: relative;
-  line-height: 1.3;
+  line-height: 1.5;
 }
 
 .feature-item::before {
-  content: "";
+  content: "•";
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 4px;
-  background-color: #64748b;
-  border-radius: 50%;
+  top: 0;
+  color: #64748b;
+  font-weight: bold;
 }
 
 .pricing-section {
@@ -350,14 +342,8 @@
 }
 
 @media (max-width: 640px) {
-  .pricing-row {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-  }
-
   .discounted-price {
-    font-size: 14px;
+    font-size: 20px;
   }
 }
 
@@ -366,51 +352,4 @@
   color: #64748b;
 }
 
-.slick-list {
-  margin: 0;
-  overflow: hidden;
-  padding: 0 12px; /* add edge padding so first/last cards are not cut */
-}
 
-.slick-track {
-  display: flex !important;
-  align-items: stretch;
-  justify-content: flex-start;
-  margin-left: 0 !important;
-}
-
-.destinations-wrapper.single-slide .slick-slide {
-  padding: 0 0; /* no side gap when single */
-}
-.destinations-wrapper.single-slide .slick-slide > div {
-  width: auto; /* let card define its width */
-}
-/* Slightly reduce card width for single item and keep it centered */
-.destinations-wrapper.single-slide .destination-card {
-  width: 100% !important;
-  max-width: 320px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.slick-slide {
-  padding: 0 12px; /* add spacing between cards */
-  box-sizing: border-box;
-  height: auto;
-  display: flex !important;
-  align-items: stretch;
-}
-
-.slick-slide:first-child { padding-left: 12px; }
-.slick-slide:last-child { padding-right: 12px; }
-
-.slick-slide > div {
-  height: 100%;
-  width: 100%;
-  display: flex;
-}
-
-.destinations-wrapper .destination-card {
-  margin: 0;
-  height: 100%;
-}

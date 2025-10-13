@@ -1,0 +1,87 @@
+.filter-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(40, 80, 120, 0.08);
+  padding: 20px;
+  border: 1px solid #eaebee;
+}
+
+.filter-card .sidebar__item {
+  background: transparent;
+  border: none;
+  padding: 12px 0;
+}
+
+.filter-card h5 {
+  margin: 0 0 12px 0;
+}
+
+.filter-card .sidebar-checkbox .row,
+.filter-card .row.x-gap-10,
+.filter-card .row.y-gap-10,
+.filter-card .row.y-gap-5 {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.filter-card .form-checkbox input[type="checkbox"],
+.filter-card .form-radio input[type="radio"] {
+  accent-color: #0ea5e9;
+}
+
+.filter-card .button,
+.filter-card .rounded-100 {
+  border-radius: 9999px;
+}
+
+.filter-card .rc-slider-handle {
+  border-color: #0ea5e9;
+}
+
+.filter-card .rc-slider-track {
+  background-color: #0ea5e9;
+}
+
+/* Section header */
+.filter-section-title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #071516;
+}
+.filter-divider {
+  height: 1px;
+  background: #eaebee;
+  margin: 12px 0 14px;
+}
+
+/* Tiles */
+.tile {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #eaebee;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.tile + .tile { margin-top: 10px; }
+.tile-icon-left { color: #64748b; margin-right: 10px; }
+.tile-icon-right { margin-left: auto; display: inline-flex; gap: 8px; }
+.tile-body { flex: 1; display: flex; flex-direction: column; }
+.tile-label { font-size: 13px; color: #0f172a; margin-bottom: 4px; }
+.tile-input { border: none; outline: none; padding: 0; color: #64748b; }
+.tile-input.select { width: 100%; background: transparent; }
+
+/* Guests */
+.icon-btn { border: 1px solid #eaebee; background: #ffffff; width: 28px; height: 28px; border-radius: 50%; display:flex; align-items:center; justify-content:center; }
+.guests-counter { display:flex; align-items:center; }
+.guests-count { font-weight: 600; color: #071516; }
+
+/* Rating pills */
+.rating-pill { display:flex; align-items:center; gap:6px; padding: 6px 12px; border-radius: 9999px; background: rgba(14,165,233,0.08); color:#0ea5e9; border:1px solid rgba(14,165,233,0.18); }
+.rating-pill.active { background:#0ea5e9; color:#ffffff; border-color:#0ea5e9; }
+.rating-pill .num { font-weight:600; }
+.rating-pill .icon-star { color: #ffbd20; }
+.rating-pill.active .icon-star { color: #ffbd20; }
+
+

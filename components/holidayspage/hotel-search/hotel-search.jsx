@@ -502,11 +502,13 @@ const HotelSearch = ({
 
     try {
       let countryId = null;
+      let countryNameForUrl = null;
 
       if (searchType === "country") {
         // Prefer selectedCountry (from suggestion)
         if (selectedCountry) {
           countryId = selectedCountry;
+          countryNameForUrl = query;
         } else {
           // Fallback: lookup by typed query via proxy autocomplete
           const res = await fetch(`/api/holiday-country-autocomplete?query=${encodeURIComponent(query)}`);
@@ -516,7 +518,10 @@ const HotelSearch = ({
                 String(item?.label || "").toLowerCase() === query.toLowerCase()
               ) || data.data[0]
             : null;
-          if (match?.value) countryId = match.value;
+          if (match?.value) {
+            countryId = match.value;
+            countryNameForUrl = match.label || query;
+          }
         }
       }
 
@@ -524,14 +529,24 @@ const HotelSearch = ({
         try { sessionStorage.setItem("holidayCountryId", String(countryId)); } catch (_) {}
       }
 
-      // Navigate to holiday list page
+      // Navigate to country page if searching by country; else listing
       if (typeof window !== "undefined") {
-        window.location.href = "/holiday_list";
+        if (searchType === "country" && (countryNameForUrl || query)) {
+          const slug = encodeURIComponent(String(countryNameForUrl || query).trim().replace(/\s+/g, "-").toLowerCase());
+          window.location.href = `/holidays/${slug}`;
+        } else {
+          window.location.href = "/holiday_list";
+        }
       }
     } catch (_) {
       // no-op on failure; still navigate to listing
       if (typeof window !== "undefined") {
-        window.location.href = "/holiday_list";
+        const fallbackSlug = encodeURIComponent(String(query).trim().replace(/\s+/g, "-").toLowerCase());
+        if (searchType === "country" && query) {
+          window.location.href = `/holidays/${fallbackSlug}`;
+        } else {
+          window.location.href = "/holiday_list";
+        }
       }
     }
   };

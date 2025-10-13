@@ -93,8 +93,6 @@ const index = () => {
             {/* End col */}
 
             <div className="col-xl-9 ">
-              <TopHeaderFilter />
-              <div className="mt-30"></div>
               {/* End mt--30 */}
               <div className="row y-gap-30">
                 <HotelProperties packageCategoryId={packageCategoryId} countryId={countryId} cityId={cityId} />
@@ -141,16 +139,6 @@ const index = () => {
         </div>
         {/* End .container */}
       </section>
-
-      <section style={{ width: "100vw", overflow: "hidden" }}>
-        <img
-          src="/img/general/50+card.png"
-          alt="Get Global Visa"
-          style={{ width: "100vw", display: "block", height: "auto" }}
-        />
-      </section>
-
-      <VacationCard />
 
       <GoKiteFooter />
     </>
