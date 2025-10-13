@@ -1,39 +1,13 @@
-"use client";
-import Navbar from "@/components/header/Navbar/Navbar";
-import HeroSection from "@/components/landingpagevisa/hero/HeroSection";
-import HolidayDestinations from "@/components/landingpagevisa/holiday-destintion";
-import VisaDestinationCards from "@/components/landingpagevisa/visa-destination";
-import GoKiteFooter from "@/components/footer/footer-gokite";
-import { usePageContext } from "@/components/common/PageContext";
+import HomeClient from "./HomeClient";
 
-// export const metadata = {
-//   title: "GoKite - Travel & Tour ",
-//   description: "GoKite - Travel & Tour ",
-// };
-
-const Home_1 = () => {
-  const { loading } = usePageContext();
-  if (loading) {
-    return (
-      <>
-        <Navbar />
-        <div style={{ padding: "60px 0", textAlign: "center" }}>Loading...</div>
-        <GoKiteFooter />
-      </>
-    );
-  }
-  return (
-    <>
-      <Navbar />
-      <HeroSection />
-      <HolidayDestinations />
-      <VisaDestinationCards />
-      <GoKiteFooter />
-    </>
-  );
+export const metadata = {
+  title: "GoKite - Travel & Tour ",
+  description: "GoKite - Travel & Tour ",
 };
 
-export default Home_1;
+export default function Page() {
+  return <HomeClient />;
+}
 
 
 // import GoKiteFooter from "@/components/footer/footer-gokite";
