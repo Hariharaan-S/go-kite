@@ -17,9 +17,24 @@ export const PageProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Fetch all pages on component mount
+    // Attempt fetching pages; if unauthorized (401), keep loading and retry until signed in
     useEffect(() => {
-        fetchPages();
+        let retryTimeout;
+        const tryFetch = async () => {
+            try {
+                await fetchPages();
+            } catch (err) {
+                const message = String(err && err.message ? err.message : err);
+                if (message === 'UNAUTHORIZED_401') {
+                    setLoading(true);
+                    retryTimeout = setTimeout(tryFetch, 1000);
+                }
+            }
+        };
+        tryFetch();
+        return () => {
+            if (retryTimeout) clearTimeout(retryTimeout);
+        };
     }, []);
 
     const fetchPages = async () => {
@@ -30,6 +45,9 @@ export const PageProvider = ({ children }) => {
             const response = await fetch('/api/cms/pages');
 
             if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('UNAUTHORIZED_401');
+                }
                 throw new Error(`Failed to fetch pages: ${response.status}`);
             }
 
@@ -79,7 +97,12 @@ export const PageProvider = ({ children }) => {
 
         } catch (err) {
             console.error('Error fetching pages:', err);
-            setError(err.message);
+            const message = String(err && err.message ? err.message : err);
+            if (message === 'UNAUTHORIZED_401') {
+                // Keep loading; caller effect will retry
+                throw err;
+            }
+            setError(message);
         } finally {
             setLoading(false);
         }
