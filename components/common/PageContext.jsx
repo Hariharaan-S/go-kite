@@ -17,17 +17,22 @@ export const PageProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Attempt fetching pages; if unauthorized (401), keep loading and retry until signed in
+    // Attempt fetching pages; if unauthorized (401), retry with capped exponential backoff
     useEffect(() => {
         let retryTimeout;
+        let attempt = 0;
+        const maxAttempts = 8; // ~ up to ~2 minutes with exponential backoff
+
         const tryFetch = async () => {
             try {
                 await fetchPages();
             } catch (err) {
                 const message = String(err && err.message ? err.message : err);
-                if (message === 'UNAUTHORIZED_401') {
+                if (message === 'UNAUTHORIZED_401' && attempt < maxAttempts) {
+                    attempt += 1;
                     setLoading(true);
-                    retryTimeout = setTimeout(tryFetch, 1000);
+                    const delayMs = Math.min(1000 * Math.pow(2, attempt - 1), 30000); // 1s,2s,4s,... capped at 30s
+                    retryTimeout = setTimeout(tryFetch, delayMs);
                 }
             }
         };
